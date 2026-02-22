@@ -1,9 +1,11 @@
 # Governed Revenue Architecture
 
-Static site. No build step. Push to GitHub, connect Netlify.
+Vite-built multi-page site. Design tokens in `styles/tokens.css`.
 
 ```bash
-npx netlify-cli deploy --prod --dir=.
+npm install
+npm run build
+npx netlify-cli deploy --prod --dir=dist
 ```
 
-**Stack:** Oxanium + Space Mono via Google Fonts. Scorecard.io design DNA.
+**Stack:** Vite + Oxanium + Space Mono via Google Fonts. Scorecard.io design DNA.

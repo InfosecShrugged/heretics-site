@@ -1,0 +1,97 @@
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS — Single Source of Truth
+   Governed Revenue Architecture
+   ═══════════════════════════════════════════════ */
+
+:root {
+  /* ── Core palette ── */
+  --bk: #1a1918;
+  --gy: #f0f0f0;
+  --or: #ff6e3e;
+  --pu: #bcbeff;
+  --wh: #fff;
+
+  /* ── Grey scale ── */
+  --g50: #f8f8f8;
+  --g3: #d9d9d9;
+  --g4: #ccc;
+  --g5: #b5b5b5;
+  --g6: #a3a3a3;
+  --g7: #747474;
+  --g9: #2b2b2b;
+
+  /* ── Typography ── */
+  --ft: 'Oxanium', sans-serif;
+  --mn: 'Space Mono', monospace;
+
+  /* ── Easing ── */
+  --sm: cubic-bezier(.32, .72, 0, 1);
+  --ez: cubic-bezier(.215, .61, .355, 1);
+
+  /* ── Timing ── */
+  --fast: 140ms;
+  --med: 300ms;
+  --slow: 600ms;
+
+  /* ── Semantic colors (extended pages) ── */
+  --c-structure: #2A4A6B;
+  --c-modes: #C0392B;
+  --c-exec: #6D2B8A;
+  --c-signal: #1A7A6A;
+  --c-econ: #B83030;
+  --c-abx: #8B6914;
+  --c-legacy: #5D6D7E;
+  --c-graph: #2A4A6B;
+  --c-resolve: #6D2B8A;
+  --c-role: #1A7A6A;
+  --c-opp: #B83030;
+  --c-activity: #8B6914;
+  --c-danger: #C0392B;
+  --c-safe: #1A7A6A;
+
+  /* ── Semantic aliases (for themed pages) ── */
+  --bg: #f0f0f0;
+  --bg-panel: #e8e8e8;
+  --bg-card: #ffffff;
+  --bg-hover: #f8f8f8;
+  --bg-formula: #f5f5f5;
+  --text-1: #1a1918;
+  --text-2: #747474;
+  --text-3: #a3a3a3;
+  --border: rgba(24, 23, 15, .10);
+  --border-s: rgba(24, 23, 15, .22);
+  --accent: #ff6e3e;
+  --scrollbar: rgba(24, 23, 15, .18);
+}
+
+/* ── Theme: War Room (dark) ── */
+.mode-warroom {
+  --bg: #1a1918;
+  --bg-panel: #222120;
+  --bg-card: #2b2b2b;
+  --bg-hover: #333231;
+  --bg-formula: #252423;
+  --text-1: #e8e8e8;
+  --text-2: #a3a3a3;
+  --text-3: #747474;
+  --border: rgba(200, 220, 240, .07);
+  --border-s: rgba(200, 220, 240, .16);
+  --accent: #ff6e3e;
+  --scrollbar: rgba(200, 220, 240, .18);
+}
+
+/* ── Theme: Monument (light) ── */
+.mode-monument {
+  --bg: #f8f8f8;
+  --bg-panel: #f0f0f0;
+  --bg-card: #ffffff;
+  --bg-hover: #FFFFFF;
+  --bg-formula: #f5f5f5;
+  --text-1: #1a1918;
+  --text-2: #747474;
+  --text-3: #b5b5b5;
+  --border: rgba(8, 8, 7, .07);
+  --border-s: rgba(8, 8, 7, .18);
+  --accent: #1a1918;
+  --scrollbar: rgba(8, 8, 7, .18);
+}
