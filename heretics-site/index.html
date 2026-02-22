@@ -135,6 +135,13 @@ a{color:inherit;text-decoration:none}
 .sdk .disc-txt{color:var(--g5)}
 
 /* SIM - scorecard product screenshot card style */
+/* SIM MODE */
+.sim-tabs{display:flex;gap:8px;margin:0 0 10px 0}
+.sim-tab{flex:1;font-family:var(--mn);font-size:10px;padding:10px 10px;border:1px solid var(--g3);background:var(--g50);color:var(--g7);cursor:pointer;transition:all .35s var(--ez);text-transform:lowercase;letter-spacing:.02em}
+.sim-tab:hover{border-color:var(--bk);color:var(--bk)}
+.sim-tab.active{background:var(--bk);border-color:var(--bk);color:var(--wh)}
+.drift-only .sim-out-val{color:var(--or)}
+
 .sim-wrap{margin:40px 0;padding:clamp(16px,4vw,28px);background:var(--wh);border:1px solid var(--g3)}
 .sdk .sim-wrap{background:var(--g9);border-color:rgba(255,255,255,.08)}
 .sim-title{font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--or);margin-bottom:20px}
@@ -351,8 +358,20 @@ a{color:inherit;text-decoration:none}
           <div class="sim-field"><label>win rate (%)</label><input type="text" id="i-wr" placeholder="22" value="22"></div>
           <div class="sim-field"><label>avg sales cycle (days)</label><input type="text" id="i-cyc" placeholder="90" value="90"></div>
           <div class="sim-field"><label>blended cac ($)</label><input type="text" id="i-cac" placeholder="18,000" value="18,000"></div>
-          <div class="sim-field"><label>coverage multiple (x)</label><input type="text" id="i-cov" placeholder="3.5" value="3.5"></div>
-          <button class="btn-fill lg" style="width:100%;margin-top:4px" onclick="runSim()">run simulation</button>
+          <div class="sim-tabs" role="tablist" aria-label="simulation mode">
+  <button class="sim-tab active" id="tab-base" type="button" onclick="setMode('base')">baseline</button>
+  <button class="sim-tab" id="tab-drift" type="button" onclick="setMode('drift')">drift mode</button>
+</div>
+<div class="sim-field"><label>coverage multiple (x)</label><input type="text" id="i-cov" placeholder="3.5" value="3.5"></div>
+
+<div class="drift-fields" id="driftFields" style="display:none">
+  <div class="sim-field"><label>win-rate decay (%)</label><input type="text" id="d-wrdec" placeholder="15" value="15"></div>
+  <div class="sim-field"><label>cycle elongation (days)</label><input type="text" id="d-cycadd" placeholder="20" value="20"></div>
+  <div class="sim-field"><label>cac creep (%)</label><input type="text" id="d-cacinc" placeholder="12" value="12"></div>
+  <div class="sim-field"><label>pipeline inflation (%)</label><input type="text" id="d-infl" placeholder="25" value="25"></div>
+</div>
+
+<button class="btn-fill lg" style="width:100%;margin-top:4px" onclick="runSim()">run simulation</button>
         </div>
         <div class="sim-outputs" id="simOut">
           <div class="sim-out"><div class="sim-out-label">new logos required</div><div class="sim-out-val" id="o-logos">&mdash;</div><div class="sim-out-note">to hit ARR target at given ACV</div></div>
@@ -361,7 +380,26 @@ a{color:inherit;text-decoration:none}
           <div class="sim-out"><div class="sim-out-label">total acquisition budget</div><div class="sim-out-val" id="o-budget">&mdash;</div><div class="sim-out-note">logos x blended CAC</div><div class="sim-bar-wrap"><div class="sim-bar" id="bar-budget" style="width:0"></div></div></div>
           <div class="sim-out"><div class="sim-out-label">ltv:cac ratio</div><div class="sim-out-val" id="o-ltv">&mdash;</div><div class="sim-out-note">assumes 3-year LTV at 75% margin</div></div>
           <div class="sim-out"><div class="sim-out-label">quarterly velocity</div><div class="sim-out-val" id="o-vel">&mdash;</div><div class="sim-out-note">opps per quarter at cycle length</div></div>
-        </div>
+        <div class="sim-out drift-only" id="driftBadge" style="display:none;border-top:1px solid var(--g3);padding-top:14px;margin-top:6px">
+  <div class="sim-out-label">drift impact</div>
+  <div class="sim-out-val" id="o-drift">&mdash;</div>
+  <div class="sim-out-note">additional load required to hold target under drift</div>
+</div>
+<div class="sim-out drift-only" id="driftPipeRow" style="display:none">
+  <div class="sim-out-label">pipeline delta</div>
+  <div class="sim-out-val" id="o-piped">&mdash;</div>
+  <div class="sim-out-note">reported pipeline inflation + coverage stress</div>
+</div>
+<div class="sim-out drift-only" id="driftBudRow" style="display:none">
+  <div class="sim-out-label">budget delta</div>
+  <div class="sim-out-val" id="o-budged">&mdash;</div>
+  <div class="sim-out-note">cac creep applied</div>
+</div>
+<div class="sim-out drift-only" id="driftOppRow" style="display:none">
+  <div class="sim-out-label">opportunity delta</div>
+  <div class="sim-out-val" id="o-oppsd">&mdash;</div>
+  <div class="sim-out-note">win-rate decay applied</div>
+</div></div>
       </div>
     </div>
     <p class="s-p" style="font-style:italic;margin-top:12px;font-size:11px">This site ships the doctrine and simulation first. The orchestration layer comes next.</p>
@@ -444,27 +482,80 @@ function setSeg(i,btn){
 }
 function p(id){return parseFloat(document.getElementById(id).value.replace(/,/g,''))||0}
 function fmt(n){if(n>=1e6)return'$'+((n/1e6).toFixed(1))+'M';if(n>=1e3)return'$'+((n/1e3).toFixed(0))+'K';return'$'+n.toFixed(0)}
+let simMode='base';
+function setMode(m){
+  simMode=m;
+  document.getElementById('tab-base').classList.toggle('active', m==='base');
+  document.getElementById('tab-drift').classList.toggle('active', m==='drift');
+  document.getElementById('driftFields').style.display = (m==='drift') ? 'block' : 'none';
+  document.querySelectorAll('.drift-only').forEach(el=>el.style.display = (m==='drift') ? 'block' : 'none');
+}
+
 function runSim(){
   const arr=p('i-arr'),acv=p('i-acv'),wr=p('i-wr')/100,cyc=p('i-cyc'),cac=p('i-cac'),cov=p('i-cov');
-  if(!arr||!acv||!wr||!cac)return;
-  const logos=Math.ceil(arr/acv),pipe=arr*cov,opps=Math.ceil(logos/wr),budget=logos*cac;
-  const ltv3=(acv*3*.75)/cac,qOpps=Math.ceil(opps/(365/cyc)/4);
+  if(!arr||!acv||!wr||!cac||!cov)return;
+
+  // Baseline requirements
+  const logos=Math.ceil(arr/acv);
+  const pipe=arr*cov;
+  const opps=Math.ceil(logos/wr);
+  const budget=logos*cac;
+  const ltv3=(acv*3*.75)/cac;
+  const qOpps=Math.ceil(opps/(365/cyc)/4);
+
   document.getElementById('o-logos').textContent=logos.toLocaleString();
   document.getElementById('o-pipe').textContent=fmt(pipe);
   document.getElementById('o-opps').textContent=opps.toLocaleString();
   document.getElementById('o-budget').textContent=fmt(budget);
   document.getElementById('o-ltv').textContent=ltv3.toFixed(1)+'x';
   document.getElementById('o-vel').textContent=qOpps.toLocaleString()+' / quarter';
+
   // Animate bars
   const pipeRatio=Math.min(pipe/(arr*5),1)*100;
   const budgetRatio=Math.min(budget/(arr*.5),1)*100;
   document.getElementById('bar-pipe').style.width=pipeRatio+'%';
   document.getElementById('bar-budget').style.width=budgetRatio+'%';
+
+  // Drift: recompute required load under degradation so the target stays constant.
+  if(simMode==='drift'){
+    const wrDec=p('d-wrdec')/100;     // % relative decay
+    const cycAdd=p('d-cycadd');       // days added
+    const cacInc=p('d-cacinc')/100;   // % increase
+    const infl=p('d-infl')/100;       // % reported inflation
+
+    const wr2=Math.max(wr*(1-wrDec), 0.0001);
+    const cyc2=Math.max(cyc+cycAdd, 1);
+    const cac2=cac*(1+cacInc);
+    const pipe2=arr*cov*(1+infl);
+    const opps2=Math.ceil(logos/wr2);
+    const budget2=logos*cac2;
+    const qOpps2=Math.ceil(opps2/(365/cyc2)/4);
+
+    const pipeDelta=pipe2-pipe;
+    const budgetDelta=budget2-budget;
+    const oppDelta=opps2-opps;
+
+    // A simple volatility index: average relative increase across the three primary loads.
+    const v=( (pipe2/pipe-1) + (budget2/budget-1) + (opps2/opps-1) )/3;
+    const vScore=Math.max(0, Math.min(v, 9.99));
+
+    document.getElementById('o-drift').textContent=(vScore*100).toFixed(0)+'% volatility';
+    document.getElementById('o-piped').textContent=(pipeDelta>=0?'+':'')+fmt(pipeDelta);
+    document.getElementById('o-budged').textContent=(budgetDelta>=0?'+':'')+fmt(budgetDelta);
+    document.getElementById('o-oppsd').textContent=(oppDelta>=0?'+':'')+oppDelta.toLocaleString();
+    // Keep velocity visible as baseline; drift is implicit. If you want both, we can split the card later.
+    document.getElementById('o-vel').textContent=qOpps.toLocaleString()+' / quarter → '+qOpps2.toLocaleString()+' / quarter';
+  }
+
+  // Output animation
   document.querySelectorAll('.sim-out-val').forEach(el=>{
     el.style.transition='none';el.style.opacity='0';el.style.transform='translateY(6px)';
     requestAnimationFrame(()=>{el.style.transition='opacity .5s,transform .5s';el.style.opacity='1';el.style.transform='translateY(0)'})
   });
 }
+
+document.addEventListener('DOMContentLoaded',()=>{setMode('base')});
+
 let mx=0;
 window.addEventListener('scroll',()=>{
   const pct=window.scrollY/(document.body.scrollHeight-window.innerHeight);
