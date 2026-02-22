@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Infrastructure Requirements — Governed Revenue Architecture</title>
+<meta name="description" content="Infrastructure stack for agentic GTM. Canonical data layer, event model, control plane services, tooling layer, HITL workflow, eval harness, observability.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bk:#1a1918;--gy:#f0f0f0;--or:#ff6e3e;--pu:#bcbeff;--wh:#fff;--g50:#f8f8f8;--g3:#d9d9d9;--g4:#ccc;--g5:#b5b5b5;--g6:#a3a3a3;--g7:#747474;--g9:#2b2b2b;--ft:'Oxanium',sans-serif;--mn:'Space Mono',monospace;--sm:cubic-bezier(.32,.72,0,1);--ez:cubic-bezier(.215,.61,.355,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--ft);font-weight:400;background:var(--gy);color:var(--bk);overflow-x:hidden;line-height:1.4}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--g4);border-radius:2px}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;padding:0 20px;height:56px;display:flex;align-items:center;background:var(--gy);border-bottom:1px solid var(--g3);transition:background .4s var(--ez)}
+.nav.scrolled{background:rgba(240,240,240,.88);backdrop-filter:blur(12px)}
+.n-logo{display:flex;align-items:center;gap:8px}
+.n-logo svg{width:22px;height:22px}
+.n-word{font-family:var(--mn);font-size:11px;font-weight:400;letter-spacing:.02em}
+.nr{margin-left:auto;display:flex;align-items:center;gap:4px}
+.n-lnk{font-family:var(--mn);font-size:9px;padding:5px 8px;color:var(--g7);text-decoration:none;white-space:nowrap;transition:color .3s var(--ez);text-transform:lowercase;letter-spacing:.02em}
+.n-lnk:hover{color:var(--bk)}
+.btn-out{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:transparent;color:var(--bk);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
+.btn-out:hover{background:var(--bk);color:var(--wh)}
+.btn-fill{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:var(--bk);color:var(--wh);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
+.btn-fill:hover{background:var(--or);border-color:var(--or);color:var(--bk)}
+.ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
+.ham span{display:block;width:18px;height:1.5px;background:var(--bk);transition:all .3s var(--ez)}
+.mob-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--gy);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
+.mob-menu.open{display:flex}
+.mob-btns{display:flex;gap:8px;margin-bottom:24px}
+.mob-btns .btn-out,.mob-btns .btn-fill{flex:1;text-align:center;padding:14px 8px;font-size:11px}
+.mob-lnk{font-family:var(--mn);font-size:12px;padding:14px 0;color:var(--g7);border-bottom:1px solid var(--g3);text-transform:lowercase;letter-spacing:.02em;display:block;text-decoration:none}
+.mob-lnk:hover{color:var(--bk)}
+@media(max-width:960px){.n-lnk{display:none}.ham{display:flex}}
+
+/* LAYOUT */
+.w{max-width:1100px;margin:0 auto;padding:0 20px}
+@media(min-width:860px){.w{padding:0 40px}}
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--sm),transform .7s var(--sm)}.rv.vis{opacity:1;transform:translateY(0)}
+
+/* HERO */
+.hero{padding:100px 0 60px}
+.h-ey{font-family:var(--mn);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--g7);margin-bottom:20px;opacity:0;animation:up .8s var(--sm) .2s forwards}
+.h-title{font-family:var(--mn);font-size:clamp(22px,4.5vw,44px);font-weight:400;line-height:1.15;text-transform:uppercase;margin-bottom:16px;opacity:0;animation:up .8s var(--sm) .35s forwards}
+.h-title span{color:var(--or)}
+.h-sub{font-size:clamp(14px,2.5vw,16px);font-weight:300;color:var(--g7);max-width:620px;line-height:1.75;margin-bottom:12px;opacity:0;animation:up .8s var(--sm) .5s forwards}
+.h-quote{font-family:var(--mn);font-size:clamp(11px,2vw,13px);font-weight:400;color:var(--bk);border-left:3px solid var(--or);padding:14px 20px;margin:28px 0;max-width:560px;line-height:1.7;opacity:0;animation:up .8s var(--sm) .65s forwards}
+
+/* SECTIONS */
+.sc{padding:clamp(60px,10vw,100px) 0}
+.sdk{background:var(--bk);color:var(--wh)}
+.swh{background:var(--wh)}
+.s-ey{font-family:var(--mn);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--g7);margin-bottom:14px}
+.sdk .s-ey{color:var(--g6)}
+.s-h{font-family:var(--mn);font-size:clamp(18px,3.5vw,34px);font-weight:400;line-height:1.15;text-transform:uppercase;margin-bottom:18px}
+.s-h span{color:var(--or)}
+.s-p{font-size:clamp(14px,2.5vw,15px);font-weight:300;color:var(--g7);line-height:1.75;max-width:620px}
+.s-p strong{color:var(--bk);font-weight:500}
+.sdk .s-p{color:var(--g5)}.sdk .s-p strong{color:var(--wh)}
+
+/* LAYER CARD — the main component */
+.layer{margin:28px 0;border:1px solid var(--g3);background:var(--wh)}
+.sdk .layer{background:var(--g9);border-color:rgba(255,255,255,.07)}
+.layer-head{padding:20px 24px;border-bottom:1px solid var(--g3);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sdk .layer-head{border-color:rgba(255,255,255,.06)}
+.layer-num{font-family:var(--mn);font-size:28px;font-weight:400;color:var(--or);line-height:1}
+.layer-name{font-family:var(--mn);font-size:14px;font-weight:400;text-transform:uppercase;letter-spacing:.02em}
+.layer-tag{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--or);color:var(--or);margin-left:auto}
+.layer-body{padding:20px 24px}
+.layer-desc{font-size:14px;font-weight:300;color:var(--g7);line-height:1.75;margin-bottom:16px;max-width:700px}
+.sdk .layer-desc{color:var(--g5)}
+
+/* SUB-ITEMS within a layer */
+.sub-list{margin:0;padding:0;list-style:none}
+.sub-item{padding:10px 0;border-bottom:1px solid var(--g3);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.sdk .sub-item{border-color:rgba(255,255,255,.06)}
+.sub-item:last-child{border-bottom:none}
+.sub-label{font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--or);width:160px;flex-shrink:0}
+.sub-text{font-size:13px;font-weight:300;color:var(--g7);line-height:1.65;flex:1}
+.sdk .sub-text{color:var(--g5)}
+.sub-text code{font-family:var(--mn);font-size:11px;color:var(--or);background:var(--g50);padding:1px 5px;border:1px solid var(--g3)}
+.sdk .sub-text code{background:rgba(255,110,62,.08);border-color:rgba(255,110,62,.15)}
+@media(max-width:640px){.sub-label{width:100%}.sub-text{width:100%}}
+
+/* RULE BAR */
+.rule{padding:16px 24px;background:var(--wh);border:1px solid var(--g3);border-left:3px solid var(--or);margin:24px 0;font-family:var(--mn);font-size:12px;font-weight:400;line-height:1.6}
+.sdk .rule{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.08);border-left-color:var(--or)}
+.rule.warn{border-left-color:#ff3c3c}
+
+/* MVP STACK */
+.mvp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:28px 0;border:1px solid var(--g3)}
+@media(max-width:768px){.mvp-grid{grid-template-columns:1fr}}
+.mvp-item{padding:16px;border-right:1px solid var(--g3);text-align:center;background:var(--wh);transition:all .4s var(--ez)}
+.sdk .mvp-item{background:var(--g9);border-color:rgba(255,255,255,.07)}
+.mvp-item:last-child{border-right:none}
+@media(max-width:768px){.mvp-item{border-right:none;border-bottom:1px solid var(--g3);text-align:left}.mvp-item:last-child{border-bottom:none}}
+.mvp-num{font-family:var(--mn);font-size:24px;color:var(--or);margin-bottom:6px}
+.mvp-name{font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.mvp-desc{font-size:12px;font-weight:300;color:var(--g7);line-height:1.5}
+.sdk .mvp-desc{color:var(--g5)}
+
+/* CONNECTOR ROWS */
+.conn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+@media(max-width:640px){.conn-grid{grid-template-columns:1fr 1fr}}
+.conn{padding:10px 14px;background:var(--g50);border:1px solid var(--g3);font-family:var(--mn);font-size:10px;color:var(--g7);text-align:center;transition:all .3s var(--ez)}
+.conn:hover{border-color:var(--or);color:var(--or)}
+.sdk .conn{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06);color:var(--g5)}
+
+/* POLICY BLOCK */
+.policy{padding:12px 16px;background:var(--g50);border:1px solid var(--g3);border-left:2px solid var(--or);margin:6px 0;font-family:var(--mn);font-size:11px;color:var(--g7);line-height:1.6}
+.sdk .policy{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06);border-left-color:var(--or);color:var(--g5)}
+
+/* PROV SCHEMA */
+.prov-row{display:grid;grid-template-columns:160px 100px 1fr;gap:0;border-bottom:1px solid var(--g3);font-size:12px}
+@media(max-width:600px){.prov-row{grid-template-columns:1fr}}
+.prov-row.ph{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--g6);background:var(--g50)}
+.sdk .prov-row.ph{background:rgba(255,255,255,.03)}
+.prov-cell{padding:6px 10px;border-right:1px solid var(--g3);color:var(--g7);font-weight:300}
+.sdk .prov-cell{border-color:rgba(255,255,255,.06);color:var(--g5)}
+.prov-cell:last-child{border-right:none}
+.prov-cell code{font-family:var(--mn);font-size:10px;color:var(--or)}
+
+/* TOOL WRAPPER */
+.tw-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+@media(max-width:640px){.tw-grid{grid-template-columns:1fr}}
+.tw{padding:16px;background:var(--wh);border:1px solid var(--g3);transition:all .4s var(--ez)}
+.tw:hover{border-color:var(--g7)}
+.sdk .tw{background:var(--g9);border-color:rgba(255,255,255,.07)}
+.tw-name{font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--or);margin-bottom:6px}
+.tw-desc{font-size:13px;font-weight:300;color:var(--g7);line-height:1.5}
+.sdk .tw-desc{color:var(--g5)}
+
+/* FOOTER */
+.foot{padding:32px 20px;border-top:1px solid var(--g3);text-align:center}
+.foot-text{font-family:var(--mn);font-size:9px;color:var(--g5);letter-spacing:.06em}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="n-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <span class="n-word">governed revenue</span>
+  </div>
+  <div class="nr">
+    <a class="n-lnk" href="index.html">home</a>
+    <a class="n-lnk" href="spine-v4.html">spine</a>
+    <a class="n-lnk" href="agent-specs.html">agents</a>
+    <a class="n-lnk" href="sovereignty-map.html">sovereignty</a>
+    <a class="n-lnk" href="lexicon.html">lexicon</a>
+    <a class="n-lnk" href="provenance.html">provenance</a>
+    <button class="ham" onclick="document.getElementById('mobMenu').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <div class="mob-btns">
+    <a class="btn-out" href="index.html" style="flex:1;text-align:center">home</a>
+    <a class="btn-fill" href="index.html#briefing" style="flex:1;text-align:center">strategic briefing</a>
+  </div>
+  <a class="mob-lnk" href="spine-v4.html">spine</a>
+  <a class="mob-lnk" href="agent-specs.html">agent specs</a>
+  <a class="mob-lnk" href="sovereignty-map.html">sovereignty map</a>
+  <a class="mob-lnk" href="split-funnel-map.html">motion map</a>
+  <a class="mob-lnk" href="lexicon.html">lexicon</a>
+  <a class="mob-lnk" href="identity-graph.html">identity graph</a>
+  <a class="mob-lnk" href="provenance.html">provenance</a>
+  <a class="mob-lnk" href="infrastructure.html" style="color:var(--or)">infrastructure</a>
+</div>
+
+<!-- HERO -->
+<section class="hero w">
+  <div class="h-ey">screen 08 &mdash; infrastructure requirements</div>
+  <h1 class="h-title">Infrastructure <span>Stack</span></h1>
+  <p class="h-sub">You need less &ldquo;AI magic&rdquo; and more boring authority. Agents only behave when the surrounding system forces them to.</p>
+  <div class="h-quote">Infrastructure first. Autonomy later. That&rsquo;s not caution; it&rsquo;s arithmetic.</div>
+</section>
+
+<!-- LAYER 1: CANONICAL DATA -->
+<section class="sc swh">
+  <div class="w rv">
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">1</span>
+        <span class="layer-name">Canonical Data Layer</span>
+        <span class="layer-tag">identity first</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Identity is the first constraint. If identity is fuzzy, every downstream &ldquo;signal&rdquo; is just mislabeled noise.</div>
+        <ul class="sub-list">
+          <li class="sub-item"><span class="sub-label">id graph</span><span class="sub-text">Account &harr; Domain &harr; Contact &harr; Lead &harr; Opportunity. And the conversion rules between them.</span></li>
+          <li class="sub-item"><span class="sub-label">normalization</span><span class="sub-text">Pick the &ldquo;source of truth&rdquo; fields: <code>industry</code>, <code>employee_range</code>, <code>region</code>, <code>icp_tier</code>, <code>owner</code>, <code>stage</code>.</span></li>
+          <li class="sub-item"><span class="sub-label">dedupe policy</span><span class="sub-text">Deterministic first, probabilistic second, human review for conflicts. In that order.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYER 2: DATA PIPELINE -->
+<section class="sc">
+  <div class="w rv">
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">2</span>
+        <span class="layer-name">Data Pipeline & Event Model</span>
+        <span class="layer-tag">event stream</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Agents need an event stream, not a pile of tables. Speed-to-signal is a data engineering problem wearing a GTM costume.</div>
+        <ul class="sub-list">
+          <li class="sub-item"><span class="sub-label">connectors</span>
+            <span class="sub-text">
+              <div class="conn-grid">
+                <div class="conn">CRM (SFDC / HubSpot)</div>
+                <div class="conn">Marketing Automation</div>
+                <div class="conn">Sales Engagement</div>
+                <div class="conn">Web Analytics</div>
+                <div class="conn">Product Telemetry</div>
+                <div class="conn">Data Warehouse</div>
+              </div>
+            </span>
+          </li>
+          <li class="sub-item"><span class="sub-label">event schema</span><span class="sub-text"><code>who</code> / <code>what</code> / <code>when</code> / <code>source</code> / <code>context</code> with stable IDs. Not emails as primary keys.</span></li>
+          <li class="sub-item"><span class="sub-label">freshness</span><span class="sub-text">Timestamps, SLAs, and &ldquo;signal decay&rdquo; rules. If data is stale, agents must know it&rsquo;s stale.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYER 3: CONTROL PLANE SERVICES -->
+<section class="sc sdk">
+  <div class="w rv">
+    <div class="s-ey">the constitution</div>
+    <h2 class="s-h">Control plane <span>services</span></h2>
+    <p class="s-p" style="margin-bottom:24px">This is the &ldquo;constitution&rdquo; every agent must obey.</p>
+
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">3a</span>
+        <span class="layer-name">Permissions & Secrets</span>
+      </div>
+      <div class="layer-body">
+        <ul class="sub-list">
+          <li class="sub-item"><span class="sub-label">rbac / abac</span><span class="sub-text">Role- and attribute-based access. Agent can read X, write Y, never touch Z.</span></li>
+          <li class="sub-item"><span class="sub-label">secrets</span><span class="sub-text">Short-lived tokens, rotation, no plaintext keys in prompts or logs. Ever.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">3b</span>
+        <span class="layer-name">Policy Engine</span>
+        <span class="layer-tag">code, not guidelines</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Implement as code, not guidelines.</div>
+        <div class="policy">&ldquo;No CRM writes without approval.&rdquo;</div>
+        <div class="policy">&ldquo;No campaign send without preview + human confirm.&rdquo;</div>
+        <div class="policy">&ldquo;No enrichment purchase beyond budget threshold.&rdquo;</div>
+      </div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">3c</span>
+        <span class="layer-name">Provenance Logging</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">For every agent decision. This is your audit trail and your debugging tool.</div>
+        <div style="border:1px solid rgba(255,255,255,.06);margin-top:8px">
+          <div class="prov-row ph"><div class="prov-cell">field</div><div class="prov-cell">type</div><div class="prov-cell">description</div></div>
+          <div class="prov-row"><div class="prov-cell"><code>inputs_used</code></div><div class="prov-cell">object[]</div><div class="prov-cell">All data inputs consumed</div></div>
+          <div class="prov-row"><div class="prov-cell"><code>tool_calls</code></div><div class="prov-cell">object[]</div><div class="prov-cell">Every external API call: tool, params, response</div></div>
+          <div class="prov-row"><div class="prov-cell"><code>model_version</code></div><div class="prov-cell">string</div><div class="prov-cell">Prompt + model semantic version</div></div>
+          <div class="prov-row"><div class="prov-cell"><code>confidence</code></div><div class="prov-cell">float</div><div class="prov-cell">0.0 &ndash; 1.0</div></div>
+          <div class="prov-row"><div class="prov-cell"><code>output</code></div><div class="prov-cell">object</div><div class="prov-cell">The decision / recommendation produced</div></div>
+          <div class="prov-row"><div class="prov-cell"><code>human_approved</code></div><div class="prov-cell">boolean</div><div class="prov-cell">Whether a human reviewed before execution</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYER 4: TOOLING LAYER -->
+<section class="sc swh">
+  <div class="w rv">
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">4</span>
+        <span class="layer-name">Tooling Layer</span>
+        <span class="layer-tag">safe action interfaces</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Agents shouldn&rsquo;t call Salesforce or HubSpot directly. Build thin wrapper APIs (&ldquo;safe tools&rdquo;) that enforce permissions, validate payloads, rate-limit, require approvals for high-impact operations, and log everything.</div>
+        <div class="rule">If the agent is an operator, these wrappers are the lock on the door.</div>
+        <div class="tw-grid">
+          <div class="tw"><div class="tw-name">enforce permissions</div><div class="tw-desc">Every call checked against RBAC before execution. No bypass.</div></div>
+          <div class="tw"><div class="tw-name">validate payloads</div><div class="tw-desc">Schema validation on every write. Reject malformed data at the boundary.</div></div>
+          <div class="tw"><div class="tw-name">rate limit</div><div class="tw-desc">Per-agent, per-tool, per-hour. Prevent runaway loops from burning API quotas.</div></div>
+          <div class="tw"><div class="tw-name">require approvals</div><div class="tw-desc">High-impact operations queue for human review. Campaign send, stage change, ownership change.</div></div>
+          <div class="tw"><div class="tw-name">log everything</div><div class="tw-desc">Every tool call produces a provenance record. No silent actions.</div></div>
+          <div class="tw"><div class="tw-name">fail safely</div><div class="tw-desc">Timeouts, retries with backoff, graceful degradation. No hanging state.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYER 5: HITL -->
+<section class="sc">
+  <div class="w rv">
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">5</span>
+        <span class="layer-name">Human-in-the-Loop Workflow</span>
+        <span class="layer-tag">not optional</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Approvals aren&rsquo;t optional; they&rsquo;re how you scale without becoming reckless.</div>
+        <ul class="sub-list">
+          <li class="sub-item"><span class="sub-label">queues</span><span class="sub-text">Recommended actions: routing change, stage change, sequence launch, budget reallocation. All queue before execution.</span></li>
+          <li class="sub-item"><span class="sub-label">approver roles</span><span class="sub-text"><code>RevOps</code>, <code>Marketing Ops</code>, <code>Sales Ops</code>, <code>Finance</code>. Each has a defined domain.</span></li>
+          <li class="sub-item"><span class="sub-label">escalation</span><span class="sub-text">Timeout policies. If no approval within SLA, escalate or auto-reject. No actions stuck in limbo.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYER 6: EVAL HARNESS -->
+<section class="sc sdk">
+  <div class="w rv">
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">6</span>
+        <span class="layer-name">Evaluation Harness</span>
+        <span class="layer-tag">before you let agents loose</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Treat agents like production software. No eval harness = no right to autonomy.</div>
+        <ul class="sub-list">
+          <li class="sub-item"><span class="sub-label">offline replay</span><span class="sub-text">Run agents on historical weeks/quarters. Compare recommendations against known outcomes.</span></li>
+          <li class="sub-item"><span class="sub-label">golden datasets</span><span class="sub-text">Known-good mappings, known-bad edge cases. Curated, versioned, maintained.</span></li>
+          <li class="sub-item"><span class="sub-label">metrics</span><span class="sub-text">False positive rate for &ldquo;ready.&rdquo; Time-to-action. Stage inflation detection. Routing accuracy. Downstream win-rate lift (later).</span></li>
+        </ul>
+        <div class="rule warn">No eval harness = no right to autonomy.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYER 7: OBSERVABILITY -->
+<section class="sc swh">
+  <div class="w rv">
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">7</span>
+        <span class="layer-name">Observability & Incident Response</span>
+      </div>
+      <div class="layer-body">
+        <div class="layer-desc">Agents will fail. Your job is to make failure loud, bounded, and reversible.</div>
+        <ul class="sub-list">
+          <li class="sub-item"><span class="sub-label">monitoring</span><span class="sub-text">Tool-call anomalies, permission drift, unexpected write volume.</span></li>
+          <li class="sub-item"><span class="sub-label">alerting</span><span class="sub-text">Slack/PagerDuty thresholds. Humans find out in minutes, not days.</span></li>
+          <li class="sub-item"><span class="sub-label">kill switch</span><span class="sub-text">Per-agent and global. No heroics.</span></li>
+          <li class="sub-item"><span class="sub-label">rollbacks</span><span class="sub-text">For CRM writes and configuration changes. Every write is reversible.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYER 8: DEPLOYMENT -->
+<section class="sc">
+  <div class="w rv">
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num">8</span>
+        <span class="layer-name">Environment & Deployment Discipline</span>
+      </div>
+      <div class="layer-body">
+        <ul class="sub-list">
+          <li class="sub-item"><span class="sub-label">environments</span><span class="sub-text">Dev / staging / prod with separate credentials and datasets. No sharing.</span></li>
+          <li class="sub-item"><span class="sub-label">versioning</span><span class="sub-text">Prompts, policies, and tools. Treat prompts like code.</span></li>
+          <li class="sub-item"><span class="sub-label">ci/cd</span><span class="sub-text">Automated tests for policy compliance and tool wrappers. Deploy like software because it is software.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MVP STACK -->
+<section class="sc sdk">
+  <div class="w rv">
+    <div class="s-ey">minimum viable</div>
+    <h2 class="s-h">The stack that <span>counts as real</span></h2>
+    <p class="s-p" style="margin-bottom:8px">If you&rsquo;re trying to build an MVP without a six-month platform project, the minimum that still counts as &ldquo;real&rdquo;:</p>
+    <div class="mvp-grid">
+      <div class="mvp-item"><div class="mvp-num">1</div><div class="mvp-name">Identity Graph</div><div class="mvp-desc">+ dedupe rules</div></div>
+      <div class="mvp-item"><div class="mvp-num">2</div><div class="mvp-name">Event Schema</div><div class="mvp-desc">+ freshness tracking</div></div>
+      <div class="mvp-item"><div class="mvp-num">3</div><div class="mvp-name">Tool Wrappers</div><div class="mvp-desc">+ permissions + logging</div></div>
+      <div class="mvp-item"><div class="mvp-num">4</div><div class="mvp-name">Approval Workflow</div><div class="mvp-desc">for writes</div></div>
+      <div class="mvp-item"><div class="mvp-num">5</div><div class="mvp-name">Provenance</div><div class="mvp-desc">+ basic monitoring</div></div>
+    </div>
+    <p class="s-p" style="margin-top:20px">Everything else is acceleration; those five are <strong>survival</strong>.</p>
+    <div class="rule" style="margin-top:24px">Infrastructure first. Autonomy later. That&rsquo;s not caution; it&rsquo;s arithmetic.</div>
+    <div style="margin-top:32px;display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn-fill" href="agent-specs.html" style="padding:10px 24px;font-size:11px">agent spec template</a>
+      <a class="btn-out" href="index.html" style="padding:10px 24px;font-size:11px;border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)">back to doctrine</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot"><div class="foot-text">governed revenue architecture &middot; infrastructure requirements &middot; 2026</div></footer>
+
+<script>
+'use strict';
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
