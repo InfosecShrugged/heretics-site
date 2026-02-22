@@ -1,10 +1,73 @@
 [build]
-  publish = "."
+  command = "npm run build"
+  publish = "dist"
 
+# Security headers for all routes
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    X-XSS-Protection = "1; mode=block"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'"
+
+# Cache static assets aggressively
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Default cache for pages
+[[headers]]
+  for = "/*.html"
+  [headers.values]
     Cache-Control = "public, max-age=3600"
+
+# Preserve existing .html routes — redirect to clean URLs
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/agent-specs.html"
+  to = "/agent-specs/"
+  status = 301
+
+[[redirects]]
+  from = "/identity-graph.html"
+  to = "/identity-graph/"
+  status = 301
+
+[[redirects]]
+  from = "/infrastructure.html"
+  to = "/infrastructure/"
+  status = 301
+
+[[redirects]]
+  from = "/lexicon.html"
+  to = "/lexicon/"
+  status = 301
+
+[[redirects]]
+  from = "/provenance.html"
+  to = "/provenance/"
+  status = 301
+
+[[redirects]]
+  from = "/sovereignty-map.html"
+  to = "/sovereignty-map/"
+  status = 301
+
+[[redirects]]
+  from = "/spine-v4.html"
+  to = "/spine-v4/"
+  status = 301
+
+[[redirects]]
+  from = "/split-funnel-map.html"
+  to = "/split-funnel-map/"
+  status = 301
