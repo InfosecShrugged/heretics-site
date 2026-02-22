@@ -1,0 +1,408 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Provenance Layer — Screen 06">
+
+<Fragment slot="head">
+<style is:inline>
+:root {
+  --bg:#f0f0f0;--bg-panel:#e8e8e8;--bg-card:#ffffff;--bg-hover:#f8f8f8;--bg-formula:#f5f5f5;
+  --text-1:#1a1918;--text-2:#747474;--text-3:#a3a3a3;
+  --border:rgba(24,23,15,.10);--border-s:rgba(24,23,15,.22);
+  --accent:#ff6e3e;--scrollbar:rgba(24,23,15,.18);
+  --c-prov:#6B3A2A;--c-signal-p:#1A5276;--c-model-p:#6C3483;--c-route-p:#5A3E8A;
+  --c-econ-p:#B83030;--c-vendor-p:#5D6D7E;--c-safe:#117A65;--c-danger:#B83030;
+  --c-feedback:#2A4A6B;--c-signal:#1A7A6A;--c-orchestrate:#6D2B8A;--c-gravity:#B83030;
+  --ease:cubic-bezier(.4,0,.2,1);--fast:140ms;--med:300ms;--slow:600ms;
+  --font-sans:'Oxanium',system-ui,sans-serif;
+  --mn:'Space Mono','Menlo',monospace;
+  --font-serif:'Oxanium','Georgia',serif;
+}
+.mode-warroom{--bg:#1a1918;--bg-panel:#222120;--bg-card:#2b2b2b;--bg-hover:#333231;--bg-formula:#252423;--text-1:#e8e8e8;--text-2:#a3a3a3;--text-3:#747474;--border:rgba(200,220,240,.07);--border-s:rgba(200,220,240,.16);--accent:#ff6e3e;--scrollbar:rgba(200,220,240,.18)}
+.mode-monument{--bg:#f8f8f8;--bg-panel:#f0f0f0;--bg-card:#ffffff;--bg-hover:#FFFFFF;--bg-formula:#f5f5f5;--text-1:#1a1918;--text-2:#747474;--text-3:#b5b5b5;--border:rgba(8,8,7,.07);--border-s:rgba(8,8,7,.18);--accent:#1a1918;--scrollbar:rgba(8,8,7,.18)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:13px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var(--text-1);min-height:100vh;transition:background var(--slow) var(--ease),color var(--slow) var(--ease)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:2px}
+
+.topbar{position:sticky;top:0;z-index:80;background:var(--bg);border-bottom:1px solid var(--border-s);display:flex;align-items:center;padding:0 20px;height:48px;gap:8px;transition:background var(--slow) var(--ease)}
+.logo{display:flex;align-items:baseline;gap:7px}
+.logo-mark{font-family:var(--mn);font-size:9px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase}
+.logo-name{font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--text-1);transition:color var(--slow)}
+.tb-sep{width:1px;height:18px;background:var(--border-s);flex-shrink:0}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:5px}
+.tb-btn{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border-s);background:transparent;color:var(--text-2);cursor:pointer;transition:all var(--fast) var(--ease);border-radius:1px}
+.tb-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tb-btn.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.nav-link{font-family:var(--mn);font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);text-decoration:none;padding:3px 8px;border:1px solid var(--border);border-radius:1px;transition:all var(--fast) var(--ease)}
+.nav-link:hover{border-color:var(--accent);color:var(--accent)}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px 80px}
+.header{margin-bottom:20px;padding-top:24px}
+.header-eyebrow{font-family:var(--mn);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
+.header h1{font-family:var(--font-serif);font-size:clamp(24px,3vw,36px);font-weight:400;line-height:1.1;color:var(--text-1);margin-bottom:8px;transition:color var(--slow)}
+.header h1 em{color:var(--accent);font-style:normal}
+.header p{font-size:12px;color:var(--text-2);max-width:720px;line-height:1.8}
+
+.st{font-family:var(--font-serif);font-size:18px;font-weight:400;color:var(--text-1);margin:28px 0 4px;transition:color var(--slow)}
+.ss{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px}
+
+/* DEFINITION BAND */
+.def-band{padding:16px 20px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--c-prov);margin-bottom:20px}
+.def-label{font-family:var(--mn);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--c-prov);margin-bottom:6px}
+.def-text{font-family:var(--font-serif);font-size:15px;font-weight:400;line-height:1.7;color:var(--text-1);font-style:italic;transition:color var(--slow)}
+
+/* WHY BOX */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.why-card{padding:14px;background:var(--bg-card);border:1px solid var(--border)}
+.why-card-label{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.why-card-label.without{color:var(--c-danger)}
+.why-card-label.with{color:var(--c-safe)}
+.why-items{font-size:10px;color:var(--text-2);line-height:1.6}
+.why-items strong{color:var(--text-1);font-weight:500}
+
+/* PROVENANCE OVERLAY DIAGRAM */
+.overlay-diagram{padding:20px;background:var(--bg-card);border:1px solid var(--border);margin:14px 0;overflow-x:auto}
+.overlay-table{width:100%;border-collapse:collapse;min-width:900px}
+.overlay-table th{font-family:var(--mn);font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border-s);color:var(--text-3);background:var(--bg-formula)}
+.overlay-table th:first-child{width:200px}
+.overlay-table th.prov-col{color:var(--c-prov);border-left:2px solid var(--c-prov)}
+.overlay-table td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;color:var(--text-2);line-height:1.4;vertical-align:top}
+.overlay-table td:first-child{font-family:var(--font-serif);font-size:12px;font-weight:700;color:var(--text-1);transition:color var(--slow)}
+.overlay-table td.prov-cell{border-left:2px solid var(--c-prov);background:rgba(107,58,42,.03)}
+.overlay-table td.prov-cell code{font-family:var(--mn);font-size:9px;color:var(--c-prov);background:var(--bg-formula);padding:1px 3px}
+.layer-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}
+
+/* DOMAIN CARDS */
+.domain-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:14px 0}
+.domain{padding:16px 18px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--dc,var(--c-prov))}
+.domain-header{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.domain-num{font-family:var(--mn);font-size:9px;letter-spacing:.1em;color:var(--dc,var(--c-prov));padding:2px 6px;border:1px solid var(--dc,var(--c-prov))}
+.domain-title{font-family:var(--font-serif);font-size:15px;font-weight:400;color:var(--text-1);transition:color var(--slow)}
+.domain-layer{font-family:var(--mn);font-size:8px;letter-spacing:.06em;color:var(--text-3);margin-left:auto}
+.domain-desc{font-size:11px;color:var(--text-2);line-height:1.6;margin-bottom:10px}
+.domain-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:4px}
+.domain-field{display:flex;gap:5px;align-items:baseline}
+.domain-field-key{font-family:var(--mn);font-size:9px;color:var(--dc,var(--c-prov));white-space:nowrap}
+.domain-field-val{font-size:9px;color:var(--text-3)}
+
+/* RULE BANNER */
+.rule-banner{padding:14px 18px;border:2px solid var(--c-prov);background:var(--bg-card);margin:18px 0;position:relative}
+.rule-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,var(--c-prov) 0,var(--c-prov) 8px,transparent 8px,transparent 16px)}
+.rule-banner-title{font-family:var(--mn);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--c-prov);margin-bottom:6px}
+.rule-banner-text{font-size:11px;color:var(--text-2);line-height:1.7}
+.rule-banner-text strong{color:var(--text-1);font-weight:500}
+
+/* CONTRAST */
+.contrast{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.contrast-card{padding:14px 16px;background:var(--bg-card);border:1px solid var(--border)}
+.contrast-label{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.contrast-label.old{color:var(--c-vendor-p);text-decoration:line-through;text-decoration-color:var(--c-vendor-p)}
+.contrast-label.new{color:var(--c-prov)}
+.contrast-q{font-family:var(--font-serif);font-size:14px;font-weight:700;font-style:italic;color:var(--text-1);margin-bottom:4px;transition:color var(--slow)}
+.contrast-desc{font-size:10px;color:var(--text-2);line-height:1.5}
+
+/* MVP REQUIREMENTS */
+.mvp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:14px 0}
+.mvp-card{padding:10px;background:var(--bg-card);border:1px solid var(--border);border-top:2px solid var(--c-prov)}
+.mvp-num{font-family:var(--mn);font-size:16px;font-weight:300;color:var(--c-prov);opacity:.25}
+.mvp-name{font-family:var(--font-serif);font-size:11px;font-weight:700;color:var(--text-1);margin:3px 0;transition:color var(--slow)}
+.mvp-desc{font-size:9px;color:var(--text-3);line-height:1.4}
+
+/* SCREENING + INSIGHT */
+.screening{padding:14px 16px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--accent);margin-top:20px}
+.screening-label{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.screening-text{font-family:var(--font-serif);font-size:14px;font-weight:400;line-height:1.7;color:var(--text-1);font-style:italic;transition:color var(--slow)}
+.insight{padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--c-prov);margin-top:10px}
+.insight-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-prov);margin-bottom:6px}
+.insight-text{font-size:11px;color:var(--text-2);line-height:1.65}
+.insight-text strong{color:var(--text-1);font-weight:500}
+
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text-1);color:var(--bg);font-family:var(--mn);font-size:9px;letter-spacing:.1em;padding:7px 16px;z-index:999;transition:transform var(--med) var(--ease);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:768px){
+  .container{padding:0 16px 60px}
+  .tab-bar{flex-wrap:wrap;top:56px}
+  .tab-btn{padding:10px 12px;font-size:8px;flex:1;text-align:center;min-width:0}
+  .exec-row{grid-template-columns:1fr!important}
+  .outputs-grid{grid-template-columns:1fr!important}
+  .side-feeds{grid-template-columns:1fr!important}
+  .measurement-grid{grid-template-columns:1fr!important}
+  .governance-grid{grid-template-columns:1fr!important}
+  .gtm-routing-row{grid-template-columns:1fr!important;gap:0}
+  .gtm-routing-row.header{display:none}
+  .gtm-routing-cell{border-right:none!important;border-bottom:1px solid var(--border)}
+  .gtm-routing-cell:last-child{border-bottom:none}
+  .header h1{font-size:clamp(20px,5vw,38px)!important}
+  .section-title{font-size:clamp(16px,4vw,20px)!important}
+  .spine-node{padding:14px 16px}
+  .formula-content{font-size:9px;overflow-x:auto}
+  .scope-grid,.tradeoff-grid,.lane-grid,.term-grid,.obj-grid,.domain-grid{grid-template-columns:1fr!important}
+  html{font-size:13px}
+}
+@media(max-width:480px){
+  .tab-btn{padding:8px 6px;font-size:7px;letter-spacing:.04em}
+  html{font-size:12px}
+}
+</style>
+</Fragment>
+
+<div class="wrgrid" aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(200,220,240,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(200,220,240,.035) 1px,transparent 1px);background-size:36px 36px;opacity:0;transition:opacity .6s"></div>
+
+<div class="container">
+  <div class="header">
+    <div class="header-eyebrow">Screen 06 · Epistemic Constraint · Audit Spine</div>
+    <h1>The <em>Provenance</em> Layer</h1>
+    <p>The traceable lineage of every signal, weight, threshold, and capital decision inside the Revenue OS. If gravity governs what is allowed, provenance governs what is true. Not a standalone layer — a horizontal audit plane touching every component.</p>
+  </div>
+
+  <div class="def-band">
+    <div class="def-label">Definition</div>
+    <div class="def-text">Provenance is the discipline of origin. Every signal has lineage. Every probability has decomposition. Every escalation has a threshold record. Every capital shift has an economic trace. Autonomy without provenance is opacity. Opacity without governance is risk.</div>
+  </div>
+
+  <!-- WHY -->
+  <div class="st">Why Provenance Exists</div>
+  <div class="ss">AI-native GTM multiplies signal volume and execution speed</div>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-card-label without">Without Provenance</div>
+      <div class="why-items"><strong>Probability becomes opaque</strong> — scores exist but cannot be decomposed. <strong>Threshold drift goes unnoticed</strong> — gates shift without record. <strong>Vendor logic contaminates judgment</strong> — external weights bleed into internal decisions. <strong>Forecasting becomes narrative</strong> — no traceable path from prediction to outcome.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-card-label with">With Provenance</div>
+      <div class="why-items"><strong>Every probability score can be decomposed</strong> into contributing signals and weights. <strong>Every routing decision can be reconstructed</strong> from threshold to execution. <strong>Every correction event can be explained</strong> with cohort, error, and delta. <strong>Every capital reallocation has traceable logic</strong> from SPI shift to budget movement.</div>
+    </div>
+  </div>
+
+  <!-- OVERLAY DIAGRAM -->
+  <div class="st">Provenance Overlay Across Seven Layers</div>
+  <div class="ss">Horizontal audit plane — not a vertical layer</div>
+
+  <div class="overlay-diagram">
+    <table class="overlay-table">
+      <thead>
+        <tr>
+          <th>Spine Layer</th>
+          <th>Primary Function</th>
+          <th>Agent</th>
+          <th class="prov-col">Provenance Domain</th>
+          <th class="prov-col">Required Audit Fields</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="layer-dot" style="background:var(--c-feedback)"></span>L01 Feedback</td>
+          <td>Error correction, reweighting</td>
+          <td>Learning Agent</td>
+          <td class="prov-cell">Model Provenance</td>
+          <td class="prov-cell"><code>cohort_window</code> <code>error_threshold</code> <code>weight_delta</code> <code>version_change</code> <code>approver</code></td>
+        </tr>
+        <tr>
+          <td><span class="layer-dot" style="background:var(--c-orchestrate)"></span>L02 Orchestration</td>
+          <td>Velocity, routing, escalation</td>
+          <td>Qualification + Motion</td>
+          <td class="prov-cell">Routing Provenance</td>
+          <td class="prov-cell"><code>threshold_active</code> <code>capacity_state</code> <code>agent_fired</code> <code>account_state</code> <code>territory</code></td>
+        </tr>
+        <tr>
+          <td><span class="layer-dot" style="background:var(--accent)"></span>L03 Positioning</td>
+          <td>Value translation</td>
+          <td>Narrative Agent</td>
+          <td class="prov-cell">Model Provenance</td>
+          <td class="prov-cell"><code>variant_id</code> <code>cluster_target</code> <code>test_window</code> <code>lift_measured</code></td>
+        </tr>
+        <tr>
+          <td><span class="layer-dot" style="background:var(--c-signal)"></span>L04 Signal</td>
+          <td>Dual probability engine</td>
+          <td>Signal Agent</td>
+          <td class="prov-cell">Signal Provenance</td>
+          <td class="prov-cell"><code>sources[]</code> <code>weights{}</code> <code>decay_&#955;</code> <code>icp_mod</code> <code>model_ver</code> <code>timestamp</code></td>
+        </tr>
+        <tr>
+          <td><span class="layer-dot" style="background:#D9622B"></span>L05 ICP</td>
+          <td>Economic clustering</td>
+          <td>ICP Agent</td>
+          <td class="prov-cell">Economic Provenance</td>
+          <td class="prov-cell"><code>density_inputs{}</code> <code>receptivity_inputs{}</code> <code>cluster_version</code></td>
+        </tr>
+        <tr>
+          <td><span class="layer-dot" style="background:var(--c-gravity)"></span>L06 Gravity</td>
+          <td>P&amp;L constraints</td>
+          <td>P&amp;L Agent</td>
+          <td class="prov-cell">Economic Provenance</td>
+          <td class="prov-cell"><code>spi_delta</code> <code>cac_assumption</code> <code>coverage_multiple</code> <code>margin_constraint</code></td>
+        </tr>
+        <tr>
+          <td><span class="layer-dot" style="background:var(--c-vendor-p)"></span>Vendor Inputs</td>
+          <td>External telemetry</td>
+          <td>—</td>
+          <td class="prov-cell">Vendor Provenance</td>
+          <td class="prov-cell"><code>vendor_id</code> <code>signal_type</code> <code>raw_value</code> <code>normalization</code> <code>internal_weight</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FIVE DOMAINS -->
+  <div class="st">Five Provenance Domains</div>
+  <div class="ss">Each domain produces immutable audit records</div>
+
+  <div class="domain-grid">
+    <div class="domain" style="--dc:var(--c-signal-p)">
+      <div class="domain-header">
+        <span class="domain-num">1</span>
+        <span class="domain-title">Signal Provenance</span>
+        <span class="domain-layer">Layer 04 — Signal Interpretation</span>
+      </div>
+      <div class="domain-desc">Every APS must carry metadata. No composite probability exists without ancestry. If a probability score cannot be reverse-engineered, it is disallowed.</div>
+      <div class="domain-fields">
+        <div class="domain-field"><span class="domain-field-key">sources[]</span><span class="domain-field-val">Structural + behavioral</span></div>
+        <div class="domain-field"><span class="domain-field-key">weights{}</span><span class="domain-field-val">Coefficients at score time</span></div>
+        <div class="domain-field"><span class="domain-field-key">decay_constants</span><span class="domain-field-val">&#955; values per signal</span></div>
+        <div class="domain-field"><span class="domain-field-key">icp_modifiers</span><span class="domain-field-val">Cluster-level adjustments</span></div>
+        <div class="domain-field"><span class="domain-field-key">model_version</span><span class="domain-field-val">Logic version ID</span></div>
+        <div class="domain-field"><span class="domain-field-key">timestamp</span><span class="domain-field-val">Score calculation time</span></div>
+      </div>
+    </div>
+
+    <div class="domain" style="--dc:var(--c-model-p)">
+      <div class="domain-header">
+        <span class="domain-num">2</span>
+        <span class="domain-title">Model Provenance</span>
+        <span class="domain-layer">Layer 01 — Revenue Feedback</span>
+      </div>
+      <div class="domain-desc">When correction triggers, record the full context. Adaptive calibration is bounded — provenance records the bounds.</div>
+      <div class="domain-fields">
+        <div class="domain-field"><span class="domain-field-key">cohort_window</span><span class="domain-field-val">90-day rolling scope</span></div>
+        <div class="domain-field"><span class="domain-field-key">cluster_id</span><span class="domain-field-val">Which segment triggered</span></div>
+        <div class="domain-field"><span class="domain-field-key">error_threshold</span><span class="domain-field-val">What limit was breached</span></div>
+        <div class="domain-field"><span class="domain-field-key">weight_delta</span><span class="domain-field-val">Exact adjustment made</span></div>
+        <div class="domain-field"><span class="domain-field-key">version_change</span><span class="domain-field-val">Old &#8594; new model version</span></div>
+        <div class="domain-field"><span class="domain-field-key">approver</span><span class="domain-field-val">null if autonomous, ID if gated</span></div>
+      </div>
+    </div>
+
+    <div class="domain" style="--dc:var(--c-route-p)">
+      <div class="domain-header">
+        <span class="domain-num">3</span>
+        <span class="domain-title">Routing Provenance</span>
+        <span class="domain-layer">Layer 02 — Orchestration</span>
+      </div>
+      <div class="domain-desc">When an account escalates, the decision chain must be reconstructable. Every routing action traceable from signal through gate to pod assignment.</div>
+      <div class="domain-fields">
+        <div class="domain-field"><span class="domain-field-key">threshold_active</span><span class="domain-field-val">Gate criteria at decision time</span></div>
+        <div class="domain-field"><span class="domain-field-key">capacity_state</span><span class="domain-field-val">Pod/territory load</span></div>
+        <div class="domain-field"><span class="domain-field-key">agent_fired</span><span class="domain-field-val">Which agent triggered action</span></div>
+        <div class="domain-field"><span class="domain-field-key">account_state</span><span class="domain-field-val">Lifecycle at decision time</span></div>
+        <div class="domain-field"><span class="domain-field-key">territory_assigned</span><span class="domain-field-val">Pod + rep mapping</span></div>
+        <div class="domain-field"><span class="domain-field-key">motion_track</span><span class="domain-field-val">Which lane + channel</span></div>
+      </div>
+    </div>
+
+    <div class="domain" style="--dc:var(--c-econ-p)">
+      <div class="domain-header">
+        <span class="domain-num">4</span>
+        <span class="domain-title">Economic Provenance</span>
+        <span class="domain-layer">Layer 06 — P&amp;L Gravity</span>
+      </div>
+      <div class="domain-desc">When capital reallocates, trace the economic logic. Economic gravity cannot drift silently.</div>
+      <div class="domain-fields">
+        <div class="domain-field"><span class="domain-field-key">spi_delta</span><span class="domain-field-val">Which segment SPI shifted</span></div>
+        <div class="domain-field"><span class="domain-field-key">cac_assumption</span><span class="domain-field-val">What CAC threshold applied</span></div>
+        <div class="domain-field"><span class="domain-field-key">coverage_multiple</span><span class="domain-field-val">Pipeline coverage at decision</span></div>
+        <div class="domain-field"><span class="domain-field-key">margin_constraint</span><span class="domain-field-val">Which floor triggered</span></div>
+      </div>
+    </div>
+
+    <div class="domain" style="--dc:var(--c-vendor-p)">
+      <div class="domain-header">
+        <span class="domain-num">5</span>
+        <span class="domain-title">Vendor Provenance Boundary</span>
+        <span class="domain-layer">Sovereignty Map Alignment</span>
+      </div>
+      <div class="domain-desc">Vendor telemetry is allowed. Vendor logic is not. Every vendor-fed signal must be labeled, normalized, internally weighted, and separated from decision authority.</div>
+      <div class="domain-fields">
+        <div class="domain-field"><span class="domain-field-key">vendor_id</span><span class="domain-field-val">Source system identifier</span></div>
+        <div class="domain-field"><span class="domain-field-key">signal_type</span><span class="domain-field-val">What category of data</span></div>
+        <div class="domain-field"><span class="domain-field-key">raw_value</span><span class="domain-field-val">Unmodified vendor output</span></div>
+        <div class="domain-field"><span class="domain-field-key">normalization</span><span class="domain-field-val">Internal transform applied</span></div>
+        <div class="domain-field"><span class="domain-field-key">internal_weight</span><span class="domain-field-val">Weight assigned by Signal Agent</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARCHITECTURAL RULE -->
+  <div class="rule-banner">
+    <div class="rule-banner-title">Architectural Rule — Non-Negotiable</div>
+    <div class="rule-banner-text"><strong>No autonomous action without provenance logging.</strong> Agents may optimize. Agents may not obscure. Every threshold adjustment, budget shift, segment reclassification, and probability recalibration must produce an immutable log entry. Provenance is non-optional.</div>
+  </div>
+
+  <!-- PROVENANCE vs ATTRIBUTION -->
+  <div class="st">Provenance vs Attribution</div>
+  <div class="ss">Your architecture already demotes attribution. Provenance formalizes the replacement.</div>
+
+  <div class="contrast">
+    <div class="contrast-card">
+      <div class="contrast-label old">Attribution (Demoted)</div>
+      <div class="contrast-q">"What touched the deal?"</div>
+      <div class="contrast-desc">Descriptive. Historical credit allocation. Backward-looking. Feeds calibration only — does not govern budget or execution decisions.</div>
+    </div>
+    <div class="contrast-card">
+      <div class="contrast-label new">Provenance (Structural)</div>
+      <div class="contrast-q">"What changed the probability, and why?"</div>
+      <div class="contrast-desc">Structural. Forward-looking causality chain. Traceable from signal origin through weight application to decision output. Governs trust in the system.</div>
+    </div>
+  </div>
+
+  <!-- MVP PROVENANCE REQUIREMENTS -->
+  <div class="st">Minimum Viable Provenance</div>
+  <div class="ss">Before any agent is allowed to execute</div>
+
+  <div class="mvp-grid">
+    <div class="mvp-card"><div class="mvp-num">1</div><div class="mvp-name">Score Decomposition</div><div class="mvp-desc">Any APS explainable to contributing signals + weights</div></div>
+    <div class="mvp-card"><div class="mvp-num">2</div><div class="mvp-name">Decision Chain</div><div class="mvp-desc">Every routing action traceable from signal &#8594; gate &#8594; pod</div></div>
+    <div class="mvp-card"><div class="mvp-num">3</div><div class="mvp-name">Version Registry</div><div class="mvp-desc">Model versions tracked. Weight changes logged with before/after</div></div>
+    <div class="mvp-card"><div class="mvp-num">4</div><div class="mvp-name">Vendor Labeling</div><div class="mvp-desc">Every external signal tagged with source and normalization</div></div>
+    <div class="mvp-card"><div class="mvp-num">5</div><div class="mvp-name">Immutable Store</div><div class="mvp-desc">Audit records append-only. No retroactive modification</div></div>
+  </div>
+
+  <!-- SCREENING -->
+  <div class="screening">
+    <div class="screening-label">Interview Framing</div>
+    <div class="screening-text">"Every probability score in our system is decomposable. Every routing decision is reconstructable. Every correction event is explainable. Provenance is what prevents an AI-native GTM from becoming another black box. It makes the system more transparent than the one it replaces."</div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label">Why This Matters Strategically</div>
+    <div class="insight-text">You are arguing for paradigm replacement. Paradigm replacement only succeeds if <strong>the new system is more transparent than the old one</strong>. Provenance is what prevents your architecture from becoming another black box. It makes dissent defensible. Once you formalize provenance, agent deployment becomes a compliance decision, not a creative one.</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<Fragment slot="scripts">
+<script is:inline>
+'use strict';
+let toastTimer;
+function setMode(m){
+  document.body.classList.remove('mode-warroom','mode-monument');
+  if(m!=='atlas')document.body.classList.add('mode-'+m);
+  document.querySelector('.wrgrid').style.opacity=m==='warroom'?'1':'0';
+  ['atlas','warroom','monument'].forEach(id=>{document.getElementById('mb-'+id).classList.toggle('on',id===m)});
+  showToast('Mode: '+(m==='atlas'?'Atlas':m==='warroom'?'War Room':'Monument'));
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+</script>
+</Fragment>
+
+</BaseLayout>

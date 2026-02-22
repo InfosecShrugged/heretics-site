@@ -1,0 +1,670 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Sovereignty Map — Vendor vs Build Decision Architecture">
+
+<Fragment slot="head">
+<style is:inline>
+
+:root {
+  --bg:          #f0f0f0;
+  --bg-panel:    #e8e8e8;
+  --bg-card:     #ffffff;
+  --bg-hover:    #f8f8f8;
+  --bg-formula:  #f5f5f5;
+  --text-1:      #1a1918;
+  --text-2:      #747474;
+  --text-3:      #a3a3a3;
+  --border:      rgba(24,23,15,.10);
+  --border-s:    rgba(24,23,15,.22);
+  --accent:      #ff6e3e;
+  --scrollbar:   rgba(24,23,15,.18);
+
+  --c-build:     #B83030;
+  --c-vendor:    #1565C0;
+  --c-hybrid:    #D9622B;
+  --c-never:     #B83030;
+  --c-feedback:  #2A4A6B;
+  --c-orchestrate: #6D2B8A;
+  --c-signal:    #1A7A6A;
+  --c-icp:       #D9622B;
+  --c-gravity:   #B83030;
+  --c-ledger:    #4A4A90;
+  --c-portfolio: #6D2B8A;
+
+  --ease: cubic-bezier(.4,0,.2,1);
+  --fast: 140ms;
+  --med:  300ms;
+  --slow: 600ms;
+
+  --font-sans:  'Oxanium', system-ui, sans-serif;
+  --mn:  'Space Mono', 'Menlo', monospace;
+  --font-serif: 'Oxanium', 'Georgia', serif;
+}
+
+.mode-warroom {
+  --bg: #1a1918; --bg-panel: #222120; --bg-card: #2b2b2b; --bg-hover: #333231; --bg-formula: #252423;
+  --text-1: #e8e8e8; --text-2: #a3a3a3; --text-3: #747474;
+  --border: rgba(200,220,240,.07); --border-s: rgba(200,220,240,.16);
+  --accent: #ff6e3e; --scrollbar: rgba(200,220,240,.18);
+}
+
+.mode-monument {
+  --bg: #f8f8f8; --bg-panel: #f0f0f0; --bg-card: #ffffff; --bg-hover: #FFFFFF; --bg-formula: #f5f5f5;
+  --text-1: #1a1918; --text-2: #747474; --text-3: #b5b5b5;
+  --border: rgba(8,8,7,.07); --border-s: rgba(8,8,7,.18);
+  --accent: #1a1918; --scrollbar: rgba(8,8,7,.18);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 13px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--font-sans); font-weight: 300;
+  background: var(--bg); color: var(--text-1);
+  min-height: 100vh;
+  transition: background var(--slow) var(--ease), color var(--slow) var(--ease);
+}
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 2px; }
+
+/* TOPBAR */
+.topbar {
+  position: sticky; top: 0; z-index: 80;
+  background: var(--bg); border-bottom: 1px solid var(--border-s);
+  display: flex; align-items: center; padding: 0 20px; height: 48px; gap: 12px;
+  transition: background var(--slow) var(--ease);
+}
+.logo { display: flex; align-items: baseline; gap: 7px; }
+.logo-mark { font-family: var(--mn); font-size: 9px; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; }
+.logo-name { font-family: var(--font-serif); font-size: 14px; font-weight: 700; color: var(--text-1); transition: color var(--slow); }
+.tb-sep { width: 1px; height: 18px; background: var(--border-s); flex-shrink: 0; }
+.tb-right { margin-left: auto; display: flex; align-items: center; gap: 5px; }
+.tb-btn {
+  font-family: var(--mn); font-size: 8px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 3px 10px; border: 1px solid var(--border-s); background: transparent;
+  color: var(--text-2); cursor: pointer; transition: all var(--fast) var(--ease); border-radius: 1px;
+}
+.tb-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tb-btn.on { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+.wrgrid {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(200,220,240,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,220,240,.035) 1px, transparent 1px);
+  background-size: 36px 36px; opacity: 0; transition: opacity var(--slow);
+}
+.mode-warroom .wrgrid { opacity: 1; }
+
+/* CONTAINER */
+.container { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+
+.header { margin-bottom: 28px; }
+.header-eyebrow {
+  font-family: var(--mn); font-size: 9px; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--text-3); margin-bottom: 10px;
+}
+.header h1 {
+  font-family: var(--font-serif); font-size: clamp(26px, 3.5vw, 38px);
+  font-weight:400; line-height: 1.1; color: var(--text-1); margin-bottom: 8px;
+  transition: color var(--slow);
+}
+.header h1 em { color: var(--accent); font-style: normal; }
+.header p { font-size: 13px; color: var(--text-2); max-width: 640px; line-height: 1.8; }
+
+/* SCOPE TOGGLE */
+.scope-toggle {
+  display: flex; gap: 0; margin-bottom: 28px;
+  border: 1px solid var(--border-s); width: fit-content;
+}
+.scope-btn {
+  font-family: var(--mn); font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 8px 20px; border: none; background: transparent;
+  color: var(--text-2); cursor: pointer; transition: all var(--fast) var(--ease);
+}
+.scope-btn:first-child { border-right: 1px solid var(--border-s); }
+.scope-btn.on { background: var(--text-1); color: var(--bg); }
+.scope-btn:hover:not(.on) { background: var(--bg-card); }
+
+/* PORTFOLIO CALLOUT — hidden by default, shown in portfolio mode */
+.portfolio-callout {
+  display: none; margin-bottom: 24px; padding: 16px 20px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-left: 3px solid var(--c-portfolio);
+}
+.portfolio-callout.vis { display: block; }
+.portfolio-callout-title {
+  font-family: var(--mn); font-size: 8px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--c-portfolio); margin-bottom: 8px;
+}
+.portfolio-callout-text { font-size: 11px; color: var(--text-2); line-height: 1.7; }
+.portfolio-callout-text strong { color: var(--text-1); font-weight: 500; }
+
+/* DECISION PRINCIPLE */
+.principle-bar {
+  display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap;
+}
+.principle-tag {
+  font-family: var(--mn); font-size: 8px; letter-spacing: .08em; text-transform: uppercase;
+  padding: 4px 10px; border: 1px solid var(--border-s); color: var(--text-2); border-radius: 1px;
+}
+.principle-tag.core { border-color: var(--accent); color: var(--accent); }
+
+/* SOVEREIGNTY LEGEND */
+.sov-legend {
+  display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap;
+  padding: 12px 16px; background: var(--bg-panel); border: 1px solid var(--border);
+}
+.sov-legend-item { display: flex; align-items: center; gap: 6px; }
+.sov-dot { width: 10px; height: 10px; border-radius: 1px; flex-shrink: 0; }
+.sov-dot.build { background: var(--c-build); }
+.sov-dot.hybrid { background: var(--c-hybrid); }
+.sov-dot.vendor { background: var(--c-vendor); }
+.sov-dot.never { background: var(--c-never); border: 1px solid var(--c-never); position: relative; }
+.sov-dot.never::after { content: '\2715'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--bg); font-size: 7px; font-weight: bold; }
+.sov-legend-text { font-family: var(--mn); font-size: 8px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); }
+
+/* LAYER SOVEREIGNTY CARDS */
+.sov-stack { display: flex; flex-direction: column; gap: 12px; }
+
+.sov-card {
+  display: grid; grid-template-columns: 60px 1fr 280px;
+  gap: 0; background: var(--bg-card); border: 1px solid var(--border);
+  border-left: 4px solid var(--lc, var(--border-s));
+  transition: all var(--fast) var(--ease); overflow: hidden;
+}
+.sov-card:hover { background: var(--bg-hover); box-shadow: 0 3px 16px rgba(0,0,0,.07); }
+.sov-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: var(--lc, transparent); opacity: 0; transition: opacity var(--fast);
+}
+
+/* Verdict column */
+.sov-verdict {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 16px 8px; border-right: 1px solid var(--border);
+  background: var(--bg-formula);
+}
+.verdict-badge {
+  font-family: var(--mn); font-size: 8px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 4px 8px; border-radius: 1px; font-weight: 500; text-align: center;
+}
+.verdict-badge.build { background: rgba(184,48,48,.1); color: var(--c-build); border: .5px solid var(--c-build); }
+.verdict-badge.hybrid { background: rgba(217,98,43,.1); color: var(--c-hybrid); border: .5px solid var(--c-hybrid); }
+.verdict-badge.vendor { background: rgba(21,101,192,.1); color: var(--c-vendor); border: .5px solid var(--c-vendor); }
+.verdict-badge.never { background: rgba(184,48,48,.15); color: var(--c-never); border: 1px solid var(--c-never); font-weight: 700; }
+.verdict-sub {
+  font-family: var(--mn); font-size: 7px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text-3); margin-top: 4px; text-align: center;
+}
+
+/* Content column */
+.sov-content { padding: 16px 20px; }
+.sov-layer-tag {
+  font-family: var(--mn); font-size: 7px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--lc, var(--text-3)); padding: 2px 5px; border: .5px solid var(--lc, var(--border));
+  border-radius: 1px; display: inline-block; margin-bottom: 6px;
+}
+.sov-title {
+  font-family: var(--font-serif); font-size: 16px; font-weight:400;
+  line-height: 1.2; color: var(--text-1); margin-bottom: 6px; transition: color var(--slow);
+}
+.sov-rationale { font-size: 11px; line-height: 1.7; color: var(--text-2); }
+.sov-rationale strong { color: var(--text-1); font-weight: 500; }
+.sov-rationale code {
+  font-family: var(--mn); font-size: 9.5px; color: var(--lc, var(--accent));
+  background: var(--bg-formula); padding: 1px 4px;
+}
+
+/* Rule column */
+.sov-rules {
+  padding: 16px; border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sov-rule-title {
+  font-family: var(--mn); font-size: 7px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-3); margin-bottom: 2px;
+}
+.sov-rule {
+  display: flex; align-items: flex-start; gap: 6px;
+  font-size: 10px; color: var(--text-2); line-height: 1.5;
+}
+.sov-rule-icon {
+  font-family: var(--mn); font-size: 9px; flex-shrink: 0; width: 14px; text-align: center;
+}
+.sov-rule-icon.yes { color: var(--c-signal); }
+.sov-rule-icon.no { color: var(--c-build); }
+.sov-rule-icon.warn { color: var(--c-hybrid); }
+
+/* TELEMETRY SPECIAL ROW */
+.telemetry-insert {
+  padding: 14px 20px; background: var(--bg-panel);
+  border: 1px dashed var(--border-s); border-left: 4px solid var(--c-hybrid);
+  display: grid; grid-template-columns: 60px 1fr 280px; gap: 0;
+}
+.telemetry-insert .sov-verdict { background: transparent; border-right: 1px dashed var(--border); }
+.telemetry-insert .sov-rules { border-left: 1px dashed var(--border); }
+
+/* DECISION MATRIX */
+.decision-matrix {
+  margin-top: 36px; padding: 20px; background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+.dm-title {
+  font-family: var(--font-serif); font-size: 18px; font-weight:400;
+  color: var(--text-1); margin-bottom: 4px; transition: color var(--slow);
+}
+.dm-sub {
+  font-family: var(--mn); font-size: 8px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-3); margin-bottom: 16px;
+}
+.dm-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.dm-col {}
+.dm-col-title {
+  font-family: var(--mn); font-size: 8px; letter-spacing: .12em;
+  text-transform: uppercase; margin-bottom: 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.dm-col-title.vendor-t { color: var(--c-vendor); }
+.dm-col-title.build-t { color: var(--c-build); }
+.dm-item {
+  display: flex; align-items: flex-start; gap: 6px;
+  font-size: 11px; color: var(--text-2); line-height: 1.6; margin-bottom: 6px;
+}
+.dm-bullet { color: var(--text-3); flex-shrink: 0; }
+
+/* SCREENING STATEMENT */
+.screening {
+  margin-top: 32px; padding: 20px; background: var(--bg-formula);
+  border: 1px solid var(--border); border-left: 3px solid var(--accent);
+}
+.screening-label {
+  font-family: var(--mn); font-size: 7px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+}
+.screening-text {
+  font-family: var(--font-serif); font-size: 15px; font-weight: 400;
+  line-height: 1.7; color: var(--text-1); font-style: italic;
+  transition: color var(--slow);
+}
+
+/* TRADEOFF SECTION — portfolio mode */
+.tradeoff-section {
+  display: none; margin-top: 28px; padding: 20px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-left: 3px solid var(--c-portfolio);
+}
+.tradeoff-section.vis { display: block; }
+.tradeoff-title {
+  font-family: var(--font-serif); font-size: 16px; font-weight:400;
+  color: var(--text-1); margin-bottom: 4px; transition: color var(--slow);
+}
+.tradeoff-sub {
+  font-family: var(--mn); font-size: 8px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--c-portfolio); margin-bottom: 14px;
+}
+.tradeoff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.tradeoff-col {}
+.tradeoff-col-title {
+  font-family: var(--mn); font-size: 8px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.tradeoff-item {
+  font-size: 11px; color: var(--text-2); line-height: 1.6; margin-bottom: 6px;
+  padding-left: 12px; position: relative;
+}
+.tradeoff-item::before {
+  content: ''; position: absolute; left: 0; top: 7px;
+  width: 4px; height: 4px; border-radius: 50%;
+}
+.tradeoff-item.pro::before { background: var(--c-signal); }
+.tradeoff-item.con::before { background: var(--c-build); }
+
+/* OPEN QUESTION */
+.open-question {
+  display: none; margin-top: 24px; padding: 20px;
+  background: var(--bg-formula); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+}
+.open-question.vis { display: block; }
+.oq-label {
+  font-family: var(--mn); font-size: 7px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+}
+.oq-text {
+  font-family: var(--font-serif); font-size: 15px; font-weight: 400;
+  line-height: 1.7; color: var(--text-1); transition: color var(--slow);
+}
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 18px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--text-1); color: var(--bg);
+  font-family: var(--mn); font-size: 9px; letter-spacing: .1em;
+  padding: 7px 16px; z-index: 999;
+  transition: transform var(--med) var(--ease); pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+@media(max-width:768px){
+  .container{padding:0 16px 60px}
+  .tab-bar{flex-wrap:wrap;top:56px}
+  .tab-btn{padding:10px 12px;font-size:8px;flex:1;text-align:center;min-width:0}
+  .exec-row{grid-template-columns:1fr!important}
+  .outputs-grid{grid-template-columns:1fr!important}
+  .side-feeds{grid-template-columns:1fr!important}
+  .measurement-grid{grid-template-columns:1fr!important}
+  .governance-grid{grid-template-columns:1fr!important}
+  .gtm-routing-row{grid-template-columns:1fr!important;gap:0}
+  .gtm-routing-row.header{display:none}
+  .gtm-routing-cell{border-right:none!important;border-bottom:1px solid var(--border)}
+  .gtm-routing-cell:last-child{border-bottom:none}
+  .header h1{font-size:clamp(20px,5vw,38px)!important}
+  .section-title{font-size:clamp(16px,4vw,20px)!important}
+  .spine-node{padding:14px 16px}
+  .formula-content{font-size:9px;overflow-x:auto}
+  .scope-grid,.tradeoff-grid,.lane-grid,.term-grid,.obj-grid,.domain-grid{grid-template-columns:1fr!important}
+  html{font-size:13px}
+}
+@media(max-width:480px){
+  .tab-btn{padding:8px 6px;font-size:7px;letter-spacing:.04em}
+  html{font-size:12px}
+}
+
+</style>
+</Fragment>
+
+<div class="wrgrid" aria-hidden="true"></div>
+
+<div class="container">
+  <div class="header">
+    <div class="header-eyebrow">Vendor vs Build · Sovereignty Decision Architecture</div>
+    <h1>Where Do You Require <em>Sovereignty</em>?</h1>
+    <p>This is not a procurement question. It is a control question. Vendors can supply sensory input. They cannot define judgment. Map each layer against sovereignty requirements.</p>
+  </div>
+
+  <!-- SCOPE TOGGLE -->
+  <div class="scope-toggle">
+    <button class="scope-btn on" id="scope-single" onclick="setScope('single')">Single Company</button>
+    <button class="scope-btn" id="scope-portfolio" onclick="setScope('portfolio')">Portfolio Engine</button>
+  </div>
+
+  <!-- PORTFOLIO CALLOUT -->
+  <div class="portfolio-callout" id="portfolioCallout">
+    <div class="portfolio-callout-title">Portfolio-Level Implications</div>
+    <div class="portfolio-callout-text">
+      At portfolio scale, vendor sprawl becomes <strong>cost and governance risk</strong>. You will need centralized telemetry normalization, shared weighting logic, and a shared feedback engine — with company-specific execution tooling. The architectural decision: <strong>build a central adjudication core</strong> and allow per-asset tooling variation, or <strong>standardize stack</strong> across portfolio.
+    </div>
+  </div>
+
+  <div class="principle-bar">
+    <span class="principle-tag core">Vendor = sensory input</span>
+    <span class="principle-tag core">Build = judgment authority</span>
+    <span class="principle-tag">Economic weighting → build</span>
+    <span class="principle-tag">Probability modeling → build</span>
+    <span class="principle-tag">Capital allocation → build</span>
+    <span class="principle-tag">Commodity data → vendor acceptable</span>
+  </div>
+
+  <!-- SOVEREIGNTY LEGEND -->
+  <div class="sov-legend">
+    <div class="sov-legend-item"><div class="sov-dot never"></div><div class="sov-legend-text">Never Vendor</div></div>
+    <div class="sov-legend-item"><div class="sov-dot build"></div><div class="sov-legend-text">Build Logic</div></div>
+    <div class="sov-legend-item"><div class="sov-dot hybrid"></div><div class="sov-legend-text">Hybrid — Vendor Infra, Your Logic</div></div>
+    <div class="sov-legend-item"><div class="sov-dot vendor"></div><div class="sov-legend-text">Vendor Acceptable</div></div>
+  </div>
+
+  <!-- SOVEREIGNTY STACK -->
+  <div class="sov-stack">
+
+    <!-- LAYER 01 — FEEDBACK -->
+    <div class="sov-card" style="--lc: var(--c-feedback)">
+      <div class="sov-verdict">
+        <div class="verdict-badge build">Build</div>
+        <div class="verdict-sub">Strategic</div>
+      </div>
+      <div class="sov-content">
+        <div class="sov-layer-tag">Layer 01 · Immune System</div>
+        <div class="sov-title">Revenue Feedback & Reweighting</div>
+        <div class="sov-rationale">
+          You cannot outsource your immune system. Prediction error correction and capital reallocation rules are strategic. You may use <strong>BI tools to visualize</strong>, but the <code>correction logic</code>, <code>error aggregation windows</code>, and <code>reweighting triggers</code> must be proprietary.
+        </div>
+      </div>
+      <div class="sov-rules">
+        <div class="sov-rule-title">Sovereignty Rules</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor cannot define correction triggers</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor cannot set reweighting thresholds</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Vendor BI for dashboards acceptable</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Vendor data warehouse acceptable</div>
+      </div>
+    </div>
+
+    <!-- LAYER 02 — ORCHESTRATION -->
+    <div class="sov-card" style="--lc: var(--c-orchestrate)">
+      <div class="sov-verdict">
+        <div class="verdict-badge hybrid">Hybrid</div>
+        <div class="verdict-sub">Infra: Vendor<br>Logic: Build</div>
+      </div>
+      <div class="sov-content">
+        <div class="sov-layer-tag">Layer 02</div>
+        <div class="sov-title">Orchestration & Velocity</div>
+        <div class="sov-rationale">
+          Mostly <strong>vendor infrastructure</strong> — CRM, marketing automation, sales engagement, routing tools. But <code>routing logic</code> and <code>threshold triggers</code> must be yours. Otherwise velocity becomes <strong>tool-constrained</strong> rather than economics-constrained.
+        </div>
+      </div>
+      <div class="sov-rules">
+        <div class="sov-rule-title">Sovereignty Rules</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Vendor CRM (Salesforce, HubSpot)</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Vendor MAP (Marketo, Pardot)</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Vendor engagement (Outreach, Salesloft)</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor cannot define routing logic</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor cannot set velocity thresholds</div>
+      </div>
+    </div>
+
+    <!-- TELEMETRY INSERT -->
+    <div class="telemetry-insert">
+      <div class="sov-verdict">
+        <div class="verdict-badge hybrid">Hybrid</div>
+        <div class="verdict-sub">Raw fuel</div>
+      </div>
+      <div class="sov-content" style="padding: 14px 20px;">
+        <div class="sov-layer-tag" style="color: var(--c-hybrid); border-color: var(--c-hybrid);">Telemetry Ingestion · Between Layers 02–03</div>
+        <div class="sov-title" style="font-size: 14px;">Telemetry Ingestion Layer</div>
+        <div class="sov-rationale">
+          Vendors acceptable here — telemetry is <strong>raw fuel</strong>. Intent networks, technographic crawlers, enrichment APIs, behavioral tracking. But vendor data must be <strong>normalized and adjudicated internally</strong>. Never allow vendor scoring to bypass your Signal Engine. <code>Vendor provides raw signal. You provide weighting authority.</code>
+        </div>
+      </div>
+      <div class="sov-rules" style="border-left: 1px dashed var(--border);">
+        <div class="sov-rule-title">Vendor Examples</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Bombora, G2 (intent)</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>BuiltWith, HG Insights (techno)</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>ZoomInfo, Clearbit (enrichment)</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor scoring must NOT bypass L03</div>
+      </div>
+    </div>
+
+    <!-- LAYER 03 — SIGNAL ENGINE -->
+    <div class="sov-card" style="--lc: var(--c-signal)">
+      <div class="sov-verdict">
+        <div class="verdict-badge build">Build</div>
+        <div class="verdict-sub">Core IP</div>
+      </div>
+      <div class="sov-content">
+        <div class="sov-layer-tag">Layer 03 · Adjudication</div>
+        <div class="sov-title">Signal Interpretation Engine</div>
+        <div class="sov-rationale">
+          <strong>Core logic = build.</strong> This is where competitive advantage lives. If a vendor defines probability modeling, you become dependent on black-box inference. In PE-backed systems, that is <strong>risk</strong>. Data science can leverage <strong>vendor analytics platforms</strong>, but <code>probability weighting architecture</code> must be yours.
+        </div>
+      </div>
+      <div class="sov-rules">
+        <div class="sov-rule-title">Sovereignty Rules</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor cannot define probability model</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor cannot set signal weights</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor cannot control decay constants</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Vendor analytics infra (Snowflake, dbt)</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Vendor ML platforms (infra only)</div>
+      </div>
+    </div>
+
+    <!-- LAYER 04 — ICP CLUSTERING -->
+    <div class="sov-card" style="--lc: var(--c-icp)">
+      <div class="sov-verdict">
+        <div class="verdict-badge build">Build</div>
+        <div class="verdict-sub">Proprietary</div>
+      </div>
+      <div class="sov-content">
+        <div class="sov-layer-tag">Layer 04</div>
+        <div class="sov-title">ICP Economic Clustering</div>
+        <div class="sov-rationale">
+          Build the logic. You may use <strong>BI tooling</strong>, but clustering criteria must be proprietary. Your <code>Revenue Density Score</code> is your capital allocation engine. If a vendor defines segmentation heuristics, <strong>you lose differentiation</strong>. Tooling can be external. Clustering logic cannot.
+        </div>
+      </div>
+      <div class="sov-rules">
+        <div class="sov-rule-title">Sovereignty Rules</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor cannot define cluster criteria</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>Vendor cannot set density formulas</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Vendor BI (Looker, Tableau, Hex)</div>
+        <div class="sov-rule"><span class="sov-rule-icon yes">&#10003;</span>Vendor data infrastructure</div>
+      </div>
+    </div>
+
+    <!-- LAYER 05 — P&L GRAVITY -->
+    <div class="sov-card" style="--lc: var(--c-gravity)">
+      <div class="sov-verdict">
+        <div class="verdict-badge never">Never</div>
+        <div class="verdict-sub">Internal truth</div>
+      </div>
+      <div class="sov-content">
+        <div class="sov-layer-tag">Layer 05 · Anchor Mass</div>
+        <div class="sov-title">P&L Economic Gravity</div>
+        <div class="sov-rationale">
+          <strong>Never vendor.</strong> This is internal truth. <code>ARR math</code>, <code>CAC constraints</code>, <code>margin targets</code> — this must live in your own systems. Even if finance tooling is external, the logic is yours. No debate.
+        </div>
+      </div>
+      <div class="sov-rules">
+        <div class="sov-rule-title">Sovereignty Rules</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>No vendor defines ARR logic</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>No vendor defines CAC constraints</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>No vendor defines margin targets</div>
+        <div class="sov-rule"><span class="sov-rule-icon no">&#10005;</span>No vendor defines LTV:CAC thresholds</div>
+        <div class="sov-rule"><span class="sov-rule-icon warn">~</span>Finance tooling external OK (NetSuite, etc.)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DECISION MATRIX -->
+  <div class="decision-matrix">
+    <div class="dm-title">Decision Framework</div>
+    <div class="dm-sub">When to vendor vs when to build</div>
+    <div class="dm-grid">
+      <div class="dm-col">
+        <div class="dm-col-title vendor-t">Vendor Acceptable Where</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>Data is commodity</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>Infrastructure is plumbing</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>Scale is expensive to build</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>No proprietary logic at stake</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>Switching cost manageable</div>
+      </div>
+      <div class="dm-col">
+        <div class="dm-col-title build-t">Build Required Where</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>Economic weighting occurs</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>Probability modeling occurs</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>Capital allocation decisions occur</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>Governance constraints exist</div>
+        <div class="dm-item"><span class="dm-bullet">·</span>Competitive differentiation at stake</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENING STATEMENT -->
+  <div class="screening">
+    <div class="screening-label">Screening Response — Board-Ready</div>
+    <div class="screening-text">
+      "I would vendor commodity telemetry and infrastructure, but retain control over economic weighting, probability modeling, and capital reallocation logic. That's where differentiation and governance risk live."
+    </div>
+  </div>
+
+  <!-- PORTFOLIO TRADEOFF — shown in portfolio mode -->
+  <div class="tradeoff-section" id="tradeoffSection">
+    <div class="tradeoff-title">Portfolio Architecture Tradeoff</div>
+    <div class="tradeoff-sub">Standardization vs Flexibility</div>
+    <div class="tradeoff-grid">
+      <div class="tradeoff-col">
+        <div class="tradeoff-col-title">Standardize Stack Across Portfolio</div>
+        <div class="tradeoff-item pro">Increases leverage</div>
+        <div class="tradeoff-item pro">Unified data model across assets</div>
+        <div class="tradeoff-item pro">Shared weighting logic compounds</div>
+        <div class="tradeoff-item pro">Lower total vendor cost</div>
+        <div class="tradeoff-item con">Slower acquisition integration</div>
+        <div class="tradeoff-item con">Requires migration investment</div>
+        <div class="tradeoff-item con">May not fit edge-case business models</div>
+      </div>
+      <div class="tradeoff-col">
+        <div class="tradeoff-col-title">Central Core + Per-Asset Tooling</div>
+        <div class="tradeoff-item pro">Faster acquisition velocity</div>
+        <div class="tradeoff-item pro">Preserves acquired team workflows</div>
+        <div class="tradeoff-item pro">Lower integration risk</div>
+        <div class="tradeoff-item con">Vendor sprawl increases over time</div>
+        <div class="tradeoff-item con">Data normalization complexity</div>
+        <div class="tradeoff-item con">Weaker cross-asset learning signal</div>
+        <div class="tradeoff-item con">Higher total cost at scale</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPEN QUESTION — portfolio mode -->
+  <div class="open-question" id="openQuestion">
+    <div class="oq-label">Foundational Question</div>
+    <div class="oq-text">
+      Is the ambition here to build a portfolio-level Revenue OS platform that compounds across assets — or to optimize individual companies one by one? Because the vendor vs build calculus changes dramatically depending on that ambition.
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<Fragment slot="scripts">
+<script is:inline>
+'use strict';
+let currentMode = 'atlas';
+let currentScope = 'single';
+let toastTimer;
+
+function setMode(m) {
+  currentMode = m;
+  document.body.classList.remove('mode-warroom','mode-monument');
+  if (m !== 'atlas') document.body.classList.add('mode-' + m);
+  ['atlas','warroom','monument'].forEach(id => {
+    document.getElementById('mb-' + id).classList.toggle('on', id === m);
+  });
+  showToast('Mode: ' + (m === 'atlas' ? 'Atlas' : m === 'warroom' ? 'War Room' : 'Monument'));
+}
+
+function setScope(s) {
+  currentScope = s;
+  document.getElementById('scope-single').classList.toggle('on', s === 'single');
+  document.getElementById('scope-portfolio').classList.toggle('on', s === 'portfolio');
+  document.getElementById('portfolioCallout').classList.toggle('vis', s === 'portfolio');
+  document.getElementById('tradeoffSection').classList.toggle('vis', s === 'portfolio');
+  document.getElementById('openQuestion').classList.toggle('vis', s === 'portfolio');
+  showToast(s === 'single' ? 'Scope: Single Company' : 'Scope: Portfolio Engine — additional considerations shown');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+</script>
+</Fragment>
+
+</BaseLayout>

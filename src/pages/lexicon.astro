@@ -1,0 +1,300 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Revenue OS Lexicon — Screen 04">
+
+<Fragment slot="head">
+<style is:inline>
+:root {
+  --bg:#f0f0f0;--bg-panel:#e8e8e8;--bg-card:#ffffff;--bg-hover:#f8f8f8;--bg-formula:#f5f5f5;
+  --text-1:#1a1918;--text-2:#747474;--text-3:#a3a3a3;
+  --border:rgba(24,23,15,.10);--border-s:rgba(24,23,15,.22);
+  --accent:#ff6e3e;--scrollbar:rgba(24,23,15,.18);
+  --c-structure:#2A4A6B;--c-modes:#C0392B;--c-exec:#6D2B8A;--c-signal:#1A7A6A;
+  --c-econ:#B83030;--c-abx:#8B6914;--c-legacy:#5D6D7E;
+  --ease:cubic-bezier(.4,0,.2,1);--fast:140ms;--med:300ms;--slow:600ms;
+  --font-sans:'Oxanium',system-ui,sans-serif;
+  --mn:'Space Mono','Menlo',monospace;
+  --font-serif:'Oxanium','Georgia',serif;
+}
+.mode-warroom{--bg:#1a1918;--bg-panel:#222120;--bg-card:#2b2b2b;--bg-hover:#333231;--bg-formula:#252423;--text-1:#e8e8e8;--text-2:#a3a3a3;--text-3:#747474;--border:rgba(200,220,240,.07);--border-s:rgba(200,220,240,.16);--accent:#ff6e3e;--scrollbar:rgba(200,220,240,.18)}
+.mode-monument{--bg:#f8f8f8;--bg-panel:#f0f0f0;--bg-card:#ffffff;--bg-hover:#FFFFFF;--bg-formula:#f5f5f5;--text-1:#1a1918;--text-2:#747474;--text-3:#b5b5b5;--border:rgba(8,8,7,.07);--border-s:rgba(8,8,7,.18);--accent:#1a1918;--scrollbar:rgba(8,8,7,.18)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:13px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var(--text-1);min-height:100vh;transition:background var(--slow) var(--ease),color var(--slow) var(--ease)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:2px}
+
+.topbar{position:sticky;top:0;z-index:80;background:var(--bg);border-bottom:1px solid var(--border-s);display:flex;align-items:center;padding:0 20px;height:48px;gap:12px;transition:background var(--slow) var(--ease)}
+.logo{display:flex;align-items:baseline;gap:7px}
+.logo-mark{font-family:var(--mn);font-size:9px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase}
+.logo-name{font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--text-1);transition:color var(--slow)}
+.tb-sep{width:1px;height:18px;background:var(--border-s);flex-shrink:0}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:5px}
+.tb-btn{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border-s);background:transparent;color:var(--text-2);cursor:pointer;transition:all var(--fast) var(--ease);border-radius:1px}
+.tb-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tb-btn.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.nav-link{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);text-decoration:none;padding:3px 10px;border:1px solid var(--border);border-radius:1px;transition:all var(--fast) var(--ease)}
+.nav-link:hover{border-color:var(--accent);color:var(--accent)}
+
+.container{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+.header{margin-bottom:24px;padding-top:28px;text-align:center}
+.header-eyebrow{font-family:var(--mn);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
+.header h1{font-family:var(--font-serif);font-size:clamp(28px,4vw,42px);font-weight:400;line-height:1.1;color:var(--text-1);margin-bottom:6px;transition:color var(--slow)}
+.header h1 em{color:var(--accent);font-style:normal}
+.header p{font-size:12px;color:var(--text-2);max-width:560px;margin:0 auto;line-height:1.7}
+
+/* SECTION */
+.section{margin-bottom:28px}
+.section-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.section-num{font-family:var(--mn);font-size:10px;letter-spacing:.1em;color:var(--sc,var(--accent));padding:3px 8px;border:1px solid var(--sc,var(--accent));background:transparent}
+.section-title{font-family:var(--font-serif);font-size:18px;font-weight:400;color:var(--text-1);transition:color var(--slow)}
+.section-sub{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-left:auto}
+
+/* TERM */
+.term-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px}
+.term-grid.single{grid-template-columns:1fr}
+.term{padding:10px 14px;background:var(--bg-card);border:1px solid var(--border);border-left:2px solid var(--sc,var(--accent));transition:all var(--fast) var(--ease)}
+.term:hover{background:var(--bg-hover);transform:translateX(2px)}
+.term-name{font-family:var(--font-serif);font-size:13px;font-weight:700;color:var(--text-1);margin-bottom:3px;transition:color var(--slow)}
+.term-aka{font-family:var(--mn);font-size:8px;letter-spacing:.06em;color:var(--sc,var(--accent));margin-bottom:4px}
+.term-def{font-size:11px;color:var(--text-2);line-height:1.6}
+
+/* LEGACY TABLE */
+.legacy-table{width:100%;border-collapse:collapse;border:1px solid var(--border)}
+.legacy-table th{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);background:var(--bg-formula);padding:8px 14px;text-align:left;border-bottom:1px solid var(--border)}
+.legacy-table td{padding:8px 14px;border-bottom:1px solid var(--border);font-size:11px;color:var(--text-2);line-height:1.4}
+.legacy-table tr:last-child td{border-bottom:none}
+.legacy-old{text-decoration:line-through;text-decoration-color:var(--c-legacy);color:var(--c-legacy)}
+.legacy-new{color:var(--text-1);font-weight:400}
+.legacy-table td:first-child{font-family:var(--mn);font-size:10px;width:200px}
+
+/* OPERATING PRINCIPLE */
+.op-box{margin-top:32px;padding:20px 24px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--accent);text-align:center}
+.op-title{font-family:var(--mn);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.op-lines{font-family:var(--font-serif);font-size:16px;font-weight:400;line-height:2.2;color:var(--text-1);transition:color var(--slow)}
+.op-lines strong{color:var(--accent);font-weight:700}
+
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text-1);color:var(--bg);font-family:var(--mn);font-size:9px;letter-spacing:.1em;padding:7px 16px;z-index:999;transition:transform var(--med) var(--ease);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:768px){
+  .container{padding:0 16px 60px}
+  .tab-bar{flex-wrap:wrap;top:56px}
+  .tab-btn{padding:10px 12px;font-size:8px;flex:1;text-align:center;min-width:0}
+  .exec-row{grid-template-columns:1fr!important}
+  .outputs-grid{grid-template-columns:1fr!important}
+  .side-feeds{grid-template-columns:1fr!important}
+  .measurement-grid{grid-template-columns:1fr!important}
+  .governance-grid{grid-template-columns:1fr!important}
+  .gtm-routing-row{grid-template-columns:1fr!important;gap:0}
+  .gtm-routing-row.header{display:none}
+  .gtm-routing-cell{border-right:none!important;border-bottom:1px solid var(--border)}
+  .gtm-routing-cell:last-child{border-bottom:none}
+  .header h1{font-size:clamp(20px,5vw,38px)!important}
+  .section-title{font-size:clamp(16px,4vw,20px)!important}
+  .spine-node{padding:14px 16px}
+  .formula-content{font-size:9px;overflow-x:auto}
+  .scope-grid,.tradeoff-grid,.lane-grid,.term-grid,.obj-grid,.domain-grid{grid-template-columns:1fr!important}
+  html{font-size:13px}
+}
+@media(max-width:480px){
+  .tab-btn{padding:8px 6px;font-size:7px;letter-spacing:.04em}
+  html{font-size:12px}
+}
+</style>
+</Fragment>
+
+<div class="wrgrid" aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(200,220,240,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(200,220,240,.035) 1px,transparent 1px);background-size:36px 36px;opacity:0;transition:opacity .6s cubic-bezier(.4,0,.2,1)"></div>
+
+<div class="container">
+  <div class="header">
+    <div class="header-eyebrow">Screen 04 · Constitutional Appendix</div>
+    <h1>Revenue OS <em>Lexicon</em></h1>
+    <p>Normalized terminology for portfolio GTM architecture. Tight, hierarchical, unambiguous. Every term used across Screens 01–03 is defined here exactly once.</p>
+  </div>
+
+  <!-- I. STRUCTURE -->
+  <div class="section" style="--sc:var(--c-structure)">
+    <div class="section-bar">
+      <span class="section-num">I</span>
+      <span class="section-title">Structure</span>
+      <span class="section-sub">How the system is organized</span>
+    </div>
+    <div class="term-grid">
+      <div class="term"><div class="term-name">GTM (Go-To-Market)</div><div class="term-def">The integrated operating system connecting product, marketing, sales, partner, and CS to revenue outcomes.</div></div>
+      <div class="term"><div class="term-name">Segment (Economic Cluster)</div><div class="term-def">A revenue-validated cohort defined by ACV, margin, retention, sales cycle, and CAC efficiency.</div></div>
+      <div class="term"><div class="term-name">Territory</div><div class="term-def">A capacity-bound geographic or account grouping assigned to execution pods.</div></div>
+      <div class="term"><div class="term-name">Pod</div><div class="term-def">Cross-functional execution unit (AE, BDR, SE, CSM) aligned to Segment × Territory.</div></div>
+      <div class="term"><div class="term-name">Stage Ledger (Funnel)</div><div class="term-def">Financial progression model (S1 → S2 → Closed) used for forecasting discipline. Finance trusts the ledger.</div></div>
+      <div class="term"><div class="term-name">Swim Lane (Acquisition Mode)</div><div class="term-def">Behavior-based revenue entry path. Primary funnel split. See Section II.</div></div>
+      <div class="term"><div class="term-name">Identity & Relationship Graph</div><div class="term-def">Normalized object structure linking Lead, Contact, Account, Opportunity, Activities, and Buying Group roles into a unified revenue entity. Agents operate on this graph, not CRM tables.</div></div>
+      <div class="term"><div class="term-name">Account Atomicity</div><div class="term-def">Principle that all signal and routing decisions operate at account-level, not lead-level. Orphan leads excluded from scoring.</div></div>
+      <div class="term"><div class="term-name">Opportunity Integrity</div><div class="term-def">Governed creation and lifecycle management of financial containers tied to buying groups. Max active opps, territory enforcement, stage mutation locks.</div></div>
+    </div>
+  </div>
+
+  <!-- II. ACQUISITION MODES -->
+  <div class="section" style="--sc:var(--c-modes)">
+    <div class="section-bar">
+      <span class="section-num">II</span>
+      <span class="section-title">Acquisition Modes</span>
+      <span class="section-sub">Primary funnel split · Mode first, channel second</span>
+    </div>
+    <div class="term-grid">
+      <div class="term"><div class="term-name">Inbound — High Intent (Capture)</div><div class="term-aka">Demand Capture</div><div class="term-def">Buyer-initiated hand-raise. Demo request, contact sales, pricing conversion, RFP, trial.</div></div>
+      <div class="term"><div class="term-name">Inbound — Conditioning</div><div class="term-aka">Demand Conditioning</div><div class="term-def">Content-driven engagement without declared buying motion. Webinar, whitepaper, syndication.</div></div>
+      <div class="term"><div class="term-name">Outbound — Cold (Exploration)</div><div class="term-aka">Exploration Capital</div><div class="term-def">Hypothesis-driven pursuit within prioritized segments. No signal trigger. High learning value.</div></div>
+      <div class="term"><div class="term-name">Outbound — Signal-Enabled</div><div class="term-aka">Interception Capital</div><div class="term-def">Engagement triggered by probability threshold or external trigger. Time-sensitive. Low latency required.</div></div>
+      <div class="term"><div class="term-name">Partner / Channel</div><div class="term-aka">Distribution Multiplied</div><div class="term-def">Co-sell or referral-based revenue motion via alliances. Higher close rate, variable margin.</div></div>
+      <div class="term"><div class="term-name">Field Acceleration</div><div class="term-aka">Stakeholder Compression</div><div class="term-def">Stakeholder-density events influencing active opportunities. Affects S2→Close more than top-of-funnel.</div></div>
+      <div class="term"><div class="term-name">Expansion / Customer Growth</div><div class="term-aka">Revenue Density Motion</div><div class="term-def">Revenue motion within existing accounts. Cross-sell, upsell, seat expansion, renewal. Must be split from acquisition.</div></div>
+    </div>
+  </div>
+
+  <!-- III. EXECUTION -->
+  <div class="section" style="--sc:var(--c-exec)">
+    <div class="section-bar">
+      <span class="section-num">III</span>
+      <span class="section-title">Execution</span>
+      <span class="section-sub">How we deploy effort</span>
+    </div>
+    <div class="term-grid">
+      <div class="term"><div class="term-name">Channel</div><div class="term-def">Delivery mechanism. Paid, email, SEO, outbound call, event, partner co-sell, in-product. Secondary to acquisition mode.</div></div>
+      <div class="term"><div class="term-name">Motion</div><div class="term-def">Coordinated engagement model combining channel, timing, and governance within a swim lane.</div></div>
+      <div class="term"><div class="term-name">Program</div><div class="term-def">Ongoing initiative aligned to a motion. Example: Enterprise Co-Sell Program.</div></div>
+      <div class="term"><div class="term-name">Campaign</div><div class="term-def">Time-bound activation within a program. Example: Q3 LinkedIn burst.</div></div>
+      <div class="term"><div class="term-name">Tracking Container</div><div class="term-aka">SFDC Campaign Object</div><div class="term-def">CRM reporting wrapper. Not a strategic campaign. Not a motion. Not a program.</div></div>
+      <div class="term"><div class="term-name">Escalation</div><div class="term-def">System-triggered transition from automation to human pursuit based on probability + economic gate.</div></div>
+    </div>
+  </div>
+
+  <!-- IV. SIGNAL & QUALIFICATION -->
+  <div class="section" style="--sc:var(--c-signal)">
+    <div class="section-bar">
+      <span class="section-num">IV</span>
+      <span class="section-title">Signal & Qualification</span>
+      <span class="section-sub">How we interpret and gate</span>
+    </div>
+    <div class="term-grid">
+      <div class="term"><div class="term-name">Signal</div><div class="term-def">Observable event affecting conversion probability. Upstream (structural) or downstream (behavioral).</div></div>
+      <div class="term"><div class="term-name">Trigger Event</div><div class="term-def">External change increasing buying likelihood. Funding, hiring, regulatory shift, competitive displacement.</div></div>
+      <div class="term"><div class="term-name">APS (Account Probability Score)</div><div class="term-def">Time-bound likelihood of conversion within defined horizon. Composite of P_base (structural) + P_accel (behavioral).</div></div>
+      <div class="term"><div class="term-name">Confidence Score</div><div class="term-def">Model certainty level for APS. Determines whether system acts on the score or waits for more signal.</div></div>
+      <div class="term"><div class="term-name">Signal Decay</div><div class="term-def">Time-based reduction in predictive value. Freshness = e^(-λt). Signals expire.</div></div>
+      <div class="term"><div class="term-name">Qualification Threshold</div><div class="term-def">Minimum probability × economic gate required for pursuit escalation. Dynamic: f(capacity, forecast gap, pipeline load).</div></div>
+      <div class="term"><div class="term-name">Account State</div><div class="term-def">Lifecycle classification: Cold → Conditioning → Warming → Active → Expansion → Dormant.</div></div>
+      <div class="term"><div class="term-name">P_base (Baseline Probability)</div><div class="term-def">Structural readiness. Budget cycles, regulatory mandates, exec changes, competitive displacement. Moves slowly.</div></div>
+      <div class="term"><div class="term-name">P_accel (Acceleration Probability)</div><div class="term-def">Behavioral velocity. Engagement density, stakeholder penetration, intent freshness. Moves quickly.</div></div>
+      <div class="term"><div class="term-name">Narrative Receptivity</div><div class="term-def">ICP dimension measuring category maturity × disruption tolerance × strategic influence. Second axis to Revenue Density.</div></div>
+    </div>
+  </div>
+
+  <!-- V. ECONOMICS -->
+  <div class="section" style="--sc:var(--c-econ)">
+    <div class="section-bar">
+      <span class="section-num">V</span>
+      <span class="section-title">Economics & Capital Discipline</span>
+      <span class="section-sub">How we measure and allocate</span>
+    </div>
+    <div class="term-grid">
+      <div class="term"><div class="term-name">SPI (Segment Profitability Index)</div><div class="term-def">3-year gross margin return multiple per acquisition dollar, by segment. The anchor metric.</div></div>
+      <div class="term"><div class="term-name">CAC (Cohorted Segment CAC)</div><div class="term-def">Fully loaded acquisition cost aligned to segment cohort and acquisition window. Not blended. Not CPL.</div></div>
+      <div class="term"><div class="term-name">Coverage Multiple</div><div class="term-def">Required pipeline ÷ revenue target. Governed by P&L Agent.</div></div>
+      <div class="term"><div class="term-name">Revenue Density</div><div class="term-def">(Win Rate × ACV × Margin × Retention) ÷ Sales Cycle Length. Sortable topography. Capital flows to high density.</div></div>
+      <div class="term"><div class="term-name">Learning Latency</div><div class="term-def">Time from motion deployment to validated revenue lift. Primary KPI replacing attribution share.</div></div>
+      <div class="term"><div class="term-name">Correction Latency</div><div class="term-def">Time from error detection to model reweighting. Immune system speed metric.</div></div>
+    </div>
+  </div>
+
+  <!-- VI. ABX & ORCHESTRATION -->
+  <div class="section" style="--sc:var(--c-abx)">
+    <div class="section-bar">
+      <span class="section-num">VI</span>
+      <span class="section-title">ABX & Orchestration</span>
+      <span class="section-sub">How we coordinate</span>
+    </div>
+    <div class="term-grid">
+      <div class="term"><div class="term-name">ABX (Account-Based Experience)</div><div class="term-def">State-driven, coordinated engagement across channels. Not a campaign type — an orchestration philosophy.</div></div>
+      <div class="term"><div class="term-name">Orchestration</div><div class="term-def">Governed coordination of agents, channels, and pods across acquisition modes.</div></div>
+      <div class="term"><div class="term-name">Guardrails</div><div class="term-def">Economic, statistical, and governance constraints limiting agent autonomy. Constitutional, not configurable.</div></div>
+      <div class="term"><div class="term-name">Agent</div><div class="term-def">Production software governing a specific domain of the spine. Scoped permissions. Typed contracts. Bounded authority.</div></div>
+    </div>
+  </div>
+
+  <!-- VIII. PROVENANCE -->
+  <div class="section" style="--sc:var(--c-structure)">
+    <div class="section-bar">
+      <span class="section-num">VIII</span>
+      <span class="section-title">Provenance</span>
+      <span class="section-sub">Epistemic constraint · Audit spine</span>
+    </div>
+    <div class="term-grid">
+      <div class="term"><div class="term-name">Provenance</div><div class="term-def">The traceable lineage of signals, weights, thresholds, and capital decisions within the Revenue OS. If gravity governs what is allowed, provenance governs what is true.</div></div>
+      <div class="term"><div class="term-name">Signal Provenance</div><div class="term-def">Documented origin and transformation path of structural and behavioral inputs contributing to probability.</div></div>
+      <div class="term"><div class="term-name">Model Provenance</div><div class="term-def">Versioned record of weighting logic, decay parameters, threshold adjustments, and correction triggers.</div></div>
+      <div class="term"><div class="term-name">Routing Provenance</div><div class="term-def">Auditable chain of events leading to account escalation, pod assignment, or execution mode selection.</div></div>
+      <div class="term"><div class="term-name">Economic Provenance</div><div class="term-def">Traceable linkage between capital allocation decisions and segment-level economic metrics.</div></div>
+      <div class="term"><div class="term-name">Vendor Provenance Boundary</div><div class="term-def">Separation between vendor-supplied telemetry and internally governed decision logic. Vendor signals labeled, normalized, internally weighted.</div></div>
+    </div>
+  </div>
+
+  <!-- VII. REPLACED LEGACY TERMS -->
+  <div class="section" style="--sc:var(--c-legacy)">
+    <div class="section-bar">
+      <span class="section-num">VII</span>
+      <span class="section-title">Replaced Legacy Terms</span>
+      <span class="section-sub">What we no longer say</span>
+    </div>
+    <table class="legacy-table">
+      <thead><tr><th>Legacy Term</th><th>Normalized Term</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td class="legacy-old">MQL</td><td class="legacy-new">Qualified Account Signal (or eliminate)</td><td>MQL conflates lead with account, individual with committee</td></tr>
+        <tr><td class="legacy-old">Funnel (blended)</td><td class="legacy-new">Stage Ledger + Swim Lanes</td><td>One funnel hides mode-specific conversion and CAC variance</td></tr>
+        <tr><td class="legacy-old">Attribution (credit-based)</td><td class="legacy-new">Influence Mapping → Weight Calibration</td><td>Credit ≠ causality. Attribution feeds learning, not budget</td></tr>
+        <tr><td class="legacy-old">Awareness</td><td class="legacy-new">Conditioning</td><td>Awareness implies passive. Conditioning implies deliberate probability building</td></tr>
+        <tr><td class="legacy-old">Demand Gen</td><td class="legacy-new">Revenue Development</td><td>Demand gen implies top-of-funnel only. Revenue development spans full lifecycle</td></tr>
+        <tr><td class="legacy-old">Lead</td><td class="legacy-new">Account Signal</td><td>Individual leads misrepresent buying committee dynamics</td></tr>
+        <tr><td class="legacy-old">CPL</td><td class="legacy-new">Cohorted Segment CAC</td><td>CPL without intent normalization is meaningless. CAC by segment is actionable</td></tr>
+        <tr><td class="legacy-old">ROI (campaign-level)</td><td class="legacy-new">Lift vs Baseline + Learning Latency</td><td>Campaign ROI ignores mode, segment, and time-to-validated-lift</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- OPERATING PRINCIPLE -->
+  <div class="op-box">
+    <div class="op-title">Operating Principle</div>
+    <div class="op-lines">
+      Channels <strong>execute</strong>.<br>
+      Motions <strong>coordinate</strong>.<br>
+      Agents <strong>govern</strong>.<br>
+      Segments <strong>prioritize</strong>.<br>
+      Economics <strong>decide</strong>.
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<Fragment slot="scripts">
+<script is:inline>
+'use strict';
+let toastTimer;
+function setMode(m){
+  document.body.classList.remove('mode-warroom','mode-monument');
+  if(m!=='atlas')document.body.classList.add('mode-'+m);
+  document.querySelector('.wrgrid').style.opacity=m==='warroom'?'1':'0';
+  ['atlas','warroom','monument'].forEach(id=>{document.getElementById('mb-'+id).classList.toggle('on',id===m)});
+  showToast('Mode: '+(m==='atlas'?'Atlas':m==='warroom'?'War Room':'Monument'));
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+</script>
+</Fragment>
+
+</BaseLayout>

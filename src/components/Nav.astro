@@ -1,0 +1,73 @@
+---
+const { currentPath = '' } = Astro.props;
+
+const links = [
+  { href: '/', label: 'home', mobLabel: 'home' },
+  { href: '/spine-v4', label: 'spine', mobLabel: 'spine' },
+  { href: '/agent-specs', label: 'agents', mobLabel: 'agent specs' },
+  { href: '/sovereignty-map', label: 'sovereignty', mobLabel: 'sovereignty map' },
+  { href: '/split-funnel-map', label: 'motion', mobLabel: 'motion map' },
+  { href: '/lexicon', label: 'lexicon', mobLabel: 'lexicon' },
+  { href: '/identity-graph', label: 'identity', mobLabel: 'identity graph' },
+  { href: '/provenance', label: 'provenance', mobLabel: 'provenance' },
+  { href: '/infrastructure', label: 'infra', mobLabel: 'infrastructure' },
+];
+
+function isActive(href: string): boolean {
+  const path = currentPath.replace(/\/$/, '') || '/';
+  const target = href.replace(/\/$/, '') || '/';
+  return path === target;
+}
+---
+
+<nav class="nav" id="pageNav">
+  <div class="n-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="width:22px;height:22px"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <span style="font-family:var(--mn,'Space Mono',monospace);font-size:11px;font-weight:400;letter-spacing:.02em">governed revenue</span>
+  </div>
+  <div class="nr">
+    {links.map(link => (
+      <a class:list={['n-lnk', { 'n-lnk--active': isActive(link.href) }]} href={link.href}>{link.label}</a>
+    ))}
+    <button class="ham" id="hamBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <div class="mob-btns2">
+    <a class="btn-out2" href="/">home</a>
+    <a class="btn-fill2" href="/#briefing">strategic briefing</a>
+  </div>
+  {links.filter(l => l.href !== '/').map(link => (
+    <a class:list={['mob-lnk', { 'mob-lnk--active': isActive(link.href) }]} href={link.href}>{link.mobLabel}</a>
+  ))}
+</div>
+
+<style is:global>
+  .nav{position:sticky;top:0;z-index:100;padding:0 20px;height:56px;display:flex;align-items:center;background:var(--bg,var(--gy,#f0f0f0));border-bottom:1px solid var(--border-s,rgba(26,25,24,.15));transition:background .4s}
+  .n-logo{display:flex;align-items:center;gap:8px}
+  .n-logo svg{color:var(--text-1,var(--bk,#1a1918));width:22px;height:22px}
+  .nr{margin-left:auto;display:flex;align-items:center;gap:4px}
+  .n-lnk{font-family:var(--mn,'Space Mono',monospace);font-size:9px;padding:5px 8px;color:var(--text-2,var(--g7,#747474));text-decoration:none;white-space:nowrap;transition:color .3s;text-transform:lowercase;letter-spacing:.02em}
+  .n-lnk:hover{color:var(--text-1,var(--bk,#1a1918))}
+  .n-lnk--active{color:var(--accent,var(--or,#ff6e3e))!important;font-weight:700}
+  .btn-out2,.btn-fill2{font-family:var(--mn,'Space Mono',monospace);font-size:10px;padding:14px 16px;border:1px solid var(--text-1,var(--bk,#1a1918));cursor:pointer;transition:all .4s;white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:block;text-align:center;flex:1}
+  .btn-out2{background:transparent;color:var(--text-1,var(--bk,#1a1918))}
+  .btn-out2:hover{background:var(--text-1,var(--bk,#1a1918));color:var(--bg,var(--gy,#f0f0f0))}
+  .btn-fill2{background:var(--text-1,var(--bk,#1a1918));color:var(--bg,var(--gy,#f0f0f0))}
+  .btn-fill2:hover{background:var(--accent,var(--or,#ff6e3e));border-color:var(--accent,var(--or,#ff6e3e))}
+  .ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
+  .ham span{display:block;width:18px;height:1.5px;background:var(--text-1,var(--bk,#1a1918));transition:all .3s}
+  .mob-nav{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--bg,var(--gy,#f0f0f0));padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
+  .mob-nav.open{display:flex}
+  .mob-btns2{display:flex;gap:8px;margin-bottom:24px}
+  .mob-lnk{font-family:var(--mn,'Space Mono',monospace);font-size:12px;padding:14px 0;color:var(--text-2,var(--g7,#747474));border-bottom:1px solid var(--border,rgba(26,25,24,.08));text-transform:lowercase;letter-spacing:.02em;display:block;text-decoration:none}
+  .mob-lnk:hover{color:var(--text-1,var(--bk,#1a1918))}
+  .mob-lnk--active{color:var(--accent,var(--or,#ff6e3e))!important;font-weight:700}
+  @media(max-width:960px){.n-lnk{display:none}.ham{display:flex}}
+</style>
+
+<script is:inline>
+  document.getElementById('hamBtn').addEventListener('click', function() {
+    document.getElementById('mobNav').classList.toggle('open');
+  });
+</script>
