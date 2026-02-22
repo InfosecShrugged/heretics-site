@@ -1,0 +1,211 @@
+/* ============================
+   GLOBAL DESIGN TOKENS & SHARED STYLES
+   Governed Revenue Architecture
+   ============================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ── Root Tokens ── */
+:root {
+  /* Scorecard tokens (index, agent-specs, infrastructure) */
+  --bk:#1a1918;
+  --gy:#f0f0f0;
+  --or:#ff6e3e;
+  --pu:#bcbeff;
+  --wh:#fff;
+  --g50:#f8f8f8;
+  --g3:#d9d9d9;
+  --g4:#ccc;
+  --g5:#b5b5b5;
+  --g6:#a3a3a3;
+  --g7:#747474;
+  --g9:#2b2b2b;
+  --ft:'Oxanium',sans-serif;
+  --mn:'Space Mono',monospace;
+  --sm:cubic-bezier(.32,.72,0,1);
+  --ez:cubic-bezier(.215,.61,.355,1);
+
+  /* Atlas tokens (spine, sovereignty, motion, lexicon, identity, provenance) */
+  --bg:#f0f0f0;
+  --bg-panel:#e8e8e8;
+  --bg-card:#ffffff;
+  --bg-hover:#f8f8f8;
+  --bg-formula:#f5f5f5;
+  --text-1:#1a1918;
+  --text-2:#747474;
+  --text-3:#a3a3a3;
+  --border:rgba(24,23,15,.10);
+  --border-s:rgba(24,23,15,.22);
+  --accent:#ff6e3e;
+  --scrollbar:rgba(24,23,15,.18);
+  --ease:cubic-bezier(.4,0,.2,1);
+  --fast:140ms;
+  --med:300ms;
+  --slow:600ms;
+  --font-sans:'Oxanium',system-ui,sans-serif;
+  --font-serif:'Oxanium','Georgia',serif;
+}
+
+/* ── Mode Switching (Atlas pages) ── */
+.mode-warroom{--bg:#1a1918;--bg-panel:#222120;--bg-card:#2b2b2b;--bg-hover:#333231;--bg-formula:#252423;--text-1:#e8e8e8;--text-2:#a3a3a3;--text-3:#747474;--border:rgba(200,220,240,.07);--border-s:rgba(200,220,240,.16);--accent:#ff6e3e;--scrollbar:rgba(200,220,240,.18)}
+.mode-monument{--bg:#f8f8f8;--bg-panel:#f0f0f0;--bg-card:#ffffff;--bg-hover:#FFFFFF;--bg-formula:#f5f5f5;--text-1:#1a1918;--text-2:#747474;--text-3:#b5b5b5;--border:rgba(8,8,7,.07);--border-s:rgba(8,8,7,.18);--accent:#1a1918;--scrollbar:rgba(8,8,7,.18)}
+
+/* ── Global Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--scrollbar,var(--g4));border-radius:2px}
+
+/* ── Reveal Animation ── */
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--sm),transform .7s var(--sm)}
+.rv.vis{opacity:1;transform:translateY(0)}
+
+/* ── Nav (all pages) ── */
+.nav{position:sticky;top:0;z-index:100;padding:0 20px;height:56px;display:flex;align-items:center;background:var(--bg,var(--gy));border-bottom:1px solid var(--border-s,var(--g3));transition:background .4s var(--ez)}
+.nav.scrolled{background:rgba(240,240,240,.88);backdrop-filter:blur(12px)}
+.n-logo{display:flex;align-items:center;gap:8px}
+.n-logo svg{width:22px;height:22px;color:var(--text-1,var(--bk))}
+.n-word{font-family:var(--mn);font-size:11px;font-weight:400;letter-spacing:.02em}
+.nr{margin-left:auto;display:flex;align-items:center;gap:4px}
+.n-lnk{font-family:var(--mn);font-size:9px;padding:5px 8px;color:var(--text-2,var(--g7));text-decoration:none;white-space:nowrap;transition:color .3s var(--ez);text-transform:lowercase;letter-spacing:.02em}
+.n-lnk:hover{color:var(--text-1,var(--bk))}
+
+/* ── Hamburger (all pages) ── */
+.ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
+.ham span{display:block;width:18px;height:1.5px;background:var(--text-1,var(--bk));transition:all .3s var(--ez)}
+
+/* ── Mobile Menu — Scorecard variant ── */
+.mob-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--gy);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
+.mob-menu.open{display:flex}
+.mob-btns{display:flex;gap:8px;margin-bottom:24px}
+.mob-btns .btn-out,.mob-btns .btn-fill{flex:1;text-align:center;padding:14px 8px;font-size:11px}
+
+/* ── Mobile Menu — Atlas variant ── */
+.mob-nav{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--bg,#f0f0f0);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
+.mob-nav.open{display:flex}
+.mob-btns2{display:flex;gap:8px;margin-bottom:24px}
+
+/* ── Mobile Links (shared) ── */
+.mob-lnk{font-family:var(--mn);font-size:12px;padding:14px 0;color:var(--text-2,var(--g7));border-bottom:1px solid var(--border,var(--g3));text-transform:lowercase;letter-spacing:.02em;display:block;text-decoration:none}
+.mob-lnk:hover{color:var(--text-1,var(--bk))}
+
+/* ── Nav Responsive ── */
+@media(max-width:960px){.n-lnk{display:none}.ham{display:flex}}
+
+/* ── Buttons — Scorecard (index, agent-specs, infrastructure) ── */
+.btn-out{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:transparent;color:var(--bk);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
+.btn-out:hover{background:var(--bk);color:var(--wh)}
+.btn-fill{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:var(--bk);color:var(--wh);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
+.btn-fill:hover{background:var(--or);border-color:var(--or);color:var(--bk)}
+.btn-fill.lg,.btn-out.lg{font-size:11px;padding:10px 28px}
+
+/* ── Buttons — Atlas (spine, sovereignty, motion, lexicon, identity, provenance) ── */
+.btn-out2,.btn-fill2{font-family:var(--mn);font-size:10px;padding:14px 16px;border:1px solid var(--text-1,#1a1918);cursor:pointer;transition:all .4s;white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:block;text-align:center;flex:1}
+.btn-out2{background:transparent;color:var(--text-1,#1a1918)}
+.btn-out2:hover{background:var(--text-1,#1a1918);color:var(--bg,#f0f0f0)}
+.btn-fill2{background:var(--text-1,#1a1918);color:var(--bg,#f0f0f0)}
+.btn-fill2:hover{background:var(--accent,#ff6e3e);border-color:var(--accent,#ff6e3e)}
+
+/* ── Topbar (Atlas pages) ── */
+.topbar{position:sticky;top:0;z-index:80;background:var(--bg);border-bottom:1px solid var(--border-s);display:flex;align-items:center;padding:0 20px;height:48px;gap:12px;transition:background var(--slow) var(--ease)}
+.logo{display:flex;align-items:baseline;gap:7px}
+.logo-mark{font-family:var(--mn);font-size:9px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase}
+.logo-name{font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--text-1);transition:color var(--slow)}
+.tb-sep{width:1px;height:18px;background:var(--border-s);flex-shrink:0}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:5px}
+.tb-btn{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border-s);background:transparent;color:var(--text-2);cursor:pointer;transition:all var(--fast) var(--ease);border-radius:1px}
+.tb-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tb-btn.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.nav-link{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);text-decoration:none;padding:3px 10px;border:1px solid var(--border);border-radius:1px;transition:all var(--fast) var(--ease)}
+.nav-link:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── Layout — Scorecard (.w wrapper) ── */
+.w{max-width:1100px;margin:0 auto;padding:0 20px}
+@media(min-width:860px){.w{padding:0 40px}}
+
+/* ── Layout — Atlas (.container wrapper) ── */
+.container{max-width:1200px;margin:0 auto;padding:0 24px 80px}
+
+/* ── Header (Atlas pages) ── */
+.header{margin-bottom:20px;padding-top:24px}
+.header-eyebrow{font-family:var(--mn);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
+.header h1{font-family:var(--font-serif);font-size:clamp(24px,3vw,36px);font-weight:400;line-height:1.1;color:var(--text-1);margin-bottom:8px;transition:color var(--slow)}
+.header h1 em{color:var(--accent);font-style:normal}
+.header p{font-size:12px;color:var(--text-2);max-width:720px;line-height:1.8}
+
+/* ── Sections — Scorecard (index, agent-specs, infrastructure) ── */
+.sc{padding:clamp(60px,10vw,100px) 0}
+.sdk{background:var(--bk);color:var(--wh)}
+.swh{background:var(--wh)}
+.s-ey{font-family:var(--mn);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--g7);margin-bottom:14px}
+.sdk .s-ey{color:var(--g6)}
+.s-h{font-family:var(--mn);font-size:clamp(18px,3.5vw,34px);font-weight:400;line-height:1.15;text-transform:uppercase;margin-bottom:18px}
+.s-h span{color:var(--or)}
+.s-p{font-size:clamp(14px,2.5vw,15px);font-weight:300;color:var(--g7);line-height:1.75;max-width:620px}
+.s-p strong{color:var(--bk);font-weight:500}
+.sdk .s-p{color:var(--g5)}
+.sdk .s-p strong{color:var(--wh)}
+
+/* ── Hero — Scorecard subpages (agent-specs, infrastructure) ── */
+.hero{padding:100px 0 60px}
+.h-ey{font-family:var(--mn);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--g7);margin-bottom:20px;opacity:0;animation:up .8s var(--sm) .2s forwards}
+.h-title{font-family:var(--mn);font-size:clamp(22px,4.5vw,44px);font-weight:400;line-height:1.15;text-transform:uppercase;margin-bottom:16px;opacity:0;animation:up .8s var(--sm) .35s forwards}
+.h-title span{color:var(--or)}
+.h-sub{font-size:clamp(14px,2.5vw,16px);font-weight:300;color:var(--g7);max-width:620px;line-height:1.75;margin-bottom:12px;opacity:0;animation:up .8s var(--sm) .5s forwards}
+.h-quote{font-family:var(--mn);font-size:clamp(11px,2vw,13px);font-weight:400;color:var(--bk);border-left:3px solid var(--or);padding:14px 20px;margin:28px 0;max-width:560px;line-height:1.7;opacity:0;animation:up .8s var(--sm) .65s forwards}
+
+/* ── Toast (Atlas pages) ── */
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text-1);color:var(--bg);font-family:var(--mn);font-size:9px;letter-spacing:.1em;padding:7px 16px;z-index:999;transition:transform var(--med) var(--ease);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── Screening & Insight (Atlas pages) ── */
+.screening{padding:14px 16px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--accent);margin-top:20px}
+.screening-label{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.screening-text{font-family:var(--font-serif);font-size:14px;font-weight:400;line-height:1.7;color:var(--text-1);font-style:italic;transition:color var(--slow)}
+.insight{padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);margin-top:10px}
+.insight-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.insight-text{font-size:11px;color:var(--text-2);line-height:1.65}
+.insight-text strong{color:var(--text-1);font-weight:500}
+
+/* ── Principles (Atlas pages: spine, split-funnel) ── */
+.principles{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.principle{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border-s);color:var(--text-2);border-radius:1px}
+.principle.core{border-color:var(--accent);color:var(--accent)}
+
+/* ── Footer ── */
+.foot{padding:32px 20px;border-top:1px solid var(--g3);text-align:center}
+.foot-text{font-family:var(--mn);font-size:9px;color:var(--g5);letter-spacing:.06em}
+
+/* ── Responsive — Atlas pages ── */
+@media(max-width:768px){
+  .container{padding:0 16px 60px}
+  .tab-bar{flex-wrap:wrap;top:56px}
+  .tab-btn{padding:10px 12px;font-size:8px;flex:1;text-align:center;min-width:0}
+  .exec-row{grid-template-columns:1fr!important}
+  .outputs-grid{grid-template-columns:1fr!important}
+  .side-feeds{grid-template-columns:1fr!important}
+  .measurement-grid{grid-template-columns:1fr!important}
+  .governance-grid{grid-template-columns:1fr!important}
+  .gtm-routing-row{grid-template-columns:1fr!important;gap:0}
+  .gtm-routing-row.header{display:none}
+  .gtm-routing-cell{border-right:none!important;border-bottom:1px solid var(--border)}
+  .gtm-routing-cell:last-child{border-bottom:none}
+  .header h1{font-size:clamp(20px,5vw,38px)!important}
+  .section-title{font-size:clamp(16px,4vw,20px)!important}
+  .spine-node{padding:14px 16px}
+  .formula-content{font-size:9px;overflow-x:auto}
+  .scope-grid,.tradeoff-grid,.lane-grid,.term-grid,.obj-grid,.domain-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:480px){
+  .tab-btn{padding:8px 6px;font-size:7px;letter-spacing:.04em}
+}
+
+/* ── Responsive — Scorecard pages ── */
+@media(max-width:640px){
+  .g2,.g3{grid-template-columns:1fr}
+}
+@media(max-width:860px){
+  .n-link,.n-right>.btn-out,.n-right>.btn-fill{display:none}
+}
