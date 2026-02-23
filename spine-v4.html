@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revenue Architecture Spine — v4.0 Complete System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+:root {
+  --bg:#f0f0f0;--bg-panel:#e8e8e8;--bg-card:#ffffff;--bg-hover:#f8f8f8;--bg-formula:#f5f5f5;
+  --text-1:#1a1918;--text-2:#747474;--text-3:#a3a3a3;
+  --border:rgba(24,23,15,.10);--border-s:rgba(24,23,15,.22);
+  --accent:#ff6e3e;--scrollbar:rgba(24,23,15,.18);
+  --c-feedback:#2A4A6B;--c-orchestrate:#6D2B8A;--c-signal:#1A7A6A;--c-icp:#D9622B;
+  --c-gravity:#B83030;--c-position:#8B6914;--c-brand:#7A5A2A;
+  --c-inbound:#1565C0;--c-outbound:#5A7A2A;--c-abm:#C2185B;
+  --c-ledger:#4A4A90;--c-prob:#1A7A6A;--c-gate:#ff6e3e;
+  --c-portfolio:#6D2B8A;--c-error:#B83030;--c-diagnostic:#D9622B;
+  --c-agent:#5A3E8A;--c-product:#2E7D32;--c-narrative:#C2185B;--c-security:#8B0000;
+  --c-partner:#1A5276;--c-field:#6C3483;--c-cs:#117A65;--c-territory:#784212;--c-cold:#5D6D7E;--c-intercept:#C0392B;
+  --ease:cubic-bezier(.4,0,.2,1);--fast:140ms;--med:300ms;--slow:600ms;
+  --font-sans:'Oxanium',system-ui,sans-serif;
+  --mn:'Space Mono','Menlo',monospace;
+  --font-serif:'Oxanium','Georgia',serif;
+}
+.mode-warroom{--bg:#1a1918;--bg-panel:#222120;--bg-card:#2b2b2b;--bg-hover:#333231;--bg-formula:#252423;--text-1:#e8e8e8;--text-2:#a3a3a3;--text-3:#747474;--border:rgba(200,220,240,.07);--border-s:rgba(200,220,240,.16);--accent:#ff6e3e;--scrollbar:rgba(200,220,240,.18)}
+.mode-monument{--bg:#f8f8f8;--bg-panel:#f0f0f0;--bg-card:#ffffff;--bg-hover:#FFFFFF;--bg-formula:#f5f5f5;--text-1:#1a1918;--text-2:#747474;--text-3:#b5b5b5;--border:rgba(8,8,7,.07);--border-s:rgba(8,8,7,.18);--accent:#1a1918;--scrollbar:rgba(8,8,7,.18)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:13px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var(--text-1);min-height:100vh;transition:background var(--slow) var(--ease),color var(--slow) var(--ease)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:2px}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:80;background:var(--bg);border-bottom:1px solid var(--border-s);display:flex;align-items:center;padding:0 20px;height:48px;gap:12px;transition:background var(--slow) var(--ease)}
+.logo{display:flex;align-items:baseline;gap:7px}
+.logo-mark{font-family:var(--mn);font-size:9px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase}
+.logo-name{font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--text-1);transition:color var(--slow)}
+.tb-sep{width:1px;height:18px;background:var(--border-s);flex-shrink:0}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:5px}
+.tb-btn{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border-s);background:transparent;color:var(--text-2);cursor:pointer;transition:all var(--fast) var(--ease);border-radius:1px}
+.tb-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tb-btn.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.nav-link{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);text-decoration:none;padding:3px 10px;border:1px solid var(--border);border-radius:1px;transition:all var(--fast) var(--ease)}
+.nav-link:hover{border-color:var(--accent);color:var(--accent)}
+.wrgrid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(200,220,240,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(200,220,240,.035) 1px,transparent 1px);background-size:36px 36px;opacity:0;transition:opacity var(--slow)}
+.mode-warroom .wrgrid{opacity:1}
+
+/* TABS */
+.tab-bar{display:flex;gap:0;border-bottom:1px solid var(--border-s);margin-bottom:28px;position:sticky;top:48px;z-index:70;background:var(--bg);transition:background var(--slow) var(--ease)}
+.tab-btn{font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:12px 20px;border:none;background:transparent;color:var(--text-3);cursor:pointer;border-bottom:2px solid transparent;transition:all var(--fast) var(--ease)}
+.tab-btn:hover{color:var(--text-1)}
+.tab-btn.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-panel{display:none}
+.tab-panel.vis{display:block}
+
+/* CONTAINER */
+.container{max-width:1300px;margin:0 auto;padding:0 24px 80px}
+.header{margin-bottom:28px;padding-top:24px}
+.header-eyebrow{font-family:var(--mn);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
+.header h1{font-family:var(--font-serif);font-size:clamp(26px,3.5vw,38px);font-weight:400;line-height:1.1;color:var(--text-1);margin-bottom:8px;transition:color var(--slow)}
+.header h1 em{color:var(--accent);font-style:normal}
+.header p{font-size:13px;color:var(--text-2);max-width:680px;line-height:1.8}
+
+/* PRINCIPLES */
+.principles{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.principle{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border-s);color:var(--text-2);border-radius:1px}
+.principle.core{border-color:var(--accent);color:var(--accent)}
+
+/* SECTION TITLES */
+.section-title{font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text-1);margin:36px 0 6px;transition:color var(--slow)}
+.section-sub{font-family:var(--mn);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-3);margin-bottom:18px}
+
+/* SPINE NODE */
+.spine-node{position:relative;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--lc,var(--border-s));padding:18px 20px;margin-bottom:2px;transition:all var(--fast) var(--ease)}
+.spine-node:hover{background:var(--bg-hover);transform:translateY(-1px);box-shadow:0 3px 16px rgba(0,0,0,.07)}
+.spine-node.gravity-node{border-left-width:4px;box-shadow:0 2px 20px rgba(184,48,48,.06)}
+.spine-node.feedback-node{border-left-width:4px}
+.spine-node.position-node{border-left-width:4px;background:linear-gradient(135deg,var(--bg-card) 0%,var(--bg-formula) 100%)}
+.layer-tag{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--lc,var(--text-3));padding:2px 5px;border:.5px solid var(--lc,var(--border));border-radius:1px;display:inline-block;margin-bottom:6px}
+.spine-label{font-family:var(--font-serif);font-size:17px;font-weight:400;line-height:1.2;color:var(--text-1);margin-bottom:5px;transition:color var(--slow)}
+.spine-desc{font-size:11px;line-height:1.65;color:var(--text-2)}
+
+/* AGENT BADGE */
+.agent-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mn);font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:1px;margin-top:6px;border:1px solid var(--c-agent);color:var(--c-agent);background:rgba(90,62,138,.06)}
+.agent-badge::before{content:'⬡';font-size:8px}
+.agent-badge.product{border-color:var(--c-product);color:var(--c-product);background:rgba(46,125,50,.06)}
+.agent-badge.product::before{content:'◉'}
+.agent-badge.narrative{border-color:var(--c-narrative);color:var(--c-narrative);background:rgba(194,24,91,.06)}
+.agent-badge.narrative::before{content:'◎'}
+.agent-badge.orchestrator{border-color:var(--c-orchestrate);color:var(--c-orchestrate);background:rgba(109,43,138,.06)}
+.agent-badge.orchestrator::before{content:'⊛'}
+
+/* CONTRACT BOX */
+.contract-box{margin-top:10px;padding:10px 12px;background:var(--bg-formula);border:1px solid var(--border);border-left:2px solid var(--c-agent)}
+.contract-title{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-agent);margin-bottom:6px}
+.contract-row{display:flex;gap:6px;margin-bottom:3px;align-items:baseline}
+.contract-key{font-family:var(--mn);font-size:9px;color:var(--accent);background:var(--bg-card);padding:1px 5px;border:.5px solid var(--border);white-space:nowrap}
+.contract-val{font-size:10px;color:var(--text-2);line-height:1.4}
+
+/* FORMULA BOX */
+.formula-box{margin-top:12px;padding:12px 14px;background:var(--bg-formula);border:1px solid var(--border);border-left:2px solid var(--lc,var(--accent))}
+.formula-title{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--lc,var(--accent));margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.formula-title::before{content:'';display:block;width:12px;height:1px;background:var(--lc,var(--accent))}
+.formula-content{font-family:var(--mn);font-size:10px;line-height:1.9;color:var(--text-2);white-space:pre-wrap}
+.formula-content .var{color:var(--text-1);font-weight:500}
+.formula-content .op{color:var(--accent)}
+.formula-content .note{font-family:var(--font-sans);font-size:10px;font-style:italic;color:var(--text-3);display:block;margin-top:6px}
+
+/* DIAGNOSTIC BOX */
+.diagnostic-box{margin-top:10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-left:2px solid var(--c-diagnostic)}
+.diagnostic-title{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-diagnostic);margin-bottom:6px}
+.diagnostic-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px}
+.diagnostic-icon{font-family:var(--mn);font-size:9px;flex-shrink:0;width:14px;text-align:center}
+.diagnostic-text{font-size:10px;color:var(--text-2);line-height:1.5}
+.diagnostic-text code{font-family:var(--mn);font-size:9px;background:var(--bg-formula);padding:1px 4px}
+.diagnostic-text strong{color:var(--text-1);font-weight:500}
+
+/* IMP ROW */
+.imp-row{display:flex;align-items:center;gap:5px;margin-top:10px;padding-top:8px;border-top:.5px solid var(--border)}
+.imp-lbl{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
+.imp-dots{display:flex;gap:2px}
+.imp-dot{width:5px;height:5px;border-radius:50%;background:var(--border-s)}
+.imp-dot.f{background:var(--lc,var(--accent))}
+
+/* SPINE CONNECTOR */
+.spine-connector{display:flex;align-items:center;justify-content:center;padding:3px 0;color:var(--text-3);font-size:10px}
+.spine-connector.thick{color:var(--c-feedback);font-weight:500}
+
+/* GATE */
+.gate{display:flex;align-items:center;padding:14px 20px;margin:4px 0;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--c-gate)}
+.gate-diamond{background:var(--bg-card);border:1.5px solid var(--c-gate);transform:rotate(45deg);width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gate-diamond-inner{transform:rotate(-45deg);font-family:var(--mn);font-size:8px;color:var(--c-gate);font-weight:500}
+.gate-content{margin-left:14px;flex:1}
+.gate-title{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-gate);margin-bottom:4px}
+.gate-rule{font-size:10px;color:var(--text-2);line-height:1.6}
+.gate-rule code{font-family:var(--mn);font-size:9px;color:var(--c-gate);background:var(--bg-formula);padding:1px 4px}
+
+/* EXEC */
+.exec-label{text-align:center;padding:3px 0;font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
+.exec-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0}
+.exec-node{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--ec,var(--border-s));padding:10px 11px;text-align:center;transition:all var(--fast) var(--ease)}
+.exec-node:hover{background:var(--bg-hover);transform:translateY(-1px)}
+.exec-type{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--ec,var(--text-3));padding:1px 4px;border:.5px solid var(--ec,var(--border));border-radius:1px;display:inline-block;margin-bottom:4px}
+.exec-node .spine-label{font-size:12px}
+
+/* GTM ROUTING TABLE */
+.gtm-routing{margin-top:8px;border:1px solid var(--border);overflow:hidden}
+.gtm-routing-title{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-orchestrate);padding:8px 12px;background:var(--bg-formula);border-bottom:1px solid var(--border)}
+.gtm-routing-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;border-bottom:1px solid var(--border);font-size:10px}
+.gtm-routing-row:last-child{border-bottom:none}
+.gtm-routing-row.header{font-family:var(--mn);font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);background:var(--bg-formula)}
+.gtm-routing-cell{padding:7px 10px;color:var(--text-2);line-height:1.4;border-right:1px solid var(--border)}
+.gtm-routing-cell:last-child{border-right:none}
+.gtm-routing-cell code{font-family:var(--mn);font-size:9px;background:var(--bg-formula);padding:1px 3px}
+
+/* OUTPUTS GRID */
+.outputs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.output-card{padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-top:2px solid var(--c-position)}
+.output-card-num{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--c-position);margin-bottom:4px}
+.output-card-title{font-family:var(--font-serif);font-size:12px;font-weight:700;color:var(--text-1);margin-bottom:4px;transition:color var(--slow)}
+.output-card-items{font-size:10px;color:var(--text-2);line-height:1.6}
+.output-card-items code{font-family:var(--mn);font-size:9px;color:var(--c-position);background:var(--bg-formula);padding:1px 3px}
+
+/* SIDE FEED AGENTS */
+.side-feeds{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.side-feed{background:var(--bg-card);border:1px solid var(--border);padding:16px;border-top:2px solid var(--sf-c,var(--accent))}
+.side-feed-title{font-family:var(--font-serif);font-size:14px;font-weight:400;color:var(--text-1);margin-bottom:4px;transition:color var(--slow)}
+.side-feed-target{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--sf-c,var(--text-3));margin-bottom:8px}
+.side-feed-desc{font-size:11px;color:var(--text-2);line-height:1.65}
+
+/* WEIGHTING BOX */
+.weighting-box{margin-top:12px;padding:10px 12px;background:var(--bg-formula);border:1px solid var(--border);border-left:2px solid var(--accent)}
+.weighting-title{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.weighting-row{display:flex;gap:6px;margin-bottom:4px}
+.weighting-badge{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:1px}
+.weighting-badge.base{color:var(--c-signal);border:.5px solid var(--c-signal)}
+.weighting-badge.adaptive{color:var(--c-feedback);border:.5px solid var(--c-feedback)}
+.weighting-text{font-size:10px;color:var(--text-2);line-height:1.6}
+
+/* STAGE LEDGER (sidebar) */
+.ledger-sidebar{margin-top:28px;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--c-ledger)}
+.ledger-sidebar-title{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--c-ledger);margin-bottom:10px}
+.stage-row{display:flex;gap:8px;margin-bottom:6px;align-items:center}
+.stage-id{font-family:var(--font-serif);font-size:14px;font-weight:400;color:var(--c-ledger);width:50px}
+.stage-desc{font-size:10px;color:var(--text-2)}
+
+/* MEASUREMENT */
+.measurement-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.measurement-card{padding:16px;background:var(--bg-card);border:1px solid var(--border)}
+.measurement-card.primary{border-top:2px solid var(--c-signal)}
+.measurement-card.deprecated{border-top:2px solid var(--text-3);opacity:.7}
+.measurement-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.measurement-label.pri{color:var(--c-signal)}
+.measurement-label.dep{color:var(--text-3)}
+.measurement-value{font-family:var(--font-serif);font-size:16px;font-weight:400;color:var(--text-1);margin-bottom:4px;transition:color var(--slow)}
+.measurement-desc{font-size:10px;color:var(--text-2);line-height:1.5}
+
+/* GOVERNANCE */
+.governance-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.governance-col{padding:16px;background:var(--bg-card);border:1px solid var(--border)}
+.governance-col-title{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.governance-col-title.safe{color:var(--c-signal)}
+.governance-col-title.gated{color:var(--c-error)}
+.governance-item{display:flex;align-items:flex-start;gap:6px;font-size:10px;color:var(--text-2);line-height:1.5;margin-bottom:5px}
+.gov-icon{font-family:var(--mn);font-size:9px;flex-shrink:0;width:14px;text-align:center}
+
+/* DAY 1 STACK */
+.day1-box{padding:16px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--accent);margin:18px 0}
+.day1-title{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.day1-phases{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.day1-phase{padding:10px;background:var(--bg-card);border:1px solid var(--border)}
+.day1-phase-label{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.day1-phase-label.p1{color:var(--c-signal)}
+.day1-phase-label.p2{color:var(--c-orchestrate)}
+.day1-phase-label.p3{color:var(--c-feedback)}
+.day1-phase-desc{font-size:10px;color:var(--text-2);line-height:1.5}
+
+/* POSITIONING */
+.pos-card{padding:18px 20px;background:var(--bg-card);border:1px solid var(--border);margin-bottom:12px}
+.pos-card-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.pos-card-text{font-family:var(--font-serif);font-size:15px;font-weight:400;line-height:1.7;color:var(--text-1);font-style:italic;transition:color var(--slow)}
+
+.outcome-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}
+.outcome-card{padding:12px;background:var(--bg-card);border:1px solid var(--border);border-top:2px solid var(--oc,var(--accent))}
+.outcome-level{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--oc,var(--text-3));margin-bottom:4px}
+.outcome-audience{font-family:var(--font-serif);font-size:12px;font-weight:700;color:var(--text-1);margin-bottom:4px;transition:color var(--slow)}
+.outcome-text{font-size:10px;color:var(--text-2);line-height:1.5}
+
+.messaging-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0}
+.messaging-card{padding:16px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--mc,var(--accent))}
+.messaging-lens{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--mc,var(--accent));margin-bottom:8px}
+.messaging-line{font-family:var(--font-serif);font-size:13px;font-weight:400;line-height:1.6;color:var(--text-1);font-style:italic;margin-bottom:10px;transition:color var(--slow)}
+.messaging-context{font-size:10px;color:var(--text-2);line-height:1.5}
+
+/* SCREENING */
+.screening{padding:20px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--accent);margin:24px 0}
+.screening-label{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.screening-text{font-family:var(--font-serif);font-size:15px;font-weight:400;line-height:1.7;color:var(--text-1);font-style:italic;transition:color var(--slow)}
+
+/* SYSTEM IDENTITY */
+.system-identity{margin-top:48px;padding-top:24px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.identity-label{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px}
+.identity-value{font-family:var(--font-serif);font-size:14px;font-weight:400;color:var(--text-1);margin-bottom:3px;transition:color var(--slow)}
+.identity-desc{font-size:10px;color:var(--text-2);line-height:1.6}
+.not-item{font-family:var(--mn);font-size:8px;letter-spacing:.06em;color:var(--text-3);padding:2px 0;text-decoration:line-through;text-decoration-color:var(--border-s)}
+.is-item{font-family:var(--mn);font-size:8px;letter-spacing:.06em;color:var(--accent);padding:2px 0}
+
+/* EXPANDED MOTION GRID */
+.motion-domain-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0}
+.motion-domain{background:var(--bg-card);border:1px solid var(--border);border-top:2px solid var(--md-c,var(--accent));padding:10px 12px;transition:all var(--fast) var(--ease)}
+.motion-domain:hover{background:var(--bg-hover);transform:translateY(-1px)}
+.motion-domain-tag{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--md-c,var(--text-3));margin-bottom:4px}
+.motion-domain-name{font-family:var(--font-serif);font-size:12px;font-weight:700;color:var(--text-1);margin-bottom:3px;transition:color var(--slow)}
+.motion-domain-desc{font-size:9px;color:var(--text-3);line-height:1.4}
+
+/* BDR BIFURCATION */
+.bdr-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.bdr-track{padding:12px 14px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--bt-c,var(--accent))}
+.bdr-track-label{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--bt-c,var(--accent));margin-bottom:4px}
+.bdr-track-name{font-family:var(--font-serif);font-size:13px;font-weight:700;color:var(--text-1);margin-bottom:4px;transition:color var(--slow)}
+.bdr-track-desc{font-size:10px;color:var(--text-2);line-height:1.5;margin-bottom:6px}
+.bdr-kpi{font-family:var(--mn);font-size:8px;color:var(--bt-c,var(--text-3));padding-top:6px;border-top:1px solid var(--border);line-height:1.5}
+
+/* TERRITORY + POD */
+.pod-flow{display:flex;align-items:center;gap:6px;margin:12px 0;padding:10px 14px;background:var(--bg-formula);border:1px solid var(--border);flex-wrap:wrap}
+.pod-flow-step{font-family:var(--mn);font-size:9px;padding:4px 10px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-2)}
+.pod-flow-arrow{font-family:var(--mn);font-size:10px;color:var(--text-3)}
+.pod-flow-step.highlight{border-color:var(--accent);color:var(--accent)}
+
+/* SECURITY TIER CARDS */
+.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.tier-card{padding:16px;background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
+.tier-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--tc,var(--accent))}
+.tier-num{font-family:var(--mn);font-size:28px;font-weight:300;color:var(--tc,var(--accent));opacity:.2;position:absolute;top:8px;right:12px}
+.tier-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--tc,var(--accent));margin-bottom:6px}
+.tier-name{font-family:var(--font-serif);font-size:14px;font-weight:400;color:var(--text-1);margin-bottom:8px;transition:color var(--slow)}
+.tier-capabilities{font-size:10px;color:var(--text-2);line-height:1.6;margin-bottom:8px}
+.tier-capabilities code{font-family:var(--mn);font-size:9px;background:var(--bg-formula);padding:1px 3px}
+.tier-agents{font-family:var(--mn);font-size:8px;letter-spacing:.06em;color:var(--text-3);padding-top:8px;border-top:1px solid var(--border)}
+.tier-requirements{margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.tier-req-item{display:flex;align-items:flex-start;gap:4px;font-size:9px;color:var(--text-3);line-height:1.4;margin-bottom:2px}
+.tier-req-icon{font-family:var(--mn);font-size:8px;color:var(--tc,var(--accent));flex-shrink:0}
+
+/* SECURITY BAND */
+.security-band{padding:16px 20px;background:var(--bg-formula);border:2px solid var(--c-security);margin:18px 0;position:relative}
+.security-band::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,var(--c-security) 0,var(--c-security) 8px,transparent 8px,transparent 16px)}
+.security-band-title{font-family:var(--mn);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--c-security);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.security-band-title::before{content:'◆';font-size:6px}
+.security-band-text{font-size:11px;color:var(--text-2);line-height:1.7}
+.security-band-text strong{color:var(--text-1);font-weight:500}
+
+/* AUDIT EVENT */
+.audit-schema{margin:18px 0;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--c-security)}
+.audit-title{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-security);margin-bottom:10px}
+.audit-fields{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.audit-field{display:flex;gap:6px;align-items:baseline}
+.audit-field-key{font-family:var(--mn);font-size:9px;color:var(--c-security);white-space:nowrap}
+.audit-field-val{font-size:10px;color:var(--text-2)}
+
+/* SANDBOX */
+.sandbox-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:18px 0}
+.sandbox-card{padding:12px;background:var(--bg-card);border:1px solid var(--border);border-top:2px solid var(--c-security)}
+.sandbox-label{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--c-security);margin-bottom:4px}
+.sandbox-name{font-family:var(--font-serif);font-size:12px;font-weight:700;color:var(--text-1);margin-bottom:4px;transition:color var(--slow)}
+.sandbox-desc{font-size:10px;color:var(--text-2);line-height:1.5}
+
+/* FAILURE MODE MATRIX */
+.failure-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;margin:18px 0;border:1px solid var(--border);overflow:hidden}
+.failure-header{font-family:var(--mn);font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);background:var(--bg-formula);padding:8px 10px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.failure-header:last-child{border-right:none}
+.failure-cell{padding:8px 10px;font-size:10px;color:var(--text-2);line-height:1.4;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.failure-cell:last-child{border-right:none}
+.failure-cell:nth-child(4n+1){font-family:var(--mn);font-size:9px;color:var(--c-security)}
+.failure-row:last-child .failure-cell{border-bottom:none}
+
+/* TOAST */
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text-1);color:var(--bg);font-family:var(--mn);font-size:9px;letter-spacing:.1em;padding:7px 16px;z-index:999;transition:transform var(--med) var(--ease);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+.nav{position:sticky;top:0;z-index:100;padding:0 20px;height:56px;display:flex;align-items:center;background:var(--bg);border-bottom:1px solid var(--border-s,rgba(26,25,24,.15));transition:background .4s}
+.n-logo{display:flex;align-items:center;gap:8px}
+.n-logo svg{color:var(--text-1,#1a1918)}
+.nr{margin-left:auto;display:flex;align-items:center;gap:4px}
+.n-lnk{font-family:var(--mn,'Space Mono',monospace);font-size:9px;padding:5px 8px;color:var(--text-2,#747474);text-decoration:none;white-space:nowrap;transition:color .3s;text-transform:lowercase;letter-spacing:.02em}
+.n-lnk:hover{color:var(--text-1,#1a1918)}
+.btn-out2,.btn-fill2{font-family:var(--mn,'Space Mono',monospace);font-size:10px;padding:14px 16px;border:1px solid var(--text-1,#1a1918);cursor:pointer;transition:all .4s;white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:block;text-align:center;flex:1}
+.btn-out2{background:transparent;color:var(--text-1,#1a1918)}
+.btn-out2:hover{background:var(--text-1,#1a1918);color:var(--bg,#f0f0f0)}
+.btn-fill2{background:var(--text-1,#1a1918);color:var(--bg,#f0f0f0)}
+.btn-fill2:hover{background:var(--accent,#ff6e3e);border-color:var(--accent,#ff6e3e)}
+.ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
+.ham span{display:block;width:18px;height:1.5px;background:var(--text-1,#1a1918);transition:all .3s}
+.mob-nav{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--bg,#f0f0f0);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
+.mob-nav.open{display:flex}
+.mob-btns2{display:flex;gap:8px;margin-bottom:24px}
+.mob-lnk{font-family:var(--mn,'Space Mono',monospace);font-size:12px;padding:14px 0;color:var(--text-2,#747474);border-bottom:1px solid var(--border,rgba(26,25,24,.08));text-transform:lowercase;letter-spacing:.02em;display:block;text-decoration:none}
+.mob-lnk:hover{color:var(--text-1,#1a1918)}
+@media(max-width:960px){.n-lnk{display:none}.ham{display:flex}}
+
+@media(max-width:768px){
+  .container{padding:0 16px 60px}
+  .tab-bar{flex-wrap:wrap;top:56px}
+  .tab-btn{padding:10px 12px;font-size:8px;flex:1;text-align:center;min-width:0}
+  .exec-row{grid-template-columns:1fr!important}
+  .outputs-grid{grid-template-columns:1fr!important}
+  .side-feeds{grid-template-columns:1fr!important}
+  .measurement-grid{grid-template-columns:1fr!important}
+  .governance-grid{grid-template-columns:1fr!important}
+  .gtm-routing-row{grid-template-columns:1fr!important;gap:0}
+  .gtm-routing-row.header{display:none}
+  .gtm-routing-cell{border-right:none!important;border-bottom:1px solid var(--border)}
+  .gtm-routing-cell:last-child{border-bottom:none}
+  .header h1{font-size:clamp(20px,5vw,38px)!important}
+  .section-title{font-size:clamp(16px,4vw,20px)!important}
+  .spine-node{padding:14px 16px}
+  .formula-content{font-size:9px;overflow-x:auto}
+  .scope-grid,.tradeoff-grid,.lane-grid,.term-grid,.obj-grid,.domain-grid{grid-template-columns:1fr!important}
+  html{font-size:13px}
+}
+@media(max-width:480px){
+  .tab-btn{padding:8px 6px;font-size:7px;letter-spacing:.04em}
+  html{font-size:12px}
+}
+
+</style>
+</head>
+<body>
+<div class="wrgrid" aria-hidden="true"></div>
+
+<nav class="nav" id="pageNav">
+  <div class="n-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="width:22px;height:22px"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <span style="font-family:var(--mn);font-size:11px;font-weight:400;letter-spacing:.02em">governed revenue</span>
+  </div>
+  <div class="nr">
+    <a class="n-lnk" href="index.html">home</a>
+    <a class="n-lnk" href="spine-v4.html">spine</a>
+    <a class="n-lnk" href="sovereignty-map.html">sovereignty</a>
+    <a class="n-lnk" href="split-funnel-map.html">motion</a>
+    <a class="n-lnk" href="lexicon.html">lexicon</a>
+    <a class="n-lnk" href="identity-graph.html">identity</a>
+    <a class="n-lnk" href="provenance.html">provenance</a>
+    <button class="ham" onclick="document.getElementById('mobNav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <div class="mob-btns2">
+    <a class="btn-out2" href="index.html">home</a>
+    <a class="btn-fill2" href="index.html#briefing">strategic briefing</a>
+  </div>
+  <a class="mob-lnk" href="spine-v4.html">spine</a>
+  <a class="mob-lnk" href="sovereignty-map.html">sovereignty map</a>
+  <a class="mob-lnk" href="split-funnel-map.html">motion map</a>
+  <a class="mob-lnk" href="lexicon.html">lexicon</a>
+  <a class="mob-lnk" href="identity-graph.html">identity graph</a>
+  <a class="mob-lnk" href="provenance.html">provenance</a>
+</div>
+
+<div class="container">
+  <div class="header">
+    <div class="header-eyebrow">Computational Architecture · v4.1 · Seven Layers + Full Motion Domains + Agent Overlay</div>
+    <h1>The Reinforced Revenue <em>Architecture</em> Spine</h1>
+    <p>A constrained probabilistic revenue system with agent-executable layers, dual probability modeling, seven motion domains (core + partner + field + CS), BDR bifurcation, territory allocation, pod execution, and constitutional security governance. No side silos. Everything reconciles to economics.</p>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn on" id="tab-spine" onclick="setTab('spine')">Spine + Agents</button>
+    <button class="tab-btn" id="tab-positioning" onclick="setTab('positioning')">Positioning Architecture</button>
+    <button class="tab-btn" id="tab-governance" onclick="setTab('governance')">Governance + Day 1</button>
+    <button class="tab-btn" id="tab-measurement" onclick="setTab('measurement')">Measurement Shift</button>
+    <button class="tab-btn" id="tab-security" onclick="setTab('security')">Security & Governance</button>
+  </div>
+
+  <!-- ====== TAB 1: SPINE + AGENTS ====== -->
+  <div class="tab-panel vis" id="panel-spine">
+
+    <div class="principles">
+      <span class="principle core">Gravity sits lowest</span>
+      <span class="principle core">Learning pushes downward</span>
+      <span class="principle core">Action flows upward</span>
+      <span class="principle core">Agents = sovereignty enforcement</span>
+      <span class="principle">Contracts, not vibes</span>
+      <span class="principle">Deterministic Day 1 → Adaptive when earned</span>
+      <span class="principle">Brand = narrative consistency envelope</span>
+      <span class="principle">If brand conflicts with revenue density → gravity wins</span>
+    </div>
+
+    <!-- LAYER 01 -->
+    <div class="spine-node feedback-node" style="--lc:var(--c-feedback)">
+      <div class="layer-tag">Layer 01 · Immune System</div>
+      <div class="spine-label" style="color:var(--c-feedback)">Revenue Feedback & Reweighting</div>
+      <div class="spine-desc">Closed-loop correction. Measures prediction error against actual conversion. Attribution is reclassified here — not a governing layer but a lagging descriptive dataset used to calibrate signal weights.</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+        <span class="agent-badge">Attribution & Learning Agent</span>
+      </div>
+      <div class="formula-box">
+        <div class="formula-title">Correction Math</div>
+        <div class="formula-content"><span class="var">Prediction Error</span> <span class="op">=</span> Predicted P(t) <span class="op">−</span> Actual Conversion
+
+<span class="var">If Error ≥ Threshold:</span>
+  → Reweight signals (L04) → Adjust positioning (L03)
+  → Recalculate ICP (L05) → Adjust velocity (L02)
+  → Reallocate capital (L06)</div>
+      </div>
+      <div class="formula-box" style="border-left-color:var(--c-error)">
+        <div class="formula-title" style="color:var(--c-error)">Error Aggregation Window</div>
+        <div class="formula-content"><span class="var">Scope:</span> Rolling 90-day cohort <span class="op">×</span> ICP cluster
+Per-deal → too noisy | Per-cohort → <span class="op">✓</span> primary | Per-cluster → <span class="op">✓</span> reweighting</div>
+      </div>
+      <div class="diagnostic-box" style="border-left-color:var(--accent)">
+        <div class="diagnostic-title" style="color:var(--accent)">Attribution — Reclassified</div>
+        <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--accent)">◈</span><div class="diagnostic-text">Attribution feeds calibration. It does <strong>not</strong> govern budget arguments.</div></div>
+        <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-signal)">→</span><div class="diagnostic-text"><code>Old:</code> Channel → Touchpoint → Credit allocation</div></div>
+        <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--accent)">→</span><div class="diagnostic-text"><code>New:</code> Signal shift → Probability Δ → Weight recalibration</div></div>
+      </div>
+      <div class="contract-box">
+        <div class="contract-title">Contract: Learning Agent → All Layers</div>
+        <div class="contract-row"><span class="contract-key">lift</span><span class="contract-val">Measured signal lift per channel/motion</span></div>
+        <div class="contract-row"><span class="contract-key">learning_latency</span><span class="contract-val">Time to validated lift (primary KPI)</span></div>
+        <div class="contract-row"><span class="contract-key">correction_latency</span><span class="contract-val">Time from error detection → reweighting</span></div>
+        <div class="contract-row"><span class="contract-key">reweight_recs[]</span><span class="contract-val">Recommended weight adjustments per signal</span></div>
+      </div>
+    </div>
+
+    <div class="spine-connector thick">↕ Feedback pushes down</div>
+
+    <!-- LAYER 02 -->
+    <div class="spine-node" style="--lc:var(--c-orchestrate)">
+      <div class="layer-tag">Layer 02</div>
+      <div class="spine-label">Orchestration & Velocity</div>
+      <div class="spine-desc">Velocity is diagnostic: Δ P_composite / Δ Time. Decomposed into structural velocity (Δ P_base) and behavioral velocity (Δ P_accel). Friction detector: P↑ Stage static = bottleneck. Stage↑ P weak = qualification inflation.</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+        <span class="agent-badge">Qualification Agent</span>
+        <span class="agent-badge">Motion Agent</span>
+        <span class="agent-badge" style="border-color:var(--c-partner);color:var(--c-partner);background:rgba(26,82,118,.06)">Partner Agent</span>
+        <span class="agent-badge" style="border-color:var(--c-field);color:var(--c-field);background:rgba(108,52,131,.06)">Field Acceleration</span>
+        <span class="agent-badge" style="border-color:var(--c-cs);color:var(--c-cs);background:rgba(17,122,101,.06)">Customer Health</span>
+        <span class="agent-badge" style="border-color:var(--c-territory);color:var(--c-territory);background:rgba(120,66,18,.06)">Territory Allocation</span>
+        <span class="agent-badge orchestrator">Orchestration Agent (overlay)</span>
+      </div>
+      <div class="contract-box">
+        <div class="contract-title">Contracts: Qualification + Motion + Territory Agents</div>
+        <div class="contract-row"><span class="contract-key">account_state</span><span class="contract-val">Current qualification status per account</span></div>
+        <div class="contract-row"><span class="contract-key">escalation_decision</span><span class="contract-val">Gate pass/fail with reasoning</span></div>
+        <div class="contract-row"><span class="contract-key">SLA_clock</span><span class="contract-val">Time remaining in current stage</span></div>
+        <div class="contract-row"><span class="contract-key">motion_track_id</span><span class="contract-val">Assigned GTM motion per account</span></div>
+        <div class="contract-row"><span class="contract-key">channel_plan</span><span class="contract-val">Specific channel mix and sequence</span></div>
+        <div class="contract-row"><span class="contract-key">pod_assignment</span><span class="contract-val">Territory → Pod → Rep mapping</span></div>
+        <div class="contract-row"><span class="contract-key">bdr_track</span><span class="contract-val">cold_exploration | signal_intercept</span></div>
+        <div class="contract-row"><span class="contract-key">partner_cosell_flag</span><span class="contract-val">Co-sell eligibility + partner tier</span></div>
+        <div class="contract-row"><span class="contract-key">health_score</span><span class="contract-val">Customer health (existing accounts)</span></div>
+        <div class="contract-row"><span class="contract-key">expansion_probability</span><span class="contract-val">Cross-sell / upsell likelihood</span></div>
+      </div>
+    </div>
+
+    <!-- EXECUTION — EXPANDED MOTION DOMAINS -->
+    <div class="exec-label">↑ Motion Domains — All reconcile to economics. No side silos.</div>
+    <div class="motion-domain-grid">
+      <div class="motion-domain" style="--md-c:var(--c-inbound)"><div class="motion-domain-tag">Core</div><div class="motion-domain-name">Inbound / PLG</div><div class="motion-domain-desc">Demand capture + self-serve</div></div>
+      <div class="motion-domain" style="--md-c:var(--c-outbound)"><div class="motion-domain-tag">Core</div><div class="motion-domain-name">Outbound</div><div class="motion-domain-desc">Cold exploration + signal interception</div></div>
+      <div class="motion-domain" style="--md-c:var(--c-abm)"><div class="motion-domain-tag">Core</div><div class="motion-domain-name">ABM</div><div class="motion-domain-desc">Account penetration</div></div>
+      <div class="motion-domain" style="--md-c:var(--c-partner)"><div class="motion-domain-tag">Extended</div><div class="motion-domain-name">Partner / Channel</div><div class="motion-domain-desc">Distribution multiplier</div></div>
+    </div>
+    <div class="motion-domain-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="motion-domain" style="--md-c:var(--c-field)"><div class="motion-domain-tag">Extended</div><div class="motion-domain-name">Field Acceleration</div><div class="motion-domain-desc">Stakeholder compression</div></div>
+      <div class="motion-domain" style="--md-c:var(--c-cs)"><div class="motion-domain-tag">Post-Sale</div><div class="motion-domain-name">Customer Expansion</div><div class="motion-domain-desc">Margin preservation + growth</div></div>
+      <div class="motion-domain" style="--md-c:var(--c-cs)"><div class="motion-domain-tag">Post-Sale</div><div class="motion-domain-name">Churn Control</div><div class="motion-domain-desc">Revenue retention</div></div>
+    </div>
+
+    <!-- NEW AGENTS -->
+    <div class="side-feeds" style="grid-template-columns:repeat(3,1fr);margin-top:12px">
+      <div class="side-feed" style="--sf-c:var(--c-partner)">
+        <span class="agent-badge" style="border-color:var(--c-partner);color:var(--c-partner);background:rgba(26,82,118,.06)">Partner Agent</span>
+        <div class="side-feed-target" style="margin-top:6px;color:var(--c-partner)">Signal + Qualification + Motion</div>
+        <div class="side-feed-desc" style="font-size:10px">Partner-adjusted APS lift, co-sell eligibility, channel resource allocation. Prevents overfunding low-yield alliances.</div>
+      </div>
+      <div class="side-feed" style="--sf-c:var(--c-field)">
+        <span class="agent-badge" style="border-color:var(--c-field);color:var(--c-field);background:rgba(108,52,131,.06)">Field Acceleration Agent</span>
+        <div class="side-feed-target" style="margin-top:6px;color:var(--c-field)">Signal + Qualification + Motion</div>
+        <div class="side-feed-desc" style="font-size:10px">Acceleration probability delta, escalation recommendation. Events measured on probability lift, not badge scans.</div>
+      </div>
+      <div class="side-feed" style="--sf-c:var(--c-cs)">
+        <span class="agent-badge" style="border-color:var(--c-cs);color:var(--c-cs);background:rgba(17,122,101,.06)">Customer Health Agent</span>
+        <div class="side-feed-target" style="margin-top:6px;color:var(--c-cs)">Product Intel → Signal → ICP → P&L</div>
+        <div class="side-feed-desc" style="font-size:10px">Health score, churn probability, expansion probability, CS intervention triggers. Feeds back into ICP recalibration and P&L forecasts.</div>
+      </div>
+    </div>
+
+    <!-- BDR BIFURCATION -->
+    <div class="section-title" style="font-size:14px;margin:16px 0 4px">BDR Architecture — Bifurcated</div>
+    <div class="section-sub" style="margin-bottom:8px">Outbound is not a strategy. It is a deployment mode. Cold ≠ signal-enabled.</div>
+    <div class="bdr-split">
+      <div class="bdr-track" style="--bt-c:var(--c-cold)">
+        <div class="bdr-track-label">Cold Exploration</div>
+        <div class="bdr-track-name">Hypothesis-Driven Prospecting</div>
+        <div class="bdr-track-desc">Exploration capital inside prioritized ICP clusters. Bypasses Signal Agent but must pass ICP → Territory → Motion → Pod. Purpose: validate segment fit, harvest objection intelligence, seed awareness.</div>
+        <div class="bdr-kpi">KPI: Learning velocity · Meeting quality by segment · Early-stage conversion by cluster</div>
+      </div>
+      <div class="bdr-track" style="--bt-c:var(--c-intercept)">
+        <div class="bdr-track-label">Signal-Enabled Interception</div>
+        <div class="bdr-track-name">Probability-Triggered Pursuit</div>
+        <div class="bdr-track-desc">Precision interception triggered by APS threshold. Passes through full probability gate: Signal → Qualification → Territory → Motion → Pod.</div>
+        <div class="bdr-kpi">KPI: Time-to-first-touch · Stage acceleration · Close rate Δ vs cold baseline</div>
+      </div>
+    </div>
+
+    <!-- TERRITORY + POD FLOW -->
+    <div class="section-title" style="font-size:14px;margin:16px 0 4px">Territory Allocation & Pod Execution</div>
+    <div class="section-sub" style="margin-bottom:8px">GEO = capacity constraint + economic modifier · Pods = specialized economic units</div>
+
+    <div class="side-feeds" style="grid-template-columns:1fr 1fr;margin:8px 0">
+      <div class="side-feed" style="--sf-c:var(--c-territory)">
+        <span class="agent-badge" style="border-color:var(--c-territory);color:var(--c-territory);background:rgba(120,66,18,.06)">Territory Allocation Agent</span>
+        <div class="side-feed-target" style="margin-top:6px;color:var(--c-territory)">Between Qualification → Motion</div>
+        <div class="side-feed-desc" style="font-size:10px">Account-to-pod assignment, capacity balancing, GEO-based probability adjustment, territory-level pipeline health. Prevents random rep assignment and high-value accounts stuck in overloaded pods.</div>
+      </div>
+      <div class="side-feed" style="--sf-c:var(--c-territory);border-top-color:var(--text-3)">
+        <div class="side-feed-title" style="font-size:13px">Pod Architecture</div>
+        <div class="side-feed-target" style="color:var(--text-3)">Execution Endpoints · Structured Around Segment + GEO + ACV Band</div>
+        <div class="side-feed-desc" style="font-size:10px">Pods receive: ranked account queue, motion track, APS, narrative package, escalation clock. Pods return: call intelligence, objection patterns, stage updates, competitive insight → feeds back to Narrative, Signal, Learning agents. Pods are sensors and persuaders.</div>
+      </div>
+    </div>
+
+    <div class="pod-flow">
+      <div class="pod-flow-step">Signal Agent</div><div class="pod-flow-arrow">→</div>
+      <div class="pod-flow-step">Qualification</div><div class="pod-flow-arrow">→</div>
+      <div class="pod-flow-step highlight">Territory Allocation</div><div class="pod-flow-arrow">→</div>
+      <div class="pod-flow-step">Motion Agent</div><div class="pod-flow-arrow">→</div>
+      <div class="pod-flow-step highlight">Pod (AE/BDR/SE/CSM)</div><div class="pod-flow-arrow">→</div>
+      <div class="pod-flow-step">Revenue</div><div class="pod-flow-arrow">→</div>
+      <div class="pod-flow-step">Learning Agent</div>
+    </div>
+
+    <div class="gtm-routing">
+      <div class="gtm-routing-title">Expanded Routing Matrix — All Motion Domains</div>
+      <div class="gtm-routing-row header"><div class="gtm-routing-cell">ICP + Probability</div><div class="gtm-routing-cell">Motion Domain</div><div class="gtm-routing-cell">Execution Surface</div><div class="gtm-routing-cell">Measurement</div></div>
+      <div class="gtm-routing-row"><div class="gtm-routing-cell"><code>High density + High P</code></div><div class="gtm-routing-cell">ABM / Partner co-sell</div><div class="gtm-routing-cell">AE-led + BDR signal intercept</div><div class="gtm-routing-cell">Stage acceleration · Partner lift</div></div>
+      <div class="gtm-routing-row"><div class="gtm-routing-cell"><code>High density + Low P</code></div><div class="gtm-routing-cell">Field acceleration + Outbound</div><div class="gtm-routing-cell">BDR signal-enabled + events</div><div class="gtm-routing-cell">Activation delta · Event lift</div></div>
+      <div class="gtm-routing-row"><div class="gtm-routing-cell"><code>Mid density + Med P</code></div><div class="gtm-routing-cell">Hybrid outbound</div><div class="gtm-routing-cell">BDR cold exploration + automated</div><div class="gtm-routing-cell">Learning velocity · Segment fit</div></div>
+      <div class="gtm-routing-row"><div class="gtm-routing-cell"><code>Low density</code></div><div class="gtm-routing-cell">Automated inbound only</div><div class="gtm-routing-cell">PLG / self-serve</div><div class="gtm-routing-cell">Conversion rate · CAC</div></div>
+      <div class="gtm-routing-row"><div class="gtm-routing-cell"><code>Existing customer</code></div><div class="gtm-routing-cell">Expansion / Churn control</div><div class="gtm-routing-cell">CSM + AE co-led</div><div class="gtm-routing-cell">Expansion P · Churn P · NRR</div></div>
+    </div>
+
+    <div class="spine-connector">↕</div>
+
+    <!-- QUALIFICATION GATE -->
+    <div class="gate">
+      <div class="gate-diamond"><div class="gate-diamond-inner">◇</div></div>
+      <div class="gate-content">
+        <div class="gate-title">Dynamic Qualification Gate</div>
+        <div class="gate-rule">If <code>P_composite ≥ Threshold(t)</code> AND <code>Revenue Density ≥ Threshold(t)</code> → Human Escalation. Threshold elastic: f(Sales Capacity, Forecast Gap, Pipeline Load).</div>
+      </div>
+    </div>
+
+    <div class="spine-connector">↕</div>
+
+    <!-- LAYER 03 — POSITIONING -->
+    <div class="spine-node position-node" style="--lc:var(--c-position)">
+      <div class="layer-tag">Layer 03 · Translation Logic</div>
+      <div class="spine-label" style="color:var(--c-position)">Positioning & Value Architecture</div>
+      <div class="spine-desc">Not copywriting. Translation logic. Converts economic cluster truth into market-facing differentiation. Parameterized per ICP cluster. If a value thesis underperforms, feedback pushes positioning adjustment.</div>
+      <div class="outputs-grid">
+        <div class="output-card"><div class="output-card-num">Output 01</div><div class="output-card-title">Problem Framing</div><div class="output-card-items"><code>Economic pain acuity</code><br><code>Cost of inaction</code></div></div>
+        <div class="output-card"><div class="output-card-num">Output 02</div><div class="output-card-title">Value Thesis</div><div class="output-card-items"><code>Measurable outcome</code><br><code>Delta vs alternatives</code></div></div>
+        <div class="output-card"><div class="output-card-num">Output 03</div><div class="output-card-title">Category Position</div><div class="output-card-items"><code>Category redefinition?</code><br><code>Vertical authority?</code><br><code>Incumbent displacement?</code></div></div>
+      </div>
+    </div>
+
+    <!-- SIDE-FEED AGENTS -->
+    <div class="side-feeds">
+      <div class="side-feed" style="--sf-c:var(--c-product)">
+        <span class="agent-badge product">Product Intelligence Agent</span>
+        <div class="side-feed-title" style="margin-top:8px">Product Intelligence</div>
+        <div class="side-feed-target">Feeds → Layers 05 + 04</div>
+        <div class="side-feed-desc">Converts product telemetry into economic inputs: time-to-value, adoption depth, expansion triggers, churn risk. Makes retention probability in Revenue Density a measured input, not a handwave.</div>
+      </div>
+      <div class="side-feed" style="--sf-c:var(--c-narrative)">
+        <span class="agent-badge narrative">Marketing Narrative Agent</span>
+        <div class="side-feed-title" style="margin-top:8px">Marketing Narrative</div>
+        <div class="side-feed-target">Feeds → Layers 03 → 02 execution</div>
+        <div class="side-feed-desc">Runs controlled messaging hypothesis tests within guardrails. Does not invent positioning. Generates structured variants by cluster and hands them to Motion. The Learning layer decides what lives.</div>
+      </div>
+    </div>
+
+    <div class="spine-connector">↕</div>
+
+    <!-- LAYER 04 — SIGNAL ENGINE -->
+    <div class="spine-node" style="--lc:var(--c-signal)">
+      <div class="layer-tag">Layer 04 · Adjudication · Dual Probability</div>
+      <div class="spine-label">Signal Interpretation Engine</div>
+      <div class="spine-desc">Two distinct probability components. Baseline readiness (structural) and behavioral acceleration. Each quadrant produces different GTM motion.</div>
+      <span class="agent-badge" style="margin-top:6px">Signal & Intent Agent</span>
+      <div class="formula-box" style="border-left-color:var(--c-icp)">
+        <div class="formula-title" style="color:var(--c-icp)">P_base — Structural Readiness</div>
+        <div class="formula-content"><span class="var">P_base(t)</span> <span class="op">=</span> Σ (Structural Weight<sub>i</sub> <span class="op">×</span> Relevance Decay<sub>i</sub> <span class="op">×</span> ICP Modifier)
+Inputs: Budget cycles, regulatory, exec changes, funding, competitive displacement
+  <span class="op">+</span> Partner signals: deal reg, co-sell flags, install-base overlap
+  <span class="op">+</span> Product signals: usage depth, churn indicators, expansion triggers
+Character: Moves slowly. Precedes engagement. <span class="op">Economic readiness.</span></div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-title">P_accel — Behavioral Velocity</div>
+        <div class="formula-content"><span class="var">P_accel(t)</span> <span class="op">=</span> Σ (Engagement Weight<sub>i</sub> <span class="op">×</span> Freshness<sub>i</sub> <span class="op">×</span> ICP Modifier)
+Freshness <span class="op">=</span> e<sup>(-λt)</sup>
+  <span class="op">+</span> Event signals: attendance, stakeholder density, exec engagement
+  <span class="op">+</span> Field acceleration: multi-thread compression, buying committee completeness
+Character: Moves quickly. <span class="op">Active buying motion.</span></div>
+      </div>
+      <div class="formula-box" style="border-left-color:var(--accent)">
+        <div class="formula-title" style="color:var(--accent)">Composite + Diagnostic</div>
+        <div class="formula-content"><span class="var">P(t)</span> <span class="op">=</span> P_base × α <span class="op">+</span> P_accel × (1−α)   |   α tunable per cluster
+
+High base + High accel → <span class="op">Highest priority</span>
+High base + Low accel  → <span class="op">Activation target</span>
+Low base  + High accel → <span class="op">Qualification risk</span>
+Low base  + Low accel  → <span class="op">Deprioritize</span></div>
+      </div>
+      <div class="contract-box">
+        <div class="contract-title">Contract: Signal Agent → Qualification + Motion</div>
+        <div class="contract-row"><span class="contract-key">APS</span><span class="contract-val">Account Probability Score (composite)</span></div>
+        <div class="contract-row"><span class="contract-key">confidence</span><span class="contract-val">Confidence interval on APS</span></div>
+        <div class="contract-row"><span class="contract-key">expiry</span><span class="contract-val">Score valid until (TTL)</span></div>
+        <div class="contract-row"><span class="contract-key">drivers[]</span><span class="contract-val">Top contributing signals with weights</span></div>
+        <div class="contract-row"><span class="contract-key">p_base</span><span class="contract-val">Structural readiness component</span></div>
+        <div class="contract-row"><span class="contract-key">p_accel</span><span class="contract-val">Behavioral acceleration component</span></div>
+      </div>
+    </div>
+
+    <div class="spine-connector">↕</div>
+
+    <!-- LAYER 05 — ICP -->
+    <div class="spine-node" style="--lc:var(--c-icp)">
+      <div class="layer-tag">Layer 05 · Dual-Dimension</div>
+      <div class="spine-label">ICP Economic Clustering</div>
+      <div class="spine-desc">Two dimensions: Revenue Density Score (capital allocation) + Narrative Receptivity Profile (positioning strategy). Sortable topography.</div>
+      <span class="agent-badge" style="margin-top:6px">ICP / Segment Agent</span>
+      <div class="formula-box">
+        <div class="formula-title">Revenue Density Score</div>
+        <div class="formula-content"><span class="var">Revenue Density</span> <span class="op">=</span> (Win Rate <span class="op">×</span> ACV <span class="op">×</span> Margin <span class="op">×</span> Retention Prob) <span class="op">÷</span> Sales Cycle Length</div>
+      </div>
+      <div class="formula-box" style="border-left-color:var(--c-position)">
+        <div class="formula-title" style="color:var(--c-position)">Narrative Receptivity Profile</div>
+        <div class="formula-content"><span class="var">Receptivity</span> <span class="op">=</span> f(Category Maturity, Disruption Tolerance, Strategic Influence)
+High density + High receptivity → <span class="op">Primary target</span>
+High density + Low receptivity  → <span class="op">Patient economics</span>
+Low density  + High receptivity → <span class="op">Strategic beachhead</span>
+Low density  + Low receptivity  → <span class="op">Deprioritize</span></div>
+      </div>
+      <div class="contract-box">
+        <div class="contract-title">Contract: ICP Agent → Signal + Positioning + Motion</div>
+        <div class="contract-row"><span class="contract-key">segment_id</span><span class="contract-val">Cluster identifier</span></div>
+        <div class="contract-row"><span class="contract-key">density_score</span><span class="contract-val">Revenue density quantified</span></div>
+        <div class="contract-row"><span class="contract-key">receptivity</span><span class="contract-val">Narrative receptivity score</span></div>
+        <div class="contract-row"><span class="contract-key">guardrails</span><span class="contract-val">CAC ceiling, margin floor from P&L Agent</span></div>
+      </div>
+    </div>
+
+    <div class="spine-connector">↕</div>
+
+    <!-- LAYER 06 — GRAVITY -->
+    <div class="spine-node gravity-node" style="--lc:var(--c-gravity)">
+      <div class="layer-tag">Layer 06 · Anchor Mass</div>
+      <div class="spine-label" style="color:var(--c-gravity)">P&L Economic Gravity</div>
+      <div class="spine-desc">Never vendor. Internal truth. No layer overrides gravity. No narrative survives without economic proof.</div>
+      <span class="agent-badge" style="margin-top:6px">P&L Agent</span>
+      <div class="formula-box">
+        <div class="formula-title">Constraint Math</div>
+        <div class="formula-content"><span class="var">ARR₁</span> <span class="op">=</span> ARR₀ <span class="op">×</span> (1 + g)
+Required Pipeline <span class="op">=</span> ARR₁ <span class="op">×</span> Coverage Multiple
+Constraints: Segment CAC Ceiling | Contribution Margin | LTV:CAC Threshold</div>
+      </div>
+      <div class="contract-box">
+        <div class="contract-title">Contract: P&L Agent → All Layers (Guardrails)</div>
+        <div class="contract-row"><span class="contract-key">CAC_ceiling[]</span><span class="contract-val">Per-segment maximum acquisition cost</span></div>
+        <div class="contract-row"><span class="contract-key">margin_floor</span><span class="contract-val">Minimum contribution margin</span></div>
+        <div class="contract-row"><span class="contract-key">coverage_req</span><span class="contract-val">Pipeline coverage multiple required</span></div>
+        <div class="contract-row"><span class="contract-key">LTV_CAC_min</span><span class="contract-val">Minimum LTV:CAC ratio threshold</span></div>
+      </div>
+      <div class="imp-row">
+        <span class="imp-lbl">Structural Load</span>
+        <div class="imp-dots"><span class="imp-dot f"></span><span class="imp-dot f"></span><span class="imp-dot f"></span><span class="imp-dot f"></span><span class="imp-dot f"></span></div>
+        <span style="font-family:var(--mn);font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:var(--c-gravity);padding:2px 5px;border:.5px solid var(--c-gravity);border-radius:1px;margin-left:auto">⚡ Anchor Mass</span>
+      </div>
+    </div>
+
+    <!-- STAGE LEDGER -->
+    <div class="ledger-sidebar">
+      <div class="ledger-sidebar-title">Stage Ledger (Financial Checkpoints) — Discrete, Separate, Connected</div>
+      <div class="stage-row"><span class="stage-id">S1</span><span class="stage-desc">Qualification checkpoint</span></div>
+      <div class="stage-row"><span class="stage-id">S2</span><span class="stage-desc">Evaluation checkpoint</span></div>
+      <div class="stage-row"><span class="stage-id">S3</span><span class="stage-desc">Decision checkpoint</span></div>
+      <div class="stage-row"><span class="stage-id" style="color:var(--accent)">CLOSED</span><span class="stage-desc">Revenue recognized</span></div>
+      <div style="font-size:10px;color:var(--text-3);margin-top:8px;line-height:1.5">Finance trusts the ledger. Operators consult the forecast. Keep them separate. Keep them connected.</div>
+    </div>
+  </div>
+
+  <!-- ====== TAB 2: POSITIONING ====== -->
+  <div class="tab-panel" id="panel-positioning">
+    <div class="section-title">Positioning Architecture</div>
+    <div class="section-sub">Reconciles to: Economic ICP Cluster × Buyer-Level Tension × Competitive Contrast</div>
+
+    <div class="screening">
+      <div class="screening-label">Positioning Core</div>
+      <div class="screening-text">
+        <strong style="color:var(--text-1);font-style:normal">Problem:</strong> Modern GTM systems scale activity, not economic insight. Signal arrives late, qualification drifts, and attribution distorts capital allocation.<br><br>
+        <strong style="color:var(--text-1);font-style:normal">Shift:</strong> Replace channel-centric GTM with a portfolio-level revenue orchestration layer governed by economic gravity.<br><br>
+        <strong style="color:var(--text-1);font-style:normal">Outcome:</strong> Shorter learning cycles. Higher-quality pipeline. Capital efficiency that compounds across assets.
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:16px;margin-top:28px">Category Tension</div>
+    <div class="section-sub">Pick one. Do not say all.</div>
+    <div class="pos-card" style="border-left:3px solid var(--accent)">
+      <div class="pos-card-label" style="color:var(--accent)">Selected Tension</div>
+      <div class="pos-card-text">"From fragmented GTM tooling to coordinated revenue system governed by economic gravity."</div>
+    </div>
+
+    <div class="section-title" style="font-size:16px;margin-top:28px">Outcome Messaging Hierarchy</div>
+    <div class="section-sub">Start at Layer 1, cascade downward. Most companies start at Layer 4.</div>
+    <div class="outcome-grid">
+      <div class="outcome-card" style="--oc:var(--c-gravity)"><div class="outcome-level">Layer 1</div><div class="outcome-audience">Board</div><div class="outcome-text">Growth acceleration with capital efficiency. Learning cycles that compound.</div></div>
+      <div class="outcome-card" style="--oc:var(--c-orchestrate)"><div class="outcome-level">Layer 2</div><div class="outcome-audience">Operator</div><div class="outcome-text">Reduced response half-life. Fewer wasted pursuits. Higher-quality pipeline.</div></div>
+      <div class="outcome-card" style="--oc:var(--c-signal)"><div class="outcome-level">Layer 3</div><div class="outcome-audience">Practitioner</div><div class="outcome-text">Clear next-best action. No duplicate outreach. Faster qualification clarity.</div></div>
+      <div class="outcome-card" style="--oc:var(--c-icp)"><div class="outcome-level">Layer 4</div><div class="outcome-audience">Feature</div><div class="outcome-text">Automated signal scoring. Segment-specific motion tracks. Lift measurement.</div></div>
+    </div>
+
+    <div class="section-title" style="font-size:16px;margin-top:28px">Three Messaging Angles</div>
+    <div class="section-sub">Positioning becomes sharp only when it is forced to choose</div>
+    <div class="messaging-grid">
+      <div class="messaging-card" style="--mc:var(--c-gravity)">
+        <div class="messaging-lens">PE / Board Lens</div>
+        <div class="messaging-line">"We reduce revenue learning cycles from quarters to weeks, so capital allocation decisions compound instead of drift."</div>
+        <div class="messaging-context">Economic language. Speaks to capital efficiency, compounding, and portfolio-level returns.</div>
+      </div>
+      <div class="messaging-card" style="--mc:var(--c-signal)">
+        <div class="messaging-lens">Sales Leader Lens</div>
+        <div class="messaging-line">"We intercept high-probability accounts before shortlist formation and eliminate low-yield pursuits."</div>
+        <div class="messaging-context">Operational language. Speaks to pipeline quality, timing advantage, and waste elimination.</div>
+      </div>
+      <div class="messaging-card" style="--mc:var(--c-orchestrate)">
+        <div class="messaging-lens">Marketing Leader Lens</div>
+        <div class="messaging-line">"We turn fragmented signal telemetry into governed, economically-weighted motion."</div>
+        <div class="messaging-context">System language. Speaks to signal coherence, governance, and orchestration intelligence.</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:16px;margin-top:28px">Agent → Narrative Mapping</div>
+    <div class="section-sub">Each agent supports positioning indirectly</div>
+    <div class="outputs-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="output-card" style="border-top-color:var(--c-gravity)"><div class="output-card-num">P&L Agent</div><div class="output-card-title">Capital Discipline</div></div>
+      <div class="output-card" style="border-top-color:var(--c-signal)"><div class="output-card-num">Signal Agent</div><div class="output-card-title">Early Interception</div></div>
+      <div class="output-card" style="border-top-color:var(--c-gate)"><div class="output-card-num">Qualification</div><div class="output-card-title">Quality Over Noise</div></div>
+      <div class="output-card" style="border-top-color:var(--c-orchestrate)"><div class="output-card-num">Motion Agent</div><div class="output-card-title">Coordinated Pursuit</div></div>
+      <div class="output-card" style="border-top-color:var(--c-feedback)"><div class="output-card-num">Learning Agent</div><div class="output-card-title">Compounding Intel</div></div>
+    </div>
+
+    <div class="screening" style="margin-top:28px">
+      <div class="screening-label">The Hard Part — What This Is Not</div>
+      <div class="screening-text">You cannot position this as "AI replaces your team." You position it as: AI reduces friction, standardizes signal interpretation, and enforces economic alignment. Humans focus on trust and persuasion. That's credible.</div>
+    </div>
+  </div>
+
+  <!-- ====== TAB 3: GOVERNANCE + DAY 1 ====== -->
+  <div class="tab-panel" id="panel-governance">
+    <div class="section-title">Agent Self-Learning Governance</div>
+    <div class="section-sub">How agents train themselves without mutating the business</div>
+
+    <div class="governance-grid">
+      <div class="governance-col">
+        <div class="governance-col-title safe">Safe Self-Learning (Autonomous)</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-signal)">✓</span>Weight adjustment within ± X% band</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-signal)">✓</span>Decay constant λ calibration within [λ_min, λ_max]</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-signal)">✓</span>Probability calibration (α tuning per cluster)</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-signal)">✓</span>Lift measurement and reporting</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-signal)">✓</span>Messaging variant A/B within approved frames</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-signal)">✓</span>Cadence optimization within guardrails</div>
+      </div>
+      <div class="governance-col">
+        <div class="governance-col-title gated">Human-Gated Changes (Approval Required)</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-error)">⊘</span>Segment definitions and cluster boundaries</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-error)">⊘</span>Qualification thresholds (gate criteria)</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-error)">⊘</span>Budget reallocations across segments</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-error)">⊘</span>Stage taxonomy changes</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-error)">⊘</span>LTV:CAC threshold modifications</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-error)">⊘</span>Coverage multiple adjustments</div>
+        <div class="governance-item"><span class="gov-icon" style="color:var(--c-error)">⊘</span>Brand envelope constraints</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="font-size:16px;margin-top:28px">Deterministic-First Build Plan</div>
+    <div class="section-sub">Day 1 agents are transparent services. Adaptive earned, not assumed.</div>
+
+    <div class="day1-box">
+      <div class="day1-title">Implementation Phases</div>
+      <div class="day1-phases">
+        <div class="day1-phase">
+          <div class="day1-phase-label p1">Phase 1 — Day 1</div>
+          <div class="day1-phase-desc">All agents deterministic. Transparent weights. Explicit thresholds. Explainable decay ranges. Full auditability. Finance can read every decision.</div>
+        </div>
+        <div class="day1-phase">
+          <div class="day1-phase-label p2">Phase 2 — After Outcomes</div>
+          <div class="day1-phase-desc">Adaptive calibration unlocked within narrow bands. Only after sufficient cohort data accumulates. Weight adjustments bounded by guardrails.</div>
+        </div>
+        <div class="day1-phase">
+          <div class="day1-phase-label p3">Phase 3 — Compounding</div>
+          <div class="day1-phase-desc">Cross-portfolio learning enabled. Adaptive bands widen based on prediction accuracy. Human gates remain on structural changes. System compounds.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="weighting-box" style="margin-top:18px">
+      <div class="weighting-title">Adaptive Guardrails — Bounded Authority (All Phases)</div>
+      <div class="weighting-row">
+        <span class="weighting-badge base">Deterministic Base</span>
+        <span class="weighting-badge adaptive">Adaptive Calibration</span>
+      </div>
+      <div class="weighting-text">Explainable by default. Intelligent over time. Base weights auditable by finance. Adaptive layer bounded by deterministic constraints — cannot drift outside economics. Vendors feed the event bus; they cannot write weights, thresholds, or reallocation triggers.</div>
+    </div>
+  </div>
+
+  <!-- ====== TAB 4: MEASUREMENT ====== -->
+  <div class="tab-panel" id="panel-measurement">
+    <div class="section-title">Measurement Shift</div>
+    <div class="section-sub">From attribution credit to learning latency</div>
+
+    <div class="measurement-grid">
+      <div class="measurement-card primary">
+        <div class="measurement-label pri">Primary KPI (New)</div>
+        <div class="measurement-value">Learning Latency</div>
+        <div class="measurement-desc">Time from signal detection to validated lift. How fast does the system learn what works?</div>
+      </div>
+      <div class="measurement-card primary">
+        <div class="measurement-label pri">Primary KPI (New)</div>
+        <div class="measurement-value">Correction Latency</div>
+        <div class="measurement-desc">Time from error detection to weight recalibration. How fast does the immune system respond?</div>
+      </div>
+      <div class="measurement-card deprecated">
+        <div class="measurement-label dep">Demoted (Calibration Input Only)</div>
+        <div class="measurement-value" style="text-decoration:line-through;text-decoration-color:var(--text-3)">Attribution Share</div>
+        <div class="measurement-desc">No longer governs budget arguments. Feeds Learning Agent as descriptive dataset for weight calibration.</div>
+      </div>
+      <div class="measurement-card primary">
+        <div class="measurement-label pri">Primary KPI (New)</div>
+        <div class="measurement-value">Probability Movement</div>
+        <div class="measurement-desc">Δ P_composite per motion per cluster. What actually changed the probability of the deal?</div>
+      </div>
+    </div>
+
+    <div class="screening" style="margin-top:24px">
+      <div class="screening-label">The Conceptual Shift</div>
+      <div class="screening-text">Attribution answers: "What touched the deal?" Upstream revenue signal asks: "What changed the probability of the deal?" Those are not the same question. One is historical credit. The other is forward-looking causality. Credit becomes secondary. Probability movement becomes primary.</div>
+    </div>
+
+    <div class="diagnostic-box" style="margin-top:18px;border-left-color:var(--accent)">
+      <div class="diagnostic-title" style="color:var(--accent)">What This Signals in Screening</div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--accent)">→</span><div class="diagnostic-text">You are not abolishing attribution. You are <strong>subordinating it to probability modeling</strong>.</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--accent)">→</span><div class="diagnostic-text">That shows you understand <strong>reporting discipline without being trapped by it</strong>.</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--accent)">→</span><div class="diagnostic-text">Engagement ≠ readiness. Touchpoints ≠ causality. Credit ≠ economic movement.</div></div>
+    </div>
+  </div>
+
+  <!-- ====== TAB 5: SECURITY & GOVERNANCE ====== -->
+  <div class="tab-panel" id="panel-security">
+
+    <div class="security-band">
+      <div class="security-band-title">Security & Governance Mandate — Constitutional</div>
+      <div class="security-band-text">This is not a side note. This is not a new vertical layer. It is a <strong>cross-cutting enforcement plane</strong> across every agent and every event. Agents with CRM write access, campaign triggers, warehouse privileges, and API tokens are not helpers. They are <strong>production software</strong>. You don't bolt security on. You encode it into the spine.</div>
+    </div>
+
+    <div class="section-title">Principle: Agents Are Infrastructure</div>
+    <div class="section-sub">Least privilege by default · Scoped tokens · Rotating credentials · Explicit action boundaries</div>
+
+    <div class="diagnostic-box" style="border-left-color:var(--c-security);margin-bottom:18px">
+      <div class="diagnostic-title" style="color:var(--c-security)">Non-Negotiable Agent Constraints</div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">✕</span><div class="diagnostic-text">No agent gets blanket admin access to <strong>any</strong> system</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">✕</span><div class="diagnostic-text">No agent can redefine economic structure</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">✕</span><div class="diagnostic-text">No agent can escalate its own privilege</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">✕</span><div class="diagnostic-text">No agent can execute arbitrary code</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">✕</span><div class="diagnostic-text">No agent can self-modify its own logic</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-signal)">✓</span><div class="diagnostic-text">Agents can <strong>propose</strong>. Adaptive recalibration within bounded parameters only.</div></div>
+    </div>
+
+    <div class="section-title">Permission Stratification</div>
+    <div class="section-sub">Three tiers · No agent autonomously moves between tiers</div>
+
+    <div class="tier-grid">
+      <div class="tier-card" style="--tc:var(--c-signal)">
+        <div class="tier-num">1</div>
+        <div class="tier-label">Tier 1</div>
+        <div class="tier-name">Read-Only Intelligence</div>
+        <div class="tier-capabilities">
+          <code>Pull CRM data</code> · <code>Read transcripts</code> · <code>Query warehouse</code> · <code>Analyze telemetry</code><br><br>
+          No write capability.
+        </div>
+        <div class="tier-agents">Signal & Intent Agent · Narrative Agent · Product Intelligence Agent · Field Acceleration Agent (read)</div>
+      </div>
+      <div class="tier-card" style="--tc:var(--c-diagnostic)">
+        <div class="tier-num">2</div>
+        <div class="tier-label">Tier 2</div>
+        <div class="tier-name">Controlled Write</div>
+        <div class="tier-capabilities">
+          <code>Update scoring fields</code> · <code>Update account state</code> · <code>Log tasks</code> · <code>Suggest reallocations</code><br><br>
+          Cannot execute budget changes.
+        </div>
+        <div class="tier-agents">Qualification Agent · ICP/Segment Agent · Partner Agent · Territory Allocation Agent · Customer Health Agent</div>
+        <div class="tier-requirements">
+          <div class="tier-req-item"><span class="tier-req-icon">◇</span>Audit logging required</div>
+          <div class="tier-req-item"><span class="tier-req-icon">◇</span>Rollback capability required</div>
+        </div>
+      </div>
+      <div class="tier-card" style="--tc:var(--c-security)">
+        <div class="tier-num">3</div>
+        <div class="tier-label">Tier 3</div>
+        <div class="tier-name">High-Impact Execution</div>
+        <div class="tier-capabilities">
+          <code>Trigger campaigns</code> · <code>Modify lifecycle</code> · <code>Reallocate budget</code> · <code>Change thresholds</code> · <code>Alter segments</code>
+        </div>
+        <div class="tier-agents">Motion Agent (partial) · P&L Agent (proposals)</div>
+        <div class="tier-requirements">
+          <div class="tier-req-item"><span class="tier-req-icon">◆</span>Explicit human approval</div>
+          <div class="tier-req-item"><span class="tier-req-icon">◆</span>Multi-factor confirmation</div>
+          <div class="tier-req-item"><span class="tier-req-icon">◆</span>Immutable audit entry</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Tool Access Isolation</div>
+    <div class="section-sub">Agents do not share global tool context · Every integration sandboxed</div>
+
+    <div class="diagnostic-box" style="border-left-color:var(--c-security);margin-bottom:8px">
+      <div class="diagnostic-title" style="color:var(--c-security)">Scoped Access Examples</div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-signal)">→</span><div class="diagnostic-text">Signal Agent <strong>can</strong> read engagement data. <strong>Cannot</strong> write opportunity stage.</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-signal)">→</span><div class="diagnostic-text">Motion Agent <strong>can</strong> create a task. <strong>Cannot</strong> delete accounts.</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-signal)">→</span><div class="diagnostic-text">Learning Agent <strong>can</strong> recommend reweighting. <strong>Cannot</strong> execute budget change.</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-signal)">→</span><div class="diagnostic-text">Narrative Agent <strong>can</strong> generate variants. <strong>Cannot</strong> deploy campaigns.</div></div>
+    </div>
+
+    <div class="formula-box" style="border-left-color:var(--c-security);margin:18px 0">
+      <div class="formula-title" style="color:var(--c-security)">Per-Agent Isolation Requirements</div>
+      <div class="formula-content">Each agent receives:
+  <span class="var">Scoped API keys</span> — per-integration, per-agent
+  <span class="var">Action-limited endpoints</span> — CRUD boundaries explicit
+  <span class="var">Schema validation</span> — typed inputs/outputs enforced
+  <span class="var">Token rotation</span> — automated credential cycling<span class="note">This prevents cascade failures. A compromised Signal Agent cannot touch CRM write operations. A malfunctioning Motion Agent cannot alter financial constraints.</span></div>
+    </div>
+
+    <div class="section-title">Observability & Audit Schema</div>
+    <div class="section-sub">Every decision event must be traceable · Not optional</div>
+
+    <div class="audit-schema">
+      <div class="audit-title">Immutable Audit Record — Per Decision Event</div>
+      <div class="audit-fields">
+        <div class="audit-field"><span class="audit-field-key">timestamp</span><span class="audit-field-val">ISO 8601, microsecond precision</span></div>
+        <div class="audit-field"><span class="audit-field-key">agent_id</span><span class="audit-field-val">Which agent made the decision</span></div>
+        <div class="audit-field"><span class="audit-field-key">inputs{}</span><span class="audit-field-val">Full input state snapshot</span></div>
+        <div class="audit-field"><span class="audit-field-key">model_version</span><span class="audit-field-val">Logic version / weight set ID</span></div>
+        <div class="audit-field"><span class="audit-field-key">weights_used{}</span><span class="audit-field-val">Exact weights at decision time</span></div>
+        <div class="audit-field"><span class="audit-field-key">output_decision</span><span class="audit-field-val">Action taken or proposed</span></div>
+        <div class="audit-field"><span class="audit-field-key">confidence</span><span class="audit-field-val">Confidence interval on decision</span></div>
+        <div class="audit-field"><span class="audit-field-key">human_approver</span><span class="audit-field-val">null if autonomous, ID if gated</span></div>
+        <div class="audit-field"><span class="audit-field-key">affected_accounts[]</span><span class="audit-field-val">Account IDs impacted</span></div>
+        <div class="audit-field"><span class="audit-field-key">economic_impact</span><span class="audit-field-val">Estimated $ impact of action</span></div>
+      </div>
+    </div>
+
+    <div class="section-title">Economic Impact Threshold</div>
+    <div class="section-sub">Ties governance back to economic gravity</div>
+
+    <div class="diagnostic-box" style="border-left-color:var(--c-gravity);margin-bottom:18px">
+      <div class="diagnostic-title" style="color:var(--c-gravity)">Auto-Trigger Human Review When Agent Action:</div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-gravity)">⚡</span><div class="diagnostic-text">Affects <strong>budget allocation</strong> above threshold</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-gravity)">⚡</span><div class="diagnostic-text">Alters <strong>revenue forecast</strong> by > X%</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-gravity)">⚡</span><div class="diagnostic-text">Changes <strong>qualification criteria</strong> for any segment</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-gravity)">⚡</span><div class="diagnostic-text">Impacts more than <strong>N accounts</strong> simultaneously</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-gravity)">⚡</span><div class="diagnostic-text">Modifies <strong>customer lifecycle stage</strong></div></div>
+    </div>
+
+    <div class="section-title">Sandboxed Experimentation</div>
+    <div class="section-sub">No global deployment without validation</div>
+
+    <div class="sandbox-grid">
+      <div class="sandbox-card">
+        <div class="sandbox-label">Constraint 01</div>
+        <div class="sandbox-name">Segment-Limited</div>
+        <div class="sandbox-desc">New models deploy to specific ICP clusters only. Never all segments simultaneously.</div>
+      </div>
+      <div class="sandbox-card">
+        <div class="sandbox-label">Constraint 02</div>
+        <div class="sandbox-name">Time-Bound</div>
+        <div class="sandbox-desc">Experiments have explicit expiry dates. Auto-rollback if not validated within window.</div>
+      </div>
+      <div class="sandbox-card">
+        <div class="sandbox-label">Constraint 03</div>
+        <div class="sandbox-name">Controlled Holdout</div>
+        <div class="sandbox-desc">Statistical holdout group maintained. Lift measured against control. No experiment without measurement.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Failure Mode Matrix</div>
+    <div class="section-sub">What breaks first and how to contain it</div>
+
+    <div class="failure-grid">
+      <div class="failure-header">Failure Mode</div><div class="failure-header">Root Cause</div><div class="failure-header">Blast Radius</div><div class="failure-header">Containment</div>
+      <div class="failure-cell">CRM field overwrite at scale</div><div class="failure-cell">Motion Agent bad threshold</div><div class="failure-cell">All accounts in segment</div><div class="failure-cell">Rollback via audit log; segment lockout</div>
+      <div class="failure-cell">Signal weight drift</div><div class="failure-cell">Adaptive exceeds guardrail</div><div class="failure-cell">P(t) accuracy degrades</div><div class="failure-cell">Auto-revert to deterministic base; alert</div>
+      <div class="failure-cell">Campaign flood</div><div class="failure-cell">Motion Agent cadence bug</div><div class="failure-cell">Customer experience; brand</div><div class="failure-cell">Rate limiter; circuit breaker; human gate</div>
+      <div class="failure-cell">Budget misallocation</div><div class="failure-cell">P&L Agent proposal error</div><div class="failure-cell">Capital efficiency</div><div class="failure-cell">Tier 3 gate prevents execution; needs approval</div>
+      <div class="failure-cell">Qualification inflation</div><div class="failure-cell">Gate threshold too low</div><div class="failure-cell">Sales bandwidth wasted</div><div class="failure-cell">Velocity diagnostic detects; threshold auto-tightens</div>
+      <div class="failure-cell">Token compromise</div><div class="failure-cell">Credential leak</div><div class="failure-cell">Depends on scope</div><div class="failure-cell">Scoped tokens limit blast; auto-rotation; isolation</div>
+    </div>
+
+    <div class="section-title">Build-Over-Buy Risk Awareness</div>
+    <div class="section-sub">Every internal agent increases: permission complexity, tool dependency, attack surface, operational fragility</div>
+
+    <div class="diagnostic-box" style="border-left-color:var(--c-security)">
+      <div class="diagnostic-title" style="color:var(--c-security)">New Agent Deployment Checklist</div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">□</span><div class="diagnostic-text">Security review completed</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">□</span><div class="diagnostic-text">Permission tier assigned and scoped</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">□</span><div class="diagnostic-text">Failure mode simulation run</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">□</span><div class="diagnostic-text">Rollback procedure documented and tested</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">□</span><div class="diagnostic-text">Audit schema integration verified</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">□</span><div class="diagnostic-text">Economic impact thresholds configured</div></div>
+      <div class="diagnostic-row"><span class="diagnostic-icon" style="color:var(--c-security)">□</span><div class="diagnostic-text">Sandbox deployment plan approved</div></div>
+    </div>
+
+    <div class="screening" style="margin-top:24px;border-left-color:var(--c-security)">
+      <div class="screening-label" style="color:var(--c-security)">Interview Framing</div>
+      <div class="screening-text">"We treat agents as production infrastructure, not assistants. Every agent has scoped permissions, bounded authority, immutable audit logs, and human approval gates for economic-impact actions. Adaptation is allowed within guardrails; structural change requires human governance."</div>
+    </div>
+
+    <div class="screening" style="margin-top:12px">
+      <div class="screening-label">The Real Insight</div>
+      <div class="screening-text">Autonomy without governance increases fragility. Governance without autonomy kills velocity. The advantage is pairing: creativity with containment, adaptation with auditability, speed with scoped authority. An agent with access is an operator. Operators require oversight. That's not fear. That's engineering.</div>
+    </div>
+
+  </div>
+
+  <!-- SYSTEM IDENTITY (always visible) -->
+  <div class="system-identity">
+    <div>
+      <div class="identity-label">This Is Not</div>
+      <div class="not-item">A funnel</div><div class="not-item">An AI automation diagram</div>
+      <div class="not-item">An ABM strategy</div><div class="not-item">A brand guidelines doc</div>
+      <div class="not-item">AI-powered marketing automation</div>
+    </div>
+    <div>
+      <div class="identity-label">This Is</div>
+      <div class="is-item">A constrained probabilistic revenue system</div>
+      <div class="is-item">Agent-executable with typed contracts</div>
+      <div class="is-item">Secured by constitutional governance</div>
+      <div class="is-item">Translated through positioning logic</div>
+      <div class="is-item">Corrected through prediction error</div>
+      <div class="is-item">Coherent under brand constraint</div>
+    </div>
+    <div>
+      <div class="identity-label">Compounding Advantage</div>
+      <div class="identity-value">Ledger</div><div class="identity-desc">Stability</div>
+      <div class="identity-value" style="margin-top:6px">Probability</div><div class="identity-desc">Anticipation</div>
+      <div class="identity-value" style="margin-top:6px">Positioning</div><div class="identity-desc">Translation</div>
+      <div class="identity-value" style="margin-top:6px">Learning</div><div class="identity-desc">Correction</div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+let currentMode='atlas',toastTimer;
+function setMode(m){
+  currentMode=m;
+  document.body.classList.remove('mode-warroom','mode-monument');
+  if(m!=='atlas')document.body.classList.add('mode-'+m);
+  ['atlas','warroom','monument'].forEach(id=>{document.getElementById('mb-'+id).classList.toggle('on',id===m)});
+  showToast('Mode: '+(m==='atlas'?'Atlas':m==='warroom'?'War Room':'Monument'));
+}
+function setTab(t){
+  ['spine','positioning','governance','measurement','security'].forEach(id=>{
+    document.getElementById('tab-'+id).classList.toggle('on',id===t);
+    document.getElementById('panel-'+id).classList.toggle('vis',id===t);
+  });
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+</script>
+</body>
+</html>

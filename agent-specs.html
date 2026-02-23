@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Spec Template — Governed Revenue Architecture</title>
+<meta name="description" content="Agent specification template. Purpose, inputs, tools, outputs, guardrails, human gates, provenance schema, test cases.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bk:#1a1918;--gy:#f0f0f0;--or:#ff6e3e;--pu:#bcbeff;--wh:#fff;--g50:#f8f8f8;--g3:#d9d9d9;--g4:#ccc;--g5:#b5b5b5;--g6:#a3a3a3;--g7:#747474;--g9:#2b2b2b;--ft:'Oxanium',sans-serif;--mn:'Space Mono',monospace;--sm:cubic-bezier(.32,.72,0,1);--ez:cubic-bezier(.215,.61,.355,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{font-family:var(--ft);font-weight:400;background:var(--gy);color:var(--bk);overflow-x:hidden;line-height:1.4}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--g4);border-radius:2px}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;padding:0 20px;height:56px;display:flex;align-items:center;background:var(--gy);border-bottom:1px solid var(--g3);transition:background .4s var(--ez)}
+.nav.scrolled{background:rgba(240,240,240,.88);backdrop-filter:blur(12px)}
+.n-logo{display:flex;align-items:center;gap:8px}
+.n-logo svg{width:22px;height:22px}
+.n-word{font-family:var(--mn);font-size:11px;font-weight:400;letter-spacing:.02em}
+.nr{margin-left:auto;display:flex;align-items:center;gap:4px}
+.n-lnk{font-family:var(--mn);font-size:9px;padding:5px 8px;color:var(--g7);text-decoration:none;white-space:nowrap;transition:color .3s var(--ez);text-transform:lowercase;letter-spacing:.02em}
+.n-lnk:hover{color:var(--bk)}
+.btn-out{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:transparent;color:var(--bk);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
+.btn-out:hover{background:var(--bk);color:var(--wh)}
+.btn-fill{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:var(--bk);color:var(--wh);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
+.btn-fill:hover{background:var(--or);border-color:var(--or);color:var(--bk)}
+.ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
+.ham span{display:block;width:18px;height:1.5px;background:var(--bk);transition:all .3s var(--ez)}
+.mob-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--gy);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
+.mob-menu.open{display:flex}
+.mob-btns{display:flex;gap:8px;margin-bottom:24px}
+.mob-btns .btn-out,.mob-btns .btn-fill{flex:1;text-align:center;padding:14px 8px;font-size:11px}
+.mob-lnk{font-family:var(--mn);font-size:12px;padding:14px 0;color:var(--g7);border-bottom:1px solid var(--g3);text-transform:lowercase;letter-spacing:.02em;display:block;text-decoration:none}
+.mob-lnk:hover{color:var(--bk)}
+@media(max-width:960px){.n-lnk{display:none}.ham{display:flex}}
+
+/* LAYOUT */
+.w{max-width:1100px;margin:0 auto;padding:0 20px}
+@media(min-width:860px){.w{padding:0 40px}}
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--sm),transform .7s var(--sm)}.rv.vis{opacity:1;transform:translateY(0)}
+
+/* HERO */
+.hero{padding:100px 0 60px}
+.h-ey{font-family:var(--mn);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--g7);margin-bottom:20px;opacity:0;animation:up .8s var(--sm) .2s forwards}
+.h-title{font-family:var(--mn);font-size:clamp(22px,4.5vw,44px);font-weight:400;line-height:1.15;text-transform:uppercase;margin-bottom:16px;opacity:0;animation:up .8s var(--sm) .35s forwards}
+.h-title span{color:var(--or)}
+.h-sub{font-size:clamp(14px,2.5vw,16px);font-weight:300;color:var(--g7);max-width:600px;line-height:1.75;margin-bottom:12px;opacity:0;animation:up .8s var(--sm) .5s forwards}
+.h-quote{font-family:var(--mn);font-size:clamp(11px,2vw,13px);font-weight:400;color:var(--bk);border-left:3px solid var(--or);padding:14px 20px;margin:28px 0;max-width:560px;line-height:1.7;opacity:0;animation:up .8s var(--sm) .65s forwards}
+
+/* SECTIONS */
+.sc{padding:clamp(60px,10vw,100px) 0}
+.sdk{background:var(--bk);color:var(--wh)}
+.swh{background:var(--wh)}
+.s-ey{font-family:var(--mn);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--g7);margin-bottom:14px}
+.sdk .s-ey{color:var(--g6)}
+.s-h{font-family:var(--mn);font-size:clamp(18px,3.5vw,34px);font-weight:400;line-height:1.15;text-transform:uppercase;margin-bottom:18px}
+.s-h span{color:var(--or)}
+.s-p{font-size:clamp(14px,2.5vw,15px);font-weight:300;color:var(--g7);line-height:1.75;max-width:620px}
+.s-p strong{color:var(--bk);font-weight:500}
+.sdk .s-p{color:var(--g5)}.sdk .s-p strong{color:var(--wh)}
+
+/* SPEC TEMPLATE CARD */
+.spec{margin:40px 0;border:1px solid var(--g3);background:var(--wh)}
+.sdk .spec{background:var(--g9);border-color:rgba(255,255,255,.07)}
+.spec-header{padding:20px 24px;border-bottom:1px solid var(--g3);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sdk .spec-header{border-color:rgba(255,255,255,.06)}
+.spec-num{font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--or)}
+.spec-name{font-family:var(--mn);font-size:14px;font-weight:400;text-transform:uppercase;letter-spacing:.02em}
+.spec-phase{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--g3);color:var(--g6)}
+.sdk .spec-phase{border-color:rgba(255,255,255,.1);color:var(--g5)}
+.spec-mode{font-family:var(--mn);font-size:8px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--or);color:var(--or)}
+
+.spec-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:700px){.spec-body{grid-template-columns:1fr}}
+.spec-cell{padding:16px 24px;border-bottom:1px solid var(--g3);border-right:1px solid var(--g3)}
+.sdk .spec-cell{border-color:rgba(255,255,255,.06)}
+@media(max-width:700px){.spec-cell{border-right:none}}
+.spec-cell:nth-child(even){border-right:none}
+.spec-cell-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:8px}
+.sdk .spec-cell-label{color:var(--g5)}
+.spec-cell-content{font-size:13px;font-weight:300;color:var(--g7);line-height:1.65}
+.sdk .spec-cell-content{color:var(--g5)}
+.spec-cell-content code{font-family:var(--mn);font-size:11px;color:var(--or);background:var(--g50);padding:1px 5px;border:1px solid var(--g3)}
+.sdk .spec-cell-content code{background:rgba(255,110,62,.08);border-color:rgba(255,110,62,.15)}
+.spec-cell-content li{margin-bottom:4px;padding-left:4px}
+.spec-cell-content ul{list-style:none;padding:0}
+.spec-cell-content ul li::before{content:"\2192 ";color:var(--or);font-family:var(--mn);font-size:12px}
+
+/* NEVER LIST - special emphasis */
+.spec-cell.never{border-left:3px solid #ff3c3c}
+.spec-cell.never .spec-cell-label{color:#ff3c3c}
+.spec-cell.never ul li::before{content:"\2717 ";color:#ff3c3c}
+
+/* FULL WIDTH CELLS */
+.spec-full{grid-column:1/-1;border-right:none}
+
+/* PROVENANCE SCHEMA */
+.prov-row{display:grid;grid-template-columns:140px 100px 1fr;gap:0;border-bottom:1px solid var(--g3);font-size:12px}
+.sdk .prov-row{border-color:rgba(255,255,255,.06)}
+@media(max-width:600px){.prov-row{grid-template-columns:1fr}}
+.prov-row.prov-header{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--g6);background:var(--g50)}
+.sdk .prov-row.prov-header{background:rgba(255,255,255,.03)}
+.prov-cell{padding:6px 10px;border-right:1px solid var(--g3);color:var(--g7);font-weight:300}
+.sdk .prov-cell{border-color:rgba(255,255,255,.06);color:var(--g5)}
+.prov-cell:last-child{border-right:none}
+.prov-cell code{font-family:var(--mn);font-size:10px;color:var(--or)}
+
+/* TEST CASE TABLE */
+.tc-row{display:grid;grid-template-columns:1fr 1.5fr 1fr 80px;gap:0;border-bottom:1px solid var(--g3);font-size:12px}
+.sdk .tc-row{border-color:rgba(255,255,255,.06)}
+@media(max-width:700px){.tc-row{grid-template-columns:1fr 1fr}}
+.tc-row.tc-header{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--g6);background:var(--g50)}
+.sdk .tc-row.tc-header{background:rgba(255,255,255,.03)}
+.tc-cell{padding:8px 10px;border-right:1px solid var(--g3);color:var(--g7);font-weight:300;line-height:1.5}
+.sdk .tc-cell{border-color:rgba(255,255,255,.06);color:var(--g5)}
+.tc-cell:last-child{border-right:none}
+.tc-pass{color:var(--or);font-family:var(--mn);font-size:10px}
+
+/* PHASE TIMELINE */
+.timeline{margin:40px 0}
+.tl-phase{display:flex;gap:16px;margin-bottom:4px;padding:16px 0;border-bottom:1px solid var(--g3);align-items:flex-start;flex-wrap:wrap}
+.sdk .tl-phase{border-color:rgba(255,255,255,.06)}
+.tl-badge{font-family:var(--mn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--or);width:100px;flex-shrink:0;padding-top:2px}
+.tl-week{font-family:var(--mn);font-size:9px;color:var(--g6);width:80px;flex-shrink:0;padding-top:2px}
+.tl-agents{flex:1;display:flex;gap:6px;flex-wrap:wrap}
+.tl-agent{font-family:var(--mn);font-size:9px;padding:4px 10px;border:1px solid var(--g3);color:var(--g7);transition:all .3s var(--ez)}
+.sdk .tl-agent{border-color:rgba(255,255,255,.08);color:var(--g5)}
+.tl-agent:hover{border-color:var(--or);color:var(--or)}
+.tl-agent.active{border-color:var(--or);color:var(--or);background:rgba(255,110,62,.05)}
+
+/* PRIMITIVES GRID */
+.prim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:28px 0}
+@media(max-width:768px){.prim-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.prim-grid{grid-template-columns:1fr}}
+.prim{padding:20px;background:var(--wh);border:1px solid var(--g3);border-top:3px solid var(--or);transition:all .4s var(--ez)}
+.prim:hover{border-color:var(--g7);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.04)}
+.sdk .prim{background:var(--g9);border-color:rgba(255,255,255,.07);border-top-color:var(--or)}
+.prim-name{font-family:var(--mn);font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.prim-desc{font-size:13px;font-weight:300;color:var(--g7);line-height:1.5}
+.sdk .prim-desc{color:var(--g5)}
+
+/* RULE BAR */
+.rule-bar{padding:16px 24px;background:var(--wh);border:1px solid var(--g3);border-left:3px solid var(--or);margin:24px 0;font-family:var(--mn);font-size:12px;font-weight:400;line-height:1.6}
+.sdk .rule-bar{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.08);border-left-color:var(--or)}
+
+/* REGISTRY TABLE */
+.reg-row{display:grid;grid-template-columns:160px 1fr 120px 100px;gap:0;border-bottom:1px solid var(--g3);font-size:12px}
+@media(max-width:700px){.reg-row{grid-template-columns:1fr 1fr}}
+.reg-row.reg-header{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--g6);background:var(--g50)}
+.reg-cell{padding:8px 10px;border-right:1px solid var(--g3);color:var(--g7);font-weight:300;line-height:1.5}
+.reg-cell:last-child{border-right:none}
+.reg-cell .spec-mode{display:inline-block;margin:0}
+
+/* INFRA SIDEBAR */
+.infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:28px 0}
+@media(max-width:640px){.infra-grid{grid-template-columns:1fr}}
+.infra-card{padding:20px;background:var(--wh);border:1px solid var(--g3);transition:all .4s var(--ez)}
+.infra-card:hover{border-color:var(--g7)}
+.sdk .infra-card{background:var(--g9);border-color:rgba(255,255,255,.07)}
+.infra-name{font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--or);margin-bottom:8px}
+.infra-desc{font-size:13px;font-weight:300;color:var(--g7);line-height:1.6}
+.sdk .infra-desc{color:var(--g5)}
+
+/* FOOTER */
+.foot{padding:32px 20px;border-top:1px solid var(--g3);text-align:center}
+.foot-text{font-family:var(--mn);font-size:9px;color:var(--g5);letter-spacing:.06em}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="n-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <span class="n-word">governed revenue</span>
+  </div>
+  <div class="nr">
+    <a class="n-lnk" href="index.html">home</a>
+    <a class="n-lnk" href="spine-v4.html">spine</a>
+    <a class="n-lnk" href="sovereignty-map.html">sovereignty</a>
+    <a class="n-lnk" href="split-funnel-map.html">motion</a>
+    <a class="n-lnk" href="lexicon.html">lexicon</a>
+    <a class="n-lnk" href="identity-graph.html">identity</a>
+    <a class="n-lnk" href="provenance.html">provenance</a>
+    <button class="ham" onclick="document.getElementById('mobMenu').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <div class="mob-btns">
+    <a class="btn-out" href="index.html" style="flex:1;text-align:center">home</a>
+    <a class="btn-fill" href="index.html#briefing" style="flex:1;text-align:center">strategic briefing</a>
+  </div>
+  <a class="mob-lnk" href="spine-v4.html">spine</a>
+  <a class="mob-lnk" href="sovereignty-map.html">sovereignty map</a>
+  <a class="mob-lnk" href="split-funnel-map.html">motion map</a>
+  <a class="mob-lnk" href="lexicon.html">lexicon</a>
+  <a class="mob-lnk" href="identity-graph.html">identity graph</a>
+  <a class="mob-lnk" href="provenance.html">provenance</a>
+  <a class="mob-lnk" href="agent-specs.html" style="color:var(--or)">agent specs</a>
+</div>
+
+<!-- HERO -->
+<section class="hero w">
+  <div class="h-ey">screen 07 &mdash; agent specifications</div>
+  <h1 class="h-title">Agent Spec <span>Template</span></h1>
+  <p class="h-sub">Agents are not a vibe. They are software with the ability to act, and action without constraint is just an error budget waiting to be spent.</p>
+  <div class="h-quote">If those four primitives don&rsquo;t exist, you aren&rsquo;t building agents&mdash;you&rsquo;re building ghosts.</div>
+</section>
+
+<!-- CONTROL PLANE PRIMITIVES -->
+<section class="sc swh">
+  <div class="w rv">
+    <div class="s-ey">substrate</div>
+    <h2 class="s-h">Control plane <span>primitives</span></h2>
+    <p class="s-p">Four primitives every agent must use. Without these, nothing else is real.</p>
+    <div class="prim-grid">
+      <div class="prim">
+        <div class="prim-name">Identity</div>
+        <div class="prim-desc">Canonical account/contact/opportunity IDs. Lead&rarr;account mapping rules. Dedupe policy.</div>
+      </div>
+      <div class="prim">
+        <div class="prim-name">Permissions</div>
+        <div class="prim-desc">Tool access by role + data domain + environment. Read vs write separation.</div>
+      </div>
+      <div class="prim">
+        <div class="prim-name">Provenance</div>
+        <div class="prim-desc">Every decision logs inputs, weights, model version, tool calls, and output.</div>
+      </div>
+      <div class="prim">
+        <div class="prim-name">Approvals</div>
+        <div class="prim-desc">Explicit human gates for high-impact actions. Campaign send, CRM write, budget realloc.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILD SEQUENCE -->
+<section class="sc">
+  <div class="w rv">
+    <div class="s-ey">build order</div>
+    <h2 class="s-h">The <span>sequence</span></h2>
+    <p class="s-p" style="margin-bottom:8px">Each layer depends on the prior. Read-only first. Bounded writes earned, not assumed.</p>
+    <div class="rule-bar">Start with &ldquo;read-only agents.&rdquo; They produce plans, not actions. They output structured JSON with rationale + confidence + evidence. Only then add bounded-action agents&mdash;smallest permissions, smallest surface area, smallest blast radius.</div>
+    <div class="timeline">
+      <div class="tl-phase">
+        <span class="tl-badge">phase a</span>
+        <span class="tl-week">weeks 1&ndash;2</span>
+        <div class="tl-agents">
+          <span class="tl-agent active">Identity & Hygiene</span>
+          <span class="tl-agent active">Provenance & Audit</span>
+        </div>
+      </div>
+      <div class="tl-phase">
+        <span class="tl-badge">phase b</span>
+        <span class="tl-week">weeks 2&ndash;4</span>
+        <div class="tl-agents">
+          <span class="tl-agent">Signal & Scoring</span>
+          <span class="tl-agent">Routing & SLA</span>
+        </div>
+      </div>
+      <div class="tl-phase">
+        <span class="tl-badge">phase c</span>
+        <span class="tl-week">weeks 4&ndash;6</span>
+        <div class="tl-agents">
+          <span class="tl-agent">P&L / Unit Economics</span>
+          <span class="tl-agent">Forecast / Stage Ledger</span>
+        </div>
+      </div>
+      <div class="tl-phase">
+        <span class="tl-badge">phase d</span>
+        <span class="tl-week">weeks 6&ndash;10</span>
+        <div class="tl-agents">
+          <span class="tl-agent">Motion Orchestration</span>
+          <span class="tl-agent">Content / Positioning</span>
+        </div>
+      </div>
+      <div class="tl-phase">
+        <span class="tl-badge">phase e</span>
+        <span class="tl-week">post-trust</span>
+        <div class="tl-agents">
+          <span class="tl-agent">Experimentation</span>
+          <span class="tl-agent">Security / Governance</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENT SPEC TEMPLATE -->
+<section class="sc sdk">
+  <div class="w rv">
+    <div class="s-ey">the template</div>
+    <h2 class="s-h">Agent spec <span>structure</span></h2>
+    <p class="s-p" style="margin-bottom:16px">Every agent uses this template. No exceptions. This is how you prevent the agent layer from turning into folklore.</p>
+
+    <!-- TEMPLATE: IDENTITY & HYGIENE AGENT (filled example) -->
+    <div class="spec">
+      <div class="spec-header">
+        <span class="spec-num">agent 01</span>
+        <span class="spec-name">Identity & Hygiene Agent</span>
+        <span class="spec-phase">phase a &mdash; foundation</span>
+        <span class="spec-mode">read-only &rarr; limited write</span>
+      </div>
+      <div class="spec-body">
+        <div class="spec-cell">
+          <div class="spec-cell-label">purpose</div>
+          <div class="spec-cell-content">Normalize the identity substrate. Ensure every object in the CRM has a canonical ID, correct parent mapping, and no duplicate pollution. Without this, nothing downstream is trustworthy.</div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-cell-label">inputs</div>
+          <div class="spec-cell-content"><ul>
+            <li>CRM lead/contact/account/opportunity objects</li>
+            <li>Email domain &rarr; account mapping table</li>
+            <li>Third-party enrichment signals (Clearbit, ZoomInfo)</li>
+            <li>Historical merge/dedupe logs</li>
+          </ul></div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-cell-label">tools</div>
+          <div class="spec-cell-content"><ul>
+            <li><code>crm.read</code> &mdash; query objects across all entities</li>
+            <li><code>crm.write.merge</code> &mdash; merge confirmed duplicates (gated)</li>
+            <li><code>enrichment.lookup</code> &mdash; domain/firmographic resolution</li>
+            <li><code>audit.log</code> &mdash; provenance write for every action</li>
+          </ul></div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-cell-label">outputs</div>
+          <div class="spec-cell-content"><ul>
+            <li>Identity graph: canonical IDs + parent mappings</li>
+            <li>Hygiene backlog: flagged duplicates, orphaned leads, unmapped accounts</li>
+            <li>Structured JSON: <code>{entity_id, action, confidence, evidence[]}</code></li>
+            <li>Weekly hygiene drift report</li>
+          </ul></div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-cell-label">guardrails</div>
+          <div class="spec-cell-content"><ul>
+            <li>Confidence threshold for auto-merge: &ge; 0.95</li>
+            <li>Max batch size per run: 200 objects</li>
+            <li>Enrichment rate limit: 500 calls/hour</li>
+            <li>No deletes. Ever. Only merges and flags.</li>
+          </ul></div>
+        </div>
+        <div class="spec-cell never">
+          <div class="spec-cell-label">never list</div>
+          <div class="spec-cell-content"><ul>
+            <li>Delete any CRM record</li>
+            <li>Change account ownership</li>
+            <li>Modify opportunity amounts or stages</li>
+            <li>Merge below confidence threshold without human approval</li>
+            <li>Override manual territory assignments</li>
+          </ul></div>
+        </div>
+        <div class="spec-cell">
+          <div class="spec-cell-label">human gates</div>
+          <div class="spec-cell-content"><ul>
+            <li>Any merge with confidence &lt; 0.95 &rarr; queue for ops review</li>
+            <li>Any lead&rarr;account mapping that conflicts with existing territory &rarr; RevOps approval</li>
+            <li>First 50 auto-merges &rarr; 100% human audit (trust calibration)</li>
+          </ul></div>
+        </div>
+        <div class="spec-cell spec-full">
+          <div class="spec-cell-label">provenance schema</div>
+          <div class="spec-cell-content">
+            <div class="prov-row prov-header">
+              <div class="prov-cell">field</div>
+              <div class="prov-cell">type</div>
+              <div class="prov-cell">description</div>
+            </div>
+            <div class="prov-row"><div class="prov-cell"><code>agent_id</code></div><div class="prov-cell">string</div><div class="prov-cell">identity-hygiene-v1</div></div>
+            <div class="prov-row"><div class="prov-cell"><code>action</code></div><div class="prov-cell">enum</div><div class="prov-cell">flag | merge | map | enrich</div></div>
+            <div class="prov-row"><div class="prov-cell"><code>entity_ids</code></div><div class="prov-cell">string[]</div><div class="prov-cell">Canonical IDs of affected objects</div></div>
+            <div class="prov-row"><div class="prov-cell"><code>confidence</code></div><div class="prov-cell">float</div><div class="prov-cell">0.0 &ndash; 1.0, model-assigned</div></div>
+            <div class="prov-row"><div class="prov-cell"><code>evidence</code></div><div class="prov-cell">object[]</div><div class="prov-cell">Matching signals: domain, name, email patterns</div></div>
+            <div class="prov-row"><div class="prov-cell"><code>model_version</code></div><div class="prov-cell">string</div><div class="prov-cell">Semantic version of decision logic</div></div>
+            <div class="prov-row"><div class="prov-cell"><code>tool_calls</code></div><div class="prov-cell">object[]</div><div class="prov-cell">Every external call: tool, params, response_code</div></div>
+            <div class="prov-row"><div class="prov-cell"><code>approval_state</code></div><div class="prov-cell">enum</div><div class="prov-cell">auto | pending_review | approved | rejected</div></div>
+            <div class="prov-row"><div class="prov-cell"><code>timestamp</code></div><div class="prov-cell">ISO 8601</div><div class="prov-cell">UTC execution time</div></div>
+          </div>
+        </div>
+        <div class="spec-cell spec-full">
+          <div class="spec-cell-label">test cases</div>
+          <div class="spec-cell-content">
+            <div class="tc-row tc-header">
+              <div class="tc-cell">scenario</div>
+              <div class="tc-cell">input</div>
+              <div class="tc-cell">expected output</div>
+              <div class="tc-cell">pass</div>
+            </div>
+            <div class="tc-row"><div class="tc-cell">Exact domain match</div><div class="tc-cell">Two leads, same domain, same company name</div><div class="tc-cell">Merge recommended, confidence &ge; 0.95</div><div class="tc-cell"><span class="tc-pass">&mdash;</span></div></div>
+            <div class="tc-row"><div class="tc-cell">Ambiguous match</div><div class="tc-cell">Similar names, different domains</div><div class="tc-cell">Flag for review, confidence 0.6&ndash;0.94</div><div class="tc-cell"><span class="tc-pass">&mdash;</span></div></div>
+            <div class="tc-row"><div class="tc-cell">Territory conflict</div><div class="tc-cell">Lead maps to account owned by different rep</div><div class="tc-cell">Route to RevOps, no auto-merge</div><div class="tc-cell"><span class="tc-pass">&mdash;</span></div></div>
+            <div class="tc-row"><div class="tc-cell">Orphan detection</div><div class="tc-cell">Contact with no parent account</div><div class="tc-cell">Flag + enrichment lookup + suggested mapping</div><div class="tc-cell"><span class="tc-pass">&mdash;</span></div></div>
+            <div class="tc-row"><div class="tc-cell">Batch limit</div><div class="tc-cell">Queue of 500 pending merges</div><div class="tc-cell">Process 200, defer rest, log deferral</div><div class="tc-cell"><span class="tc-pass">&mdash;</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AGENT REGISTRY -->
+<section class="sc swh">
+  <div class="w rv">
+    <div class="s-ey">registry</div>
+    <h2 class="s-h">Agent <span>registry</span></h2>
+    <p class="s-p" style="margin-bottom:20px">Every agent has an entry. Name, purpose, owner, tools, permissions, data domains, escalation path, version.</p>
+    <div style="border:1px solid var(--g3);background:var(--wh);overflow:hidden">
+      <div class="reg-row reg-header"><div class="reg-cell">agent</div><div class="reg-cell">purpose</div><div class="reg-cell">mode</div><div class="reg-cell">phase</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">Identity & Hygiene</div><div class="reg-cell">Normalize objects, detect duplicates, map lead&rarr;account</div><div class="reg-cell"><span class="spec-mode">read &rarr; write</span></div><div class="reg-cell">A</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">Provenance & Audit</div><div class="reg-cell">Log decisions, generate traces, detect policy violations</div><div class="reg-cell"><span class="spec-mode">read-only</span></div><div class="reg-cell">A</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">Signal & Scoring</div><div class="reg-cell">Classify readiness vs motion, detect staleness, compute probability deltas</div><div class="reg-cell"><span class="spec-mode">read-only</span></div><div class="reg-cell">B</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">Routing & SLA</div><div class="reg-cell">Assign ownership, enforce SLAs, manage queues</div><div class="reg-cell"><span class="spec-mode">recommend &rarr; write</span></div><div class="reg-cell">B</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">P&L / Unit Economics</div><div class="reg-cell">Compute CAC, payback, LTV:CAC by segment/motion</div><div class="reg-cell"><span class="spec-mode">read-only</span></div><div class="reg-cell">C</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">Forecast / Stage Ledger</div><div class="reg-cell">Separate ledger truth from forecast, detect stage inflation</div><div class="reg-cell"><span class="spec-mode">read-only</span></div><div class="reg-cell">C</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">Motion Orchestration</div><div class="reg-cell">Choose motion lane, pick next best action, trigger sequences</div><div class="reg-cell"><span class="spec-mode">recommend &rarr; write</span></div><div class="reg-cell">D</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">Content / Positioning</div><div class="reg-cell">Translate segment economics into messaging + proof points</div><div class="reg-cell"><span class="spec-mode">read-only</span></div><div class="reg-cell">D</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">Experimentation</div><div class="reg-cell">Propose tests, estimate impact, enforce stopping rules</div><div class="reg-cell"><span class="spec-mode">recommend</span></div><div class="reg-cell">E</div></div>
+      <div class="reg-row"><div class="reg-cell" style="font-weight:500">Security / Governance</div><div class="reg-cell">Permission drift, anomaly detection, prompt-injection checks</div><div class="reg-cell"><span class="spec-mode">always-on</span></div><div class="reg-cell">E</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NON-NEGOTIABLE INFRASTRUCTURE -->
+<section class="sc">
+  <div class="w rv">
+    <div class="s-ey">non-negotiable</div>
+    <h2 class="s-h">Build <span>alongside</span> agents</h2>
+    <div class="infra-grid">
+      <div class="infra-card">
+        <div class="infra-name">Agent Registry</div>
+        <div class="infra-desc">Name, purpose, owner, tools, permissions, data domains, escalation path, versioning. If it&rsquo;s not in the registry, it doesn&rsquo;t exist.</div>
+      </div>
+      <div class="infra-card">
+        <div class="infra-name">Policy-as-Code</div>
+        <div class="infra-desc">Simple rules first: &ldquo;no CRM writes without human approval,&rdquo; &ldquo;no campaign send without preview + confirm.&rdquo; Enforced, not suggested.</div>
+      </div>
+      <div class="infra-card">
+        <div class="infra-name">Evaluation Harness</div>
+        <div class="infra-desc">Offline test set: historical deals + known outcomes. Metrics: precision/recall for &ldquo;ready,&rdquo; time-to-action, error rate, false positives by segment.</div>
+      </div>
+      <div class="infra-card">
+        <div class="infra-name">Kill Switch</div>
+        <div class="infra-desc">Per-agent and global. No heroics. If something goes wrong, you need to stop it in seconds, not hours.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONE -->
+<section class="sc sdk">
+  <div class="w rv" style="text-align:center;max-width:700px;margin:0 auto;padding:0 20px">
+    <div class="s-ey" style="text-align:center">first milestone</div>
+    <h2 class="s-h" style="text-align:center">Read-only <span>control plane</span></h2>
+    <p class="s-p" style="text-align:center;margin:0 auto 24px">Identity is normalized. Signals are interpreted into probability deltas. Routing recommendations are produced. Every output has provenance. Nothing writes without approval.</p>
+    <div class="rule-bar" style="text-align:left;border-left-color:var(--or)">That&rsquo;s when it stops being a concept and starts being infrastructure.</div>
+    <div style="margin-top:32px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <a class="btn-fill" href="index.html" style="padding:10px 24px;font-size:11px">back to doctrine</a>
+      <a class="btn-out" href="spine-v4.html" style="padding:10px 24px;font-size:11px;border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)">explore spine</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot"><div class="foot-text">governed revenue architecture &middot; agent specifications &middot; 2026</div></footer>
+
+<script>
+'use strict';
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

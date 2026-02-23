@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Identity & Relationship Graph — Screen 05</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+:root {
+  --bg:#f0f0f0;--bg-panel:#e8e8e8;--bg-card:#ffffff;--bg-hover:#f8f8f8;--bg-formula:#f5f5f5;
+  --text-1:#1a1918;--text-2:#747474;--text-3:#a3a3a3;
+  --border:rgba(24,23,15,.10);--border-s:rgba(24,23,15,.22);
+  --accent:#ff6e3e;--scrollbar:rgba(24,23,15,.18);
+  --c-graph:#1A5276;--c-resolve:#2E7D32;--c-role:#6C3483;--c-opp:#C0392B;
+  --c-activity:#8B6914;--c-route:#5A3E8A;--c-danger:#B83030;--c-safe:#117A65;
+  --ease:cubic-bezier(.4,0,.2,1);--fast:140ms;--med:300ms;--slow:600ms;
+  --font-sans:'Oxanium',system-ui,sans-serif;
+  --mn:'Space Mono','Menlo',monospace;
+  --font-serif:'Oxanium','Georgia',serif;
+}
+.mode-warroom{--bg:#1a1918;--bg-panel:#222120;--bg-card:#2b2b2b;--bg-hover:#333231;--bg-formula:#252423;--text-1:#e8e8e8;--text-2:#a3a3a3;--text-3:#747474;--border:rgba(200,220,240,.07);--border-s:rgba(200,220,240,.16);--accent:#ff6e3e;--scrollbar:rgba(200,220,240,.18)}
+.mode-monument{--bg:#f8f8f8;--bg-panel:#f0f0f0;--bg-card:#ffffff;--bg-hover:#FFFFFF;--bg-formula:#f5f5f5;--text-1:#1a1918;--text-2:#747474;--text-3:#b5b5b5;--border:rgba(8,8,7,.07);--border-s:rgba(8,8,7,.18);--accent:#1a1918;--scrollbar:rgba(8,8,7,.18)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:13px;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var(--text-1);min-height:100vh;transition:background var(--slow) var(--ease),color var(--slow) var(--ease)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:2px}
+
+.topbar{position:sticky;top:0;z-index:80;background:var(--bg);border-bottom:1px solid var(--border-s);display:flex;align-items:center;padding:0 20px;height:48px;gap:12px;transition:background var(--slow) var(--ease)}
+.logo{display:flex;align-items:baseline;gap:7px}
+.logo-mark{font-family:var(--mn);font-size:9px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase}
+.logo-name{font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--text-1);transition:color var(--slow)}
+.tb-sep{width:1px;height:18px;background:var(--border-s);flex-shrink:0}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:5px}
+.tb-btn{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border:1px solid var(--border-s);background:transparent;color:var(--text-2);cursor:pointer;transition:all var(--fast) var(--ease);border-radius:1px}
+.tb-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tb-btn.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.nav-link{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);text-decoration:none;padding:3px 10px;border:1px solid var(--border);border-radius:1px;transition:all var(--fast) var(--ease)}
+.nav-link:hover{border-color:var(--accent);color:var(--accent)}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px 80px}
+.header{margin-bottom:20px;padding-top:24px}
+.header-eyebrow{font-family:var(--mn);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
+.header h1{font-family:var(--font-serif);font-size:clamp(24px,3vw,36px);font-weight:400;line-height:1.1;color:var(--text-1);margin-bottom:8px;transition:color var(--slow)}
+.header h1 em{color:var(--accent);font-style:normal}
+.header p{font-size:12px;color:var(--text-2);max-width:720px;line-height:1.8}
+
+.stitle{font-family:var(--font-serif);font-size:18px;font-weight:400;color:var(--text-1);margin:28px 0 4px;transition:color var(--slow)}
+.ssub{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px}
+
+/* PLACEMENT BAND */
+.placement{padding:12px 16px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--c-graph);margin-bottom:20px}
+.placement-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-graph);margin-bottom:6px}
+.placement-text{font-size:11px;color:var(--text-2);line-height:1.6}
+.placement-text strong{color:var(--text-1);font-weight:500}
+
+/* GRAPH DIAGRAM */
+.graph-diagram{padding:20px;background:var(--bg-card);border:1px solid var(--border);margin-bottom:20px;text-align:center}
+.graph-root{display:inline-block;text-align:left}
+.gn{font-family:var(--mn);font-size:10px;padding:5px 12px;border:1px solid var(--border-s);background:var(--bg-formula);display:inline-block;margin:2px 0;transition:all var(--fast)}
+.gn:hover{border-color:var(--accent);color:var(--accent)}
+.gn.primary{border-color:var(--c-graph);color:var(--c-graph);font-weight:500;background:var(--bg-card)}
+.gn.financial{border-color:var(--c-opp);color:var(--c-opp)}
+.gn.signal{border-color:var(--c-resolve);color:var(--c-resolve)}
+.graph-indent{padding-left:24px;border-left:1px solid var(--border);margin-left:8px}
+.graph-connector{font-family:var(--mn);font-size:8px;color:var(--text-3);padding:1px 0}
+
+/* RESOLUTION CARD */
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.res-card{padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-top:2px solid var(--rc,var(--accent))}
+.res-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--rc,var(--accent));margin-bottom:6px}
+.res-title{font-family:var(--font-serif);font-size:14px;font-weight:700;color:var(--text-1);margin-bottom:6px;transition:color var(--slow)}
+.res-items{font-size:10px;color:var(--text-2);line-height:1.6}
+.res-items code{font-family:var(--mn);font-size:9px;color:var(--rc,var(--accent));background:var(--bg-formula);padding:1px 3px}
+.res-gate{margin-top:8px;padding-top:6px;border-top:1px solid var(--border);font-family:var(--mn);font-size:8px;color:var(--c-danger)}
+
+/* ROLE GRID */
+.role-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:14px 0}
+.role-card{padding:10px;background:var(--bg-card);border:1px solid var(--border);text-align:center;border-top:2px solid var(--c-role)}
+.role-name{font-family:var(--font-serif);font-size:11px;font-weight:700;color:var(--text-1);margin-bottom:3px;transition:color var(--slow)}
+.role-desc{font-size:9px;color:var(--text-3);line-height:1.3}
+
+/* RULES */
+.rules-box{padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--rb-c,var(--accent));margin:12px 0}
+.rules-title{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--rb-c,var(--accent));margin-bottom:8px}
+.rule-row{display:flex;align-items:flex-start;gap:6px;margin-bottom:5px}
+.rule-icon{font-family:var(--mn);font-size:9px;flex-shrink:0;width:14px;text-align:center}
+.rule-text{font-size:10px;color:var(--text-2);line-height:1.5}
+.rule-text strong{color:var(--text-1);font-weight:500}
+.rule-text code{font-family:var(--mn);font-size:9px;color:var(--rb-c,var(--accent));background:var(--bg-formula);padding:1px 3px}
+
+/* FAILURE CASCADE */
+.cascade-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;border:1px solid var(--border);margin:14px 0;overflow:hidden}
+.cascade-header{font-family:var(--mn);font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);background:var(--bg-formula);padding:7px 10px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.cascade-header:last-child{border-right:none}
+.cascade-cell{padding:7px 10px;font-size:10px;color:var(--text-2);line-height:1.4;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.cascade-cell:last-child{border-right:none}
+.cascade-cell.src{font-family:var(--mn);font-size:9px;color:var(--c-danger)}
+
+/* SAFEGUARDS */
+.safeguard-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0}
+.safeguard{padding:12px;background:var(--bg-card);border:1px solid var(--border);border-left:2px solid var(--c-safe)}
+.safeguard-num{font-family:var(--mn);font-size:18px;font-weight:300;color:var(--c-safe);opacity:.3;float:right}
+.safeguard-name{font-family:var(--font-serif);font-size:11px;font-weight:700;color:var(--text-1);margin-bottom:3px;transition:color var(--slow)}
+.safeguard-desc{font-size:9px;color:var(--text-2);line-height:1.4}
+
+/* MATURITY GATE */
+.maturity{margin-top:20px;padding:14px 16px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--c-danger)}
+.maturity-title{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-danger);margin-bottom:8px}
+.maturity-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.maturity-card{padding:10px;background:var(--bg-card);border:1px solid var(--border)}
+.maturity-level{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.maturity-level.red{color:var(--c-danger)}
+.maturity-level.yellow{color:var(--c-activity)}
+.maturity-level.green{color:var(--c-safe)}
+.maturity-desc{font-size:10px;color:var(--text-2);line-height:1.5}
+
+/* SCREENING + INSIGHT */
+.screening{padding:14px 16px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--accent);margin-top:20px}
+.screening-label{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.screening-text{font-family:var(--font-serif);font-size:14px;font-weight:400;line-height:1.7;color:var(--text-1);font-style:italic;transition:color var(--slow)}
+.insight{padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--c-graph);margin-top:10px}
+.insight-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-graph);margin-bottom:6px}
+.insight-text{font-size:11px;color:var(--text-2);line-height:1.65}
+.insight-text strong{color:var(--text-1);font-weight:500}
+
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text-1);color:var(--bg);font-family:var(--mn);font-size:9px;letter-spacing:.1em;padding:7px 16px;z-index:999;transition:transform var(--med) var(--ease);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+.nav{position:sticky;top:0;z-index:100;padding:0 20px;height:56px;display:flex;align-items:center;background:var(--bg);border-bottom:1px solid var(--border-s,rgba(26,25,24,.15));transition:background .4s}
+.n-logo{display:flex;align-items:center;gap:8px}
+.n-logo svg{color:var(--text-1,#1a1918)}
+.nr{margin-left:auto;display:flex;align-items:center;gap:4px}
+.n-lnk{font-family:var(--mn,'Space Mono',monospace);font-size:9px;padding:5px 8px;color:var(--text-2,#747474);text-decoration:none;white-space:nowrap;transition:color .3s;text-transform:lowercase;letter-spacing:.02em}
+.n-lnk:hover{color:var(--text-1,#1a1918)}
+.btn-out2,.btn-fill2{font-family:var(--mn,'Space Mono',monospace);font-size:10px;padding:14px 16px;border:1px solid var(--text-1,#1a1918);cursor:pointer;transition:all .4s;white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:block;text-align:center;flex:1}
+.btn-out2{background:transparent;color:var(--text-1,#1a1918)}
+.btn-out2:hover{background:var(--text-1,#1a1918);color:var(--bg,#f0f0f0)}
+.btn-fill2{background:var(--text-1,#1a1918);color:var(--bg,#f0f0f0)}
+.btn-fill2:hover{background:var(--accent,#ff6e3e);border-color:var(--accent,#ff6e3e)}
+.ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
+.ham span{display:block;width:18px;height:1.5px;background:var(--text-1,#1a1918);transition:all .3s}
+.mob-nav{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--bg,#f0f0f0);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
+.mob-nav.open{display:flex}
+.mob-btns2{display:flex;gap:8px;margin-bottom:24px}
+.mob-lnk{font-family:var(--mn,'Space Mono',monospace);font-size:12px;padding:14px 0;color:var(--text-2,#747474);border-bottom:1px solid var(--border,rgba(26,25,24,.08));text-transform:lowercase;letter-spacing:.02em;display:block;text-decoration:none}
+.mob-lnk:hover{color:var(--text-1,#1a1918)}
+@media(max-width:960px){.n-lnk{display:none}.ham{display:flex}}
+
+@media(max-width:768px){
+  .container{padding:0 16px 60px}
+  .tab-bar{flex-wrap:wrap;top:56px}
+  .tab-btn{padding:10px 12px;font-size:8px;flex:1;text-align:center;min-width:0}
+  .exec-row{grid-template-columns:1fr!important}
+  .outputs-grid{grid-template-columns:1fr!important}
+  .side-feeds{grid-template-columns:1fr!important}
+  .measurement-grid{grid-template-columns:1fr!important}
+  .governance-grid{grid-template-columns:1fr!important}
+  .gtm-routing-row{grid-template-columns:1fr!important;gap:0}
+  .gtm-routing-row.header{display:none}
+  .gtm-routing-cell{border-right:none!important;border-bottom:1px solid var(--border)}
+  .gtm-routing-cell:last-child{border-bottom:none}
+  .header h1{font-size:clamp(20px,5vw,38px)!important}
+  .section-title{font-size:clamp(16px,4vw,20px)!important}
+  .spine-node{padding:14px 16px}
+  .formula-content{font-size:9px;overflow-x:auto}
+  .scope-grid,.tradeoff-grid,.lane-grid,.term-grid,.obj-grid,.domain-grid{grid-template-columns:1fr!important}
+  html{font-size:13px}
+}
+@media(max-width:480px){
+  .tab-btn{padding:8px 6px;font-size:7px;letter-spacing:.04em}
+  html{font-size:12px}
+}
+
+</style>
+</head>
+<body>
+<div class="wrgrid" aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(200,220,240,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(200,220,240,.035) 1px,transparent 1px);background-size:36px 36px;opacity:0;transition:opacity .6s"></div>
+
+<nav class="nav" id="pageNav">
+  <div class="n-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="width:22px;height:22px"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    <span style="font-family:var(--mn);font-size:11px;font-weight:400;letter-spacing:.02em">governed revenue</span>
+  </div>
+  <div class="nr">
+    <a class="n-lnk" href="index.html">home</a>
+    <a class="n-lnk" href="spine-v4.html">spine</a>
+    <a class="n-lnk" href="sovereignty-map.html">sovereignty</a>
+    <a class="n-lnk" href="split-funnel-map.html">motion</a>
+    <a class="n-lnk" href="lexicon.html">lexicon</a>
+    <a class="n-lnk" href="identity-graph.html">identity</a>
+    <a class="n-lnk" href="provenance.html">provenance</a>
+    <button class="ham" onclick="document.getElementById('mobNav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <div class="mob-btns2">
+    <a class="btn-out2" href="index.html">home</a>
+    <a class="btn-fill2" href="index.html#briefing">strategic briefing</a>
+  </div>
+  <a class="mob-lnk" href="spine-v4.html">spine</a>
+  <a class="mob-lnk" href="sovereignty-map.html">sovereignty map</a>
+  <a class="mob-lnk" href="split-funnel-map.html">motion map</a>
+  <a class="mob-lnk" href="lexicon.html">lexicon</a>
+  <a class="mob-lnk" href="identity-graph.html">identity graph</a>
+  <a class="mob-lnk" href="provenance.html">provenance</a>
+</div>
+
+<div class="container">
+  <div class="header">
+    <div class="header-eyebrow">Screen 05 · Object Relationship Normalization</div>
+    <h1>Identity & Relationship <em>Graph</em></h1>
+    <p>Identity mapping is not hygiene. It is routing logic, probability integrity, and revenue attribution substrate. If object relationships are inconsistent, agents optimize on fiction. Agents never operate on CRM primitives — they operate on the normalized graph.</p>
+  </div>
+
+  <!-- PLACEMENT -->
+  <div class="placement">
+    <div class="placement-label">Architectural Placement — Below Signal, Above Raw CRM</div>
+    <div class="placement-text">This layer sits between the <strong>Signal Interpretation Engine (Layer 04)</strong> and the raw CRM data store. All agents read from the normalized graph. No agent writes directly to CRM primitives without graph validation. This is the substrate that makes probability modeling trustworthy.</div>
+  </div>
+
+  <!-- CANONICAL GRAPH -->
+  <div class="stitle">Canonical Revenue Graph</div>
+  <div class="ssub">The unified entity model agents operate on</div>
+
+  <div class="graph-diagram">
+    <div class="graph-root">
+      <div class="gn primary">Account (Atomic Unit)</div>
+      <div class="graph-indent">
+        <div class="graph-connector">↳ has_many</div>
+        <div class="gn signal">Contacts</div>
+        <div class="graph-indent">
+          <div class="graph-connector">↳ classified_as</div>
+          <div class="gn">Buying Group Roles (Economic · Technical · Champion · Influencer · Blocker)</div>
+        </div>
+        <div class="graph-connector">↳ has_many</div>
+        <div class="gn financial">Opportunities (Financial Container)</div>
+        <div class="graph-indent">
+          <div class="graph-connector">↳ linked_to</div>
+          <div class="gn">Contact Roles on Opportunity</div>
+        </div>
+        <div class="graph-connector">↳ has_many</div>
+        <div class="gn">Activities (rolled to Contact → Account → Opportunity)</div>
+        <div class="graph-connector">↳ has_many</div>
+        <div class="gn">Campaign Membership (motion-tagged, program-tagged, time-bound)</div>
+        <div class="graph-connector">↳ has</div>
+        <div class="gn signal">Product Usage (telemetry from Product Intel Agent)</div>
+        <div class="graph-connector">↳ has</div>
+        <div class="gn">Partner Association (tier, co-sell history, overlap)</div>
+        <div class="graph-connector">↳ assigned_to</div>
+        <div class="gn">Territory → Pod</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. LEAD → ACCOUNT RESOLUTION -->
+  <div class="stitle">1. Lead → Account Resolution</div>
+  <div class="ssub">No account-level probability should run on orphan leads</div>
+
+  <div class="res-grid">
+    <div class="res-card" style="--rc:var(--c-resolve)">
+      <div class="res-label">Deterministic Match</div>
+      <div class="res-title">High Confidence</div>
+      <div class="res-items"><code>Exact domain match</code> · <code>Known subsidiary mapping</code> · <code>Manual assignment</code> · <code>CRM-verified merge</code></div>
+    </div>
+    <div class="res-card" style="--rc:var(--c-activity)">
+      <div class="res-label">Probabilistic Match</div>
+      <div class="res-title">Requires Confidence Gate</div>
+      <div class="res-items"><code>Email pattern similarity</code> · <code>Company name fuzzy match</code> · <code>Third-party enrichment</code> · <code>IP-to-company mapping</code></div>
+      <div class="res-gate">If confidence &lt; threshold → human review queue</div>
+    </div>
+  </div>
+
+  <div class="rules-box" style="--rb-c:var(--c-resolve)">
+    <div class="rules-title">Resolution Rules</div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-resolve)">✓</span><div class="rule-text">Lead <strong>must</strong> be attached to Account before any signal scoring occurs</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-resolve)">✓</span><div class="rule-text">Orphan leads are excluded from APS calculation — they create noise, not signal</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-resolve)">✓</span><div class="rule-text">Subsidiary → parent mapping must be maintained for enterprise accounts</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-danger)">✕</span><div class="rule-text">No auto-merge without deterministic match or human approval</div></div>
+  </div>
+
+  <!-- 2. LEAD → CONTACT CONVERSION -->
+  <div class="stitle">2. Lead → Contact Conversion Governance</div>
+  <div class="ssub">Conversion is structural mutation · Agents must not blindly convert</div>
+
+  <div class="rules-box" style="--rb-c:var(--c-role)">
+    <div class="rules-title">Conversion Policy (CRM-Agnostic)</div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-role)">◇</span><div class="rule-text">Conversion only when <code>qualification threshold met</code></div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-role)">◇</span><div class="rule-text">No auto-opportunity creation without <code>probability gate</code></div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-role)">◇</span><div class="rule-text">Track <strong>original source lineage</strong> across conversion (lane + channel + timestamp)</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-role)">◇</span><div class="rule-text">Normalize regardless of CRM flavor (SFDC Lead→Contact+Account, HubSpot Contact→Company)</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-danger)">✕</span><div class="rule-text">No conversion without account resolution — orphan contacts are as dangerous as orphan leads</div></div>
+  </div>
+
+  <!-- 3. CONTACT → OPPORTUNITY MAPPING -->
+  <div class="stitle">3. Contact Role Mapping</div>
+  <div class="ssub">If an opp has 1 contact, buying group coverage is unknown</div>
+
+  <div class="role-grid">
+    <div class="role-card"><div class="role-name">Economic Buyer</div><div class="role-desc">Budget authority</div></div>
+    <div class="role-card"><div class="role-name">Technical Buyer</div><div class="role-desc">Requirements gate</div></div>
+    <div class="role-card"><div class="role-name">Champion</div><div class="role-desc">Internal advocate</div></div>
+    <div class="role-card"><div class="role-name">Influencer</div><div class="role-desc">Shapes evaluation</div></div>
+    <div class="role-card"><div class="role-name">Blocker</div><div class="role-desc">Risk to close</div></div>
+  </div>
+
+  <div class="rules-box" style="--rb-c:var(--c-graph)">
+    <div class="rules-title">Signal Agent Integration</div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-graph)">→</span><div class="rule-text"><strong>Buying group completeness</strong> factors into APS. 3+ stakeholders across different roles = probability lift</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-graph)">→</span><div class="rule-text">Without role mapping, engagement density becomes <strong>inflated noise</strong> — 5 touches to 1 person ≠ buying motion</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-graph)">→</span><div class="rule-text">Field Acceleration Agent uses stakeholder density as primary trigger for event investment</div></div>
+  </div>
+
+  <!-- 4. ACCOUNT → OPPORTUNITY INTEGRITY -->
+  <div class="stitle">4. Opportunity Integrity</div>
+  <div class="ssub">Financial containers must be governed</div>
+
+  <div class="rules-box" style="--rb-c:var(--c-opp)">
+    <div class="rules-title">Opportunity Governance Rules</div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-opp)">◆</span><div class="rule-text"><strong>Max active opps per account</strong> — guard against duplication and pipeline inflation</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-opp)">◆</span><div class="rule-text"><strong>Primary opp designation</strong> — clear when multiple exist (expansion vs new)</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-opp)">◆</span><div class="rule-text"><strong>Territory alignment enforced</strong> — opp owner must match territory assignment</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-opp)">◆</span><div class="rule-text"><strong>Partner association tagged</strong> — co-sell opps must carry partner metadata for lift measurement</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-opp)">◆</span><div class="rule-text"><strong>Stage mutation locked</strong> — only Qualification Agent or human can advance stage</div></div>
+  </div>
+
+  <!-- 5. ACTIVITY & CAMPAIGN MAPPING -->
+  <div class="stitle">5. Activity & Campaign Tagging</div>
+  <div class="ssub">Without normalized tagging, Learning Agent attributes on fiction</div>
+
+  <div class="res-grid">
+    <div class="res-card" style="--rc:var(--c-activity)">
+      <div class="res-label">Activity Roll-Up</div>
+      <div class="res-title">Contact → Account → Opportunity</div>
+      <div class="res-items">Every activity must roll up through the graph hierarchy. Orphan activities (no contact link, no account link) are excluded from signal scoring. Activities carry: <code>type</code> · <code>channel</code> · <code>timestamp</code> · <code>motion_tag</code></div>
+    </div>
+    <div class="res-card" style="--rc:var(--c-activity)">
+      <div class="res-label">Campaign (Tracking Container)</div>
+      <div class="res-title">Motion-Tagged · Program-Tagged · Time-Bound</div>
+      <div class="res-items">SFDC Campaign objects must carry: <code>acquisition_mode</code> (lane) · <code>program_id</code> · <code>date_range</code> · <code>segment_target</code>. Not generic buckets like "Q2 Webinar."</div>
+    </div>
+  </div>
+
+  <!-- ROUTING IMPLICATIONS -->
+  <div class="stitle">Routing Agent Responsibilities</div>
+  <div class="ssub">No routing without identity confirmation</div>
+
+  <div class="rules-box" style="--rb-c:var(--c-route)">
+    <div class="rules-title">Pre-Routing Validation Sequence</div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-route)">1</span><div class="rule-text">Validate <strong>Account resolution</strong> — lead attached to canonical account entity</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-route)">2</span><div class="rule-text">Validate <strong>Territory alignment</strong> — account maps to correct territory/pod</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-route)">3</span><div class="rule-text">Validate <strong>Pod capacity</strong> — target pod not over utilization threshold</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-route)">4</span><div class="rule-text">Validate <strong>Buying group coverage</strong> — minimum role threshold for escalation</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-route)">5</span><div class="rule-text">Validate <strong>Duplicate opp check</strong> — prevent parallel opportunity creation</div></div>
+    <div class="rule-row"><span class="rule-icon" style="color:var(--c-route)">6</span><div class="rule-text">Validate <strong>Partner tag</strong> — if co-sell eligible, partner metadata attached</div></div>
+  </div>
+
+  <!-- FAILURE CASCADE MATRIX -->
+  <div class="stitle">CRM Failure Cascades</div>
+  <div class="ssub">How bad mapping corrupts everything downstream</div>
+
+  <div class="cascade-grid">
+    <div class="cascade-header">Mapping Failure</div><div class="cascade-header">Immediate Effect</div><div class="cascade-header">System Corruption</div><div class="cascade-header">Revenue Impact</div>
+    <div class="cascade-cell src">Orphan leads (no account)</div><div class="cascade-cell">APS runs on noise</div><div class="cascade-cell">Signal weights drift</div><div class="cascade-cell">False positive routing → wasted BDR</div>
+    <div class="cascade-cell src">Duplicate accounts</div><div class="cascade-cell">Split engagement history</div><div class="cascade-cell">Understated probability</div><div class="cascade-cell">Missed high-value accounts</div>
+    <div class="cascade-cell src">No contact roles on opp</div><div class="cascade-cell">Buying group unknown</div><div class="cascade-cell">Stage inflation</div><div class="cascade-cell">Forecast miss → pipeline shock</div>
+    <div class="cascade-cell src">Untagged campaigns</div><div class="cascade-cell">Learning Agent blind</div><div class="cascade-cell">Cannot measure lift by lane</div><div class="cascade-cell">Budget allocated by politics, not data</div>
+    <div class="cascade-cell src">Territory misalignment</div><div class="cascade-cell">Wrong pod gets account</div><div class="cascade-cell">Capacity overload / idle</div><div class="cascade-cell">Velocity degrades, SLA missed</div>
+    <div class="cascade-cell src">Subsidiary unmapped</div><div class="cascade-cell">Parent treated as separate</div><div class="cascade-cell">ICP scoring fragmented</div><div class="cascade-cell">Enterprise deal sized as mid-market</div>
+  </div>
+
+  <!-- DEPLOYMENT SAFEGUARDS -->
+  <div class="stitle">Pre-Agent Deployment Safeguards</div>
+  <div class="ssub">Run these before any agent touches CRM data</div>
+
+  <div class="safeguard-grid">
+    <div class="safeguard"><div class="safeguard-num">1</div><div class="safeguard-name">Duplicate Account Audit</div><div class="safeguard-desc">Merge confirmed duplicates. Flag probabilistic matches for review.</div></div>
+    <div class="safeguard"><div class="safeguard-num">2</div><div class="safeguard-name">Domain Normalization</div><div class="safeguard-desc">Canonical domain per account. Subsidiary mapping table. Email pattern registry.</div></div>
+    <div class="safeguard"><div class="safeguard-num">3</div><div class="safeguard-name">Contact Role Coverage Audit</div><div class="safeguard-desc">% of active opps with ≥2 contact roles mapped. Target: 80%+.</div></div>
+    <div class="safeguard"><div class="safeguard-num">4</div><div class="safeguard-name">Territory Consistency Check</div><div class="safeguard-desc">Account territory matches opp owner territory. Zero misalignment tolerance.</div></div>
+    <div class="safeguard"><div class="safeguard-num">5</div><div class="safeguard-name">Stage Mutation Lock</div><div class="safeguard-desc">Permission audit on who/what can change opp stage. Lock to agents + approved humans.</div></div>
+    <div class="safeguard"><div class="safeguard-num">6</div><div class="safeguard-name">Campaign Tagging Taxonomy</div><div class="safeguard-desc">Every active campaign carries: acquisition_mode, program_id, segment_target, date_range.</div></div>
+  </div>
+
+  <!-- DATA MATURITY GATE -->
+  <div class="maturity">
+    <div class="maturity-title">Minimum Data Maturity Before Autonomous Routing</div>
+    <div class="maturity-grid">
+      <div class="maturity-card">
+        <div class="maturity-level red">Not Ready — Manual Only</div>
+        <div class="maturity-desc">Duplicate rate &gt;10%. Contact role coverage &lt;50%. Campaign tagging &lt;60%. Territory misalignment &gt;5%. Agents assist humans — they do not route.</div>
+      </div>
+      <div class="maturity-card">
+        <div class="maturity-level yellow">Partial — Agent-Suggested</div>
+        <div class="maturity-desc">Duplicate rate &lt;5%. Contact roles &gt;70%. Campaign tags &gt;80%. Territory clean. Agents recommend routing — humans confirm.</div>
+      </div>
+      <div class="maturity-card">
+        <div class="maturity-level green">Ready — Agent-Governed</div>
+        <div class="maturity-desc">Duplicate rate &lt;2%. Contact roles &gt;85%. Campaign tags &gt;95%. Territory zero-mismatch. Agents route autonomously within bounded authority.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENING -->
+  <div class="screening">
+    <div class="screening-label">Interview Framing</div>
+    <div class="screening-text">"We treat CRM objects as a graph, not tables. Lead-to-account matching, contact role mapping, and opportunity integrity are prerequisites for probability modeling. Agents operate on normalized entities, not raw CRM records. And we gate agent autonomy to data maturity — no routing without identity confirmation."</div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label">The Gate Between Architecture and Operational Risk</div>
+    <div class="insight-text"><strong>Account is the atomic unit. Opportunity is the financial container. Contact is the signal carrier.</strong> Confuse those and probability collapses. Without this layer, agents amplify data disorder at machine speed. ABX degenerates into multi-channel chaos. The Identity Graph is not data hygiene — it is the substrate that makes every other layer trustworthy.</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+'use strict';
+let toastTimer;
+function setMode(m){
+  document.body.classList.remove('mode-warroom','mode-monument');
+  if(m!=='atlas')document.body.classList.add('mode-'+m);
+  document.querySelector('.wrgrid').style.opacity=m==='warroom'?'1':'0';
+  ['atlas','warroom','monument'].forEach(id=>{document.getElementById('mb-'+id).classList.toggle('on',id===m)});
+  showToast('Mode: '+(m==='atlas'?'Atlas':m==='warroom'?'War Room':'Monument'));
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
+</script>
+</body>
+</html>
