@@ -53,17 +53,31 @@ a{color:inherit;text-decoration:none}
 .rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--sm),transform .7s var(--sm)}.rv.vis{opacity:1;transform:translateY(0)}
 
 /* HERO - scorecard style: mono uppercase, LIGHT weight, large */
-.hero{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:80px 0 60px}
+.hero{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding-top:80px;padding-bottom:60px}
 .h-eyebrow{font-family:var(--mn);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--g7);margin-bottom:24px;opacity:0;animation:up .8s var(--sm) .2s forwards}
 .h-title{font-family:var(--mn);font-size:clamp(24px,5.5vw,56px);font-weight:400;line-height:1.15;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:20px;opacity:0;animation:up .8s var(--sm) .35s forwards}
 .h-title span{color:var(--or)}
 .h-sub{font-family:var(--ft);font-size:clamp(14px,2.8vw,16px);font-weight:300;color:var(--g7);margin-bottom:40px;max-width:480px;line-height:1.7;opacity:0;animation:up .8s var(--sm) .5s forwards}
 .h-ctas{display:flex;gap:8px;opacity:0;animation:up .8s var(--sm) .65s forwards;flex-wrap:wrap}
 
-/* Tabs - scorecard RUN/JUDGE/SHIP style */
-.tabs{display:flex;gap:0;margin:48px 0 0;opacity:0;animation:up .8s var(--sm) .8s forwards}
-.tab{font-family:var(--mn);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:10px 20px;border:1px solid var(--g3);border-bottom:none;background:transparent;color:var(--g6);cursor:pointer;transition:all .3s var(--ez);margin-right:-1px}
-.tab:hover,.tab.on{color:var(--bk);background:var(--wh);border-color:var(--g3)}
+/* Tabs - RUN/JUDGE/SHIP component */
+.tabs-shell{max-width:900px;margin:48px 0 0;opacity:0;animation:up .8s var(--sm) .8s forwards}
+.tabs{display:flex;gap:12px;margin-bottom:-1px;padding:0 8px}
+.tab{padding:12px 28px;background:var(--g50);border:1px solid var(--g3);border-bottom:none;border-radius:14px 14px 0 0;font-family:var(--mn);font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--g7);cursor:pointer;transition:background .15s ease,color .15s ease}
+.tab:hover{background:#e8e8e8}
+.tab:focus-visible{outline:2px solid var(--or);outline-offset:-2px}
+.tab.active{background:var(--wh);color:var(--bk);position:relative;z-index:2}
+.tab-panel{background:var(--wh);border:1px solid var(--g3);border-radius:16px;padding:28px;position:relative;z-index:1;font-family:var(--ft);font-size:14px;font-weight:300;color:var(--g7);line-height:1.7}
+.tab-panel[hidden]{display:none}
+.tab-panel:not([hidden]){animation:fadeUp .3s var(--ez) forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* Tab panel inner layout */
+.tp-head{font-family:var(--ft);font-size:15px;font-weight:400;color:var(--bk);margin-bottom:20px}
+.tp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tp-item{display:flex;gap:8px;font-size:13px;line-height:1.55}
+.tp-item strong{color:var(--bk);font-weight:500;display:block;margin-bottom:2px}
+.tp-icon{color:var(--or);font-family:var(--mn);flex-shrink:0;margin-top:1px}
+@media(max-width:640px){.tabs{gap:0;padding:0}.tab{padding:10px 16px;font-size:11px;letter-spacing:.8px;flex:1;text-align:center}.tp-grid{grid-template-columns:1fr}}
 
 /* SECTIONS */
 .sc{padding:clamp(60px,10vw,100px) 0}
@@ -221,10 +235,36 @@ a{color:inherit;text-decoration:none}
     <button class="btn-out lg" onclick="sTo('#architecture')">explore architecture</button>
     <button class="btn-fill lg" onclick="sTo('#simulate')">run simulation</button>
   </div>
-  <div class="tabs">
-    <button class="tab on" onclick="setSeg(0,this)">pe-backed</button>
-    <button class="tab" onclick="setSeg(1,this)">mid-market</button>
-    <button class="tab" onclick="setSeg(2,this)">investor</button>
+  <div class="tabs-shell" data-default-tab="run">
+    <div class="tabs" role="tablist" aria-label="Primary tabs">
+      <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-run" data-tab="run" type="button">RUN</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-judge" data-tab="judge" type="button">JUDGE</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-ship" data-tab="ship" type="button">SHIP</button>
+    </div>
+    <section class="tab-panel" role="tabpanel" id="panel-run" data-panel="run">
+      <div class="tp-head">Manage and deploy agents across every revenue motion.</div>
+      <div class="tp-grid">
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Agent orchestration</strong><br>Route execution across seven motion domains with bounded autonomy.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Signal processing</strong><br>Separate structural readiness from behavioral motion in real time.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Economic constraints</strong><br>Every agent operates within capital allocation thresholds.</div></div>
+      </div>
+    </section>
+    <section class="tab-panel" role="tabpanel" id="panel-judge" data-panel="judge" hidden>
+      <div class="tp-head">Evaluate behaviors and outcomes against economic truth.</div>
+      <div class="tp-grid">
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Probability scoring</strong><br>Dual-signal model: readiness + momentum, weighted by economics.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Drift detection</strong><br>Identify forecast distortion before capital misallocates.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Provenance audit</strong><br>Trace every decision to its signal origin and governance rule.</div></div>
+      </div>
+    </section>
+    <section class="tab-panel" role="tabpanel" id="panel-ship" data-panel="ship" hidden>
+      <div class="tp-head">Deploy with confidence. Governed pipelines, not guesswork.</div>
+      <div class="tp-grid">
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Stage-ledger discipline</strong><br>Financial truth separated from forecast probability at every stage.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Closed-loop correction</strong><br>Recalibrate weights through prediction error, not opinion.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Portfolio compounding</strong><br>Cross-asset learning advantage across portfolio companies.</div></div>
+      </div>
+    </section>
   </div>
 </section>
 
@@ -436,8 +476,7 @@ a{color:inherit;text-decoration:none}
         <a class="hub-card" href="identity-graph.html"><div class="hub-num">screen 05</div><div class="hub-name">Identity Graph</div><div class="hub-desc">Object relationship normalization</div></a>
         <a class="hub-card" href="provenance.html"><div class="hub-num">screen 06</div><div class="hub-name">Provenance</div><div class="hub-desc">Audit spine &mdash; epistemic constraint</div></a>
         <a class="hub-card" href="agent-specs.html" style="border-top:2px solid var(--or)"><div class="hub-num">screen 07</div><div class="hub-name">Agent Specs</div><div class="hub-desc">Spec template, registry, build sequence</div></a>
-        <a class="hub-card" href="infrastructure.html" style="border-top:2px solid var(--or)"><div class="hub-num">screen 08</div><div class="hub-name">Infrastructure</div><div class="hub-desc">Stack requirements, MVP survival kit</div></a>
-        <a class="hub-card" href="infrastructure.html" style="border-top:2px solid var(--or)"><div class="hub-num">screen 08</div><div class="hub-name">Infrastructure</div><div class="hub-desc">Eight-layer stack, MVP requirements</div></a>
+        <a class="hub-card" href="infrastructure.html" style="border-top:2px solid var(--or)"><div class="hub-num">screen 08</div><div class="hub-name">Infrastructure</div><div class="hub-desc">Eight-layer stack, MVP survival kit</div></a>
       </div>
     </div>
   </div>
@@ -466,20 +505,40 @@ const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
-const segs=[
-  {title:'Governed Revenue<br><span>Architecture</span>',sub:'An agentic orchestration & control plane for modern GTM. Constrained by economics. Governed by thresholds. Auditable by design.',cta:'request strategic briefing'},
-  {title:'Install Constraint<br>Before <span>Automation</span>',sub:'A revenue control plane for mid-market operators who need to scale efficiently without losing visibility into what drives pipeline.',cta:'assess readiness'},
-  {title:'Revenue <span>Control Plane</span><br>for Portfolio Governance',sub:'Compound learning advantage across portfolio companies. Unified economics. Consistent measurement. Shared infrastructure.',cta:'request portfolio briefing'}
-];
-function setSeg(i,btn){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  const s=segs[i];
-  document.getElementById('heroTitle').innerHTML=s.title;
-  document.getElementById('heroSub').textContent=s.sub;
-  document.getElementById('navCta').textContent=s.cta;
-  document.getElementById('ctaMain').textContent=s.cta;
-}
+// Tabs component activation
+(function(){
+  const root=document.querySelector('.tabs-shell');
+  if(!root)return;
+  const defaultTab=root.dataset.defaultTab;
+  const tabs=Array.from(root.querySelectorAll("[role='tab']"));
+  const panels=root.querySelectorAll("[role='tabpanel']");
+  function activate(id){
+    tabs.forEach(function(btn){
+      const active=btn.dataset.tab===id;
+      btn.classList.toggle('active',active);
+      btn.setAttribute('aria-selected',active?'true':'false');
+      btn.setAttribute('tabindex',active?'0':'-1');
+    });
+    panels.forEach(function(p){
+      var show=p.dataset.panel===id;
+      p.hidden=!show;
+    });
+  }
+  activate(defaultTab);
+  tabs.forEach(function(btn){
+    btn.addEventListener('click',function(){activate(btn.dataset.tab);btn.focus()});
+  });
+  // Arrow key navigation (WAI-ARIA tabs pattern)
+  root.addEventListener('keydown',function(e){
+    if(e.target.getAttribute('role')!=='tab')return;
+    var idx=tabs.indexOf(e.target),next=-1;
+    if(e.key==='ArrowRight')next=(idx+1)%tabs.length;
+    else if(e.key==='ArrowLeft')next=(idx-1+tabs.length)%tabs.length;
+    else if(e.key==='Home')next=0;
+    else if(e.key==='End')next=tabs.length-1;
+    if(next>=0){e.preventDefault();activate(tabs[next].dataset.tab);tabs[next].focus()}
+  });
+})();
 function p(id){return parseFloat(document.getElementById(id).value.replace(/,/g,''))||0}
 function fmt(n){if(n>=1e6)return'$'+((n/1e6).toFixed(1))+'M';if(n>=1e3)return'$'+((n/1e3).toFixed(0))+'K';return'$'+n.toFixed(0)}
 let simMode='base';

@@ -1,0 +1,127 @@
+---
+const {
+  tabs = [
+    { id: "run", label: "RUN", content: "Manage and deploy agents..." },
+    { id: "judge", label: "JUDGE", content: "Evaluate behaviors and outcomes..." },
+    { id: "ship", label: "SHIP", content: "Deploy with confidence..." },
+  ],
+  defaultTab = tabs[0]?.id ?? "run",
+} = Astro.props;
+---
+
+<div class="tabs-shell" data-default-tab={defaultTab}>
+  <div class="tabs" role="tablist" aria-label="Primary tabs">
+    {tabs.map((t) => (
+      <button
+        class="tab"
+        role="tab"
+        aria-selected={t.id === defaultTab ? "true" : "false"}
+        aria-controls={`panel-${t.id}`}
+        data-tab={t.id}
+        type="button"
+      >
+        {t.label}
+      </button>
+    ))}
+  </div>
+
+  {tabs.map((t) => (
+    <section
+      class="tab-panel"
+      role="tabpanel"
+      id={`panel-${t.id}`}
+      data-panel={t.id}
+      hidden={t.id !== defaultTab}
+    >
+      {t.content}
+    </section>
+  ))}
+</div>
+
+<script>
+  // Astro inlines this as plain JS. No framework required.
+  const root = document.currentScript?.closest(".tabs-shell");
+  if (root) {
+    const defaultTab = root.dataset.defaultTab;
+    const tabs = root.querySelectorAll("[role='tab']");
+    const panels = root.querySelectorAll("[role='tabpanel']");
+
+    function activate(id) {
+      tabs.forEach((btn) => {
+        const active = btn.dataset.tab === id;
+        btn.classList.toggle("active", active);
+        btn.setAttribute("aria-selected", active ? "true" : "false");
+      });
+
+      panels.forEach((p) => {
+        const show = p.dataset.panel === id;
+        p.hidden = !show;
+      });
+    }
+
+    // initialize
+    activate(defaultTab);
+
+    // click handlers
+    tabs.forEach((btn) => {
+      btn.addEventListener("click", () => activate(btn.dataset.tab));
+    });
+  }
+</script>
+
+<style>
+  :global(:root) {
+    --bg: #f5f5f5;
+    --panel: #ffffff;
+    --tab-inactive: #efefef;
+    --border: #dcdcdc;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+  }
+
+  .tabs-shell {
+    max-width: 900px;
+  }
+
+  /* This is the "fusion" trick */
+  .tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: -1px; /* fuses active tab into panel border */
+    padding: 0 8px;
+  }
+
+  .tab {
+    padding: 12px 28px;
+    background: var(--tab-inactive);
+    border: 1px solid var(--border);
+    border-bottom: none; /* avoids double border with panel */
+    border-radius: 14px 14px 0 0;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .tab:hover {
+    background: #e8e8e8;
+  }
+
+  .tab.active {
+    background: var(--panel);
+    color: var(--text);
+    position: relative;
+    z-index: 2; /* sits above the panel */
+  }
+
+  .tab-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    z-index: 1;
+  }
+</style>
