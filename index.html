@@ -60,10 +60,24 @@ a{color:inherit;text-decoration:none}
 .h-sub{font-family:var(--ft);font-size:clamp(14px,2.8vw,16px);font-weight:300;color:var(--g7);margin-bottom:40px;max-width:480px;line-height:1.7;opacity:0;animation:up .8s var(--sm) .5s forwards}
 .h-ctas{display:flex;gap:8px;opacity:0;animation:up .8s var(--sm) .65s forwards;flex-wrap:wrap}
 
-/* Tabs - segment selector */
-.tabs{display:flex;gap:0;margin:48px 0 0;opacity:0;animation:up .8s var(--sm) .8s forwards}
-.tab{font-family:var(--mn);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:10px 20px;border:1px solid var(--g3);border-bottom:none;background:transparent;color:var(--g6);cursor:pointer;transition:all .3s var(--ez);margin-right:-1px}
-.tab:hover,.tab.on{color:var(--bk);background:var(--wh);border-color:var(--g3)}
+/* Tabs - RUN/JUDGE/SHIP component */
+.tabs-shell{max-width:900px;margin:48px 0 0;opacity:0;animation:up .8s var(--sm) .8s forwards}
+.tabs{display:flex;gap:12px;margin-bottom:-1px;padding:0 8px}
+.tab{padding:12px 28px;background:var(--g50);border:1px solid var(--g3);border-bottom:none;border-radius:14px 14px 0 0;font-family:var(--mn);font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--g7);cursor:pointer;transition:background .15s ease,color .15s ease}
+.tab:hover{background:#e8e8e8}
+.tab:focus-visible{outline:2px solid var(--or);outline-offset:-2px}
+.tab.active{background:var(--wh);color:var(--bk);position:relative;z-index:2}
+.tab-panel{background:var(--wh);border:1px solid var(--g3);border-radius:16px;padding:28px;position:relative;z-index:1;font-family:var(--ft);font-size:14px;font-weight:300;color:var(--g7);line-height:1.7}
+.tab-panel[hidden]{display:none}
+.tab-panel:not([hidden]){animation:fadeUp .3s var(--ez) forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* Tab panel inner layout */
+.tp-head{font-family:var(--ft);font-size:15px;font-weight:400;color:var(--bk);margin-bottom:20px}
+.tp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tp-item{display:flex;gap:8px;font-size:13px;line-height:1.55}
+.tp-item strong{color:var(--bk);font-weight:500;display:block;margin-bottom:2px}
+.tp-icon{color:var(--or);font-family:var(--mn);flex-shrink:0;margin-top:1px}
+@media(max-width:640px){.tabs{gap:0;padding:0}.tab{padding:10px 16px;font-size:11px;letter-spacing:.8px;flex:1;text-align:center}.tp-grid{grid-template-columns:1fr}}
 
 /* SECTIONS */
 .sc{padding:clamp(60px,10vw,100px) 0}
@@ -184,6 +198,71 @@ a{color:inherit;text-decoration:none}
 .closing-note{font-family:var(--mn);font-size:9px;color:var(--g5);margin-top:28px;font-style:italic;font-weight:400}
 .foot{padding:32px 20px;border-top:1px solid var(--g3);text-align:center}
 .foot-text{font-family:var(--mn);font-size:9px;color:var(--g5);letter-spacing:.06em}
+
+/* ARCHITECTURE DIAGRAM — System Control Plane */
+.arch-diagram{position:relative;max-width:880px;margin:0 auto}
+.arch-diagram svg{width:100%;height:auto;display:block}
+.arch-diagram .ad-header{margin-bottom:24px}
+.arch-diagram .ad-eyebrow{font-family:var(--mn);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--g6);margin-bottom:8px}
+.arch-diagram .ad-title{font-family:var(--mn);font-size:clamp(18px,3.5vw,28px);font-weight:400;text-transform:uppercase;letter-spacing:-.005em}
+.arch-diagram .ad-title span{color:var(--or)}
+.arch-diagram .ad-subtitle{font-family:var(--ft);font-size:13px;font-weight:300;color:var(--g7);margin-top:6px;line-height:1.6}
+.arch-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.arch-legend-item{display:flex;align-items:center;gap:5px}
+.arch-legend-dot{width:8px;height:8px;border-radius:2px}
+.arch-legend-label{font-family:var(--mn);font-size:8px;color:var(--g6);letter-spacing:.04em;text-transform:uppercase}
+/* SVG node interactions */
+.ad-node{cursor:pointer;transition:opacity .3s}
+.ad-node:hover .ad-node-ring{opacity:1}
+.ad-node:hover .ad-node-label{fill:var(--bk)}
+.sdk .ad-node:hover .ad-node-label{fill:var(--wh)}
+/* Core breathing */
+@keyframes corePulse{0%,100%{opacity:.4}50%{opacity:.9}}
+@keyframes coreOrbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes coreOrbitRev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes particleFlow{0%{offset-distance:0%;opacity:0}10%{opacity:1}90%{opacity:1}100%{offset-distance:100%;opacity:0}}
+.ad-core-stroke{animation:corePulse 3s ease-in-out infinite}
+.ad-orbit{transform-origin:440px 400px}
+.ad-orbit-fwd{animation:coreOrbit 30s linear infinite}
+.ad-orbit-rev{animation:coreOrbitRev 40s linear infinite}
+.ad-ring-dash{animation:coreOrbit 60s linear infinite;transform-origin:440px 400px}
+/* Trigger buttons */
+.ad-triggers{margin-top:20px}
+.ad-triggers-title{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:10px}
+.ad-trigger-btns{display:flex;gap:6px;flex-wrap:wrap}
+.ad-trigger-btn{font-family:var(--mn);font-size:9px;padding:7px 14px;border:1px solid var(--g3);background:var(--g50);color:var(--g7);cursor:pointer;transition:all .35s var(--ez);text-transform:lowercase;letter-spacing:.02em}
+.ad-trigger-btn:hover{border-color:var(--bk);color:var(--bk)}
+.ad-trigger-btn.active{background:var(--bk);border-color:var(--bk);color:var(--wh)}
+.sdk .ad-trigger-btn{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--g5)}
+.sdk .ad-trigger-btn:hover{border-color:var(--or);color:var(--or)}
+.sdk .ad-trigger-btn.active{background:var(--or);border-color:var(--or);color:var(--bk)}
+.ad-cascade-info{margin-top:12px;padding:12px 16px;background:var(--g50);border:1px solid var(--g3);display:none}
+.ad-cascade-info.visible{display:block}
+.sdk .ad-cascade-info{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06)}
+.ad-cascade-label{font-family:var(--mn);font-size:10px;font-weight:700;color:var(--or);margin-bottom:4px}
+.ad-cascade-desc{font-family:var(--ft);font-size:12px;font-weight:300;color:var(--g7);line-height:1.5}
+.sdk .ad-cascade-desc{color:var(--g5)}
+.ad-cascade-path{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.ad-cascade-node{font-family:var(--mn);font-size:8px;padding:2px 8px;border:1px solid var(--g3);color:var(--g7)}
+.sdk .ad-cascade-node{border-color:rgba(255,255,255,.1);color:var(--g5)}
+.ad-cascade-arrow{font-family:var(--mn);font-size:9px;color:var(--g5)}
+.ad-doctrine{font-family:var(--ft);font-size:12px;color:var(--g5);font-style:italic;margin-top:16px;padding-top:12px;border-top:1px solid var(--g3);line-height:1.6}
+.sdk .ad-doctrine{border-color:rgba(255,255,255,.06)}
+/* Tooltip */
+.ad-tooltip{position:absolute;padding:12px 16px;background:var(--wh);border:1px solid var(--g3);box-shadow:0 6px 20px rgba(0,0,0,.08);max-width:260px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10}
+.sdk .ad-tooltip{background:var(--g9);border-color:rgba(255,255,255,.08);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.ad-tooltip.show{opacity:1}
+.ad-tooltip-name{font-family:var(--mn);font-size:10px;font-weight:700;margin-bottom:2px}
+.ad-tooltip-sub{font-family:var(--mn);font-size:8px;color:var(--g6);margin-bottom:4px}
+.ad-tooltip-desc{font-family:var(--ft);font-size:11px;font-weight:300;color:var(--g7);line-height:1.5}
+.sdk .ad-tooltip-desc{color:var(--g5)}
+/* Active node glow */
+@keyframes nodeActivePulse{0%,100%{opacity:.2;r:32}50%{opacity:.6;r:38}}
+.ad-active-glow{animation:nodeActivePulse 1.5s ease-in-out infinite}
+/* Particles on active connections */
+@keyframes particleMove{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}
+.ad-particle{opacity:0}
+.ad-particle.running{animation:particleMove 1.8s linear infinite}
 </style>
 </head>
 <body>
@@ -197,6 +276,7 @@ a{color:inherit;text-decoration:none}
     <a class="n-link" href="#control">control plane</a>
     <a class="n-link" href="#simulate">simulate</a>
     <a class="n-link" href="#library">library</a>
+    <a class="n-link" href="#system-architecture">system map</a>
     <a class="n-link" href="tools/revenue-physics-engine.html">physics engine</a>
     <button class="btn-out" onclick="sTo('#briefing')">explore framework</button>
     <button class="btn-fill" id="navCta" onclick="sTo('#briefing')">strategic briefing</button>
@@ -212,6 +292,7 @@ a{color:inherit;text-decoration:none}
   <a class="mob-nav-link" href="#control" onclick="closeMob()">control plane</a>
   <a class="mob-nav-link" href="#simulate" onclick="closeMob()">simulate</a>
   <a class="mob-nav-link" href="#library" onclick="closeMob()">library</a>
+  <a class="mob-nav-link" href="#system-architecture" onclick="closeMob()">system map</a>
   <a class="mob-nav-link" href="tools/revenue-physics-engine.html" onclick="closeMob()">physics engine</a>
 </div>
 
@@ -223,10 +304,36 @@ a{color:inherit;text-decoration:none}
     <button class="btn-out lg" onclick="sTo('#architecture')">explore architecture</button>
     <button class="btn-fill lg" onclick="sTo('#simulate')">run simulation</button>
   </div>
-  <div class="tabs">
-    <button class="tab on" onclick="setSeg(0,this)">pe-backed</button>
-    <button class="tab" onclick="setSeg(1,this)">mid-market</button>
-    <button class="tab" onclick="setSeg(2,this)">investor</button>
+  <div class="tabs-shell" data-default-tab="run">
+    <div class="tabs" role="tablist" aria-label="Primary tabs">
+      <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-run" data-tab="run" type="button">RUN</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-judge" data-tab="judge" type="button">JUDGE</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-ship" data-tab="ship" type="button">SHIP</button>
+    </div>
+    <section class="tab-panel" role="tabpanel" id="panel-run" data-panel="run">
+      <div class="tp-head">Manage and deploy agents across every revenue motion.</div>
+      <div class="tp-grid">
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Agent orchestration</strong><br>Route execution across seven motion domains with bounded autonomy.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Signal processing</strong><br>Separate structural readiness from behavioral motion in real time.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Economic constraints</strong><br>Every agent operates within capital allocation thresholds.</div></div>
+      </div>
+    </section>
+    <section class="tab-panel" role="tabpanel" id="panel-judge" data-panel="judge" hidden>
+      <div class="tp-head">Evaluate behaviors and outcomes against economic truth.</div>
+      <div class="tp-grid">
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Probability scoring</strong><br>Dual-signal model: readiness + momentum, weighted by economics.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Drift detection</strong><br>Identify forecast distortion before capital misallocates.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Provenance audit</strong><br>Trace every decision to its signal origin and governance rule.</div></div>
+      </div>
+    </section>
+    <section class="tab-panel" role="tabpanel" id="panel-ship" data-panel="ship" hidden>
+      <div class="tp-head">Deploy with confidence. Governed pipelines, not guesswork.</div>
+      <div class="tp-grid">
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Stage-ledger discipline</strong><br>Financial truth separated from forecast probability at every stage.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Closed-loop correction</strong><br>Recalibrate weights through prediction error, not opinion.</div></div>
+        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Portfolio compounding</strong><br>Cross-asset learning advantage across portfolio companies.</div></div>
+      </div>
+    </section>
   </div>
 </section>
 
@@ -446,6 +553,209 @@ a{color:inherit;text-decoration:none}
 </section>
 
 <!-- BRIEFING CTA -->
+
+<!-- SYSTEM ARCHITECTURE DIAGRAM -->
+<section class="sc sdk" id="system-architecture">
+  <div class="w rv">
+    <div class="arch-diagram" id="archDiagram">
+      <div class="ad-header">
+        <div class="ad-eyebrow">system architecture</div>
+        <div class="ad-title">Revenue Physics <span>Engine</span></div>
+        <div class="ad-subtitle">Constraint &rarr; Policy &rarr; Agent &rarr; Execution &rarr; Market &rarr; Feedback</div>
+        <div class="arch-legend">
+          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#bcbeff"></div><span class="arch-legend-label">Governance</span></div>
+          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#ff6e3e"></div><span class="arch-legend-label">Agent</span></div>
+          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#5de0b8"></div><span class="arch-legend-label">Execution</span></div>
+          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#ff6b8a"></div><span class="arch-legend-label">Market</span></div>
+        </div>
+      </div>
+
+      <svg viewBox="0 0 880 800" id="archSvg">
+        <defs>
+          <filter id="adCoreGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="10" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+          <filter id="adNodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+          <marker id="adArrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+            <polygon points="0 0,7 2.5,0 5" fill="rgba(255,255,255,.15)"/>
+          </marker>
+        </defs>
+
+        <!-- Concentric rings -->
+        <circle cx="440" cy="400" r="148" fill="none" stroke="#bcbeff" stroke-width=".5" stroke-dasharray="3 7" opacity=".15"/>
+        <circle cx="440" cy="400" r="222" fill="none" stroke="#ff6e3e" stroke-width=".5" stroke-dasharray="3 7" opacity=".15"/>
+        <circle cx="440" cy="400" r="296" fill="none" stroke="#5de0b8" stroke-width=".5" stroke-dasharray="3 7" opacity=".15"/>
+        <circle cx="440" cy="400" r="362" fill="none" stroke="#ff6b8a" stroke-width=".5" stroke-dasharray="3 7" opacity=".12"/>
+
+        <!-- Ring labels -->
+        <text x="440" y="264" text-anchor="middle" fill="#bcbeff" font-size="7" font-family="'Space Mono',monospace" opacity=".3" style="letter-spacing:.12em;text-transform:uppercase">Governance Layer</text>
+        <text x="440" y="190" text-anchor="middle" fill="#ff6e3e" font-size="7" font-family="'Space Mono',monospace" opacity=".3" style="letter-spacing:.12em;text-transform:uppercase">Agent Layer</text>
+        <text x="440" y="116" text-anchor="middle" fill="#5de0b8" font-size="7" font-family="'Space Mono',monospace" opacity=".3" style="letter-spacing:.12em;text-transform:uppercase">Execution Systems</text>
+        <text x="440" y="50" text-anchor="middle" fill="#ff6b8a" font-size="7" font-family="'Space Mono',monospace" opacity=".3" style="letter-spacing:.12em;text-transform:uppercase">Market Interface</text>
+
+        <!-- Connection lines (drawn first, behind nodes) -->
+        <g id="adConnections" opacity=".1">
+          <!-- Governance → Agent -->
+          <line class="ad-conn" data-from="pnl" data-to="coverage" x1="341" y1="303" x2="425" y2="207" stroke="#bcbeff" stroke-width=".5" marker-end="url(#adArrow)"/>
+          <line class="ad-conn" data-from="stage" data-to="attribution" x1="538" y1="318" x2="590" y2="218" stroke="#bcbeff" stroke-width=".5" marker-end="url(#adArrow)"/>
+          <line class="ad-conn" data-from="icp" data-to="forecast" x1="352" y1="480" x2="290" y2="400" stroke="#bcbeff" stroke-width=".5" marker-end="url(#adArrow)"/>
+          <!-- Agent → Execution -->
+          <line class="ad-conn" data-from="coverage" data-to="salesforce" x1="425" y1="207" x2="523" y2="119" stroke="#ff6e3e" stroke-width=".5" marker-end="url(#adArrow)"/>
+          <line class="ad-conn" data-from="attribution" data-to="hubspot" x1="590" y1="218" x2="660" y2="310" stroke="#ff6e3e" stroke-width=".5" marker-end="url(#adArrow)"/>
+          <line class="ad-conn" data-from="forecast" data-to="clay" x1="290" y1="400" x2="195" y2="310" stroke="#ff6e3e" stroke-width=".5" marker-end="url(#adArrow)"/>
+          <!-- Execution → Market -->
+          <line class="ad-conn" data-from="hubspot" data-to="buyer" x1="660" y1="310" x2="440" y2="38" stroke="#5de0b8" stroke-width=".5" marker-end="url(#adArrow)"/>
+          <line class="ad-conn" data-from="clay" data-to="6sense" x1="195" y1="310" x2="160" y2="400" stroke="#5de0b8" stroke-width=".5" marker-end="url(#adArrow)"/>
+          <line class="ad-conn" data-from="salesforce" data-to="buyer" x1="523" y1="119" x2="440" y2="38" stroke="#5de0b8" stroke-width=".5" marker-end="url(#adArrow)"/>
+          <!-- Market → Feedback -->
+          <line class="ad-conn" data-from="buyer" data-to="feedback" x1="440" y1="38" x2="700" y2="450" stroke="rgba(255,255,255,.06)" stroke-width=".5"/>
+          <line class="ad-conn" data-from="6sense" data-to="feedback" x1="160" y1="400" x2="700" y2="450" stroke="rgba(255,255,255,.06)" stroke-width=".5"/>
+          <!-- Feedback → Governance (recalibrate) -->
+          <line class="ad-conn" data-from="feedback" data-to="pnl" x1="700" y1="450" x2="341" y2="303" stroke="#ff6b8a" stroke-width=".5" stroke-dasharray="4 4" marker-end="url(#adArrow)"/>
+          <line class="ad-conn" data-from="feedback" data-to="stage" x1="700" y1="450" x2="538" y2="318" stroke="#ff6b8a" stroke-width=".5" stroke-dasharray="4 4" marker-end="url(#adArrow)"/>
+        </g>
+
+        <!-- Outer feedback orbit ring -->
+        <circle cx="440" cy="400" r="362" fill="none" stroke="rgba(255,255,255,.04)" stroke-width=".3" stroke-dasharray="1 10" class="ad-ring-dash"/>
+
+        <!-- CORE -->
+        <circle cx="440" cy="400" r="50" fill="#2b2b2b" stroke="#ff6e3e" stroke-width="1.2" class="ad-core-stroke" filter="url(#adCoreGlow)"/>
+        <circle cx="440" cy="400" r="36" fill="none" stroke="#ff6e3e" stroke-width=".4" stroke-dasharray="2 5" opacity=".25" class="ad-orbit ad-orbit-fwd"/>
+        <!-- Orbital paths -->
+        <path d="M428,400 Q440,384 452,400 Q440,416 428,400" fill="none" stroke="#ff6e3e" stroke-width="1" opacity=".4" class="ad-orbit ad-orbit-fwd"/>
+        <path d="M440,388 Q456,400 440,412 Q424,400 440,388" fill="none" stroke="#ff6e3e" stroke-width="1" opacity=".4" class="ad-orbit ad-orbit-rev"/>
+        <!-- Core text -->
+        <text x="440" y="397" text-anchor="middle" fill="#ff6e3e" font-size="8" font-family="'Space Mono',monospace" font-weight="700" style="letter-spacing:.06em">REVENUE</text>
+        <text x="440" y="408" text-anchor="middle" fill="#ff6e3e" font-size="6" font-family="'Space Mono',monospace" opacity=".5" style="letter-spacing:.1em">PHYSICS</text>
+
+        <!-- GOVERNANCE NODES (r=148) -->
+        <!-- P&L Constraints: angle=-40° -->
+        <g class="ad-node" data-id="pnl" data-name="P&amp;L Constraints" data-desc="Operating margin floors, burn guardrails, CAC ceilings" data-color="#bcbeff">
+          <circle class="ad-node-ring" cx="341" cy="303" r="32" fill="none" stroke="#bcbeff" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="341" cy="303" r="22" fill="#2b2b2b" stroke="#bcbeff" stroke-width=".7"/>
+          <text class="ad-node-label" x="341" y="299" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">P&amp;L</text>
+          <text x="341" y="309" text-anchor="middle" fill="#bcbeff" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Constraints</text>
+        </g>
+        <!-- Stage Definitions: angle=80° -->
+        <g class="ad-node" data-id="stage" data-name="Stage Definitions" data-desc="Meeting=Held, SQO criteria, compression metrics" data-color="#bcbeff">
+          <circle class="ad-node-ring" cx="538" cy="318" r="32" fill="none" stroke="#bcbeff" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="538" cy="318" r="22" fill="#2b2b2b" stroke="#bcbeff" stroke-width=".7"/>
+          <text class="ad-node-label" x="538" y="315" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Stage</text>
+          <text x="538" y="325" text-anchor="middle" fill="#bcbeff" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Definitions</text>
+        </g>
+        <!-- ICP Governance: angle=200° -->
+        <g class="ad-node" data-id="icp" data-name="ICP Governance" data-desc="Segment rules, deal size floors, territory logic" data-color="#bcbeff">
+          <circle class="ad-node-ring" cx="352" cy="480" r="32" fill="none" stroke="#bcbeff" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="352" cy="480" r="22" fill="#2b2b2b" stroke="#bcbeff" stroke-width=".7"/>
+          <text class="ad-node-label" x="352" y="477" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">ICP</text>
+          <text x="352" y="487" text-anchor="middle" fill="#bcbeff" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Governance</text>
+        </g>
+
+        <!-- AGENT NODES (r=222) -->
+        <!-- Coverage Agent: angle=-10° -->
+        <g class="ad-node" data-id="coverage" data-name="Coverage Agent" data-desc="AE capacity, quota attainment, ramp-adjusted coverage" data-color="#ff6e3e">
+          <circle class="ad-node-ring" cx="425" cy="207" r="32" fill="none" stroke="#ff6e3e" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="425" cy="207" r="22" fill="#2b2b2b" stroke="#ff6e3e" stroke-width=".7"/>
+          <text class="ad-node-label" x="425" y="204" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Coverage</text>
+          <text x="425" y="214" text-anchor="middle" fill="#ff6e3e" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Agent</text>
+        </g>
+        <!-- Attribution Agent: angle=120° -->
+        <g class="ad-node" data-id="attribution" data-name="Attribution Agent" data-desc="Motion allocation, channel yield, CAC decomposition" data-color="#ff6e3e">
+          <circle class="ad-node-ring" cx="590" cy="218" r="32" fill="none" stroke="#ff6e3e" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="590" cy="218" r="22" fill="#2b2b2b" stroke="#ff6e3e" stroke-width=".7"/>
+          <text class="ad-node-label" x="590" y="215" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Attribution</text>
+          <text x="590" y="225" text-anchor="middle" fill="#ff6e3e" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Agent</text>
+        </g>
+        <!-- Forecast Agent: angle=240° -->
+        <g class="ad-node" data-id="forecast" data-name="Forecast Agent" data-desc="Pipeline velocity, win-rate trending, glideslope" data-color="#ff6e3e">
+          <circle class="ad-node-ring" cx="290" cy="400" r="32" fill="none" stroke="#ff6e3e" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="290" cy="400" r="22" fill="#2b2b2b" stroke="#ff6e3e" stroke-width=".7"/>
+          <text class="ad-node-label" x="290" y="397" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Forecast</text>
+          <text x="290" y="407" text-anchor="middle" fill="#ff6e3e" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Agent</text>
+        </g>
+
+        <!-- EXECUTION NODES (r=296) -->
+        <!-- Salesforce: angle=30° -->
+        <g class="ad-node" data-id="salesforce" data-name="Salesforce" data-sub="System of Record" data-desc="Pipeline, opportunities, closed-won truth" data-color="#5de0b8">
+          <circle class="ad-node-ring" cx="523" cy="119" r="32" fill="none" stroke="#5de0b8" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="523" cy="119" r="22" fill="#2b2b2b" stroke="#5de0b8" stroke-width=".7"/>
+          <text class="ad-node-label" x="523" y="116" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Salesforce</text>
+          <text x="523" y="126" text-anchor="middle" fill="#5de0b8" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Record</text>
+        </g>
+        <!-- HubSpot: angle=150° -->
+        <g class="ad-node" data-id="hubspot" data-name="HubSpot" data-sub="Orchestration" data-desc="Lifecycle stage, lead routing, nurture" data-color="#5de0b8">
+          <circle class="ad-node-ring" cx="660" cy="310" r="32" fill="none" stroke="#5de0b8" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="660" cy="310" r="22" fill="#2b2b2b" stroke="#5de0b8" stroke-width=".7"/>
+          <text class="ad-node-label" x="660" y="307" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">HubSpot</text>
+          <text x="660" y="317" text-anchor="middle" fill="#5de0b8" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Orchestration</text>
+        </g>
+        <!-- Clay: angle=270° -->
+        <g class="ad-node" data-id="clay" data-name="Clay" data-sub="Signal Execution" data-desc="Enrichment, sequencing, ICP scoring" data-color="#5de0b8">
+          <circle class="ad-node-ring" cx="195" cy="310" r="32" fill="none" stroke="#5de0b8" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="195" cy="310" r="22" fill="#2b2b2b" stroke="#5de0b8" stroke-width=".7"/>
+          <text class="ad-node-label" x="195" y="307" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Clay</text>
+          <text x="195" y="317" text-anchor="middle" fill="#5de0b8" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Signal Exec</text>
+        </g>
+
+        <!-- MARKET NODES (r=362) -->
+        <!-- 6sense: angle=60° -->
+        <g class="ad-node" data-id="6sense" data-name="6sense" data-sub="Intent Signals" data-desc="Buying stage, account surge, keyword intent" data-color="#ff6b8a">
+          <circle class="ad-node-ring" cx="160" cy="400" r="32" fill="none" stroke="#ff6b8a" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="160" cy="400" r="22" fill="#2b2b2b" stroke="#ff6b8a" stroke-width=".7"/>
+          <text class="ad-node-label" x="160" y="397" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">6sense</text>
+          <text x="160" y="407" text-anchor="middle" fill="#ff6b8a" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Intent</text>
+        </g>
+        <!-- Buyer Market: angle=180° -->
+        <g class="ad-node" data-id="buyer" data-name="Buyer Market" data-sub="Demand Surface" data-desc="Net-new inquiries, engagement, conversion" data-color="#ff6b8a">
+          <circle class="ad-node-ring" cx="440" cy="38" r="32" fill="none" stroke="#ff6b8a" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="440" cy="38" r="22" fill="#2b2b2b" stroke="#ff6b8a" stroke-width=".7"/>
+          <text class="ad-node-label" x="440" y="35" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Buyer</text>
+          <text x="440" y="45" text-anchor="middle" fill="#ff6b8a" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Market</text>
+        </g>
+        <!-- Feedback Loop: angle=300° -->
+        <g class="ad-node" data-id="feedback" data-name="Feedback Loop" data-sub="Closed-Loop" data-desc="Win/loss &rarr; constraint recalibration" data-color="#ff6b8a">
+          <circle class="ad-node-ring" cx="700" cy="450" r="32" fill="none" stroke="#ff6b8a" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
+          <circle cx="700" cy="450" r="22" fill="#2b2b2b" stroke="#ff6b8a" stroke-width=".7"/>
+          <text class="ad-node-label" x="700" y="447" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Feedback</text>
+          <text x="700" y="457" text-anchor="middle" fill="#ff6b8a" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Loop</text>
+        </g>
+
+        <!-- Active glow circles (hidden by default, JS activates) -->
+        <g id="adGlows"></g>
+      </svg>
+
+      <!-- Tooltip -->
+      <div class="ad-tooltip" id="adTooltip">
+        <div class="ad-tooltip-name" id="adTtName"></div>
+        <div class="ad-tooltip-sub" id="adTtSub"></div>
+        <div class="ad-tooltip-desc" id="adTtDesc"></div>
+      </div>
+
+      <!-- Simulation triggers -->
+      <div class="ad-triggers">
+        <div class="ad-triggers-title">simulate constraint cascade</div>
+        <div class="ad-trigger-btns" id="adTriggerBtns">
+          <button class="ad-trigger-btn" data-trigger="arr" data-label="ARR Change" data-desc="Revenue target shifts &rarr; constraints cascade" data-path="pnl,coverage,salesforce,buyer,feedback,pnl">arr change</button>
+          <button class="ad-trigger-btn" data-trigger="gap" data-label="Coverage Gap" data-desc="Pipeline insufficient &rarr; agent rebalances" data-path="coverage,salesforce,buyer,feedback,stage,attribution">coverage gap</button>
+          <button class="ad-trigger-btn" data-trigger="cac" data-label="CAC Breach" data-desc="Payback exceeds ceiling &rarr; governance intervenes" data-path="feedback,pnl,attribution,hubspot,buyer">cac breach</button>
+          <button class="ad-trigger-btn" data-trigger="intent" data-label="Intent Surge" data-desc="6sense detects buying signal &rarr; execution accelerates" data-path="6sense,feedback,forecast,clay,hubspot,buyer">intent surge</button>
+        </div>
+        <div class="ad-cascade-info" id="adCascadeInfo">
+          <div class="ad-cascade-label" id="adCascadeLabel"></div>
+          <div class="ad-cascade-desc" id="adCascadeDesc"></div>
+          <div class="ad-cascade-path" id="adCascadePath"></div>
+        </div>
+      </div>
+
+      <div class="ad-doctrine">Governance is not observation. It is intervention. <span style="color:var(--g6);margin-left:4px">&mdash; Architecture with feedback loops is physics.</span></div>
+    </div>
+  </div>
+</section>
+
 <section class="sc sdk" id="briefing">
   <div class="w closing">
     <div class="closing-h">This is not incremental<br>optimization. It is<br><span>structural replacement</span>.</div>
@@ -468,20 +778,40 @@ const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
-const segs=[
-  {title:'Governed Revenue<br><span>Architecture</span>',sub:'An agentic orchestration & control plane for modern GTM. Constrained by economics. Governed by thresholds. Auditable by design.',cta:'request strategic briefing'},
-  {title:'Install Constraint<br>Before <span>Automation</span>',sub:'A revenue control plane for mid-market operators who need to scale efficiently without losing visibility into what drives pipeline.',cta:'assess readiness'},
-  {title:'Revenue <span>Control Plane</span><br>for Portfolio Governance',sub:'Compound learning advantage across portfolio companies. Unified economics. Consistent measurement. Shared infrastructure.',cta:'request portfolio briefing'}
-];
-function setSeg(i,btn){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  const s=segs[i];
-  document.getElementById('heroTitle').innerHTML=s.title;
-  document.getElementById('heroSub').textContent=s.sub;
-  document.getElementById('navCta').textContent=s.cta;
-  document.getElementById('ctaMain').textContent=s.cta;
-}
+// Tabs component activation
+(function(){
+  const root=document.querySelector('.tabs-shell');
+  if(!root)return;
+  const defaultTab=root.dataset.defaultTab;
+  const tabs=Array.from(root.querySelectorAll("[role='tab']"));
+  const panels=root.querySelectorAll("[role='tabpanel']");
+  function activate(id){
+    tabs.forEach(function(btn){
+      const active=btn.dataset.tab===id;
+      btn.classList.toggle('active',active);
+      btn.setAttribute('aria-selected',active?'true':'false');
+      btn.setAttribute('tabindex',active?'0':'-1');
+    });
+    panels.forEach(function(p){
+      var show=p.dataset.panel===id;
+      p.hidden=!show;
+    });
+  }
+  activate(defaultTab);
+  tabs.forEach(function(btn){
+    btn.addEventListener('click',function(){activate(btn.dataset.tab);btn.focus()});
+  });
+  // Arrow key navigation (WAI-ARIA tabs pattern)
+  root.addEventListener('keydown',function(e){
+    if(e.target.getAttribute('role')!=='tab')return;
+    var idx=tabs.indexOf(e.target),next=-1;
+    if(e.key==='ArrowRight')next=(idx+1)%tabs.length;
+    else if(e.key==='ArrowLeft')next=(idx-1+tabs.length)%tabs.length;
+    else if(e.key==='Home')next=0;
+    else if(e.key==='End')next=tabs.length-1;
+    if(next>=0){e.preventDefault();activate(tabs[next].dataset.tab);tabs[next].focus()}
+  });
+})();
 function p(id){return parseFloat(document.getElementById(id).value.replace(/,/g,''))||0}
 function fmt(n){if(n>=1e6)return'$'+((n/1e6).toFixed(1))+'M';if(n>=1e3)return'$'+((n/1e3).toFixed(0))+'K';return'$'+n.toFixed(0)}
 let simMode='base';
@@ -567,6 +897,88 @@ window.addEventListener('scroll',()=>{
   else if(mx>.35){c.textContent='assess readiness';m.textContent='assess your revenue readiness'}
   else{c.textContent='explore framework';m.textContent='explore the framework'}
 },{passive:true});
+// ─── ARCHITECTURE DIAGRAM INTERACTIONS ───
+(function(){
+  const diagram=document.getElementById('archDiagram');
+  if(!diagram)return;
+  const svg=document.getElementById('archSvg');
+  const tooltip=document.getElementById('adTooltip');
+  const ttName=document.getElementById('adTtName');
+  const ttSub=document.getElementById('adTtSub');
+  const ttDesc=document.getElementById('adTtDesc');
+  const cascadeInfo=document.getElementById('adCascadeInfo');
+  const cascadeLabel=document.getElementById('adCascadeLabel');
+  const cascadeDesc=document.getElementById('adCascadeDesc');
+  const cascadePath=document.getElementById('adCascadePath');
+  const connGroup=document.getElementById('adConnections');
+  let activeTrigger=null;
+
+  // Node hover tooltips
+  document.querySelectorAll('.ad-node').forEach(node=>{
+    node.addEventListener('mouseenter',function(e){
+      const name=this.dataset.name||'';
+      const sub=this.dataset.sub||'';
+      const desc=this.dataset.desc||'';
+      const color=this.dataset.color||'#ff6e3e';
+      ttName.textContent=name;ttName.style.color=color;
+      ttSub.textContent=sub;ttSub.style.display=sub?'block':'none';
+      ttDesc.textContent=desc;
+      const rect=diagram.getBoundingClientRect();
+      const nr=this.getBoundingClientRect();
+      tooltip.style.left=Math.min(Math.max(0,(nr.left+nr.right)/2-rect.left-130),rect.width-270)+'px';
+      tooltip.style.top=(nr.bottom-rect.top+8)+'px';
+      tooltip.classList.add('show');
+    });
+    node.addEventListener('mouseleave',function(){tooltip.classList.remove('show')});
+  });
+
+  // Trigger buttons
+  const nodeNames={pnl:'P&L',stage:'Stage',icp:'ICP',coverage:'Coverage',attribution:'Attribution',forecast:'Forecast',salesforce:'Salesforce',hubspot:'HubSpot',clay:'Clay','6sense':'6sense',buyer:'Buyer',feedback:'Feedback'};
+  const nodeColors={pnl:'#bcbeff',stage:'#bcbeff',icp:'#bcbeff',coverage:'#ff6e3e',attribution:'#ff6e3e',forecast:'#ff6e3e',salesforce:'#5de0b8',hubspot:'#5de0b8',clay:'#5de0b8','6sense':'#ff6b8a',buyer:'#ff6b8a',feedback:'#ff6b8a'};
+
+  document.querySelectorAll('.ad-trigger-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const trig=this.dataset.trigger;
+      const wasActive=activeTrigger===trig;
+      // Reset all
+      document.querySelectorAll('.ad-trigger-btn').forEach(b=>b.classList.remove('active'));
+      connGroup.style.opacity='.1';
+      document.querySelectorAll('.ad-node circle:first-of-type').forEach(c=>{c.style.opacity='0';c.classList.remove('ad-active-glow')});
+      if(wasActive){activeTrigger=null;cascadeInfo.classList.remove('visible');return}
+      activeTrigger=trig;
+      this.classList.add('active');
+      const path=this.dataset.path.split(',');
+      const label=this.dataset.label;
+      const desc=this.dataset.desc;
+
+      // Show cascade info
+      cascadeLabel.textContent=label;
+      cascadeDesc.innerHTML=desc;
+      cascadePath.innerHTML='';
+      path.forEach((id,i)=>{
+        const span=document.createElement('span');span.className='ad-cascade-node';
+        span.textContent=nodeNames[id]||id;span.style.borderColor=nodeColors[id]||'#555';span.style.color=nodeColors[id]||'#999';
+        cascadePath.appendChild(span);
+        if(i<path.length-1){const arr=document.createElement('span');arr.className='ad-cascade-arrow';arr.textContent='→';cascadePath.appendChild(arr)}
+      });
+      cascadeInfo.classList.add('visible');
+
+      // Light up active nodes
+      path.forEach(id=>{
+        const nodeEl=document.querySelector('.ad-node[data-id="'+id+'"]');
+        if(nodeEl){const ring=nodeEl.querySelector('circle');if(ring){ring.style.opacity='1';ring.classList.add('ad-active-glow')}}
+      });
+
+      // Highlight active connections
+      connGroup.style.opacity='.08';
+      for(let i=0;i<path.length-1;i++){
+        const from=path[i],to=path[i+1];
+        const line=connGroup.querySelector('[data-from="'+from+'"][data-to="'+to+'"]')||connGroup.querySelector('[data-from="'+to+'"][data-to="'+from+'"]');
+        if(line){line.style.opacity='1';line.style.strokeWidth='1.5';line.style.transition='opacity .4s,stroke-width .4s'}
+      }
+    });
+  });
+})();
 </script>
 </body>
 </html>
