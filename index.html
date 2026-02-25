@@ -199,70 +199,69 @@ a{color:inherit;text-decoration:none}
 .foot{padding:32px 20px;border-top:1px solid var(--g3);text-align:center}
 .foot-text{font-family:var(--mn);font-size:9px;color:var(--g5);letter-spacing:.06em}
 
-/* ARCHITECTURE DIAGRAM — System Control Plane */
-.arch-diagram{position:relative;max-width:880px;margin:0 auto}
-.arch-diagram svg{width:100%;height:auto;display:block}
-.arch-diagram .ad-header{margin-bottom:24px}
-.arch-diagram .ad-eyebrow{font-family:var(--mn);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--g6);margin-bottom:8px}
-.arch-diagram .ad-title{font-family:var(--mn);font-size:clamp(18px,3.5vw,28px);font-weight:400;text-transform:uppercase;letter-spacing:-.005em}
-.arch-diagram .ad-title span{color:var(--or)}
-.arch-diagram .ad-subtitle{font-family:var(--ft);font-size:13px;font-weight:300;color:var(--g7);margin-top:6px;line-height:1.6}
-.arch-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
-.arch-legend-item{display:flex;align-items:center;gap:5px}
-.arch-legend-dot{width:8px;height:8px;border-radius:2px}
-.arch-legend-label{font-family:var(--mn);font-size:8px;color:var(--g6);letter-spacing:.04em;text-transform:uppercase}
-/* SVG node interactions */
-.ad-node{cursor:pointer;transition:opacity .3s}
-.ad-node:hover .ad-node-ring{opacity:1}
-.ad-node:hover .ad-node-label{fill:var(--bk)}
-.sdk .ad-node:hover .ad-node-label{fill:var(--wh)}
-/* Core breathing */
-@keyframes corePulse{0%,100%{opacity:.4}50%{opacity:.9}}
-@keyframes coreOrbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes coreOrbitRev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-@keyframes particleFlow{0%{offset-distance:0%;opacity:0}10%{opacity:1}90%{opacity:1}100%{offset-distance:100%;opacity:0}}
-.ad-core-stroke{animation:corePulse 3s ease-in-out infinite}
-.ad-orbit{transform-origin:440px 400px}
-.ad-orbit-fwd{animation:coreOrbit 30s linear infinite}
-.ad-orbit-rev{animation:coreOrbitRev 40s linear infinite}
-.ad-ring-dash{animation:coreOrbit 60s linear infinite;transform-origin:440px 400px}
+/* ═══ SYSTEM ARCHITECTURE DIAGRAM — Hub & Spoke / Swim Lanes ═══ */
+.arch-section{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.arch-wrap{min-width:820px;position:relative;padding:24px 0}
+/* Swim lane rows */
+.arch-lanes{position:relative}
+.arch-lane{display:grid;grid-template-columns:120px 1fr;align-items:start;min-height:100px;border-bottom:1px solid rgba(255,255,255,.04);padding:16px 0;position:relative}
+.arch-lane:last-child{border-bottom:none}
+.arch-lane-label{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;writing-mode:horizontal-tb;padding:12px 16px 12px 0;position:sticky;left:0;z-index:2}
+.arch-lane-content{display:flex;align-items:center;gap:0;position:relative;min-height:80px;padding:8px 0}
+/* Central hub */
+.arch-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;pointer-events:auto}
+.arch-hub-inner{width:160px;padding:16px 12px;background:var(--g9);border:2px solid var(--or);border-radius:14px;text-align:center;position:relative;cursor:default;transition:box-shadow .4s var(--ez)}
+.arch-hub-inner:hover{box-shadow:0 0 30px rgba(255,110,62,.12)}
+.arch-hub-icon{font-size:20px;margin-bottom:6px}
+.arch-hub-name{font-family:var(--ft);font-size:13px;font-weight:600;color:var(--wh)}
+.arch-hub-sub{font-family:var(--mn);font-size:8px;color:var(--g6);margin-top:2px;letter-spacing:.03em}
+.arch-hub-badges{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.arch-hub-badge{font-family:var(--mn);font-size:7px;padding:2px 8px;border-radius:10px;background:rgba(255,110,62,.12);color:var(--or);border:1px solid rgba(255,110,62,.2)}
+/* Nodes */
+.arch-node{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;cursor:pointer;transition:all .35s var(--ez);position:relative;min-width:150px;max-width:200px;flex-shrink:0}
+.arch-node:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.arch-node.active{border-color:var(--or);background:rgba(255,110,62,.06);box-shadow:0 0 20px rgba(255,110,62,.08)}
+.arch-node-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.arch-node-text{flex:1;min-width:0}
+.arch-node-name{font-family:var(--ft);font-size:11px;font-weight:500;color:var(--wh);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arch-node-type{font-family:var(--mn);font-size:7px;color:var(--g6);margin-top:1px;letter-spacing:.03em}
+.arch-node-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;font-size:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-weight:700;color:var(--wh)}
+/* Category labels on spokes */
+.arch-cat{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--g6);position:absolute;white-space:nowrap}
+/* Connection lines (SVG overlay) */
+.arch-svg{position:absolute;inset:0;pointer-events:none;z-index:1}
+.arch-svg line,.arch-svg path{transition:opacity .4s,stroke-width .4s}
+/* Left-side constraints column */
+.arch-left{display:flex;flex-direction:column;gap:10px;align-items:flex-end;padding-right:32px;position:relative}
+.arch-left::after{content:'Constraints';position:absolute;right:-48px;top:50%;transform:translateY(-50%) rotate(-90deg);font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);white-space:nowrap}
+/* Right-side grouped categories */
+.arch-right{display:flex;flex-direction:column;gap:28px;padding-left:32px}
+.arch-group{position:relative}
+.arch-group-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:8px;padding-left:2px}
+.arch-group-nodes{display:flex;flex-direction:column;gap:8px}
 /* Trigger buttons */
-.ad-triggers{margin-top:20px}
-.ad-triggers-title{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:10px}
-.ad-trigger-btns{display:flex;gap:6px;flex-wrap:wrap}
-.ad-trigger-btn{font-family:var(--mn);font-size:9px;padding:7px 14px;border:1px solid var(--g3);background:var(--g50);color:var(--g7);cursor:pointer;transition:all .35s var(--ez);text-transform:lowercase;letter-spacing:.02em}
-.ad-trigger-btn:hover{border-color:var(--bk);color:var(--bk)}
-.ad-trigger-btn.active{background:var(--bk);border-color:var(--bk);color:var(--wh)}
-.sdk .ad-trigger-btn{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--g5)}
-.sdk .ad-trigger-btn:hover{border-color:var(--or);color:var(--or)}
-.sdk .ad-trigger-btn.active{background:var(--or);border-color:var(--or);color:var(--bk)}
-.ad-cascade-info{margin-top:12px;padding:12px 16px;background:var(--g50);border:1px solid var(--g3);display:none}
-.ad-cascade-info.visible{display:block}
-.sdk .ad-cascade-info{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06)}
-.ad-cascade-label{font-family:var(--mn);font-size:10px;font-weight:700;color:var(--or);margin-bottom:4px}
-.ad-cascade-desc{font-family:var(--ft);font-size:12px;font-weight:300;color:var(--g7);line-height:1.5}
-.sdk .ad-cascade-desc{color:var(--g5)}
-.ad-cascade-path{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;align-items:center}
-.ad-cascade-node{font-family:var(--mn);font-size:8px;padding:2px 8px;border:1px solid var(--g3);color:var(--g7)}
-.sdk .ad-cascade-node{border-color:rgba(255,255,255,.1);color:var(--g5)}
-.ad-cascade-arrow{font-family:var(--mn);font-size:9px;color:var(--g5)}
-.ad-doctrine{font-family:var(--ft);font-size:12px;color:var(--g5);font-style:italic;margin-top:16px;padding-top:12px;border-top:1px solid var(--g3);line-height:1.6}
-.sdk .ad-doctrine{border-color:rgba(255,255,255,.06)}
-/* Tooltip */
-.ad-tooltip{position:absolute;padding:12px 16px;background:var(--wh);border:1px solid var(--g3);box-shadow:0 6px 20px rgba(0,0,0,.08);max-width:260px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10}
-.sdk .ad-tooltip{background:var(--g9);border-color:rgba(255,255,255,.08);box-shadow:0 6px 20px rgba(0,0,0,.3)}
-.ad-tooltip.show{opacity:1}
-.ad-tooltip-name{font-family:var(--mn);font-size:10px;font-weight:700;margin-bottom:2px}
-.ad-tooltip-sub{font-family:var(--mn);font-size:8px;color:var(--g6);margin-bottom:4px}
-.ad-tooltip-desc{font-family:var(--ft);font-size:11px;font-weight:300;color:var(--g7);line-height:1.5}
-.sdk .ad-tooltip-desc{color:var(--g5)}
-/* Active node glow */
-@keyframes nodeActivePulse{0%,100%{opacity:.2;r:32}50%{opacity:.6;r:38}}
-.ad-active-glow{animation:nodeActivePulse 1.5s ease-in-out infinite}
-/* Particles on active connections */
-@keyframes particleMove{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}
-.ad-particle{opacity:0}
-.ad-particle.running{animation:particleMove 1.8s linear infinite}
+.arch-triggers{margin-top:20px;display:flex;gap:6px;flex-wrap:wrap}
+.arch-trig-btn{font-family:var(--mn);font-size:9px;padding:7px 14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--g6);cursor:pointer;transition:all .35s var(--ez);text-transform:lowercase;letter-spacing:.02em}
+.arch-trig-btn:hover{border-color:var(--or);color:var(--or)}
+.arch-trig-btn.active{background:var(--or);border-color:var(--or);color:var(--bk);font-weight:700}
+.arch-cascade-box{margin-top:12px;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);display:none}
+.arch-cascade-box.visible{display:block}
+.arch-cascade-title{font-family:var(--mn);font-size:10px;font-weight:700;color:var(--or);margin-bottom:4px}
+.arch-cascade-desc{font-family:var(--ft);font-size:12px;font-weight:300;color:var(--g5);line-height:1.5}
+.arch-cascade-flow{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.arch-cascade-chip{font-family:var(--mn);font-size:8px;padding:2px 8px;border:1px solid rgba(255,255,255,.1);color:var(--g5)}
+.arch-cascade-arr{font-family:var(--mn);font-size:9px;color:var(--g6)}
+.arch-doctrine{font-family:var(--ft);font-size:12px;color:rgba(255,255,255,.3);font-style:italic;margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,.04);line-height:1.6}
+/* Hub-spoke topology: 3-column layout */
+.arch-topo{display:grid;grid-template-columns:220px 1fr 280px;gap:0;position:relative;min-height:520px;align-items:center}
+@media(max-width:900px){.arch-topo{grid-template-columns:180px 1fr 220px}.arch-node{min-width:120px;max-width:160px;padding:8px 10px}.arch-node-name{font-size:10px}.arch-hub-inner{width:140px;padding:12px 10px}}
+/* Vertical agent line */
+.arch-agent-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(255,110,62,.15) 15%,rgba(255,110,62,.15) 85%,transparent);z-index:0;pointer-events:none}
+.arch-agent-label{position:absolute;left:50%;transform:translateX(-50%);font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--or);opacity:.3;white-space:nowrap;z-index:0;pointer-events:none}
+/* Animations */
+@keyframes hubPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,110,62,.15)}50%{box-shadow:0 0 24px 4px rgba(255,110,62,.1)}}
+.arch-hub-inner{animation:hubPulse 3s ease-in-out infinite}
+@keyframes nodeActivate{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
 </style>
 </head>
 <body>
@@ -554,205 +553,237 @@ a{color:inherit;text-decoration:none}
 
 <!-- BRIEFING CTA -->
 
-<!-- SYSTEM ARCHITECTURE DIAGRAM -->
+<!-- SYSTEM ARCHITECTURE — Hub & Spoke with Swim Lanes -->
 <section class="sc sdk" id="system-architecture">
   <div class="w rv">
-    <div class="arch-diagram" id="archDiagram">
-      <div class="ad-header">
-        <div class="ad-eyebrow">system architecture</div>
-        <div class="ad-title">Revenue Physics <span>Engine</span></div>
-        <div class="ad-subtitle">Constraint &rarr; Policy &rarr; Agent &rarr; Execution &rarr; Market &rarr; Feedback</div>
-        <div class="arch-legend">
-          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#bcbeff"></div><span class="arch-legend-label">Governance</span></div>
-          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#ff6e3e"></div><span class="arch-legend-label">Agent</span></div>
-          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#5de0b8"></div><span class="arch-legend-label">Execution</span></div>
-          <div class="arch-legend-item"><div class="arch-legend-dot" style="background:#ff6b8a"></div><span class="arch-legend-label">Market</span></div>
+    <div class="s-ey" style="color:var(--g6)">system architecture</div>
+    <div class="s-h" style="margin-bottom:6px">Control Plane <span>Topology</span></div>
+    <div class="s-p" style="color:var(--g5);margin-bottom:32px">Constraints feed left. Agents govern vertically. Execution flows right. Feedback closes the loop.</div>
+
+    <div class="arch-section">
+      <div class="arch-wrap">
+        <!-- SVG connections layer -->
+        <svg class="arch-svg" id="archSvg" viewBox="0 0 820 520" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;position:absolute;top:0;left:0">
+          <defs>
+            <marker id="ah" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0,6 2,0 4" fill="rgba(255,255,255,.12)"/></marker>
+            <marker id="ahOr" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0,6 2,0 4" fill="rgba(255,110,62,.3)"/></marker>
+          </defs>
+          <!-- Swim lane background bands -->
+          <rect x="0" y="0" width="820" height="130" fill="rgba(188,190,255,.02)" rx="0"/>
+          <rect x="0" y="130" width="820" height="130" fill="rgba(255,110,62,.02)" rx="0"/>
+          <rect x="0" y="260" width="820" height="130" fill="rgba(93,224,184,.02)" rx="0"/>
+          <rect x="0" y="390" width="820" height="130" fill="rgba(255,107,138,.02)" rx="0"/>
+          <!-- Swim lane dividers -->
+          <line x1="0" y1="130" x2="820" y2="130" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <line x1="0" y1="260" x2="820" y2="260" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <line x1="0" y1="390" x2="820" y2="390" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <!-- Swim lane labels -->
+          <text x="12" y="72" fill="#bcbeff" font-size="8" font-family="'Space Mono',monospace" opacity=".4" style="letter-spacing:.1em;text-transform:uppercase" transform="rotate(-90,12,72)">Governance</text>
+          <text x="12" y="202" fill="#ff6e3e" font-size="8" font-family="'Space Mono',monospace" opacity=".4" style="letter-spacing:.1em;text-transform:uppercase" transform="rotate(-90,12,202)">Agent</text>
+          <text x="12" y="332" fill="#5de0b8" font-size="8" font-family="'Space Mono',monospace" opacity=".4" style="letter-spacing:.1em;text-transform:uppercase" transform="rotate(-90,12,332)">Execution</text>
+          <text x="12" y="462" fill="#ff6b8a" font-size="8" font-family="'Space Mono',monospace" opacity=".4" style="letter-spacing:.1em;text-transform:uppercase" transform="rotate(-90,12,462)">Market</text>
+
+          <!-- Vertical agent authority line -->
+          <line x1="410" y1="20" x2="410" y2="500" stroke="rgba(255,110,62,.08)" stroke-width="1" stroke-dasharray="3 6"/>
+          <text x="416" y="16" fill="#ff6e3e" font-size="6" font-family="'Space Mono',monospace" opacity=".25" style="letter-spacing:.15em">AGENT AUTHORITY</text>
+
+          <!-- ═══ CONSTRAINT CONNECTIONS (Left → Hub) ═══ -->
+          <g id="connConstraints" opacity=".2">
+            <!-- P&L → Hub -->
+            <line data-from="pnl" data-to="hub" x1="210" y1="65" x2="340" y2="195" stroke="#bcbeff" stroke-width=".8" marker-end="url(#ah)"/>
+            <!-- Stage Defs → Hub -->
+            <line data-from="stage" data-to="hub" x1="210" y1="65" x2="340" y2="260" stroke="#bcbeff" stroke-width=".8" marker-end="url(#ah)"/>
+            <!-- ICP → Hub -->
+            <line data-from="icp" data-to="hub" x1="210" y1="115" x2="340" y2="260" stroke="#bcbeff" stroke-width=".8" marker-end="url(#ah)"/>
+          </g>
+
+          <!-- ═══ HUB → AGENT CONNECTIONS ═══ -->
+          <g id="connAgents" opacity=".2">
+            <line data-from="hub" data-to="coverage" x1="480" y1="195" x2="580" y2="155" stroke="#ff6e3e" stroke-width=".8" marker-end="url(#ahOr)"/>
+            <line data-from="hub" data-to="attribution" x1="480" y1="210" x2="580" y2="195" stroke="#ff6e3e" stroke-width=".8" marker-end="url(#ahOr)"/>
+            <line data-from="hub" data-to="forecast" x1="480" y1="225" x2="580" y2="235" stroke="#ff6e3e" stroke-width=".8" marker-end="url(#ahOr)"/>
+          </g>
+
+          <!-- ═══ AGENT → EXECUTION CONNECTIONS ═══ -->
+          <g id="connExecution" opacity=".15">
+            <line data-from="coverage" data-to="salesforce" x1="700" y1="155" x2="580" y2="295" stroke="#5de0b8" stroke-width=".6" marker-end="url(#ah)"/>
+            <line data-from="attribution" data-to="hubspot" x1="700" y1="195" x2="580" y2="335" stroke="#5de0b8" stroke-width=".6" marker-end="url(#ah)"/>
+            <line data-from="forecast" data-to="clay" x1="700" y1="235" x2="580" y2="375" stroke="#5de0b8" stroke-width=".6" marker-end="url(#ah)"/>
+          </g>
+
+          <!-- ═══ EXECUTION → MARKET CONNECTIONS ═══ -->
+          <g id="connMarket" opacity=".12">
+            <line data-from="salesforce" data-to="buyer" x1="700" y1="295" x2="580" y2="435" stroke="#ff6b8a" stroke-width=".5" marker-end="url(#ah)"/>
+            <line data-from="hubspot" data-to="buyer" x1="700" y1="335" x2="580" y2="435" stroke="#ff6b8a" stroke-width=".5" marker-end="url(#ah)"/>
+            <line data-from="6sense" data-to="buyer" x1="700" y1="475" x2="660" y2="435" stroke="#ff6b8a" stroke-width=".5"/>
+          </g>
+
+          <!-- ═══ FEEDBACK LOOP (Market → Governance) ═══ -->
+          <g id="connFeedback" opacity=".1">
+            <path d="M 700 435 Q 780 260 210 65" fill="none" stroke="#ff6b8a" stroke-width=".8" stroke-dasharray="4 4" marker-end="url(#ah)"/>
+            <text x="770" y="250" fill="#ff6b8a" font-size="6" font-family="'Space Mono',monospace" opacity=".4" transform="rotate(-75,770,250)">recalibrate</text>
+          </g>
+        </svg>
+
+        <!-- ═══ HTML NODE LAYER ═══ -->
+        <div style="position:relative;min-height:520px;display:grid;grid-template-columns:220px 1fr 240px;gap:0;align-items:start">
+
+          <!-- LEFT: Constraints (Triggers) -->
+          <div style="padding:40px 0 0 28px;display:flex;flex-direction:column;gap:10px;z-index:2">
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:4px;padding-left:2px">Constraints</div>
+
+            <div class="arch-node" data-id="pnl" data-lane="governance">
+              <div class="arch-node-icon" style="background:rgba(188,190,255,.1)"><span style="color:#bcbeff">⊞</span></div>
+              <div class="arch-node-text">
+                <div class="arch-node-name">P&L Constraints</div>
+                <div class="arch-node-type">Margin floors, CAC ceilings</div>
+              </div>
+            </div>
+
+            <div class="arch-node" data-id="icp" data-lane="governance">
+              <div class="arch-node-icon" style="background:rgba(188,190,255,.1)"><span style="color:#bcbeff">◎</span></div>
+              <div class="arch-node-text">
+                <div class="arch-node-name">ICP Governance</div>
+                <div class="arch-node-type">Segment rules, territory</div>
+              </div>
+            </div>
+
+            <div class="arch-node" data-id="stage" data-lane="governance">
+              <div class="arch-node-icon" style="background:rgba(188,190,255,.1)"><span style="color:#bcbeff">▤</span></div>
+              <div class="arch-node-text">
+                <div class="arch-node-name">Stage Definitions</div>
+                <div class="arch-node-type">Meeting=Held, SQO criteria</div>
+              </div>
+            </div>
+
+            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-top:16px;margin-bottom:4px;padding-left:2px">Signals</div>
+
+            <div class="arch-node" data-id="market-signal" data-lane="market">
+              <div class="arch-node-icon" style="background:rgba(255,107,138,.1)"><span style="color:#ff6b8a">◇</span></div>
+              <div class="arch-node-text">
+                <div class="arch-node-name">Win/Loss Signal</div>
+                <div class="arch-node-type">Feedback trigger</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CENTER: Hub -->
+          <div style="display:flex;align-items:center;justify-content:center;z-index:5;position:relative;min-height:520px">
+            <div class="arch-hub">
+              <div class="arch-hub-inner">
+                <div class="arch-hub-icon">◈</div>
+                <div class="arch-hub-name">Revenue Physics Engine</div>
+                <div class="arch-hub-sub">Governed Control Plane</div>
+                <div class="arch-hub-badges">
+                  <span class="arch-hub-badge">7 layers</span>
+                  <span class="arch-hub-badge">3 agents</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Categorized Spokes -->
+          <div style="padding:20px 0 0 0;display:flex;flex-direction:column;gap:18px;z-index:2">
+
+            <!-- Agents -->
+            <div class="arch-group">
+              <div class="arch-group-label" style="color:#ff6e3e">Agents</div>
+              <div class="arch-group-nodes">
+                <div class="arch-node" data-id="coverage" data-lane="agent">
+                  <div class="arch-node-icon" style="background:rgba(255,110,62,.1)"><span style="color:#ff6e3e">⚡</span></div>
+                  <div class="arch-node-text">
+                    <div class="arch-node-name">Coverage Agent</div>
+                    <div class="arch-node-type">Capacity &amp; quota</div>
+                  </div>
+                </div>
+                <div class="arch-node" data-id="attribution" data-lane="agent">
+                  <div class="arch-node-icon" style="background:rgba(255,110,62,.1)"><span style="color:#ff6e3e">⚡</span></div>
+                  <div class="arch-node-text">
+                    <div class="arch-node-name">Attribution Agent</div>
+                    <div class="arch-node-type">Motion mix, CAC</div>
+                  </div>
+                </div>
+                <div class="arch-node" data-id="forecast" data-lane="agent">
+                  <div class="arch-node-icon" style="background:rgba(255,110,62,.1)"><span style="color:#ff6e3e">⚡</span></div>
+                  <div class="arch-node-text">
+                    <div class="arch-node-name">Forecast Agent</div>
+                    <div class="arch-node-type">Velocity, glideslope</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Execution Systems -->
+            <div class="arch-group">
+              <div class="arch-group-label" style="color:#5de0b8">Execution Systems</div>
+              <div class="arch-group-nodes">
+                <div class="arch-node" data-id="salesforce" data-lane="execution">
+                  <div class="arch-node-icon" style="background:rgba(93,224,184,.1)"><span style="color:#5de0b8;font-size:10px">SF</span></div>
+                  <div class="arch-node-text">
+                    <div class="arch-node-name">Salesforce</div>
+                    <div class="arch-node-type">System of Record</div>
+                  </div>
+                </div>
+                <div class="arch-node" data-id="hubspot" data-lane="execution">
+                  <div class="arch-node-icon" style="background:rgba(93,224,184,.1)"><span style="color:#5de0b8;font-size:10px">HS</span></div>
+                  <div class="arch-node-text">
+                    <div class="arch-node-name">HubSpot</div>
+                    <div class="arch-node-type">Orchestration</div>
+                  </div>
+                </div>
+                <div class="arch-node" data-id="clay" data-lane="execution">
+                  <div class="arch-node-icon" style="background:rgba(93,224,184,.1)"><span style="color:#5de0b8;font-size:10px">CL</span></div>
+                  <div class="arch-node-text">
+                    <div class="arch-node-name">Clay</div>
+                    <div class="arch-node-type">Signal Execution</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Market Interface -->
+            <div class="arch-group">
+              <div class="arch-group-label" style="color:#ff6b8a">Market Interface</div>
+              <div class="arch-group-nodes">
+                <div class="arch-node" data-id="buyer" data-lane="market">
+                  <div class="arch-node-icon" style="background:rgba(255,107,138,.1)"><span style="color:#ff6b8a">◉</span></div>
+                  <div class="arch-node-text">
+                    <div class="arch-node-name">Buyer Market</div>
+                    <div class="arch-node-type">Demand surface</div>
+                  </div>
+                </div>
+                <div class="arch-node" data-id="6sense" data-lane="market">
+                  <div class="arch-node-icon" style="background:rgba(255,107,138,.1)"><span style="color:#ff6b8a;font-size:10px">6s</span></div>
+                  <div class="arch-node-text">
+                    <div class="arch-node-name">6sense</div>
+                    <div class="arch-node-type">Intent Signals</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
-
-      <svg viewBox="0 0 880 800" id="archSvg">
-        <defs>
-          <filter id="adCoreGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="10" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
-          <filter id="adNodeGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="5" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
-          <marker id="adArrow" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-            <polygon points="0 0,7 2.5,0 5" fill="rgba(255,255,255,.15)"/>
-          </marker>
-        </defs>
-
-        <!-- Concentric rings -->
-        <circle cx="440" cy="400" r="148" fill="none" stroke="#bcbeff" stroke-width=".5" stroke-dasharray="3 7" opacity=".15"/>
-        <circle cx="440" cy="400" r="222" fill="none" stroke="#ff6e3e" stroke-width=".5" stroke-dasharray="3 7" opacity=".15"/>
-        <circle cx="440" cy="400" r="296" fill="none" stroke="#5de0b8" stroke-width=".5" stroke-dasharray="3 7" opacity=".15"/>
-        <circle cx="440" cy="400" r="362" fill="none" stroke="#ff6b8a" stroke-width=".5" stroke-dasharray="3 7" opacity=".12"/>
-
-        <!-- Ring labels -->
-        <text x="440" y="264" text-anchor="middle" fill="#bcbeff" font-size="7" font-family="'Space Mono',monospace" opacity=".3" style="letter-spacing:.12em;text-transform:uppercase">Governance Layer</text>
-        <text x="440" y="190" text-anchor="middle" fill="#ff6e3e" font-size="7" font-family="'Space Mono',monospace" opacity=".3" style="letter-spacing:.12em;text-transform:uppercase">Agent Layer</text>
-        <text x="440" y="116" text-anchor="middle" fill="#5de0b8" font-size="7" font-family="'Space Mono',monospace" opacity=".3" style="letter-spacing:.12em;text-transform:uppercase">Execution Systems</text>
-        <text x="440" y="50" text-anchor="middle" fill="#ff6b8a" font-size="7" font-family="'Space Mono',monospace" opacity=".3" style="letter-spacing:.12em;text-transform:uppercase">Market Interface</text>
-
-        <!-- Connection lines (drawn first, behind nodes) -->
-        <g id="adConnections" opacity=".1">
-          <!-- Governance → Agent -->
-          <line class="ad-conn" data-from="pnl" data-to="coverage" x1="341" y1="303" x2="425" y2="207" stroke="#bcbeff" stroke-width=".5" marker-end="url(#adArrow)"/>
-          <line class="ad-conn" data-from="stage" data-to="attribution" x1="538" y1="318" x2="590" y2="218" stroke="#bcbeff" stroke-width=".5" marker-end="url(#adArrow)"/>
-          <line class="ad-conn" data-from="icp" data-to="forecast" x1="352" y1="480" x2="290" y2="400" stroke="#bcbeff" stroke-width=".5" marker-end="url(#adArrow)"/>
-          <!-- Agent → Execution -->
-          <line class="ad-conn" data-from="coverage" data-to="salesforce" x1="425" y1="207" x2="523" y2="119" stroke="#ff6e3e" stroke-width=".5" marker-end="url(#adArrow)"/>
-          <line class="ad-conn" data-from="attribution" data-to="hubspot" x1="590" y1="218" x2="660" y2="310" stroke="#ff6e3e" stroke-width=".5" marker-end="url(#adArrow)"/>
-          <line class="ad-conn" data-from="forecast" data-to="clay" x1="290" y1="400" x2="195" y2="310" stroke="#ff6e3e" stroke-width=".5" marker-end="url(#adArrow)"/>
-          <!-- Execution → Market -->
-          <line class="ad-conn" data-from="hubspot" data-to="buyer" x1="660" y1="310" x2="440" y2="38" stroke="#5de0b8" stroke-width=".5" marker-end="url(#adArrow)"/>
-          <line class="ad-conn" data-from="clay" data-to="6sense" x1="195" y1="310" x2="160" y2="400" stroke="#5de0b8" stroke-width=".5" marker-end="url(#adArrow)"/>
-          <line class="ad-conn" data-from="salesforce" data-to="buyer" x1="523" y1="119" x2="440" y2="38" stroke="#5de0b8" stroke-width=".5" marker-end="url(#adArrow)"/>
-          <!-- Market → Feedback -->
-          <line class="ad-conn" data-from="buyer" data-to="feedback" x1="440" y1="38" x2="700" y2="450" stroke="rgba(255,255,255,.06)" stroke-width=".5"/>
-          <line class="ad-conn" data-from="6sense" data-to="feedback" x1="160" y1="400" x2="700" y2="450" stroke="rgba(255,255,255,.06)" stroke-width=".5"/>
-          <!-- Feedback → Governance (recalibrate) -->
-          <line class="ad-conn" data-from="feedback" data-to="pnl" x1="700" y1="450" x2="341" y2="303" stroke="#ff6b8a" stroke-width=".5" stroke-dasharray="4 4" marker-end="url(#adArrow)"/>
-          <line class="ad-conn" data-from="feedback" data-to="stage" x1="700" y1="450" x2="538" y2="318" stroke="#ff6b8a" stroke-width=".5" stroke-dasharray="4 4" marker-end="url(#adArrow)"/>
-        </g>
-
-        <!-- Outer feedback orbit ring -->
-        <circle cx="440" cy="400" r="362" fill="none" stroke="rgba(255,255,255,.04)" stroke-width=".3" stroke-dasharray="1 10" class="ad-ring-dash"/>
-
-        <!-- CORE -->
-        <circle cx="440" cy="400" r="50" fill="#2b2b2b" stroke="#ff6e3e" stroke-width="1.2" class="ad-core-stroke" filter="url(#adCoreGlow)"/>
-        <circle cx="440" cy="400" r="36" fill="none" stroke="#ff6e3e" stroke-width=".4" stroke-dasharray="2 5" opacity=".25" class="ad-orbit ad-orbit-fwd"/>
-        <!-- Orbital paths -->
-        <path d="M428,400 Q440,384 452,400 Q440,416 428,400" fill="none" stroke="#ff6e3e" stroke-width="1" opacity=".4" class="ad-orbit ad-orbit-fwd"/>
-        <path d="M440,388 Q456,400 440,412 Q424,400 440,388" fill="none" stroke="#ff6e3e" stroke-width="1" opacity=".4" class="ad-orbit ad-orbit-rev"/>
-        <!-- Core text -->
-        <text x="440" y="397" text-anchor="middle" fill="#ff6e3e" font-size="8" font-family="'Space Mono',monospace" font-weight="700" style="letter-spacing:.06em">REVENUE</text>
-        <text x="440" y="408" text-anchor="middle" fill="#ff6e3e" font-size="6" font-family="'Space Mono',monospace" opacity=".5" style="letter-spacing:.1em">PHYSICS</text>
-
-        <!-- GOVERNANCE NODES (r=148) -->
-        <!-- P&L Constraints: angle=-40° -->
-        <g class="ad-node" data-id="pnl" data-name="P&amp;L Constraints" data-desc="Operating margin floors, burn guardrails, CAC ceilings" data-color="#bcbeff">
-          <circle class="ad-node-ring" cx="341" cy="303" r="32" fill="none" stroke="#bcbeff" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="341" cy="303" r="22" fill="#2b2b2b" stroke="#bcbeff" stroke-width=".7"/>
-          <text class="ad-node-label" x="341" y="299" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">P&amp;L</text>
-          <text x="341" y="309" text-anchor="middle" fill="#bcbeff" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Constraints</text>
-        </g>
-        <!-- Stage Definitions: angle=80° -->
-        <g class="ad-node" data-id="stage" data-name="Stage Definitions" data-desc="Meeting=Held, SQO criteria, compression metrics" data-color="#bcbeff">
-          <circle class="ad-node-ring" cx="538" cy="318" r="32" fill="none" stroke="#bcbeff" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="538" cy="318" r="22" fill="#2b2b2b" stroke="#bcbeff" stroke-width=".7"/>
-          <text class="ad-node-label" x="538" y="315" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Stage</text>
-          <text x="538" y="325" text-anchor="middle" fill="#bcbeff" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Definitions</text>
-        </g>
-        <!-- ICP Governance: angle=200° -->
-        <g class="ad-node" data-id="icp" data-name="ICP Governance" data-desc="Segment rules, deal size floors, territory logic" data-color="#bcbeff">
-          <circle class="ad-node-ring" cx="352" cy="480" r="32" fill="none" stroke="#bcbeff" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="352" cy="480" r="22" fill="#2b2b2b" stroke="#bcbeff" stroke-width=".7"/>
-          <text class="ad-node-label" x="352" y="477" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">ICP</text>
-          <text x="352" y="487" text-anchor="middle" fill="#bcbeff" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Governance</text>
-        </g>
-
-        <!-- AGENT NODES (r=222) -->
-        <!-- Coverage Agent: angle=-10° -->
-        <g class="ad-node" data-id="coverage" data-name="Coverage Agent" data-desc="AE capacity, quota attainment, ramp-adjusted coverage" data-color="#ff6e3e">
-          <circle class="ad-node-ring" cx="425" cy="207" r="32" fill="none" stroke="#ff6e3e" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="425" cy="207" r="22" fill="#2b2b2b" stroke="#ff6e3e" stroke-width=".7"/>
-          <text class="ad-node-label" x="425" y="204" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Coverage</text>
-          <text x="425" y="214" text-anchor="middle" fill="#ff6e3e" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Agent</text>
-        </g>
-        <!-- Attribution Agent: angle=120° -->
-        <g class="ad-node" data-id="attribution" data-name="Attribution Agent" data-desc="Motion allocation, channel yield, CAC decomposition" data-color="#ff6e3e">
-          <circle class="ad-node-ring" cx="590" cy="218" r="32" fill="none" stroke="#ff6e3e" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="590" cy="218" r="22" fill="#2b2b2b" stroke="#ff6e3e" stroke-width=".7"/>
-          <text class="ad-node-label" x="590" y="215" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Attribution</text>
-          <text x="590" y="225" text-anchor="middle" fill="#ff6e3e" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Agent</text>
-        </g>
-        <!-- Forecast Agent: angle=240° -->
-        <g class="ad-node" data-id="forecast" data-name="Forecast Agent" data-desc="Pipeline velocity, win-rate trending, glideslope" data-color="#ff6e3e">
-          <circle class="ad-node-ring" cx="290" cy="400" r="32" fill="none" stroke="#ff6e3e" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="290" cy="400" r="22" fill="#2b2b2b" stroke="#ff6e3e" stroke-width=".7"/>
-          <text class="ad-node-label" x="290" y="397" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Forecast</text>
-          <text x="290" y="407" text-anchor="middle" fill="#ff6e3e" font-size="5.5" font-family="'Space Mono',monospace" opacity=".5">Agent</text>
-        </g>
-
-        <!-- EXECUTION NODES (r=296) -->
-        <!-- Salesforce: angle=30° -->
-        <g class="ad-node" data-id="salesforce" data-name="Salesforce" data-sub="System of Record" data-desc="Pipeline, opportunities, closed-won truth" data-color="#5de0b8">
-          <circle class="ad-node-ring" cx="523" cy="119" r="32" fill="none" stroke="#5de0b8" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="523" cy="119" r="22" fill="#2b2b2b" stroke="#5de0b8" stroke-width=".7"/>
-          <text class="ad-node-label" x="523" y="116" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Salesforce</text>
-          <text x="523" y="126" text-anchor="middle" fill="#5de0b8" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Record</text>
-        </g>
-        <!-- HubSpot: angle=150° -->
-        <g class="ad-node" data-id="hubspot" data-name="HubSpot" data-sub="Orchestration" data-desc="Lifecycle stage, lead routing, nurture" data-color="#5de0b8">
-          <circle class="ad-node-ring" cx="660" cy="310" r="32" fill="none" stroke="#5de0b8" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="660" cy="310" r="22" fill="#2b2b2b" stroke="#5de0b8" stroke-width=".7"/>
-          <text class="ad-node-label" x="660" y="307" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">HubSpot</text>
-          <text x="660" y="317" text-anchor="middle" fill="#5de0b8" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Orchestration</text>
-        </g>
-        <!-- Clay: angle=270° -->
-        <g class="ad-node" data-id="clay" data-name="Clay" data-sub="Signal Execution" data-desc="Enrichment, sequencing, ICP scoring" data-color="#5de0b8">
-          <circle class="ad-node-ring" cx="195" cy="310" r="32" fill="none" stroke="#5de0b8" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="195" cy="310" r="22" fill="#2b2b2b" stroke="#5de0b8" stroke-width=".7"/>
-          <text class="ad-node-label" x="195" y="307" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Clay</text>
-          <text x="195" y="317" text-anchor="middle" fill="#5de0b8" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Signal Exec</text>
-        </g>
-
-        <!-- MARKET NODES (r=362) -->
-        <!-- 6sense: angle=60° -->
-        <g class="ad-node" data-id="6sense" data-name="6sense" data-sub="Intent Signals" data-desc="Buying stage, account surge, keyword intent" data-color="#ff6b8a">
-          <circle class="ad-node-ring" cx="160" cy="400" r="32" fill="none" stroke="#ff6b8a" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="160" cy="400" r="22" fill="#2b2b2b" stroke="#ff6b8a" stroke-width=".7"/>
-          <text class="ad-node-label" x="160" y="397" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">6sense</text>
-          <text x="160" y="407" text-anchor="middle" fill="#ff6b8a" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Intent</text>
-        </g>
-        <!-- Buyer Market: angle=180° -->
-        <g class="ad-node" data-id="buyer" data-name="Buyer Market" data-sub="Demand Surface" data-desc="Net-new inquiries, engagement, conversion" data-color="#ff6b8a">
-          <circle class="ad-node-ring" cx="440" cy="38" r="32" fill="none" stroke="#ff6b8a" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="440" cy="38" r="22" fill="#2b2b2b" stroke="#ff6b8a" stroke-width=".7"/>
-          <text class="ad-node-label" x="440" y="35" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Buyer</text>
-          <text x="440" y="45" text-anchor="middle" fill="#ff6b8a" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Market</text>
-        </g>
-        <!-- Feedback Loop: angle=300° -->
-        <g class="ad-node" data-id="feedback" data-name="Feedback Loop" data-sub="Closed-Loop" data-desc="Win/loss &rarr; constraint recalibration" data-color="#ff6b8a">
-          <circle class="ad-node-ring" cx="700" cy="450" r="32" fill="none" stroke="#ff6b8a" stroke-width="1" opacity="0" filter="url(#adNodeGlow)"/>
-          <circle cx="700" cy="450" r="22" fill="#2b2b2b" stroke="#ff6b8a" stroke-width=".7"/>
-          <text class="ad-node-label" x="700" y="447" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="7" font-family="'Oxanium',sans-serif" font-weight="500">Feedback</text>
-          <text x="700" y="457" text-anchor="middle" fill="#ff6b8a" font-size="5" font-family="'Space Mono',monospace" opacity=".5">Loop</text>
-        </g>
-
-        <!-- Active glow circles (hidden by default, JS activates) -->
-        <g id="adGlows"></g>
-      </svg>
-
-      <!-- Tooltip -->
-      <div class="ad-tooltip" id="adTooltip">
-        <div class="ad-tooltip-name" id="adTtName"></div>
-        <div class="ad-tooltip-sub" id="adTtSub"></div>
-        <div class="ad-tooltip-desc" id="adTtDesc"></div>
-      </div>
-
-      <!-- Simulation triggers -->
-      <div class="ad-triggers">
-        <div class="ad-triggers-title">simulate constraint cascade</div>
-        <div class="ad-trigger-btns" id="adTriggerBtns">
-          <button class="ad-trigger-btn" data-trigger="arr" data-label="ARR Change" data-desc="Revenue target shifts &rarr; constraints cascade" data-path="pnl,coverage,salesforce,buyer,feedback,pnl">arr change</button>
-          <button class="ad-trigger-btn" data-trigger="gap" data-label="Coverage Gap" data-desc="Pipeline insufficient &rarr; agent rebalances" data-path="coverage,salesforce,buyer,feedback,stage,attribution">coverage gap</button>
-          <button class="ad-trigger-btn" data-trigger="cac" data-label="CAC Breach" data-desc="Payback exceeds ceiling &rarr; governance intervenes" data-path="feedback,pnl,attribution,hubspot,buyer">cac breach</button>
-          <button class="ad-trigger-btn" data-trigger="intent" data-label="Intent Surge" data-desc="6sense detects buying signal &rarr; execution accelerates" data-path="6sense,feedback,forecast,clay,hubspot,buyer">intent surge</button>
-        </div>
-        <div class="ad-cascade-info" id="adCascadeInfo">
-          <div class="ad-cascade-label" id="adCascadeLabel"></div>
-          <div class="ad-cascade-desc" id="adCascadeDesc"></div>
-          <div class="ad-cascade-path" id="adCascadePath"></div>
-        </div>
-      </div>
-
-      <div class="ad-doctrine">Governance is not observation. It is intervention. <span style="color:var(--g6);margin-left:4px">&mdash; Architecture with feedback loops is physics.</span></div>
     </div>
+
+    <!-- Trigger simulation -->
+    <div style="margin-top:8px">
+      <div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:10px">simulate constraint cascade</div>
+      <div class="arch-triggers" id="archTriggerBtns">
+        <button class="arch-trig-btn" data-trigger="arr" data-label="ARR Change" data-desc="Revenue target shifts — constraints cascade through all layers" data-path="pnl,coverage,salesforce,buyer,market-signal,pnl">arr change</button>
+        <button class="arch-trig-btn" data-trigger="gap" data-label="Coverage Gap" data-desc="Pipeline insufficient — agent rebalances execution priority" data-path="coverage,salesforce,buyer,market-signal,stage,attribution">coverage gap</button>
+        <button class="arch-trig-btn" data-trigger="cac" data-label="CAC Breach" data-desc="Payback exceeds ceiling — governance intervenes in motion mix" data-path="market-signal,pnl,attribution,hubspot,buyer">cac breach</button>
+        <button class="arch-trig-btn" data-trigger="intent" data-label="Intent Surge" data-desc="6sense detects buying signal — execution accelerates outbound" data-path="6sense,forecast,clay,hubspot,buyer">intent surge</button>
+      </div>
+      <div class="arch-cascade-box" id="archCascadeBox">
+        <div class="arch-cascade-title" id="archCascadeTitle"></div>
+        <div class="arch-cascade-desc" id="archCascadeDesc"></div>
+        <div class="arch-cascade-flow" id="archCascadeFlow"></div>
+      </div>
+    </div>
+
+    <div class="arch-doctrine">Governance is not observation. It is intervention. <span style="color:rgba(255,255,255,.2)">&mdash; Architecture with feedback loops is physics.</span></div>
   </div>
 </section>
 
@@ -897,85 +928,63 @@ window.addEventListener('scroll',()=>{
   else if(mx>.35){c.textContent='assess readiness';m.textContent='assess your revenue readiness'}
   else{c.textContent='explore framework';m.textContent='explore the framework'}
 },{passive:true});
-// ─── ARCHITECTURE DIAGRAM INTERACTIONS ───
+// ─── ARCHITECTURE DIAGRAM — Hub & Spoke Interactions ───
 (function(){
-  const diagram=document.getElementById('archDiagram');
-  if(!diagram)return;
-  const svg=document.getElementById('archSvg');
-  const tooltip=document.getElementById('adTooltip');
-  const ttName=document.getElementById('adTtName');
-  const ttSub=document.getElementById('adTtSub');
-  const ttDesc=document.getElementById('adTtDesc');
-  const cascadeInfo=document.getElementById('adCascadeInfo');
-  const cascadeLabel=document.getElementById('adCascadeLabel');
-  const cascadeDesc=document.getElementById('adCascadeDesc');
-  const cascadePath=document.getElementById('adCascadePath');
-  const connGroup=document.getElementById('adConnections');
+  const nodeNames={pnl:'P&L',stage:'Stage',icp:'ICP',coverage:'Coverage',attribution:'Attribution',forecast:'Forecast',salesforce:'Salesforce',hubspot:'HubSpot',clay:'Clay','6sense':'6sense',buyer:'Buyer','market-signal':'Feedback'};
+  const nodeColors={pnl:'#bcbeff',stage:'#bcbeff',icp:'#bcbeff',coverage:'#ff6e3e',attribution:'#ff6e3e',forecast:'#ff6e3e',salesforce:'#5de0b8',hubspot:'#5de0b8',clay:'#5de0b8','6sense':'#ff6b8a',buyer:'#ff6b8a','market-signal':'#ff6b8a'};
+  const cascadeBox=document.getElementById('archCascadeBox');
+  const cascadeTitle=document.getElementById('archCascadeTitle');
+  const cascadeDesc=document.getElementById('archCascadeDesc');
+  const cascadeFlow=document.getElementById('archCascadeFlow');
   let activeTrigger=null;
 
-  // Node hover tooltips
-  document.querySelectorAll('.ad-node').forEach(node=>{
-    node.addEventListener('mouseenter',function(e){
-      const name=this.dataset.name||'';
-      const sub=this.dataset.sub||'';
-      const desc=this.dataset.desc||'';
-      const color=this.dataset.color||'#ff6e3e';
-      ttName.textContent=name;ttName.style.color=color;
-      ttSub.textContent=sub;ttSub.style.display=sub?'block':'none';
-      ttDesc.textContent=desc;
-      const rect=diagram.getBoundingClientRect();
-      const nr=this.getBoundingClientRect();
-      tooltip.style.left=Math.min(Math.max(0,(nr.left+nr.right)/2-rect.left-130),rect.width-270)+'px';
-      tooltip.style.top=(nr.bottom-rect.top+8)+'px';
-      tooltip.classList.add('show');
-    });
-    node.addEventListener('mouseleave',function(){tooltip.classList.remove('show')});
-  });
+  function resetAll(){
+    document.querySelectorAll('.arch-node').forEach(n=>n.classList.remove('active'));
+    document.querySelectorAll('.arch-trig-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('#archSvg g[id^="conn"]').forEach(g=>{g.style.opacity='';g.querySelectorAll('line,path').forEach(l=>{l.style.strokeWidth='';l.style.opacity=''})});
+    cascadeBox.classList.remove('visible');
+  }
 
-  // Trigger buttons
-  const nodeNames={pnl:'P&L',stage:'Stage',icp:'ICP',coverage:'Coverage',attribution:'Attribution',forecast:'Forecast',salesforce:'Salesforce',hubspot:'HubSpot',clay:'Clay','6sense':'6sense',buyer:'Buyer',feedback:'Feedback'};
-  const nodeColors={pnl:'#bcbeff',stage:'#bcbeff',icp:'#bcbeff',coverage:'#ff6e3e',attribution:'#ff6e3e',forecast:'#ff6e3e',salesforce:'#5de0b8',hubspot:'#5de0b8',clay:'#5de0b8','6sense':'#ff6b8a',buyer:'#ff6b8a',feedback:'#ff6b8a'};
-
-  document.querySelectorAll('.ad-trigger-btn').forEach(btn=>{
+  document.querySelectorAll('.arch-trig-btn').forEach(btn=>{
     btn.addEventListener('click',function(){
       const trig=this.dataset.trigger;
       const wasActive=activeTrigger===trig;
-      // Reset all
-      document.querySelectorAll('.ad-trigger-btn').forEach(b=>b.classList.remove('active'));
-      connGroup.style.opacity='.1';
-      document.querySelectorAll('.ad-node circle:first-of-type').forEach(c=>{c.style.opacity='0';c.classList.remove('ad-active-glow')});
-      if(wasActive){activeTrigger=null;cascadeInfo.classList.remove('visible');return}
+      resetAll();
+      if(wasActive){activeTrigger=null;return}
       activeTrigger=trig;
       this.classList.add('active');
       const path=this.dataset.path.split(',');
-      const label=this.dataset.label;
-      const desc=this.dataset.desc;
+
+      // Highlight active nodes
+      path.forEach(id=>{
+        const node=document.querySelector('.arch-node[data-id="'+id+'"]');
+        if(node)node.classList.add('active');
+      });
+
+      // Brighten relevant connection groups
+      const groups=new Set();
+      path.forEach(id=>{
+        if(['pnl','icp','stage'].includes(id))groups.add('connConstraints');
+        if(['coverage','attribution','forecast'].includes(id))groups.add('connAgents');
+        if(['salesforce','hubspot','clay'].includes(id))groups.add('connExecution');
+        if(['buyer','6sense','market-signal'].includes(id)){groups.add('connMarket');groups.add('connFeedback')}
+      });
+      groups.forEach(gId=>{
+        const g=document.getElementById(gId);
+        if(g){g.style.opacity='.5';g.querySelectorAll('line,path').forEach(l=>{l.style.strokeWidth='1.5'})}
+      });
 
       // Show cascade info
-      cascadeLabel.textContent=label;
-      cascadeDesc.innerHTML=desc;
-      cascadePath.innerHTML='';
+      cascadeTitle.textContent=this.dataset.label;
+      cascadeDesc.textContent=this.dataset.desc;
+      cascadeFlow.innerHTML='';
       path.forEach((id,i)=>{
-        const span=document.createElement('span');span.className='ad-cascade-node';
-        span.textContent=nodeNames[id]||id;span.style.borderColor=nodeColors[id]||'#555';span.style.color=nodeColors[id]||'#999';
-        cascadePath.appendChild(span);
-        if(i<path.length-1){const arr=document.createElement('span');arr.className='ad-cascade-arrow';arr.textContent='→';cascadePath.appendChild(arr)}
+        const chip=document.createElement('span');chip.className='arch-cascade-chip';
+        chip.textContent=nodeNames[id]||id;chip.style.borderColor=nodeColors[id]||'#555';chip.style.color=nodeColors[id]||'#999';
+        cascadeFlow.appendChild(chip);
+        if(i<path.length-1){const arr=document.createElement('span');arr.className='arch-cascade-arr';arr.textContent='→';cascadeFlow.appendChild(arr)}
       });
-      cascadeInfo.classList.add('visible');
-
-      // Light up active nodes
-      path.forEach(id=>{
-        const nodeEl=document.querySelector('.ad-node[data-id="'+id+'"]');
-        if(nodeEl){const ring=nodeEl.querySelector('circle');if(ring){ring.style.opacity='1';ring.classList.add('ad-active-glow')}}
-      });
-
-      // Highlight active connections
-      connGroup.style.opacity='.08';
-      for(let i=0;i<path.length-1;i++){
-        const from=path[i],to=path[i+1];
-        const line=connGroup.querySelector('[data-from="'+from+'"][data-to="'+to+'"]')||connGroup.querySelector('[data-from="'+to+'"][data-to="'+from+'"]');
-        if(line){line.style.opacity='1';line.style.strokeWidth='1.5';line.style.transition='opacity .4s,stroke-width .4s'}
-      }
+      cascadeBox.classList.add('visible');
     });
   });
 })();
