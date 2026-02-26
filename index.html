@@ -199,69 +199,89 @@ a{color:inherit;text-decoration:none}
 .foot{padding:32px 20px;border-top:1px solid var(--g3);text-align:center}
 .foot-text{font-family:var(--mn);font-size:9px;color:var(--g5);letter-spacing:.06em}
 
-/* ═══ SYSTEM ARCHITECTURE DIAGRAM — Hub & Spoke / Swim Lanes ═══ */
-.arch-section{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.arch-wrap{min-width:820px;position:relative;padding:24px 0}
-/* Swim lane rows */
-.arch-lanes{position:relative}
-.arch-lane{display:grid;grid-template-columns:120px 1fr;align-items:start;min-height:100px;border-bottom:1px solid rgba(255,255,255,.04);padding:16px 0;position:relative}
-.arch-lane:last-child{border-bottom:none}
-.arch-lane-label{font-family:var(--mn);font-size:8px;letter-spacing:.14em;text-transform:uppercase;writing-mode:horizontal-tb;padding:12px 16px 12px 0;position:sticky;left:0;z-index:2}
-.arch-lane-content{display:flex;align-items:center;gap:0;position:relative;min-height:80px;padding:8px 0}
-/* Central hub */
-.arch-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;pointer-events:auto}
-.arch-hub-inner{width:160px;padding:16px 12px;background:var(--g9);border:2px solid var(--or);border-radius:14px;text-align:center;position:relative;cursor:default;transition:box-shadow .4s var(--ez)}
-.arch-hub-inner:hover{box-shadow:0 0 30px rgba(255,110,62,.12)}
-.arch-hub-icon{font-size:20px;margin-bottom:6px}
-.arch-hub-name{font-family:var(--ft);font-size:13px;font-weight:600;color:var(--wh)}
-.arch-hub-sub{font-family:var(--mn);font-size:8px;color:var(--g6);margin-top:2px;letter-spacing:.03em}
-.arch-hub-badges{display:flex;gap:6px;justify-content:center;margin-top:8px}
-.arch-hub-badge{font-family:var(--mn);font-size:7px;padding:2px 8px;border-radius:10px;background:rgba(255,110,62,.12);color:var(--or);border:1px solid rgba(255,110,62,.2)}
-/* Nodes */
-.arch-node{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;cursor:pointer;transition:all .35s var(--ez);position:relative;min-width:150px;max-width:200px;flex-shrink:0}
-.arch-node:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.15)}
-.arch-node.active{border-color:var(--or);background:rgba(255,110,62,.06);box-shadow:0 0 20px rgba(255,110,62,.08)}
-.arch-node-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.arch-node-text{flex:1;min-width:0}
-.arch-node-name{font-family:var(--ft);font-size:11px;font-weight:500;color:var(--wh);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.arch-node-type{font-family:var(--mn);font-size:7px;color:var(--g6);margin-top:1px;letter-spacing:.03em}
-.arch-node-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;font-size:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-weight:700;color:var(--wh)}
-/* Category labels on spokes */
-.arch-cat{font-family:var(--mn);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--g6);position:absolute;white-space:nowrap}
-/* Connection lines (SVG overlay) */
-.arch-svg{position:absolute;inset:0;pointer-events:none;z-index:1}
-.arch-svg line,.arch-svg path{transition:opacity .4s,stroke-width .4s}
-/* Left-side constraints column */
-.arch-left{display:flex;flex-direction:column;gap:10px;align-items:flex-end;padding-right:32px;position:relative}
-.arch-left::after{content:'Constraints';position:absolute;right:-48px;top:50%;transform:translateY(-50%) rotate(-90deg);font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);white-space:nowrap}
-/* Right-side grouped categories */
-.arch-right{display:flex;flex-direction:column;gap:28px;padding-left:32px}
-.arch-group{position:relative}
-.arch-group-label{font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:8px;padding-left:2px}
-.arch-group-nodes{display:flex;flex-direction:column;gap:8px}
-/* Trigger buttons */
-.arch-triggers{margin-top:20px;display:flex;gap:6px;flex-wrap:wrap}
-.arch-trig-btn{font-family:var(--mn);font-size:9px;padding:7px 14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:var(--g6);cursor:pointer;transition:all .35s var(--ez);text-transform:lowercase;letter-spacing:.02em}
-.arch-trig-btn:hover{border-color:var(--or);color:var(--or)}
-.arch-trig-btn.active{background:var(--or);border-color:var(--or);color:var(--bk);font-weight:700}
-.arch-cascade-box{margin-top:12px;padding:12px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);display:none}
-.arch-cascade-box.visible{display:block}
-.arch-cascade-title{font-family:var(--mn);font-size:10px;font-weight:700;color:var(--or);margin-bottom:4px}
-.arch-cascade-desc{font-family:var(--ft);font-size:12px;font-weight:300;color:var(--g5);line-height:1.5}
-.arch-cascade-flow{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;align-items:center}
-.arch-cascade-chip{font-family:var(--mn);font-size:8px;padding:2px 8px;border:1px solid rgba(255,255,255,.1);color:var(--g5)}
-.arch-cascade-arr{font-family:var(--mn);font-size:9px;color:var(--g6)}
-.arch-doctrine{font-family:var(--ft);font-size:12px;color:rgba(255,255,255,.3);font-style:italic;margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,.04);line-height:1.6}
-/* Hub-spoke topology: 3-column layout */
-.arch-topo{display:grid;grid-template-columns:220px 1fr 280px;gap:0;position:relative;min-height:520px;align-items:center}
-@media(max-width:900px){.arch-topo{grid-template-columns:180px 1fr 220px}.arch-node{min-width:120px;max-width:160px;padding:8px 10px}.arch-node-name{font-size:10px}.arch-hub-inner{width:140px;padding:12px 10px}}
-/* Vertical agent line */
-.arch-agent-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(255,110,62,.15) 15%,rgba(255,110,62,.15) 85%,transparent);z-index:0;pointer-events:none}
-.arch-agent-label{position:absolute;left:50%;transform:translateX(-50%);font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--or);opacity:.3;white-space:nowrap;z-index:0;pointer-events:none}
-/* Animations */
-@keyframes hubPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,110,62,.15)}50%{box-shadow:0 0 24px 4px rgba(255,110,62,.1)}}
-.arch-hub-inner{animation:hubPulse 3s ease-in-out infinite}
-@keyframes nodeActivate{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+/* ═══ REVENUE THERMOSTAT — THREE BANDS + VERTICAL RAILS ═══ */
+.th-wrap{background:var(--wh);border:1px solid var(--g3);padding:clamp(16px,3vw,28px);position:relative;overflow:hidden}
+/* Header */
+.th-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--g3)}
+.th-title{font-family:var(--ft);font-size:clamp(13px,2vw,16px);font-weight:600;color:var(--g9)}
+.th-title span{color:var(--or)}
+.th-sub{font-family:var(--mn);font-size:7px;color:var(--g6);letter-spacing:.06em;text-transform:uppercase}
+
+/* ── Three horizontal bands ── */
+.th-bands{display:flex;flex-direction:column;gap:0;position:relative}
+.th-band{padding:16px 14px 14px;border:1px solid var(--g3);border-bottom:none;position:relative;transition:background .4s}
+.th-band:last-child{border-bottom:1px solid var(--g3)}
+.th-band-label{font-family:var(--mn);font-size:6.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.th-band-label-text{white-space:nowrap}
+.th-band-label-line{flex:1;height:1px;background:var(--g3)}
+/* Band accent colors */
+.th-band[data-band="economic"] .th-band-label-text{color:rgba(180,130,60,.6)}
+.th-band[data-band="translation"] .th-band-label-text{color:rgba(120,110,200,.5)}
+.th-band[data-band="operations"] .th-band-label-text{color:rgba(60,160,120,.5)}
+/* Nodes grid */
+.th-nodes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:640px){.th-nodes{grid-template-columns:1fr 1fr}}
+.th-node{padding:10px 12px;border:1px solid var(--g3);background:var(--g50);transition:all .4s;cursor:default;position:relative}
+.th-node:hover{border-color:var(--g4);background:var(--wh)}
+.th-node-name{font-family:var(--ft);font-size:11px;font-weight:500;color:var(--g9);margin-bottom:2px}
+.th-node-desc{font-family:var(--mn);font-size:6.5px;color:var(--g6);letter-spacing:.02em;line-height:1.4}
+/* Node ID for connections */
+.th-node-id{position:absolute;top:3px;right:6px;font-family:var(--mn);font-size:5px;color:var(--g4);letter-spacing:.04em}
+
+/* ── Feedback arrows (SVG overlay) ── */
+.th-svg{position:absolute;inset:0;pointer-events:none;z-index:2}
+.th-arrow{stroke:var(--or);stroke-width:1.5;fill:none;opacity:.15;transition:opacity .4s}
+.th-arrow-head{fill:var(--or);opacity:.15;transition:opacity .4s}
+.th-arrow.up{stroke:rgba(220,60,90,.5);opacity:.12}
+.th-arrow-head.up{fill:rgba(220,60,90,.5);opacity:.12}
+/* Active states */
+.th-arrow.active{opacity:.5!important;stroke-width:2}
+.th-arrow-head.active{opacity:.5!important}
+.th-arrow.active.up{stroke:rgba(220,60,90,.7);opacity:.4!important}
+.th-arrow-head.active.up{fill:rgba(220,60,90,.7);opacity:.4!important}
+
+/* ── Vertical agent rails ── */
+.th-agents{margin-top:16px;padding-top:12px;border-top:1px solid var(--g3)}
+.th-agents-label{font-family:var(--mn);font-size:6.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:8px}
+.th-rails{display:flex;flex-wrap:wrap;gap:6px}
+.th-rail{display:flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid var(--g3);background:var(--g50);cursor:pointer;transition:all .3s}
+.th-rail:hover{border-color:var(--g4);background:var(--wh)}
+.th-rail.active{border-color:var(--or);background:rgba(255,110,62,.03)}
+.th-rail-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.th-rail-name{font-family:var(--mn);font-size:7.5px;color:var(--g7);letter-spacing:.02em}
+.th-rail.active .th-rail-name{color:var(--or)}
+.th-rail-span{font-family:var(--mn);font-size:5.5px;color:var(--g5);letter-spacing:.02em;margin-left:2px}
+
+/* Agent focus: highlight spanned bands + nodes */
+.th-bands.agent-focus .th-band{opacity:.35;transition:opacity .35s}
+.th-bands.agent-focus .th-band.in-span{opacity:1}
+.th-bands.agent-focus .th-node{opacity:.3;transition:opacity .35s}
+.th-bands.agent-focus .th-node.in-span{opacity:1;border-color:var(--or);background:rgba(255,110,62,.02)}
+
+/* ── Feedback loop trigger ── */
+.th-loops{margin-top:12px;padding-top:10px;border-top:1px solid var(--g3)}
+.th-loops-label{font-family:var(--mn);font-size:6.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:8px}
+.th-loop-btns{display:flex;gap:5px;flex-wrap:wrap}
+.th-lb{font-family:var(--mn);font-size:8px;padding:5px 12px;border:1px solid var(--g3);background:transparent;color:var(--g7);cursor:pointer;transition:all .3s;text-transform:lowercase;letter-spacing:.02em}
+.th-lb:hover{border-color:var(--g5);color:var(--g9)}
+.th-lb.active{border-color:var(--or);color:var(--or);background:rgba(255,110,62,.03)}
+.th-lb:disabled{opacity:.2;cursor:default}
+.th-loop-info{margin-top:8px;padding:8px 12px;border:1px solid var(--g3);background:var(--g50);display:none}
+.th-loop-info.vis{display:block}
+.th-loop-info-t{font-family:var(--mn);font-size:8px;font-weight:700;color:var(--or);margin-bottom:2px}
+.th-loop-info-d{font-family:var(--ft);font-size:10.5px;color:var(--g7);line-height:1.5}
+.th-loop-info-path{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px;align-items:center}
+.th-loop-chip{font-family:var(--mn);font-size:7px;padding:2px 6px;border:1px solid var(--g3);color:var(--g5);transition:all .3s}
+.th-loop-chip.lit{border-color:var(--g4);color:var(--g9)}
+.th-loop-chip.lit.up{border-color:rgba(220,60,90,.25);color:rgba(200,50,50,.6)}
+.th-loop-arr{font-family:var(--mn);font-size:7px;color:var(--g4);transition:color .3s}
+.th-loop-arr.lit{color:var(--g7)}
+.th-loop-arr.lit.up{color:rgba(200,50,50,.4)}
+/* Beat states on nodes */
+.th-node.beat{border-color:var(--or)!important;background:rgba(255,110,62,.03)!important;opacity:1!important;transition:all .25s!important}
+.th-node.beat.up-beat{border-color:rgba(220,60,90,.35)!important;background:rgba(220,60,90,.02)!important}
+/* Doctrine */
+.th-doctrine{font-family:var(--ft);font-size:10px;color:var(--g5);font-style:italic;margin-top:14px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -275,7 +295,7 @@ a{color:inherit;text-decoration:none}
     <a class="n-link" href="#control">control plane</a>
     <a class="n-link" href="#simulate">simulate</a>
     <a class="n-link" href="#library">library</a>
-    <a class="n-link" href="#system-architecture">system map</a>
+    <a class="n-link" href="#control-plane">system map</a>
     <a class="n-link" href="tools/revenue-physics-engine.html">physics engine</a>
     <button class="btn-out" onclick="sTo('#briefing')">explore framework</button>
     <button class="btn-fill" id="navCta" onclick="sTo('#briefing')">strategic briefing</button>
@@ -291,7 +311,7 @@ a{color:inherit;text-decoration:none}
   <a class="mob-nav-link" href="#control" onclick="closeMob()">control plane</a>
   <a class="mob-nav-link" href="#simulate" onclick="closeMob()">simulate</a>
   <a class="mob-nav-link" href="#library" onclick="closeMob()">library</a>
-  <a class="mob-nav-link" href="#system-architecture" onclick="closeMob()">system map</a>
+  <a class="mob-nav-link" href="#control-plane" onclick="closeMob()">system map</a>
   <a class="mob-nav-link" href="tools/revenue-physics-engine.html" onclick="closeMob()">physics engine</a>
 </div>
 
@@ -553,237 +573,110 @@ a{color:inherit;text-decoration:none}
 
 <!-- BRIEFING CTA -->
 
-<!-- SYSTEM ARCHITECTURE — Hub & Spoke with Swim Lanes -->
-<section class="sc sdk" id="system-architecture">
+<!-- ═══ REVENUE THERMOSTAT — THREE BANDS ═══ -->
+<section class="sc swh" id="control-plane">
   <div class="w rv">
-    <div class="s-ey" style="color:var(--g6)">system architecture</div>
-    <div class="s-h" style="margin-bottom:6px">Control Plane <span>Topology</span></div>
-    <div class="s-p" style="color:var(--g5);margin-bottom:32px">Constraints feed left. Agents govern vertically. Execution flows right. Feedback closes the loop.</div>
+    <div class="s-ey">system architecture</div>
+    <div class="s-h" style="margin-bottom:4px">Revenue <span>Thermostat</span></div>
+    <div class="s-p" style="margin-bottom:24px">Not a flowchart. A control system. Constraints sit on top. Translation sits in the middle. Operations sit at the bottom. Feedback flows <em>upward</em>. Agents enforce vertically across all three bands.</div>
 
-    <div class="arch-section">
-      <div class="arch-wrap">
-        <!-- SVG connections layer -->
-        <svg class="arch-svg" id="archSvg" viewBox="0 0 820 520" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;position:absolute;top:0;left:0">
-          <defs>
-            <marker id="ah" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0,6 2,0 4" fill="rgba(255,255,255,.12)"/></marker>
-            <marker id="ahOr" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0,6 2,0 4" fill="rgba(255,110,62,.3)"/></marker>
-          </defs>
-          <!-- Swim lane background bands -->
-          <rect x="0" y="0" width="820" height="130" fill="rgba(188,190,255,.02)" rx="0"/>
-          <rect x="0" y="130" width="820" height="130" fill="rgba(255,110,62,.02)" rx="0"/>
-          <rect x="0" y="260" width="820" height="130" fill="rgba(93,224,184,.02)" rx="0"/>
-          <rect x="0" y="390" width="820" height="130" fill="rgba(255,107,138,.02)" rx="0"/>
-          <!-- Swim lane dividers -->
-          <line x1="0" y1="130" x2="820" y2="130" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-          <line x1="0" y1="260" x2="820" y2="260" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-          <line x1="0" y1="390" x2="820" y2="390" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-          <!-- Swim lane labels -->
-          <text x="12" y="72" fill="#bcbeff" font-size="8" font-family="'Space Mono',monospace" opacity=".4" style="letter-spacing:.1em;text-transform:uppercase" transform="rotate(-90,12,72)">Governance</text>
-          <text x="12" y="202" fill="#ff6e3e" font-size="8" font-family="'Space Mono',monospace" opacity=".4" style="letter-spacing:.1em;text-transform:uppercase" transform="rotate(-90,12,202)">Agent</text>
-          <text x="12" y="332" fill="#5de0b8" font-size="8" font-family="'Space Mono',monospace" opacity=".4" style="letter-spacing:.1em;text-transform:uppercase" transform="rotate(-90,12,332)">Execution</text>
-          <text x="12" y="462" fill="#ff6b8a" font-size="8" font-family="'Space Mono',monospace" opacity=".4" style="letter-spacing:.1em;text-transform:uppercase" transform="rotate(-90,12,462)">Market</text>
-
-          <!-- Vertical agent authority line -->
-          <line x1="410" y1="20" x2="410" y2="500" stroke="rgba(255,110,62,.08)" stroke-width="1" stroke-dasharray="3 6"/>
-          <text x="416" y="16" fill="#ff6e3e" font-size="6" font-family="'Space Mono',monospace" opacity=".25" style="letter-spacing:.15em">AGENT AUTHORITY</text>
-
-          <!-- ═══ CONSTRAINT CONNECTIONS (Left → Hub) ═══ -->
-          <g id="connConstraints" opacity=".2">
-            <!-- P&L → Hub -->
-            <line data-from="pnl" data-to="hub" x1="210" y1="65" x2="340" y2="195" stroke="#bcbeff" stroke-width=".8" marker-end="url(#ah)"/>
-            <!-- Stage Defs → Hub -->
-            <line data-from="stage" data-to="hub" x1="210" y1="65" x2="340" y2="260" stroke="#bcbeff" stroke-width=".8" marker-end="url(#ah)"/>
-            <!-- ICP → Hub -->
-            <line data-from="icp" data-to="hub" x1="210" y1="115" x2="340" y2="260" stroke="#bcbeff" stroke-width=".8" marker-end="url(#ah)"/>
-          </g>
-
-          <!-- ═══ HUB → AGENT CONNECTIONS ═══ -->
-          <g id="connAgents" opacity=".2">
-            <line data-from="hub" data-to="coverage" x1="480" y1="195" x2="580" y2="155" stroke="#ff6e3e" stroke-width=".8" marker-end="url(#ahOr)"/>
-            <line data-from="hub" data-to="attribution" x1="480" y1="210" x2="580" y2="195" stroke="#ff6e3e" stroke-width=".8" marker-end="url(#ahOr)"/>
-            <line data-from="hub" data-to="forecast" x1="480" y1="225" x2="580" y2="235" stroke="#ff6e3e" stroke-width=".8" marker-end="url(#ahOr)"/>
-          </g>
-
-          <!-- ═══ AGENT → EXECUTION CONNECTIONS ═══ -->
-          <g id="connExecution" opacity=".15">
-            <line data-from="coverage" data-to="salesforce" x1="700" y1="155" x2="580" y2="295" stroke="#5de0b8" stroke-width=".6" marker-end="url(#ah)"/>
-            <line data-from="attribution" data-to="hubspot" x1="700" y1="195" x2="580" y2="335" stroke="#5de0b8" stroke-width=".6" marker-end="url(#ah)"/>
-            <line data-from="forecast" data-to="clay" x1="700" y1="235" x2="580" y2="375" stroke="#5de0b8" stroke-width=".6" marker-end="url(#ah)"/>
-          </g>
-
-          <!-- ═══ EXECUTION → MARKET CONNECTIONS ═══ -->
-          <g id="connMarket" opacity=".12">
-            <line data-from="salesforce" data-to="buyer" x1="700" y1="295" x2="580" y2="435" stroke="#ff6b8a" stroke-width=".5" marker-end="url(#ah)"/>
-            <line data-from="hubspot" data-to="buyer" x1="700" y1="335" x2="580" y2="435" stroke="#ff6b8a" stroke-width=".5" marker-end="url(#ah)"/>
-            <line data-from="6sense" data-to="buyer" x1="700" y1="475" x2="660" y2="435" stroke="#ff6b8a" stroke-width=".5"/>
-          </g>
-
-          <!-- ═══ FEEDBACK LOOP (Market → Governance) ═══ -->
-          <g id="connFeedback" opacity=".1">
-            <path d="M 700 435 Q 780 260 210 65" fill="none" stroke="#ff6b8a" stroke-width=".8" stroke-dasharray="4 4" marker-end="url(#ah)"/>
-            <text x="770" y="250" fill="#ff6b8a" font-size="6" font-family="'Space Mono',monospace" opacity=".4" transform="rotate(-75,770,250)">recalibrate</text>
-          </g>
-        </svg>
-
-        <!-- ═══ HTML NODE LAYER ═══ -->
-        <div style="position:relative;min-height:520px;display:grid;grid-template-columns:220px 1fr 240px;gap:0;align-items:start">
-
-          <!-- LEFT: Constraints (Triggers) -->
-          <div style="padding:40px 0 0 28px;display:flex;flex-direction:column;gap:10px;z-index:2">
-            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:4px;padding-left:2px">Constraints</div>
-
-            <div class="arch-node" data-id="pnl" data-lane="governance">
-              <div class="arch-node-icon" style="background:rgba(188,190,255,.1)"><span style="color:#bcbeff">⊞</span></div>
-              <div class="arch-node-text">
-                <div class="arch-node-name">P&L Constraints</div>
-                <div class="arch-node-type">Margin floors, CAC ceilings</div>
-              </div>
-            </div>
-
-            <div class="arch-node" data-id="icp" data-lane="governance">
-              <div class="arch-node-icon" style="background:rgba(188,190,255,.1)"><span style="color:#bcbeff">◎</span></div>
-              <div class="arch-node-text">
-                <div class="arch-node-name">ICP Governance</div>
-                <div class="arch-node-type">Segment rules, territory</div>
-              </div>
-            </div>
-
-            <div class="arch-node" data-id="stage" data-lane="governance">
-              <div class="arch-node-icon" style="background:rgba(188,190,255,.1)"><span style="color:#bcbeff">▤</span></div>
-              <div class="arch-node-text">
-                <div class="arch-node-name">Stage Definitions</div>
-                <div class="arch-node-type">Meeting=Held, SQO criteria</div>
-              </div>
-            </div>
-
-            <div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-top:16px;margin-bottom:4px;padding-left:2px">Signals</div>
-
-            <div class="arch-node" data-id="market-signal" data-lane="market">
-              <div class="arch-node-icon" style="background:rgba(255,107,138,.1)"><span style="color:#ff6b8a">◇</span></div>
-              <div class="arch-node-text">
-                <div class="arch-node-name">Win/Loss Signal</div>
-                <div class="arch-node-type">Feedback trigger</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- CENTER: Hub -->
-          <div style="display:flex;align-items:center;justify-content:center;z-index:5;position:relative;min-height:520px">
-            <div class="arch-hub">
-              <div class="arch-hub-inner">
-                <div class="arch-hub-icon">◈</div>
-                <div class="arch-hub-name">Revenue Physics Engine</div>
-                <div class="arch-hub-sub">Governed Control Plane</div>
-                <div class="arch-hub-badges">
-                  <span class="arch-hub-badge">7 layers</span>
-                  <span class="arch-hub-badge">3 agents</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- RIGHT: Categorized Spokes -->
-          <div style="padding:20px 0 0 0;display:flex;flex-direction:column;gap:18px;z-index:2">
-
-            <!-- Agents -->
-            <div class="arch-group">
-              <div class="arch-group-label" style="color:#ff6e3e">Agents</div>
-              <div class="arch-group-nodes">
-                <div class="arch-node" data-id="coverage" data-lane="agent">
-                  <div class="arch-node-icon" style="background:rgba(255,110,62,.1)"><span style="color:#ff6e3e">⚡</span></div>
-                  <div class="arch-node-text">
-                    <div class="arch-node-name">Coverage Agent</div>
-                    <div class="arch-node-type">Capacity &amp; quota</div>
-                  </div>
-                </div>
-                <div class="arch-node" data-id="attribution" data-lane="agent">
-                  <div class="arch-node-icon" style="background:rgba(255,110,62,.1)"><span style="color:#ff6e3e">⚡</span></div>
-                  <div class="arch-node-text">
-                    <div class="arch-node-name">Attribution Agent</div>
-                    <div class="arch-node-type">Motion mix, CAC</div>
-                  </div>
-                </div>
-                <div class="arch-node" data-id="forecast" data-lane="agent">
-                  <div class="arch-node-icon" style="background:rgba(255,110,62,.1)"><span style="color:#ff6e3e">⚡</span></div>
-                  <div class="arch-node-text">
-                    <div class="arch-node-name">Forecast Agent</div>
-                    <div class="arch-node-type">Velocity, glideslope</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Execution Systems -->
-            <div class="arch-group">
-              <div class="arch-group-label" style="color:#5de0b8">Execution Systems</div>
-              <div class="arch-group-nodes">
-                <div class="arch-node" data-id="salesforce" data-lane="execution">
-                  <div class="arch-node-icon" style="background:rgba(93,224,184,.1)"><span style="color:#5de0b8;font-size:10px">SF</span></div>
-                  <div class="arch-node-text">
-                    <div class="arch-node-name">Salesforce</div>
-                    <div class="arch-node-type">System of Record</div>
-                  </div>
-                </div>
-                <div class="arch-node" data-id="hubspot" data-lane="execution">
-                  <div class="arch-node-icon" style="background:rgba(93,224,184,.1)"><span style="color:#5de0b8;font-size:10px">HS</span></div>
-                  <div class="arch-node-text">
-                    <div class="arch-node-name">HubSpot</div>
-                    <div class="arch-node-type">Orchestration</div>
-                  </div>
-                </div>
-                <div class="arch-node" data-id="clay" data-lane="execution">
-                  <div class="arch-node-icon" style="background:rgba(93,224,184,.1)"><span style="color:#5de0b8;font-size:10px">CL</span></div>
-                  <div class="arch-node-text">
-                    <div class="arch-node-name">Clay</div>
-                    <div class="arch-node-type">Signal Execution</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Market Interface -->
-            <div class="arch-group">
-              <div class="arch-group-label" style="color:#ff6b8a">Market Interface</div>
-              <div class="arch-group-nodes">
-                <div class="arch-node" data-id="buyer" data-lane="market">
-                  <div class="arch-node-icon" style="background:rgba(255,107,138,.1)"><span style="color:#ff6b8a">◉</span></div>
-                  <div class="arch-node-text">
-                    <div class="arch-node-name">Buyer Market</div>
-                    <div class="arch-node-type">Demand surface</div>
-                  </div>
-                </div>
-                <div class="arch-node" data-id="6sense" data-lane="market">
-                  <div class="arch-node-icon" style="background:rgba(255,107,138,.1)"><span style="color:#ff6b8a;font-size:10px">6s</span></div>
-                  <div class="arch-node-text">
-                    <div class="arch-node-name">6sense</div>
-                    <div class="arch-node-type">Intent Signals</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+    <div class="th-wrap" id="thWrap">
+      <div class="th-head">
+        <div>
+          <div class="th-title">governed<span>.revenue</span></div>
+          <div class="th-sub">control plane · three bands · vertical enforcement</div>
         </div>
       </div>
-    </div>
 
-    <!-- Trigger simulation -->
-    <div style="margin-top:8px">
-      <div style="font-family:var(--mn);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:10px">simulate constraint cascade</div>
-      <div class="arch-triggers" id="archTriggerBtns">
-        <button class="arch-trig-btn" data-trigger="arr" data-label="ARR Change" data-desc="Revenue target shifts — constraints cascade through all layers" data-path="pnl,coverage,salesforce,buyer,market-signal,pnl">arr change</button>
-        <button class="arch-trig-btn" data-trigger="gap" data-label="Coverage Gap" data-desc="Pipeline insufficient — agent rebalances execution priority" data-path="coverage,salesforce,buyer,market-signal,stage,attribution">coverage gap</button>
-        <button class="arch-trig-btn" data-trigger="cac" data-label="CAC Breach" data-desc="Payback exceeds ceiling — governance intervenes in motion mix" data-path="market-signal,pnl,attribution,hubspot,buyer">cac breach</button>
-        <button class="arch-trig-btn" data-trigger="intent" data-label="Intent Surge" data-desc="6sense detects buying signal — execution accelerates outbound" data-path="6sense,forecast,clay,hubspot,buyer">intent surge</button>
-      </div>
-      <div class="arch-cascade-box" id="archCascadeBox">
-        <div class="arch-cascade-title" id="archCascadeTitle"></div>
-        <div class="arch-cascade-desc" id="archCascadeDesc"></div>
-        <div class="arch-cascade-flow" id="archCascadeFlow"></div>
-      </div>
-    </div>
+      <!-- ══ THREE BANDS ══ -->
+      <div class="th-bands" id="thBands">
 
-    <div class="arch-doctrine">Governance is not observation. It is intervention. <span style="color:rgba(255,255,255,.2)">&mdash; Architecture with feedback loops is physics.</span></div>
+        <!-- BAND 1: Economic Constraints -->
+        <div class="th-band" data-band="economic">
+          <div class="th-band-label"><span class="th-band-label-text">Economic Constraints</span><span class="th-band-label-line"></span></div>
+          <div class="th-nodes">
+            <div class="th-node" data-node="bizplan"><div class="th-node-name">Business Plan</div><div class="th-node-desc">Revenue target, growth rate, net new ARR required</div><div class="th-node-id">A1</div></div>
+            <div class="th-node" data-node="pnl"><div class="th-node-name">P&L</div><div class="th-node-desc">Revenue, COGS, OpEx — the rulebook</div><div class="th-node-id">A2</div></div>
+            <div class="th-node" data-node="margin"><div class="th-node-name">Protected Margin</div><div class="th-node-desc">Non-negotiable GM% floor. The boss.</div><div class="th-node-id">A3</div></div>
+            <div class="th-node" data-node="coverage"><div class="th-node-name">Coverage Target</div><div class="th-node-desc">4–6x pipeline multiple required</div><div class="th-node-id">A4</div></div>
+          </div>
+        </div>
+
+        <!-- BAND 2: Translation Layer -->
+        <div class="th-band" data-band="translation">
+          <div class="th-band-label"><span class="th-band-label-text">Translation Layer</span><span class="th-band-label-line"></span></div>
+          <div class="th-nodes" style="grid-template-columns:repeat(5,1fr)">
+            <div class="th-node" data-node="budgets"><div class="th-node-name">Budgets</div><div class="th-node-desc">Spend envelope from P&L</div><div class="th-node-id">B1</div></div>
+            <div class="th-node" data-node="gtm"><div class="th-node-name">GTM Model</div><div class="th-node-desc">Motions, channels, partner mix</div><div class="th-node-id">B2</div></div>
+            <div class="th-node" data-node="allocations"><div class="th-node-name">Allocations</div><div class="th-node-desc">Program spend by segment</div><div class="th-node-id">B3</div></div>
+            <div class="th-node" data-node="icpspend"><div class="th-node-name">ICP Spend</div><div class="th-node-desc">Capital routed to segments that convert</div><div class="th-node-id">B4</div></div>
+            <div class="th-node" data-node="stagedefs"><div class="th-node-name">Stage Definitions</div><div class="th-node-desc">Gate criteria, MQL→SQL, acceptance SLAs</div><div class="th-node-id">B5</div></div>
+          </div>
+        </div>
+
+        <!-- BAND 3: Dynamic Operations -->
+        <div class="th-band" data-band="operations">
+          <div class="th-band-label"><span class="th-band-label-text">Dynamic Operations</span><span class="th-band-label-line"></span></div>
+          <div class="th-nodes">
+            <div class="th-node" data-node="execution"><div class="th-node-name">Execution</div><div class="th-node-desc">Campaigns, sequences, pipeline generation</div><div class="th-node-id">C1</div></div>
+            <div class="th-node" data-node="forecasting"><div class="th-node-name">Forecasting</div><div class="th-node-desc">Commit, best case, scenario modeling</div><div class="th-node-id">C2</div></div>
+            <div class="th-node" data-node="attribution"><div class="th-node-name">Attribution</div><div class="th-node-desc">What moved the stage, not what touched the lead</div><div class="th-node-id">C3</div></div>
+            <div class="th-node" data-node="optimization"><div class="th-node-name">Optimization</div><div class="th-node-desc">Channel reweight, velocity tuning, spend shift</div><div class="th-node-id">C4</div></div>
+          </div>
+        </div>
+
+      </div><!-- end bands -->
+
+      <!-- ══ AGENT RAILS ══ -->
+      <div class="th-agents">
+        <div class="th-agents-label">Vertical enforcement rails — click to trace</div>
+        <div class="th-rails" id="thRails">
+          <button class="th-rail" data-agent="pnl" data-bands="economic,translation" data-nodes="pnl,margin,budgets,allocations,icpspend">
+            <span class="th-rail-dot" style="background:#d4a574"></span>
+            <span class="th-rail-name">P&L Agent</span>
+            <span class="th-rail-span">top + mid</span>
+          </button>
+          <button class="th-rail" data-agent="stagegate" data-bands="translation,operations" data-nodes="stagedefs,execution,forecasting">
+            <span class="th-rail-dot" style="background:#ff6b8a"></span>
+            <span class="th-rail-name">Stage Gate</span>
+            <span class="th-rail-span">mid + bottom</span>
+          </button>
+          <button class="th-rail" data-agent="coverage" data-bands="economic,operations" data-nodes="coverage,bizplan,execution,forecasting">
+            <span class="th-rail-dot" style="background:#ffc832"></span>
+            <span class="th-rail-name">Coverage</span>
+            <span class="th-rail-span">top + bottom</span>
+          </button>
+          <button class="th-rail" data-agent="attribution" data-bands="operations,translation" data-nodes="attribution,optimization,stagedefs,icpspend">
+            <span class="th-rail-dot" style="background:#64b4ff"></span>
+            <span class="th-rail-name">Attribution</span>
+            <span class="th-rail-span">bottom + mid</span>
+          </button>
+          <button class="th-rail" data-agent="orchestration" data-bands="economic,translation,operations" data-nodes="pnl,budgets,stagedefs,execution,forecasting,attribution,optimization">
+            <span class="th-rail-dot" style="background:#ff6e3e"></span>
+            <span class="th-rail-name">Orchestration</span>
+            <span class="th-rail-span">all three</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ FEEDBACK LOOPS ══ -->
+      <div class="th-loops">
+        <div class="th-loops-label">Trace the feedback loop</div>
+        <div class="th-loop-btns" id="thLoopBtns">
+          <button class="th-lb" data-loop="full" data-label="Full Loop" data-desc="P&L constrains Budgets → Budgets set Allocations → Stage Definitions govern Execution → Execution feeds Forecasting → Forecasting feeds back UP into Budgets → Attribution informs Optimization → Optimization corrects Stage Definitions. The loop closes." data-path="pnl,budgets,allocations,stagedefs,execution,forecasting,budgets,attribution,optimization,stagedefs" data-dirs="d,d,d,d,d,u,d,d,u">full thermostat</button>
+          <button class="th-lb" data-loop="forecast" data-label="Forecast Feedback" data-desc="Forecasting is not a downstream output. It is an input back into Budgets. This arrow goes upward. Without it, budgets are set once and never corrected." data-path="execution,forecasting,budgets,allocations" data-dirs="d,u,d">forecast → budget</button>
+          <button class="th-lb" data-loop="attrib" data-label="Attribution Correction" data-desc="Attribution does not just feed Optimization. It must inform Stage Definitions and ICP Governance. Otherwise it's just reporting." data-path="attribution,optimization,stagedefs,icpspend" data-dirs="d,u,d">attribution → stages</button>
+          <button class="th-lb" data-loop="cac" data-label="CAC Breach" data-desc="Spend exceeds ceiling → P&L constrains → Budgets tighten → Allocations shift → Attribution reweights → Optimization corrects → Stage Definitions adjust. Constraint flows down, correction flows up." data-path="pnl,budgets,allocations,attribution,optimization,stagedefs" data-dirs="d,d,d,d,u">cac breach</button>
+        </div>
+        <div class="th-loop-info" id="thLoopInfo">
+          <div class="th-loop-info-t" id="thLoopT"></div>
+          <div class="th-loop-info-d" id="thLoopD"></div>
+          <div class="th-loop-info-path" id="thLoopPath"></div>
+        </div>
+      </div>
+
+      <div class="th-doctrine">Flowcharts imply sequence. Control systems imply constraint + feedback. This is a revenue thermostat. The difference is enormous.</div>
+    </div>
   </div>
 </section>
 
@@ -928,63 +821,115 @@ window.addEventListener('scroll',()=>{
   else if(mx>.35){c.textContent='assess readiness';m.textContent='assess your revenue readiness'}
   else{c.textContent='explore framework';m.textContent='explore the framework'}
 },{passive:true});
-// ─── ARCHITECTURE DIAGRAM — Hub & Spoke Interactions ───
+// ═══ REVENUE THERMOSTAT ═══
 (function(){
-  const nodeNames={pnl:'P&L',stage:'Stage',icp:'ICP',coverage:'Coverage',attribution:'Attribution',forecast:'Forecast',salesforce:'Salesforce',hubspot:'HubSpot',clay:'Clay','6sense':'6sense',buyer:'Buyer','market-signal':'Feedback'};
-  const nodeColors={pnl:'#bcbeff',stage:'#bcbeff',icp:'#bcbeff',coverage:'#ff6e3e',attribution:'#ff6e3e',forecast:'#ff6e3e',salesforce:'#5de0b8',hubspot:'#5de0b8',clay:'#5de0b8','6sense':'#ff6b8a',buyer:'#ff6b8a','market-signal':'#ff6b8a'};
-  const cascadeBox=document.getElementById('archCascadeBox');
-  const cascadeTitle=document.getElementById('archCascadeTitle');
-  const cascadeDesc=document.getElementById('archCascadeDesc');
-  const cascadeFlow=document.getElementById('archCascadeFlow');
-  let activeTrigger=null;
+  const wrap=document.getElementById('thWrap');
+  if(!wrap)return;
+  const bands=document.getElementById('thBands');
+  const info=document.getElementById('thLoopInfo'),loopT=document.getElementById('thLoopT'),loopD=document.getElementById('thLoopD'),loopPath=document.getElementById('thLoopPath');
+  let activeRail=null,activeLoop=null,timers=[];
 
-  function resetAll(){
-    document.querySelectorAll('.arch-node').forEach(n=>n.classList.remove('active'));
-    document.querySelectorAll('.arch-trig-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('#archSvg g[id^="conn"]').forEach(g=>{g.style.opacity='';g.querySelectorAll('line,path').forEach(l=>{l.style.strokeWidth='';l.style.opacity=''})});
-    cascadeBox.classList.remove('visible');
+  // ── Agent rail focus ──
+  function clearRail(){
+    activeRail=null;
+    bands.classList.remove('agent-focus');
+    bands.querySelectorAll('.in-span').forEach(el=>el.classList.remove('in-span'));
+    wrap.querySelectorAll('.th-rail.active').forEach(r=>r.classList.remove('active'));
+  }
+  function clearLoop(){
+    timers.forEach(t=>clearTimeout(t));timers=[];
+    activeLoop=null;
+    bands.querySelectorAll('.beat,.up-beat').forEach(el=>{el.classList.remove('beat');el.classList.remove('up-beat')});
+    wrap.querySelectorAll('.th-lb.active').forEach(b=>b.classList.remove('active'));
+    info.classList.remove('vis');
+    wrap.querySelectorAll('.th-lb').forEach(b=>b.disabled=false);
   }
 
-  document.querySelectorAll('.arch-trig-btn').forEach(btn=>{
-    btn.addEventListener('click',function(){
-      const trig=this.dataset.trigger;
-      const wasActive=activeTrigger===trig;
-      resetAll();
-      if(wasActive){activeTrigger=null;return}
-      activeTrigger=trig;
+  wrap.querySelectorAll('.th-rail').forEach(rail=>{
+    rail.addEventListener('click',function(){
+      clearLoop();
+      const ag=this.dataset.agent,was=activeRail===ag;
+      clearRail();
+      if(was)return;
+      activeRail=ag;
       this.classList.add('active');
+      bands.classList.add('agent-focus');
+      // Highlight spanned bands
+      const spanBands=this.dataset.bands.split(',');
+      const spanNodes=this.dataset.nodes.split(',');
+      bands.querySelectorAll('.th-band').forEach(b=>{
+        if(spanBands.includes(b.dataset.band))b.classList.add('in-span');
+      });
+      bands.querySelectorAll('.th-node').forEach(n=>{
+        if(spanNodes.includes(n.dataset.node))n.classList.add('in-span');
+      });
+    });
+  });
+
+  // ── Feedback loop animation ──
+  wrap.querySelectorAll('.th-lb').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const lp=this.dataset.loop,was=activeLoop===lp;
+      clearLoop();clearRail();
+      if(was)return;
+      activeLoop=lp;
+      this.classList.add('active');
+      wrap.querySelectorAll('.th-lb').forEach(b=>b.disabled=true);
+
       const path=this.dataset.path.split(',');
+      const dirs=this.dataset.dirs.split(',');
+      loopT.textContent=this.dataset.label;
+      loopD.textContent=this.dataset.desc;
+      loopPath.innerHTML='';
 
-      // Highlight active nodes
-      path.forEach(id=>{
-        const node=document.querySelector('.arch-node[data-id="'+id+'"]');
-        if(node)node.classList.add('active');
+      // Build path chips
+      const chips=[],arrows=[];
+      // Dedupe for display (the path may revisit nodes)
+      const seen=new Set();
+      path.forEach((nodeId,i)=>{
+        const isUp=dirs[i-1]==='u';
+        if(!seen.has(nodeId+'_'+i)){
+          seen.add(nodeId+'_'+i);
+          const chip=document.createElement('span');
+          chip.className='th-loop-chip';
+          chip.dataset.node=nodeId;
+          chip.dataset.idx=i;
+          const node=bands.querySelector('[data-node="'+nodeId+'"]');
+          chip.textContent=node?node.querySelector('.th-node-name').textContent:nodeId;
+          chips.push(chip);
+          loopPath.appendChild(chip);
+          if(i<path.length-1){
+            const dir=dirs[i]||'d';
+            const arr=document.createElement('span');
+            arr.className='th-loop-arr';
+            arr.textContent=dir==='u'?'↑':'→';
+            arr.dataset.idx=i;
+            arrows.push(arr);
+            loopPath.appendChild(arr);
+          }
+        }
       });
+      info.classList.add('vis');
 
-      // Brighten relevant connection groups
-      const groups=new Set();
-      path.forEach(id=>{
-        if(['pnl','icp','stage'].includes(id))groups.add('connConstraints');
-        if(['coverage','attribution','forecast'].includes(id))groups.add('connAgents');
-        if(['salesforce','hubspot','clay'].includes(id))groups.add('connExecution');
-        if(['buyer','6sense','market-signal'].includes(id)){groups.add('connMarket');groups.add('connFeedback')}
+      // Animate sequential beats
+      path.forEach((nodeId,i)=>{
+        timers.push(setTimeout(()=>{
+          const node=bands.querySelector('[data-node="'+nodeId+'"]');
+          const isUp=i>0&&dirs[i-1]==='u';
+          if(node){
+            node.classList.add('beat');
+            if(isUp)node.classList.add('up-beat');
+          }
+          // Light chips
+          const chip=chips.find(c=>c.dataset.node===nodeId&&+c.dataset.idx===i);
+          if(chip){chip.classList.add('lit');if(isUp)chip.classList.add('up')}
+          if(i>0){
+            const arr=arrows.find(a=>+a.dataset.idx===i-1);
+            if(arr){arr.classList.add('lit');if(dirs[i-1]==='u')arr.classList.add('up')}
+          }
+        },i*380));
       });
-      groups.forEach(gId=>{
-        const g=document.getElementById(gId);
-        if(g){g.style.opacity='.5';g.querySelectorAll('line,path').forEach(l=>{l.style.strokeWidth='1.5'})}
-      });
-
-      // Show cascade info
-      cascadeTitle.textContent=this.dataset.label;
-      cascadeDesc.textContent=this.dataset.desc;
-      cascadeFlow.innerHTML='';
-      path.forEach((id,i)=>{
-        const chip=document.createElement('span');chip.className='arch-cascade-chip';
-        chip.textContent=nodeNames[id]||id;chip.style.borderColor=nodeColors[id]||'#555';chip.style.color=nodeColors[id]||'#999';
-        cascadeFlow.appendChild(chip);
-        if(i<path.length-1){const arr=document.createElement('span');arr.className='arch-cascade-arr';arr.textContent='→';cascadeFlow.appendChild(arr)}
-      });
-      cascadeBox.classList.add('visible');
+      timers.push(setTimeout(()=>{wrap.querySelectorAll('.th-lb').forEach(b=>b.disabled=false)},path.length*380+300));
     });
   });
 })();
