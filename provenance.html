@@ -125,10 +125,10 @@ body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var
 .mvp-name{font-family:var(--font-sans);font-size:11px;font-weight:700;color:var(--text-1);margin:3px 0;transition:color var(--slow)}
 .mvp-desc{font-size:9px;color:var(--text-3);line-height:1.4}
 
-/* SCREENING + INSIGHT */
-.screening{padding:14px 16px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--accent);margin-top:20px}
-.screening-label{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-.screening-text{font-family:var(--font-sans);font-size:14px;font-weight:400;line-height:1.7;color:var(--text-1);font-style:italic;transition:color var(--slow)}
+/* PRINCIPLE BOX + INSIGHT */
+.principle-box{padding:14px 16px;background:var(--bg-formula);border:1px solid var(--border);border-left:3px solid var(--accent);margin-top:20px}
+.principle-label{font-family:var(--mn);font-size:7px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.principle-text{font-family:var(--font-sans);font-size:14px;font-weight:400;line-height:1.7;color:var(--text-1);font-style:italic;transition:color var(--slow)}
 .insight{padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--c-prov);margin-top:10px}
 .insight-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-prov);margin-bottom:6px}
 .insight-text{font-size:11px;color:var(--text-2);line-height:1.65}
@@ -376,7 +376,7 @@ body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var
 
   <!-- PROVENANCE vs ATTRIBUTION -->
   <div class="st">Provenance vs Attribution</div>
-  <div class="ss">Your architecture already demotes attribution. Provenance formalizes the replacement.</div>
+  <div class="ss">The architecture demotes attribution. Provenance formalizes the replacement.</div>
 
   <div class="contrast">
     <div class="contrast-card">
@@ -403,15 +403,15 @@ body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var
     <div class="mvp-card"><div class="mvp-num">5</div><div class="mvp-name">Immutable Store</div><div class="mvp-desc">Audit records append-only. No retroactive modification</div></div>
   </div>
 
-  <!-- SCREENING -->
-  <div class="screening">
-    <div class="screening-label">Interview Framing</div>
-    <div class="screening-text">"Every probability score in our system is decomposable. Every routing decision is reconstructable. Every correction event is explainable. Provenance is what prevents an AI-native GTM from becoming another black box. It makes the system more transparent than the one it replaces."</div>
+  <!-- DESIGN RATIONALE -->
+  <div class="principle-box">
+    <div class="principle-label">Design Rationale</div>
+    <div class="principle-text">"Every probability score in the governed system is decomposable. Every routing decision is reconstructable. Every correction event is explainable. Provenance prevents an AI-native GTM from becoming another black box — it makes the system more transparent than the one it replaces."</div>
   </div>
 
   <div class="insight">
     <div class="insight-label">Why This Matters Strategically</div>
-    <div class="insight-text">You are arguing for paradigm replacement. Paradigm replacement only succeeds if <strong>the new system is more transparent than the old one</strong>. Provenance is what prevents your architecture from becoming another black box. It makes dissent defensible. Once you formalize provenance, agent deployment becomes a compliance decision, not a creative one.</div>
+    <div class="insight-text">Paradigm replacement only succeeds when <strong>the new system is more transparent than the old one</strong>. Provenance is what prevents the architecture from becoming another black box. Once provenance is formalized, agent deployment becomes a compliance decision, not a creative one.</div>
   </div>
 
 </div>

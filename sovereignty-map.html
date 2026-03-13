@@ -285,16 +285,16 @@ body {
 }
 .dm-bullet { color: var(--text-3); flex-shrink: 0; }
 
-/* SCREENING STATEMENT */
-.screening {
+/* ARCHITECTURE PRINCIPLE */
+.principle-box{
   margin-top: 32px; padding: 20px; background: var(--bg-formula);
   border: 1px solid var(--border); border-left: 3px solid var(--accent);
 }
-.screening-label {
+.principle-label {
   font-family: var(--mn); font-size: 7px; letter-spacing: .15em;
   text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
 }
-.screening-text {
+.principle-text {
   font-family: var(--font-sans); font-size: 15px; font-weight: 400;
   line-height: 1.7; color: var(--text-1); font-style: italic;
   transition: color var(--slow);
@@ -361,6 +361,12 @@ body {
 .toast.show { transform: translateX(-50%) translateY(0); }
 
 
+/* INSIGHT CALLOUT */
+.insight{padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);margin-top:10px}
+.insight-label{font-family:var(--mn);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.insight-text{font-size:11px;color:var(--text-2);line-height:1.65}
+.insight-text strong{color:var(--text-1);font-weight:500}
+
 @media(max-width:768px){
   .container{padding:0 16px 60px}
   .tab-bar{flex-wrap:wrap;top:36px}
@@ -410,7 +416,7 @@ body {
 <div class="container">
   <div class="header">
     <div class="header-eyebrow">Vendor vs Build · Sovereignty Decision Architecture</div>
-    <h1>Where Do You Require <em>Sovereignty</em>?</h1>
+    <h1>Where Does <em>Sovereignty</em> Apply?</h1>
     <p>This is not a procurement question. It is a control question. Vendors can supply sensory input. They cannot define judgment. Map each layer against sovereignty requirements.</p>
   </div>
 
@@ -424,7 +430,7 @@ body {
   <div class="portfolio-callout" id="portfolioCallout">
     <div class="portfolio-callout-title">Portfolio-Level Implications</div>
     <div class="portfolio-callout-text">
-      At portfolio scale, vendor sprawl becomes <strong>cost and governance risk</strong>. You will need centralized telemetry normalization, shared weighting logic, and a shared feedback engine — with company-specific execution tooling. The architectural decision: <strong>build a central adjudication core</strong> and allow per-asset tooling variation, or <strong>standardize stack</strong> across portfolio.
+      At portfolio scale, sovereignty decisions compound. <strong>Centralized telemetry normalization</strong>, shared weighting logic, and a shared feedback engine become architectural requirements. The fundamental choice: <strong>build a central adjudication core</strong> and allow per-asset tooling variation, or <strong>standardize the stack</strong> across the portfolio.
     </div>
   </div>
 
@@ -441,7 +447,7 @@ body {
   <div class="sov-legend">
     <div class="sov-legend-item"><div class="sov-dot never"></div><div class="sov-legend-text">Never Vendor</div></div>
     <div class="sov-legend-item"><div class="sov-dot build"></div><div class="sov-legend-text">Build Logic</div></div>
-    <div class="sov-legend-item"><div class="sov-dot hybrid"></div><div class="sov-legend-text">Hybrid — Vendor Infra, Your Logic</div></div>
+    <div class="sov-legend-item"><div class="sov-dot hybrid"></div><div class="sov-legend-text">Hybrid — Vendor Infra, Proprietary Logic</div></div>
     <div class="sov-legend-item"><div class="sov-dot vendor"></div><div class="sov-legend-text">Vendor Acceptable</div></div>
   </div>
 
@@ -458,7 +464,7 @@ body {
         <div class="sov-layer-tag">Layer 01 · Immune System</div>
         <div class="sov-title">Revenue Feedback & Reweighting</div>
         <div class="sov-rationale">
-          You cannot outsource your immune system. Prediction error correction and capital reallocation rules are strategic. You may use <strong>BI tools to visualize</strong>, but the <code>correction logic</code>, <code>error aggregation windows</code>, and <code>reweighting triggers</code> must be proprietary.
+          The immune system cannot be outsourced. Prediction error correction and capital reallocation rules are strategic. BI tools may handle visualization, but the <code>correction logic</code>, <code>error aggregation windows</code>, and <code>reweighting triggers</code> must be proprietary.
         </div>
       </div>
       <div class="sov-rules">
@@ -480,7 +486,7 @@ body {
         <div class="sov-layer-tag">Layer 02</div>
         <div class="sov-title">Orchestration & Velocity</div>
         <div class="sov-rationale">
-          Mostly <strong>vendor infrastructure</strong> — CRM, marketing automation, sales engagement, routing tools. But <code>routing logic</code> and <code>threshold triggers</code> must be yours. Otherwise velocity becomes <strong>tool-constrained</strong> rather than economics-constrained.
+          Mostly <strong>vendor infrastructure</strong> — CRM, marketing automation, sales engagement, routing tools. But <code>routing logic</code> and <code>threshold triggers</code> must remain proprietary. Otherwise velocity becomes <strong>tool-constrained</strong> rather than economics-constrained.
         </div>
       </div>
       <div class="sov-rules">
@@ -503,7 +509,7 @@ body {
         <div class="sov-layer-tag" style="color: var(--c-hybrid); border-color: var(--c-hybrid);">Telemetry Ingestion · Between Layers 02–03</div>
         <div class="sov-title" style="font-size: 14px;">Telemetry Ingestion Layer</div>
         <div class="sov-rationale">
-          Vendors acceptable here — telemetry is <strong>raw fuel</strong>. Intent networks, technographic crawlers, enrichment APIs, behavioral tracking. But vendor data must be <strong>normalized and adjudicated internally</strong>. Never allow vendor scoring to bypass your Signal Engine. <code>Vendor provides raw signal. You provide weighting authority.</code>
+          Vendors acceptable here — telemetry is <strong>raw fuel</strong>. Intent networks, technographic crawlers, enrichment APIs, behavioral tracking. But vendor data must be <strong>normalized and adjudicated internally</strong>. Vendor scoring must never bypass the Signal Engine. <code>Vendor provides raw signal. The organization retains weighting authority.</code>
         </div>
       </div>
       <div class="sov-rules" style="border-left: 1px dashed var(--border);">
@@ -525,7 +531,7 @@ body {
         <div class="sov-layer-tag">Layer 03 · Adjudication</div>
         <div class="sov-title">Signal Interpretation Engine</div>
         <div class="sov-rationale">
-          <strong>Core logic = build.</strong> This is where competitive advantage lives. If a vendor defines probability modeling, you become dependent on black-box inference. In PE-backed systems, that is <strong>risk</strong>. Data science can leverage <strong>vendor analytics platforms</strong>, but <code>probability weighting architecture</code> must be yours.
+          <strong>Core logic = build.</strong> This is where competitive advantage lives. If a vendor defines probability modeling, the organization becomes dependent on black-box inference. In PE-backed systems, that is <strong>risk</strong>. Data science can leverage <strong>vendor analytics platforms</strong>, but <code>probability weighting architecture</code> must remain proprietary.
         </div>
       </div>
       <div class="sov-rules">
@@ -548,7 +554,7 @@ body {
         <div class="sov-layer-tag">Layer 04</div>
         <div class="sov-title">ICP Economic Clustering</div>
         <div class="sov-rationale">
-          Build the logic. You may use <strong>BI tooling</strong>, but clustering criteria must be proprietary. Your <code>Revenue Density Score</code> is your capital allocation engine. If a vendor defines segmentation heuristics, <strong>you lose differentiation</strong>. Tooling can be external. Clustering logic cannot.
+          Build the logic. <strong>BI tooling</strong> is acceptable, but clustering criteria must be proprietary. The <code>Revenue Density Score</code> is the capital allocation engine. If a vendor defines segmentation heuristics, <strong>differentiation erodes</strong>. Tooling can be external. Clustering logic cannot.
         </div>
       </div>
       <div class="sov-rules">
@@ -570,7 +576,7 @@ body {
         <div class="sov-layer-tag">Layer 05 · Anchor Mass</div>
         <div class="sov-title">P&L Economic Gravity</div>
         <div class="sov-rationale">
-          <strong>Never vendor.</strong> This is internal truth. <code>ARR math</code>, <code>CAC constraints</code>, <code>margin targets</code> — this must live in your own systems. Even if finance tooling is external, the logic is yours. No debate.
+          <strong>Never vendor.</strong> This is internal truth. <code>ARR math</code>, <code>CAC constraints</code>, <code>margin targets</code> — these must live in proprietary systems. Even if finance tooling is external, the logic remains internal. No debate.
         </div>
       </div>
       <div class="sov-rules">
@@ -583,6 +589,16 @@ body {
       </div>
     </div>
 
+  </div>
+
+  <div class="insight" style="border-left-color:var(--accent);margin-top:24px">
+    <div class="insight-label" style="color:var(--accent)">Model These Decisions</div>
+    <div class="insight-text">
+      Every sovereignty decision has a cost structure — headcount for build, licensing for buy, integration for both.
+      <strong>OpptyCon models the financial impact of these decisions</strong> across the full S&amp;M cost structure,
+      showing how vendor vs build choices affect blended CAC, coverage ratios, and pipeline physics over 24+ months.
+      <a href="https://opptycon.netlify.app" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:500"> Launch OpptyCon →</a>
+    </div>
   </div>
 
   <!-- DECISION MATRIX -->
@@ -609,11 +625,11 @@ body {
     </div>
   </div>
 
-  <!-- SCREENING STATEMENT -->
-  <div class="screening">
-    <div class="screening-label">Screening Response — Board-Ready</div>
-    <div class="screening-text">
-      "I would vendor commodity telemetry and infrastructure, but retain control over economic weighting, probability modeling, and capital reallocation logic. That's where differentiation and governance risk live."
+  <!-- ARCHITECTURE PRINCIPLE -->
+  <div class="principle-box">
+    <div class="principle-label">Architecture Principle</div>
+    <div class="principle-text">
+      "Vendor commodity telemetry and infrastructure, but retain control over economic weighting, probability modeling, and capital reallocation logic. That is where differentiation and governance risk live."
     </div>
   </div>
 
@@ -647,9 +663,9 @@ body {
 
   <!-- OPEN QUESTION — portfolio mode -->
   <div class="open-question" id="openQuestion">
-    <div class="oq-label">Foundational Question</div>
+    <div class="oq-label">Architectural Decision Point</div>
     <div class="oq-text">
-      Is the ambition here to build a portfolio-level Revenue OS platform that compounds across assets — or to optimize individual companies one by one? Because the vendor vs build calculus changes dramatically depending on that ambition.
+      The fundamental architectural decision at portfolio scale: build a central adjudication core with per-company execution tooling, or standardize the stack across the portfolio. The answer determines every sovereignty decision downstream.
     </div>
   </div>
 
