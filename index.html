@@ -2,942 +2,654 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Governed Revenue Architecture</title>
-<meta name="description" content="A governed, agentic orchestration and control plane for modern GTM. Constrained probabilistic revenue system.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetherOps · GTM Engineering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <style>
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
 </style>
-<style>:root{--bk:#111111;--gy:#EBEBEB;--or:#111111;--lm:#C8FF6E;--lmD:rgba(200,255,110,0.15);--pu:#bcbeff;--wh:#fff;--g50:#F4F4F2;--g3:rgba(0,0,0,0.13);--g4:rgba(0,0,0,0.07);--g5:rgba(0,0,0,0.28);--g6:#909090;--g7:#555555;--g9:#0F0F0F;--ft:'TWK Everett','Helvetica Neue',sans-serif;--mn:'Chivo Mono','Space Mono',monospace;--sm:cubic-bezier(.22,1,.36,1);--ez:cubic-bezier(.22,1,.36,1)}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-body{font-family:var(--ft);font-weight:400;background:var(--gy);color:var(--bk);overflow-x:hidden;line-height:1.4}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--g4);border-radius:2px}
-a{color:inherit;text-decoration:none}
-
-/* NAV - scorecard style: logo left, dots/hamburger right, buttons below on mobile */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 20px;height:56px;display:flex;align-items:center;background:var(--gy);border-bottom:1px solid var(--g3);transition:background .4s var(--ez)}
-.nav.scrolled{background:rgba(235,235,235,.88);backdrop-filter:blur(12px)}
-.n-logo{display:flex;align-items:center;gap:8px}
-.n-logo svg{width:22px;height:22px}
-.n-word{font-family:var(--mn);font-size:11px;font-weight:400;letter-spacing:.02em;text-transform:lowercase}
-.n-right{margin-left:auto;display:flex;align-items:center;gap:6px}
-.n-link{font-family:var(--mn);font-size:10px;padding:6px 12px;color:var(--g7);background:none;border:none;cursor:pointer;transition:color .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em}
-.n-link:hover{color:var(--bk)}
-/* Buttons - scorecard: outline left, solid right, side by side */
-.btn-out{font-family:var(--mn);font-size:10px;padding:8px 20px;border:1px solid var(--bk);background:transparent;color:var(--bk);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em}
-.btn-out:hover{background:var(--bk);color:var(--wh)}
-.btn-fill{font-family:var(--mn);font-size:10px;padding:8px 20px;border:1px solid var(--bk);background:var(--bk);color:var(--wh);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em}
-.btn-fill:hover{background:#C8FF6E;border-color:#C8FF6E;color:#111111}
-.btn-fill.lg,.btn-out.lg{font-size:11px;padding:10px 28px}
-
-/* Hamburger - scorecard uses dot grid, we use 3 bars */
-.ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
-.ham span{display:block;width:18px;height:1.5px;background:var(--bk);transition:all .3s var(--ez)}
-.mob-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--gy);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
-.mob-menu.open{display:flex}
-/* Mobile button row like scorecard: two big buttons side by side */
-.mob-btns{display:flex;gap:8px;margin-bottom:24px}
-.mob-btns .btn-out,.mob-btns .btn-fill{flex:1;text-align:center;padding:14px 8px;font-size:11px}
-.mob-nav-link{font-family:var(--mn);font-size:12px;padding:14px 0;color:var(--g7);border-bottom:1px solid var(--g3);text-transform:lowercase;letter-spacing:.02em;display:block;background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;text-align:left;width:100%}
-.mob-nav-link:hover{color:var(--bk)}
-
-@media(max-width:860px){
-  .n-link,.n-right>.btn-out,.n-right>.btn-fill{display:none}
-  .ham{display:flex}
+<style>
+:root {
+  --bg-base:      #EBEBEB;
+  --bg-surface:   #F4F4F2;
+  --bg-white:     #FFFFFF;
+  --bg-inverse:   #0F0F0F;
+  --bg-code:      #1C1C1C;
+  --bg-raised:    #E2E2DF;
+  --ink:          #111111;
+  --ink-mid:      #555555;
+  --ink-muted:    #909090;
+  --ink-inv:      #F5F5F3;
+  --ink-inv-mid:  #AAAAAA;
+  --ink-code:     #C8FF6E;
+  --border-subtle: rgba(0,0,0,0.07);
+  --border-mid:    rgba(0,0,0,0.13);
+  --border-strong: rgba(0,0,0,0.28);
+  --accent:        #111111;
+  --accent-text:   #F5F5F3;
+  --accent-lime:   #C8FF6E;
+  --accent-lime-dark: #9BE040;
+  --accent-rose:   #D64074;
+  --accent-rose-light: rgba(214,64,116,0.10);
+  --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono:    'Chivo Mono', 'Space Mono', 'Courier New', monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 200ms;
 }
 
-/* LAYOUT */
-.w{max-width:1100px;margin:0 auto;padding:0 20px}
-@media(min-width:860px){.w{padding:0 40px}}
-@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--sm),transform .7s var(--sm)}.rv.vis{opacity:1;transform:translateY(0)}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { font-family: var(--font-display); background: var(--bg-base); color: var(--ink); overflow-x: hidden; }
 
-/* HERO - scorecard style: mono uppercase, LIGHT weight, large */
-.hero{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding-top:80px;padding-bottom:60px}
-.h-eyebrow{font-family:var(--mn);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--g7);margin-bottom:24px;opacity:0;animation:up .8s var(--sm) .2s forwards}
-.h-title{font-family:var(--ft);font-size:clamp(24px,5.5vw,56px);font-weight:300;line-height:1.15;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:20px;opacity:0;animation:up .8s var(--sm) .35s forwards}
-.h-title span{color:var(--lm)}
-.h-sub{font-family:var(--ft);font-size:clamp(14px,2.8vw,16px);font-weight:300;color:var(--g7);margin-bottom:40px;max-width:480px;line-height:1.7;opacity:0;animation:up .8s var(--sm) .5s forwards}
-.h-ctas{display:flex;gap:8px;opacity:0;animation:up .8s var(--sm) .65s forwards;flex-wrap:wrap}
+/* ═══ NAV ═══ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 76px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(235,235,235,0.85);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-mid);
+}
+.nav-left { display: flex; align-items: center; }
+.nav-logo { height: 32px; width: auto; display: block; }
+.nav-links { display: flex; gap: 4px; }
+.nav-link {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);
+  text-decoration: none; padding: 10px 16px; border-radius: 4px;
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.nav-link:hover { color: var(--ink); background: var(--bg-raised); }
+.nav-right { display: flex; align-items: center; gap: 14px; }
+.nav-login {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);
+  text-decoration: none; padding: 10px 16px;
+  transition: color var(--dur) var(--ease);
+}
+.nav-login:hover { color: var(--ink); }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  border: 1px solid transparent; border-radius: 4px; cursor: pointer;
+  transition: all var(--dur) var(--ease); white-space: nowrap;
+}
+.btn:active { transform: translateY(1px); }
+.btn-sm { font-size: 11px; padding: 10px 20px; }
+.btn-md { font-size: 11px; padding: 11px 24px; }
+.btn-lg { font-size: 13px; padding: 14px 32px; }
+.btn-primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.btn-primary:hover { opacity: 0.8; }
+.btn-secondary { background: transparent; color: var(--ink); border-color: var(--border-strong); }
+.btn-secondary:hover { background: var(--bg-raised); }
+.btn-lime { background: var(--accent-lime); color: var(--ink); border-color: var(--accent-lime); }
+.btn-lime:hover { background: var(--accent-lime-dark); border-color: var(--accent-lime-dark); }
+.btn-rose { background: var(--accent-rose); color: #fff; border-color: var(--accent-rose); }
+.btn-rose:hover { opacity: 0.85; }
+.btn-dot::after { content: '⠿'; font-size: 10px; opacity: 0.4; }
 
-/* Tabs - RUN/JUDGE/SHIP component */
-.tabs-shell{max-width:900px;margin:48px 0 0;opacity:0;animation:up .8s var(--sm) .8s forwards}
-.tabs{display:flex;gap:12px;margin-bottom:-1px;padding:0 8px}
-.tab{padding:12px 28px;background:var(--g50);border:1px solid var(--g3);border-bottom:none;border-radius:14px 14px 0 0;font-family:var(--mn);font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--g7);cursor:pointer;transition:background .15s ease,color .15s ease}
-.tab:hover{background:#e8e8e8}
-.tab:focus-visible{outline:2px solid var(--or);outline-offset:-2px}
-.tab.active{background:var(--wh);color:var(--bk);position:relative;z-index:2}
-.tab-panel{background:var(--wh);border:1px solid var(--g3);border-radius:16px;padding:28px;position:relative;z-index:1;font-family:var(--ft);font-size:14px;font-weight:300;color:var(--g7);line-height:1.7}
-.tab-panel[hidden]{display:none}
-.tab-panel:not([hidden]){animation:fadeUp .3s var(--ez) forwards}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-/* Tab panel inner layout */
-.tp-head{font-family:var(--ft);font-size:15px;font-weight:400;color:var(--bk);margin-bottom:20px}
-.tp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.tp-item{display:flex;gap:8px;font-size:13px;line-height:1.55}
-.tp-item strong{color:var(--bk);font-weight:500;display:block;margin-bottom:2px}
-.tp-icon{color:var(--lm);font-family:var(--mn);flex-shrink:0;margin-top:1px}
-@media(max-width:640px){.tabs{gap:0;padding:0}.tab{padding:10px 16px;font-size:11px;letter-spacing:.8px;flex:1;text-align:center}.tp-grid{grid-template-columns:1fr}}
+/* ═══ HERO ═══ */
+.hero {
+  min-height: 100vh; display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 76px 0 0;
+  position: relative; overflow: hidden;
+}
+.hero-left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 0 80px 48px;
+  max-width: 640px;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--ink-muted); }
+.hero-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5.5vw, 72px);
+  font-weight: 300; line-height: 1.06; letter-spacing: -0.035em;
+  color: var(--ink); margin-bottom: 28px;
+}
+.hero-h1 em {
+  font-style: normal;
+  background: linear-gradient(transparent 60%, rgba(200,255,110,0.35) 60%);
+}
+.hero-sub {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 400;
+  line-height: 1.75; color: var(--ink-mid); text-transform: uppercase;
+  letter-spacing: 0.04em; max-width: 420px; margin-bottom: 40px;
+}
+.hero-actions { display: flex; gap: 12px; align-items: center; margin-bottom: 56px; }
+.hero-signals {
+  display: flex; gap: 32px; padding-top: 32px;
+  border-top: 1px solid var(--border-subtle);
+}
+.signal-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+.signal-value {
+  font-family: var(--font-display); font-size: 28px; font-weight: 300;
+  letter-spacing: -0.03em; color: var(--ink); line-height: 1;
+}
+.signal-value .lime {
+  color: var(--accent-lime-dark);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.06em; vertical-align: middle;
+}
+.hero-right {
+  position: relative;
+  display: flex; align-items: flex-end; justify-content: center;
+  overflow: hidden;
+}
+.hero-img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 92%, transparent 100%);
+}
+.hero-right::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 120px;
+  background: linear-gradient(to right, var(--bg-base), transparent);
+  z-index: 1; pointer-events: none;
+}
+.hero-right::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0; height: 160px;
+  background: linear-gradient(to top, var(--bg-base), transparent);
+  z-index: 1; pointer-events: none;
+}
 
-/* SECTIONS */
-.sc{padding:clamp(60px,10vw,100px) 0}
-.sdk{background:var(--bk);color:var(--wh)}
-.swh{background:var(--wh)}
-.s-ey{font-family:var(--mn);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--g7);margin-bottom:14px}
-.sdk .s-ey{color:var(--g6)}
-/* Section headings: LIGHT weight, large, like scorecard */
-.s-h{font-family:var(--ft);font-size:clamp(20px,4vw,40px);font-weight:300;line-height:1.15;letter-spacing:-.005em;text-transform:uppercase;margin-bottom:18px}
-.s-h span{color:var(--lm)}
-.s-p{font-family:var(--ft);font-size:clamp(14px,2.5vw,15px);font-weight:300;color:var(--g7);line-height:1.75;max-width:600px}
-.s-p strong{color:var(--bk);font-weight:500}
-.sdk .s-p{color:var(--g5)}.sdk .s-p strong{color:var(--wh)}
+/* ═══ TRUST BAR ═══ */
+.trust {
+  padding: 48px;
+  border-top: 1px solid var(--border-mid);
+  display: flex; align-items: center; gap: 48px;
+}
+.trust-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted);
+  white-space: nowrap;
+}
+.trust-items { display: flex; gap: 40px; align-items: center; flex: 1; }
+.trust-item {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--border-strong);
+  white-space: nowrap;
+}
 
-/* CARDS - scorecard style: white bg on grey, thin border, no radius */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
-@media(max-width:640px){.g2,.g3{grid-template-columns:1fr}}
-@media(min-width:641px) and (max-width:860px){.g3{grid-template-columns:1fr 1fr}}
-.cd{padding:20px;background:var(--wh);border:1px solid var(--g3);transition:all .4s var(--ez)}
-.cd:hover{border-color:var(--g7);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.04)}
-.sdk .cd{background:var(--g9);border-color:rgba(255,255,255,.07)}.sdk .cd:hover{border-color:var(--bk)}
-.cd-tag{font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--lm);margin-bottom:6px}
-.cd-name{font-family:var(--ft);font-weight:500;font-size:14px;margin-bottom:4px}
-.cd-desc{font-family:var(--ft);font-size:13px;font-weight:300;color:var(--g7);line-height:1.5}
-.sdk .cd-desc{color:var(--g5)}
+/* ═══ FEATURES (dark section) ═══ */
+.features {
+  background: var(--bg-inverse); border-radius: 20px;
+  margin: 8px 16px; padding: 96px 48px;
+}
+.feat-label {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25);
+  margin-bottom: 32px;
+  display: flex; align-items: center; gap: 12px;
+}
+.feat-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+.feat-h2 {
+  font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 300; letter-spacing: -0.03em; line-height: 1.1;
+  color: var(--ink-inv); margin-bottom: 12px; max-width: 560px;
+}
+.feat-sub {
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink-inv-mid);
+  line-height: 1.65; max-width: 460px; margin-bottom: 64px;
+}
+.feat-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06); border-radius: 12px;
+  overflow: hidden;
+}
+.feat-cell { background: var(--bg-inverse); padding: 40px 32px; }
+.feat-cell-num {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,0.2); letter-spacing: 0.1em; margin-bottom: 20px;
+}
+.feat-cell-title {
+  font-family: var(--font-display); font-size: 22px; font-weight: 300;
+  color: var(--ink-inv); letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.25;
+}
+.feat-cell-body {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-inv-mid); line-height: 1.7;
+}
+.feat-cell-tag {
+  margin-top: 24px; display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-code); background: rgba(200,255,110,0.06);
+  border: 1px solid rgba(200,255,110,0.15); border-radius: 100px;
+  padding: 4px 14px;
+}
 
-/* TAGS - struck/accent */
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0}
-.tag-x{font-family:var(--mn);font-size:clamp(8px,1.8vw,10px);padding:5px 12px;border:1px solid var(--g3);color:var(--g5);text-decoration:line-through;text-decoration-color:var(--g4)}
-.tag-y{font-family:var(--mn);font-size:clamp(8px,1.8vw,10px);padding:5px 12px;border:1px solid var(--bk);color:var(--bk);background:var(--lmD)}
+/* ═══ OPPTYCON SECTION ═══ */
+.opptycon-section {
+  padding: 96px 48px;
+  border-top: 1px solid var(--border-subtle);
+}
+.opc-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center; margin-top: 48px;
+}
+.opc-visual {
+  background: var(--bg-inverse); border-radius: 12px; padding: 40px;
+  position: relative; overflow: hidden;
+}
+.opc-visual::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 40%, rgba(200,255,110,0.06), transparent 60%);
+  pointer-events: none;
+}
+.opc-gauge {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.opc-metric {
+  padding: 16px; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px;
+}
+.opc-metric-label {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3);
+  margin-bottom: 8px;
+}
+.opc-metric-val {
+  font-family: var(--font-display); font-size: 24px; font-weight: 300;
+  color: var(--ink-inv); letter-spacing: -0.02em;
+}
+.opc-metric-val .rose { color: var(--accent-rose); }
+.opc-metric-val .grn { color: var(--accent-lime-dark); }
+.opc-info h3 {
+  font-family: var(--font-display); font-size: clamp(24px, 3vw, 40px);
+  font-weight: 300; letter-spacing: -0.025em; line-height: 1.15;
+  margin-bottom: 16px;
+}
+.opc-info p {
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink-mid);
+  line-height: 1.7; max-width: 440px; margin-bottom: 32px;
+}
+.opc-features {
+  display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px;
+}
+.opc-feat {
+  display: flex; align-items: baseline; gap: 10px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-mid);
+  letter-spacing: 0.02em;
+}
+.opc-feat::before {
+  content: '→'; color: var(--accent-rose); font-weight: 600; flex-shrink: 0;
+}
 
-/* PARADIGM - scorecard comparison card style with colored top border */
-.pg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0}
-@media(max-width:640px){.pg{grid-template-columns:1fr}}
-.p-card{padding:24px;border:1px solid var(--g3);border-top:3px solid var(--g4);background:var(--wh)}
-.p-card.new-card{border-top-color:var(--lm)}
-.sdk .p-card{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.08)}
-.sdk .p-card.new-card{border-top-color:var(--lm)}
-.p-label{font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
-.p-label.old{color:var(--g5);text-decoration:line-through}
-.p-label.new{color:var(--bk)}
-.p-flow{font-family:var(--mn);font-size:clamp(10px,2.2vw,12px);line-height:2.2;color:var(--g7)}
-.sdk .p-flow{color:var(--g5)}
-.p-flow b{color:var(--bk);font-weight:600}
+/* ═══ DOCTRINE PREVIEW ═══ */
+.doctrine-section {
+  background: var(--bg-surface); border-radius: 20px;
+  margin: 8px 16px; padding: 96px 48px;
+}
+.doc-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-top: 48px;
+}
+.doc-card {
+  background: var(--bg-white); border: 1px solid var(--border-mid);
+  border-radius: 8px; padding: 28px 24px;
+  text-decoration: none; color: inherit;
+  transition: all var(--dur) var(--ease);
+}
+.doc-card:hover {
+  border-color: var(--accent-rose);
+  box-shadow: 0 2px 12px rgba(214,64,116,0.08);
+  transform: translateY(-2px);
+}
+.doc-card-num {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  color: var(--accent-rose); letter-spacing: 0.08em; margin-bottom: 12px;
+}
+.doc-card-title {
+  font-family: var(--font-display); font-size: 18px; font-weight: 400;
+  letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.doc-card-desc {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted);
+  line-height: 1.6;
+}
 
-/* ARCH ROWS */
-.al{margin:32px 0}
-.a-row{display:flex;align-items:baseline;gap:14px;padding:14px 0;border-bottom:1px solid var(--g3);flex-wrap:wrap}
-.sdk .a-row{border-color:rgba(255,255,255,.06)}
-.a-row:last-child{border-bottom:none}
-.a-name{font-family:var(--mn);font-weight:400;width:200px;flex-shrink:0;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
-.a-desc{font-family:var(--ft);font-size:13px;font-weight:300;color:var(--g7)}
-.sdk .a-desc{color:var(--g5)}
-@media(max-width:640px){.a-name{width:100%;margin-bottom:2px}.a-desc{width:100%}}
+/* ═══ CTA SECTION ═══ */
+.cta-section {
+  padding: 96px 48px; text-align: center;
+  border-top: 1px solid var(--border-subtle);
+}
+.cta-h2 {
+  font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 300; letter-spacing: -0.025em; line-height: 1.12;
+  color: var(--ink); margin-bottom: 16px;
+}
+.cta-sub {
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink-mid);
+  line-height: 1.65; max-width: 440px; margin: 0 auto 40px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.cta-actions { display: flex; gap: 12px; justify-content: center; }
 
-/* DOCTRINE BOX - scorecard inner card style */
-.d-box{padding:clamp(24px,5vw,40px);background:var(--wh);border:1px solid var(--g3);text-align:center;margin:40px 0}
-.sdk .d-box{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.08)}
-.d-title{font-family:var(--mn);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--g7);margin-bottom:20px}
-.d-lines{font-family:var(--ft);font-size:clamp(15px,3vw,18px);font-weight:300;line-height:2.2}
-.d-lines strong{color:var(--bk);font-weight:500}
+/* ═══ FOOTER ═══ */
+.footer {
+  background: var(--bg-inverse); border-radius: 20px 20px 0 0;
+  margin: 8px 16px 0; padding: 64px 48px 32px;
+}
+.footer-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 48px; margin-bottom: 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.footer-brand-name {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-inv);
+  margin-bottom: 8px;
+}
+.footer-brand-sub {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-inv-mid);
+  letter-spacing: 0.04em; max-width: 260px; line-height: 1.6;
+}
+.footer-cols { display: flex; gap: 64px; }
+.footer-col-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25);
+  margin-bottom: 16px;
+}
+.footer-col-links { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+.footer-col-links a {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-inv-mid);
+  text-decoration: none; letter-spacing: 0.03em;
+  transition: color var(--dur) var(--ease);
+}
+.footer-col-links a:hover { color: var(--ink-inv); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy {
+  font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.15);
+  letter-spacing: 0.04em;
+}
 
-/* DISCIPLINE ARROWS */
-.disc{margin:28px 0}
-.disc-row{display:flex;gap:10px;padding:8px 0}
-.disc-arr{font-family:var(--mn);font-size:13px;color:var(--lm);flex-shrink:0;margin-top:2px}
-.disc-txt{font-family:var(--ft);font-size:14px;font-weight:300;color:var(--g7)}
-.sdk .disc-txt{color:var(--g5)}
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.hero-left > * {
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease) forwards;
+}
+.hero-left > :nth-child(1) { animation-delay: 0.1s; }
+.hero-left > :nth-child(2) { animation-delay: 0.2s; }
+.hero-left > :nth-child(3) { animation-delay: 0.35s; }
+.hero-left > :nth-child(4) { animation-delay: 0.5s; }
+.hero-left > :nth-child(5) { animation-delay: 0.65s; }
+.hero-img {
+  opacity: 0;
+  animation: fadeIn 1.2s var(--ease) 0.3s forwards;
+}
 
-/* SIM - scorecard product screenshot card style */
-/* SIM MODE */
-.sim-tabs{display:flex;gap:8px;margin:0 0 10px 0}
-.sim-tab{flex:1;font-family:var(--mn);font-size:10px;padding:10px 10px;border:1px solid var(--g3);background:var(--g50);color:var(--g7);cursor:pointer;transition:all .35s var(--ez);text-transform:lowercase;letter-spacing:.02em}
-.sim-tab:hover{border-color:var(--bk);color:var(--bk)}
-.sim-tab.active{background:var(--bk);border-color:var(--bk);color:var(--wh)}
-.drift-only .sim-out-val{font-family:var(--mn);font-size:clamp(16px,3vw,20px);font-weight:700;color:var(--bk)}
-
-.sim-wrap{margin:40px 0;padding:clamp(16px,4vw,28px);background:var(--wh);border:1px solid var(--g3)}
-.sdk .sim-wrap{background:var(--g9);border-color:rgba(255,255,255,.08)}
-.sim-title{font-family:var(--mn);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--g7);margin-bottom:20px}
-.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-@media(max-width:700px){.sim-grid{grid-template-columns:1fr}}
-.sim-inputs{display:grid;gap:10px}
-.sim-field label{display:block;font-family:var(--mn);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--g6);margin-bottom:3px}
-.sim-field input{width:100%;padding:9px 12px;font-family:var(--mn);font-size:12px;border:1px solid var(--g3);background:var(--g50);color:var(--bk);outline:none;transition:border .3s}
-.sim-field input:focus{border-color:var(--bk)}
-.sdk .sim-field input{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:var(--wh)}
-.sim-field input::placeholder{color:var(--g5)}
-.sim-outputs{display:grid;gap:8px}
-.sim-out{padding:12px;background:var(--g50);border:1px solid var(--g3)}
-.sdk .sim-out{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06)}
-.sim-out-label{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--g6);margin-bottom:3px}
-.sim-out-val{font-family:var(--mn);font-size:clamp(16px,3vw,20px);font-weight:700;color:var(--bk)}
-.sim-out-note{font-family:var(--ft);font-size:10px;color:var(--g5);margin-top:2px}
-/* Bar indicator like scorecard's passing rate */
-.sim-bar-wrap{margin-top:6px;height:4px;background:var(--g3);width:100%}
-.sdk .sim-bar-wrap{background:rgba(255,255,255,.06)}
-.sim-bar{height:100%;background:var(--lm);transition:width .6s var(--sm)}
-
-/* HUB */
-.hub{margin:40px 0}
-.hub-title{font-family:var(--mn);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--g7);margin-bottom:14px;text-align:center}
-.hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:640px){.hub-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:400px){.hub-grid{grid-template-columns:1fr}}
-.hub-card{display:block;padding:16px;background:var(--g50);border:1px solid var(--g3);transition:all .4s var(--ez);cursor:pointer}
-.hub-card:hover{border-color:var(--bk);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.06)}
-.hub-num{font-family:var(--mn);font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--g6);margin-bottom:4px}
-.hub-name{font-family:var(--ft);font-weight:500;font-size:14px;margin-bottom:3px}
-.hub-desc{font-family:var(--ft);font-size:11px;color:var(--g6);line-height:1.4;font-weight:300}
-
-/* CLOSING */
-.closing{padding:clamp(40px,8vw,80px) 0;text-align:center}
-.closing-h{font-family:var(--ft);font-size:clamp(16px,3.5vw,32px);font-weight:300;line-height:1.3;text-transform:uppercase}
-.closing-h span{color:var(--lm)}
-.closing-sub{font-family:var(--mn);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--g6);margin-top:14px}
-.closing-note{font-family:var(--mn);font-size:9px;color:var(--g5);margin-top:28px;font-style:italic;font-weight:400}
-.foot{padding:32px 20px;border-top:1px solid var(--g3);text-align:center}
-.foot-text{font-family:var(--mn);font-size:9px;color:var(--g5);letter-spacing:.06em}
-
-/* ═══ REVENUE THERMOSTAT — THREE BANDS + VERTICAL RAILS ═══ */
-.th-wrap{background:var(--wh);border:1px solid var(--g3);padding:clamp(16px,3vw,28px);position:relative;overflow:hidden}
-/* Header */
-.th-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--g3)}
-.th-title{font-family:var(--ft);font-size:clamp(13px,2vw,16px);font-weight:600;color:var(--g9)}
-.th-title span{color:var(--lm)}
-.th-sub{font-family:var(--mn);font-size:7px;color:var(--g6);letter-spacing:.06em;text-transform:uppercase}
-
-/* ── Three horizontal bands ── */
-.th-bands{display:flex;flex-direction:column;gap:0;position:relative}
-.th-band{padding:16px 14px 14px;border:1px solid var(--g3);border-bottom:none;position:relative;transition:background .4s}
-.th-band:last-child{border-bottom:1px solid var(--g3)}
-.th-band-label{font-family:var(--mn);font-size:6.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.th-band-label-text{white-space:nowrap}
-.th-band-label-line{flex:1;height:1px;background:var(--g3)}
-/* Band accent colors */
-.th-band[data-band="economic"] .th-band-label-text{color:rgba(180,130,60,.6)}
-.th-band[data-band="translation"] .th-band-label-text{color:rgba(120,110,200,.5)}
-.th-band[data-band="operations"] .th-band-label-text{color:rgba(60,160,120,.5)}
-/* Nodes grid */
-.th-nodes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-@media(max-width:640px){.th-nodes{grid-template-columns:1fr 1fr}}
-.th-node{padding:10px 12px;border:1px solid var(--g3);background:var(--g50);transition:all .4s;cursor:default;position:relative}
-.th-node:hover{border-color:var(--g4);background:var(--wh)}
-.th-node-name{font-family:var(--ft);font-size:11px;font-weight:500;color:var(--g9);margin-bottom:2px}
-.th-node-desc{font-family:var(--mn);font-size:6.5px;color:var(--g6);letter-spacing:.02em;line-height:1.4}
-/* Node ID for connections */
-.th-node-id{position:absolute;top:3px;right:6px;font-family:var(--mn);font-size:5px;color:var(--g4);letter-spacing:.04em}
-
-/* ── Feedback arrows (SVG overlay) ── */
-.th-svg{position:absolute;inset:0;pointer-events:none;z-index:2}
-.th-arrow{stroke:var(--or);stroke-width:1.5;fill:none;opacity:.15;transition:opacity .4s}
-.th-arrow-head{fill:var(--or);opacity:.15;transition:opacity .4s}
-.th-arrow.up{stroke:rgba(220,60,90,.5);opacity:.12}
-.th-arrow-head.up{fill:rgba(220,60,90,.5);opacity:.12}
-/* Active states */
-.th-arrow.active{opacity:.5!important;stroke-width:2}
-.th-arrow-head.active{opacity:.5!important}
-.th-arrow.active.up{stroke:rgba(220,60,90,.7);opacity:.4!important}
-.th-arrow-head.active.up{fill:rgba(220,60,90,.7);opacity:.4!important}
-
-/* ── Vertical agent rails ── */
-.th-agents{margin-top:16px;padding-top:12px;border-top:1px solid var(--g3)}
-.th-agents-label{font-family:var(--mn);font-size:6.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:8px}
-.th-rails{display:flex;flex-wrap:wrap;gap:6px}
-.th-rail{display:flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid var(--g3);background:var(--g50);cursor:pointer;transition:all .3s}
-.th-rail:hover{border-color:var(--g4);background:var(--wh)}
-.th-rail.active{border-color:var(--bk);background:var(--lmD)}
-.th-rail-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.th-rail-name{font-family:var(--mn);font-size:7.5px;color:var(--g7);letter-spacing:.02em}
-.th-rail.active .th-rail-name{color:var(--bk)}
-.th-rail-span{font-family:var(--mn);font-size:5.5px;color:var(--g5);letter-spacing:.02em;margin-left:2px}
-
-/* Agent focus: highlight spanned bands + nodes */
-.th-bands.agent-focus .th-band{opacity:.35;transition:opacity .35s}
-.th-bands.agent-focus .th-band.in-span{opacity:1}
-.th-bands.agent-focus .th-node{opacity:.3;transition:opacity .35s}
-.th-bands.agent-focus .th-node.in-span{opacity:1;border-color:var(--bk);background:var(--lmD)}
-
-/* ── Feedback loop trigger ── */
-.th-loops{margin-top:12px;padding-top:10px;border-top:1px solid var(--g3)}
-.th-loops-label{font-family:var(--mn);font-size:6.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:8px}
-.th-loop-btns{display:flex;gap:5px;flex-wrap:wrap}
-.th-lb{font-family:var(--mn);font-size:8px;padding:5px 12px;border:1px solid var(--g3);background:transparent;color:var(--g7);cursor:pointer;transition:all .3s;text-transform:lowercase;letter-spacing:.02em}
-.th-lb:hover{border-color:var(--g5);color:var(--g9)}
-.th-lb.active{border-color:var(--bk);color:var(--bk);background:var(--lmD)}
-.th-lb:disabled{opacity:.2;cursor:default}
-.th-loop-info{margin-top:8px;padding:8px 12px;border:1px solid var(--g3);background:var(--g50);display:none}
-.th-loop-info.vis{display:block}
-.th-loop-info-t{font-family:var(--mn);font-size:8px;font-weight:700;color:var(--bk);margin-bottom:2px}
-.th-loop-info-d{font-family:var(--ft);font-size:10.5px;color:var(--g7);line-height:1.5}
-.th-loop-info-path{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px;align-items:center}
-.th-loop-chip{font-family:var(--mn);font-size:7px;padding:2px 6px;border:1px solid var(--g3);color:var(--g5);transition:all .3s}
-.th-loop-chip.lit{border-color:var(--g4);color:var(--g9)}
-.th-loop-chip.lit.up{border-color:rgba(220,60,90,.25);color:rgba(200,50,50,.6)}
-.th-loop-arr{font-family:var(--mn);font-size:7px;color:var(--g4);transition:color .3s}
-.th-loop-arr.lit{color:var(--g7)}
-.th-loop-arr.lit.up{color:rgba(200,50,50,.4)}
-/* Beat states on nodes */
-.th-node.beat{border-color:var(--bk)!important;background:var(--lmD)!important;opacity:1!important;transition:all .25s!important}
-.th-node.beat.up-beat{border-color:rgba(220,60,90,.35)!important;background:rgba(220,60,90,.02)!important}
-/* Doctrine */
-.th-doctrine{font-family:var(--ft);font-size:10px;color:var(--g5);font-style:italic;margin-top:14px;line-height:1.6}
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 900px) {
+  .nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-left { padding: 60px 24px 40px; max-width: none; }
+  .hero-right { height: 50vh; }
+  .trust { flex-direction: column; gap: 16px; padding: 32px 24px; }
+  .trust-items { flex-wrap: wrap; gap: 16px; }
+  .features { padding: 64px 24px; margin: 8px 8px; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .opptycon-section { padding: 64px 24px; }
+  .opc-grid { grid-template-columns: 1fr; }
+  .doctrine-section { padding: 64px 24px; margin: 8px 8px; }
+  .doc-cards { grid-template-columns: 1fr; }
+  .cta-section { padding: 64px 24px; }
+  .footer { padding: 48px 24px 24px; margin: 8px 8px 0; }
+  .footer-top { flex-direction: column; gap: 32px; }
+  .footer-cols { flex-wrap: wrap; gap: 32px; }
+}
 </style>
 </head>
 <body>
-<nav class="nav" id="nav">
-  <div class="n-logo">
-    <img src="/netherops-logo.svg" alt="NetherOps" style="height:22px">
-    <span class="n-word">netherops</span>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav">
+  <div class="nav-left">
+    <a href="/"><img src="assets/netherops-logo.svg" alt="NetherOps" class="nav-logo"></a>
   </div>
-  <div class="n-right">
-    <a class="n-link" href="#architecture">architecture</a>
-    <a class="n-link" href="#control">control plane</a>
-    <a class="n-link" href="#simulate">simulate</a>
-    <a class="n-link" href="#library">library</a>
-    <a class="n-link" href="#control-plane">system map</a>
-    <a class="n-link" href="tools/opptycon/">opptycon</a>
-    <button class="btn-out" onclick="sTo('#briefing')">explore framework</button>
-    <button class="btn-fill" id="navCta" onclick="sTo('#briefing')">strategic briefing</button>
-    <button class="ham" id="ham" onclick="toggleMob()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-links">
+    <a href="/doctrine/" class="nav-link">Doctrine</a>
+    <a href="#services" class="nav-link">Services</a>
+    <a href="/doctrine/#opptycon" class="nav-link">OpptyCon</a>
+    <a href="/doctrine/#library" class="nav-link">Library</a>
+    <a href="#about" class="nav-link">About</a>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="nav-login">Login</a>
+    <a href="#briefing" class="btn btn-primary btn-sm btn-dot">Book a Briefing</a>
   </div>
 </nav>
-<div class="mob-menu" id="mobMenu">
-  <div class="mob-btns">
-    <button class="btn-out" onclick="sTo('#briefing');closeMob()">explore framework</button>
-    <button class="btn-fill" onclick="sTo('#briefing');closeMob()">strategic briefing</button>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Governed Revenue Architecture</div>
+    <h1 class="hero-h1">GTM that runs on <em>thresholds</em>, not opinions.</h1>
+    <p class="hero-sub">AI-first GTM engineering from pre-seed to pre-IPO. Every motion governed. Every dollar traced. Every channel architected.</p>
+    <div class="hero-actions">
+      <a href="#briefing" class="btn btn-primary btn-lg btn-dot">Book a Briefing</a>
+      <a href="/doctrine/" class="btn btn-secondary btn-lg">Read the Doctrine</a>
+    </div>
+    <div class="hero-signals">
+      <div class="signal-item">
+        <div class="signal-label">Coverage</div>
+        <div class="signal-value">Full-stack <span class="lime">GTM</span></div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-label">Stage</div>
+        <div class="signal-value">Pre-seed → IPO</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-label">Method</div>
+        <div class="signal-value">Governed <span class="lime">↑</span></div>
+      </div>
+    </div>
   </div>
-  <a class="mob-nav-link" href="#architecture" onclick="closeMob()">architecture</a>
-  <a class="mob-nav-link" href="#control" onclick="closeMob()">control plane</a>
-  <a class="mob-nav-link" href="#simulate" onclick="closeMob()">simulate</a>
-  <a class="mob-nav-link" href="#library" onclick="closeMob()">library</a>
-  <a class="mob-nav-link" href="#control-plane" onclick="closeMob()">system map</a>
-  <a class="mob-nav-link" href="tools/opptycon/" onclick="closeMob()">opptycon</a>
+  <div class="hero-right">
+    <img class="hero-img" src="assets/hero-char.png" alt="NetherOps illustration">
+  </div>
+</section>
+
+<!-- ═══ TRUST ═══ -->
+<div class="trust">
+  <div class="trust-label">Built for</div>
+  <div class="trust-items">
+    <div class="trust-item">Fractional CMO</div>
+    <div class="trust-item">GTM Architecture</div>
+    <div class="trust-item">RevOps / MarOps</div>
+    <div class="trust-item">Demand Gen</div>
+    <div class="trust-item">PMM / Brand / PR</div>
+    <div class="trust-item">Growth</div>
+  </div>
 </div>
 
-<section class="hero w">
-  <div class="h-eyebrow">operating doctrine</div>
-  <h1 class="h-title" id="heroTitle">Governed Revenue<br><span>Architecture</span></h1>
-  <p class="h-sub" id="heroSub">An agentic orchestration & control plane for modern GTM. Constrained by economics. Governed by thresholds. Auditable by design.</p>
-  <div class="h-ctas">
-    <button class="btn-out lg" onclick="sTo('#architecture')">explore architecture</button>
-    <button class="btn-fill lg" onclick="sTo('#simulate')">run simulation</button>
-  </div>
-  <div class="tabs-shell" data-default-tab="run">
-    <div class="tabs" role="tablist" aria-label="Primary tabs">
-      <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-run" data-tab="run" type="button">RUN</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-judge" data-tab="judge" type="button">JUDGE</button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-ship" data-tab="ship" type="button">SHIP</button>
+<!-- ═══ DARK FEATURES ═══ -->
+<section class="features" id="services">
+  <div class="feat-label">The Method</div>
+  <h2 class="feat-h2">Bespoke GTM infrastructure, governed by control planes.</h2>
+  <p class="feat-sub">Every engagement starts with architecture. Every architecture starts with constraints. Thresholds are the strategy.</p>
+  <div class="feat-grid">
+    <div class="feat-cell">
+      <div class="feat-cell-num">01</div>
+      <div class="feat-cell-title">Revenue Architecture</div>
+      <div class="feat-cell-body">Full-stack GTM design from ICP governance through pipeline operations. Not a playbook — a control system.</div>
+      <div class="feat-cell-tag">→ Architecture</div>
     </div>
-    <section class="tab-panel" role="tabpanel" id="panel-run" data-panel="run">
-      <div class="tp-head">Manage and deploy agents across every revenue motion.</div>
-      <div class="tp-grid">
-        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Agent orchestration</strong><br>Route execution across seven motion domains with bounded autonomy.</div></div>
-        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Signal processing</strong><br>Separate structural readiness from behavioral motion in real time.</div></div>
-        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Economic constraints</strong><br>Every agent operates within capital allocation thresholds.</div></div>
-      </div>
-    </section>
-    <section class="tab-panel" role="tabpanel" id="panel-judge" data-panel="judge" hidden>
-      <div class="tp-head">Evaluate behaviors and outcomes against economic truth.</div>
-      <div class="tp-grid">
-        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Probability scoring</strong><br>Dual-signal model: readiness + momentum, weighted by economics.</div></div>
-        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Drift detection</strong><br>Identify forecast distortion before capital misallocates.</div></div>
-        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Provenance audit</strong><br>Trace every decision to its signal origin and governance rule.</div></div>
-      </div>
-    </section>
-    <section class="tab-panel" role="tabpanel" id="panel-ship" data-panel="ship" hidden>
-      <div class="tp-head">Deploy with confidence. Governed pipelines, not guesswork.</div>
-      <div class="tp-grid">
-        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Stage-ledger discipline</strong><br>Financial truth separated from forecast probability at every stage.</div></div>
-        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Closed-loop correction</strong><br>Recalibrate weights through prediction error, not opinion.</div></div>
-        <div class="tp-item"><span class="tp-icon">&rarr;</span><div><strong>Portfolio compounding</strong><br>Cross-asset learning advantage across portfolio companies.</div></div>
-      </div>
-    </section>
-  </div>
-</section>
-
-<!-- WHAT THIS IS -->
-<section class="sc swh">
-  <div class="w rv">
-    <div class="s-ey">declaration</div>
-    <h2 class="s-h">What this <span>is</span></h2>
-    <p class="s-p">A revenue operating system for AI-native environments. Not a dashboard. <strong>Infrastructure.</strong></p>
-    <div class="g2">
-      <div class="cd"><div class="cd-tag">layer 06</div><div class="cd-name">Economic Segmentation</div><div class="cd-desc">What deserves capital</div></div>
-      <div class="cd"><div class="cd-tag">layer 04</div><div class="cd-name">Dual-Signal Probability</div><div class="cd-desc">What is ready vs what is moving</div></div>
-      <div class="cd"><div class="cd-tag">layer 02</div><div class="cd-name">Agent-Governed Orchestration</div><div class="cd-desc">What operators execute</div></div>
-      <div class="cd"><div class="cd-tag">layer 01</div><div class="cd-name">Closed-Loop Correction</div><div class="cd-desc">What learning adjusts</div></div>
-      <div class="cd"><div class="cd-tag">provenance</div><div class="cd-name">Provenance Tracking</div><div class="cd-desc">What ensures accountability</div></div>
-      <div class="cd"><div class="cd-tag">ledger</div><div class="cd-name">Stage-Ledger Discipline</div><div class="cd-desc">What finance trusts</div></div>
+    <div class="feat-cell">
+      <div class="feat-cell-num">02</div>
+      <div class="feat-cell-title">Fractional Leadership</div>
+      <div class="feat-cell-body">CMO / VP Marketing capacity with OpptyCon governance baked in. AI-first execution. Threshold-governed spend.</div>
+      <div class="feat-cell-tag">→ Leadership</div>
+    </div>
+    <div class="feat-cell">
+      <div class="feat-cell-num">03</div>
+      <div class="feat-cell-title">Execution Engineering</div>
+      <div class="feat-cell-body">Demand gen, digital, content, ABM — but every motion tied to a control plane with feedback loops flowing upward.</div>
+      <div class="feat-cell-tag">→ Execution</div>
     </div>
   </div>
 </section>
 
-<!-- WHAT THIS IS NOT -->
-<section class="sc">
-  <div class="w rv">
-    <div class="s-ey">boundary</div>
-    <h2 class="s-h">What this is <span>not</span></h2>
-    <div class="tags">
-      <span class="tag-x">a funnel redesign</span>
-      <span class="tag-x">an attribution model</span>
-      <span class="tag-x">an ABM strategy</span>
-      <span class="tag-x">a marketing automation upgrade</span>
-      <span class="tag-x">vendor-defined scoring</span>
-    </div>
-    <div class="tags">
-      <span class="tag-y">constrained probabilistic revenue system</span>
-      <span class="tag-y">bounded by economics</span>
-      <span class="tag-y">governed by thresholds</span>
-      <span class="tag-y">auditable by design</span>
-    </div>
-    <p class="s-p" style="margin-top:20px">If brand conflicts with revenue density, gravity wins.</p>
-  </div>
-</section>
-
-<!-- PARADIGM SHIFT -->
-<section class="sc sdk" id="control">
-  <div class="w rv">
-    <div class="s-ey">the shift</div>
-    <h2 class="s-h">The Paradigm <span>Shift</span></h2>
-    <div class="pg">
-      <div class="p-card"><div class="p-label old">old</div><div class="p-flow">Channel <b>&rarr;</b> Touchpoint <b>&rarr;</b> Stage <b>&rarr;</b> Revenue <b>&rarr;</b> Credit</div></div>
-      <div class="p-card new-card"><div class="p-label new">new</div><div class="p-flow">Signal Shift <b>&rarr;</b> Probability &Delta; <b>&rarr;</b> Stage Movement <b>&rarr;</b> Revenue <b>&rarr;</b> Recalibration</div></div>
-    </div>
-    <p class="s-p" style="margin-top:20px">Attribution describes the past. Probability governs the present. Economics constrain the future.</p>
-  </div>
-</section>
-
-<!-- WHY NOW -->
-<section class="sc swh">
-  <div class="w rv">
-    <div class="s-ey">urgency</div>
-    <h2 class="s-h">Why <span>now</span></h2>
-    <p class="s-p">AI multiplies signal density. Automation multiplies execution velocity. Vendors multiply black boxes. Without governance: probability drifts, pipeline inflates, CAC hides, forecasts distort, capital misallocates.</p>
-    <p class="s-p" style="margin-top:16px"><strong>Autonomy without constraint is fragility.</strong> Governed Revenue Architecture installs constraint before autonomy.</p>
-  </div>
-</section>
-
-<!-- CORE DOCTRINE -->
-<section class="sc sdk">
-  <div class="w rv">
-    <div class="d-box">
-      <div class="d-title">core doctrine</div>
-      <div class="d-lines">
-        Segments <strong>prioritize</strong>.<br>
-        Agents operate <strong>within bounds</strong>.<br>
-        Ledger records <strong>financial truth</strong>.<br>
-        Learning corrects <strong>prediction error</strong>.<br>
-        Provenance audits <strong>every decision</strong>.<br>
-        Economic gravity <strong>anchors all layers</strong>.
-      </div>
-    </div>
-    <p class="s-p" style="text-align:center;margin:0 auto">Commodity telemetry may be external. Judgment authority remains internal.</p>
-  </div>
-</section>
-
-<!-- ARCHITECTURE -->
-<section class="sc" id="architecture">
-  <div class="w rv">
-    <div class="s-ey">structure</div>
-    <h2 class="s-h">Seven layers. <span>One spine.</span></h2>
-    <div class="al">
-      <div class="a-row"><span class="a-name">Economic Gravity</span><span class="a-desc">Anchors the system. No layer overrides economics.</span></div>
-      <div class="a-row"><span class="a-name">ICP Clustering</span><span class="a-desc">Directs capital. Dual-dimension: density + receptivity.</span></div>
-      <div class="a-row"><span class="a-name">Signal Interpretation</span><span class="a-desc">Separates structural readiness from behavioral motion.</span></div>
-      <div class="a-row"><span class="a-name">Positioning</span><span class="a-desc">Translates economics into market-facing narrative.</span></div>
-      <div class="a-row"><span class="a-name">Orchestration</span><span class="a-desc">Routes execution across seven motion domains.</span></div>
-      <div class="a-row"><span class="a-name">Revenue Feedback</span><span class="a-desc">Recalibrates weights through prediction error.</span></div>
-      <div class="a-row"><span class="a-name">Provenance</span><span class="a-desc">Ensures traceability across every decision.</span></div>
-    </div>
-    <p class="s-p" style="margin-top:16px">Execution is adaptive. Authority is bounded.</p>
-  </div>
-</section>
-
-<!-- IMPLEMENTATION -->
-<section class="sc swh">
-  <div class="w rv">
-    <div class="s-ey">discipline</div>
-    <h2 class="s-h">Implementation <span>discipline</span></h2>
-    <div class="disc">
-      <div class="disc-row"><span class="disc-arr">&rarr;</span><span class="disc-txt">Normalize identity before orchestration.</span></div>
-      <div class="disc-row"><span class="disc-arr">&rarr;</span><span class="disc-txt">Split acquisition by motion, not channel.</span></div>
-      <div class="disc-row"><span class="disc-arr">&rarr;</span><span class="disc-txt">Separate ledger truth from forecast probability.</span></div>
-      <div class="disc-row"><span class="disc-arr">&rarr;</span><span class="disc-txt">Bound adaptive learning with economic constraints.</span></div>
-      <div class="disc-row"><span class="disc-arr">&rarr;</span><span class="disc-txt">Define governance before deploying agents.</span></div>
-      <div class="disc-row"><span class="disc-arr">&rarr;</span><span class="disc-txt">Simulate before scaling.</span></div>
-    </div>
-    <p class="s-p" style="margin-top:12px"><strong>Build the spine. Then deploy the control plane.</strong></p>
-  </div>
-</section>
-
-<!-- SIMULATION LAB -->
-<section class="sc sdk" id="simulate">
-  <div class="w rv">
-    <div class="s-ey">simulation lab</div>
-    <h2 class="s-h">Run your revenue through <span>the control plane</span></h2>
-    <p class="s-p" style="margin-bottom:28px">Input your economics. The simulator calculates required pipeline, budget envelopes, and segment-weighted capital allocation.</p>
-    <div class="sim-wrap">
-      <div class="sim-title">revenue physics calculator</div>
-      <div class="sim-grid">
-        <div class="sim-inputs">
-          <div class="sim-field"><label>arr target ($)</label><input type="text" id="i-arr" placeholder="10,000,000" value="10,000,000"></div>
-          <div class="sim-field"><label>average acv ($)</label><input type="text" id="i-acv" placeholder="48,000" value="48,000"></div>
-          <div class="sim-field"><label>win rate (%)</label><input type="text" id="i-wr" placeholder="22" value="22"></div>
-          <div class="sim-field"><label>avg sales cycle (days)</label><input type="text" id="i-cyc" placeholder="90" value="90"></div>
-          <div class="sim-field"><label>blended cac ($)</label><input type="text" id="i-cac" placeholder="18,000" value="18,000"></div>
-          <div class="sim-tabs" role="tablist" aria-label="simulation mode">
-  <button class="sim-tab active" id="tab-base" type="button" onclick="setMode('base')">baseline</button>
-  <button class="sim-tab" id="tab-drift" type="button" onclick="setMode('drift')">drift mode</button>
-</div>
-<div class="sim-field"><label>coverage multiple (x)</label><input type="text" id="i-cov" placeholder="3.5" value="3.5"></div>
-
-<div class="drift-fields" id="driftFields" style="display:none">
-  <div class="sim-field"><label>win-rate decay (%)</label><input type="text" id="d-wrdec" placeholder="15" value="15"></div>
-  <div class="sim-field"><label>cycle elongation (days)</label><input type="text" id="d-cycadd" placeholder="20" value="20"></div>
-  <div class="sim-field"><label>cac creep (%)</label><input type="text" id="d-cacinc" placeholder="12" value="12"></div>
-  <div class="sim-field"><label>pipeline inflation (%)</label><input type="text" id="d-infl" placeholder="25" value="25"></div>
-</div>
-
-<button class="btn-fill lg" style="width:100%;margin-top:4px" onclick="runSim()">run simulation</button>
+<!-- ═══ OPPTYCON ═══ -->
+<section class="opptycon-section">
+  <div class="feat-label" style="color:var(--ink-muted)">The Engine</div>
+  <div class="opc-grid">
+    <div class="opc-visual">
+      <div class="opc-gauge">
+        <div class="opc-metric">
+          <div class="opc-metric-label">Pipeline Target</div>
+          <div class="opc-metric-val">$4.2M</div>
         </div>
-        <div class="sim-outputs" id="simOut">
-          <div class="sim-out"><div class="sim-out-label">new logos required</div><div class="sim-out-val" id="o-logos">&mdash;</div><div class="sim-out-note">to hit ARR target at given ACV</div></div>
-          <div class="sim-out"><div class="sim-out-label">required pipeline</div><div class="sim-out-val" id="o-pipe">&mdash;</div><div class="sim-out-note">coverage multiple applied</div><div class="sim-bar-wrap"><div class="sim-bar" id="bar-pipe" style="width:0"></div></div></div>
-          <div class="sim-out"><div class="sim-out-label">required opportunities</div><div class="sim-out-val" id="o-opps">&mdash;</div><div class="sim-out-note">at stated win rate</div></div>
-          <div class="sim-out"><div class="sim-out-label">total acquisition budget</div><div class="sim-out-val" id="o-budget">&mdash;</div><div class="sim-out-note">logos x blended CAC</div><div class="sim-bar-wrap"><div class="sim-bar" id="bar-budget" style="width:0"></div></div></div>
-          <div class="sim-out"><div class="sim-out-label">ltv:cac ratio</div><div class="sim-out-val" id="o-ltv">&mdash;</div><div class="sim-out-note">assumes 3-year LTV at 75% margin</div></div>
-          <div class="sim-out"><div class="sim-out-label">quarterly velocity</div><div class="sim-out-val" id="o-vel">&mdash;</div><div class="sim-out-note">opps per quarter at cycle length</div></div>
-        <div class="sim-out drift-only" id="driftBadge" style="display:none;border-top:1px solid var(--g3);padding-top:14px;margin-top:6px">
-  <div class="sim-out-label">drift impact</div>
-  <div class="sim-out-val" id="o-drift">&mdash;</div>
-  <div class="sim-out-note">additional load required to hold target under drift</div>
-</div>
-<div class="sim-out drift-only" id="driftPipeRow" style="display:none">
-  <div class="sim-out-label">pipeline delta</div>
-  <div class="sim-out-val" id="o-piped">&mdash;</div>
-  <div class="sim-out-note">reported pipeline inflation + coverage stress</div>
-</div>
-<div class="sim-out drift-only" id="driftBudRow" style="display:none">
-  <div class="sim-out-label">budget delta</div>
-  <div class="sim-out-val" id="o-budged">&mdash;</div>
-  <div class="sim-out-note">cac creep applied</div>
-</div>
-<div class="sim-out drift-only" id="driftOppRow" style="display:none">
-  <div class="sim-out-label">opportunity delta</div>
-  <div class="sim-out-val" id="o-oppsd">&mdash;</div>
-  <div class="sim-out-note">win-rate decay applied</div>
-</div></div>
-      </div>
-    </div>
-    <p class="s-p" style="font-style:italic;margin-top:12px;font-size:11px">This site ships the doctrine and simulation first. The orchestration layer comes next.</p>
-  </div>
-</section>
-
-<!-- WHAT THIS ENABLES -->
-<section class="sc">
-  <div class="w rv">
-    <div class="s-ey">outcome</div>
-    <h2 class="s-h">What this <span>enables</span></h2>
-    <div class="g3">
-      <div class="cd"><div class="cd-name">Capital-Efficient Allocation</div><div class="cd-desc">By segment, not by department</div></div>
-      <div class="cd"><div class="cd-name">Probability-Weighted Routing</div><div class="cd-desc">Instead of volume chasing</div></div>
-      <div class="cd"><div class="cd-name">Reduced Attribution Conflict</div><div class="cd-desc">Credit subordinated to causality</div></div>
-      <div class="cd"><div class="cd-name">Faster Correction Cycles</div><div class="cd-desc">Learning latency as primary KPI</div></div>
-      <div class="cd"><div class="cd-name">Transparent AI Governance</div><div class="cd-desc">Provenance across every decision</div></div>
-      <div class="cd"><div class="cd-name">Portfolio Compounding</div><div class="cd-desc">Cross-asset learning advantage</div></div>
-    </div>
-    <p class="s-p" style="margin-top:20px">Not more campaigns. <strong>Better economics.</strong></p>
-  </div>
-</section>
-
-<!-- ARCHITECTURE LIBRARY -->
-<section class="sc swh" id="library">
-  <div class="w rv">
-    <div class="hub">
-      <div class="hub-title">architecture library</div>
-      <div class="hub-grid">
-        <a class="hub-card" href="spine-v4.html"><div class="hub-num">screen 01</div><div class="hub-name">Spine</div><div class="hub-desc">Seven layers, agents, formulas, governance</div></a>
-        <a class="hub-card" href="sovereignty-map.html"><div class="hub-num">screen 02</div><div class="hub-name">Sovereignty Map</div><div class="hub-desc">Build vs buy decision matrix</div></a>
-        <a class="hub-card" href="split-funnel-map.html"><div class="hub-num">screen 03</div><div class="hub-name">Motion Map</div><div class="hub-desc">Seven acquisition mode lanes</div></a>
-        <a class="hub-card" href="lexicon.html"><div class="hub-num">screen 04</div><div class="hub-name">Lexicon</div><div class="hub-desc">Constitutional terminology appendix</div></a>
-        <a class="hub-card" href="identity-graph.html"><div class="hub-num">screen 05</div><div class="hub-name">Identity Graph</div><div class="hub-desc">Object relationship normalization</div></a>
-        <a class="hub-card" href="provenance.html"><div class="hub-num">screen 06</div><div class="hub-name">Provenance</div><div class="hub-desc">Audit spine &mdash; epistemic constraint</div></a>
-        <a class="hub-card" href="agent-specs.html" style="border-top:2px solid var(--lm)"><div class="hub-num">screen 07</div><div class="hub-name">Agent Specs</div><div class="hub-desc">Spec template, registry, build sequence</div></a>
-        <a class="hub-card" href="infrastructure.html" style="border-top:2px solid var(--lm)"><div class="hub-num">screen 08</div><div class="hub-name">Infrastructure</div><div class="hub-desc">Eight-layer stack, MVP survival kit</div></a>
-        <a class="hub-card" href="tools/opptycon/" style="border-top:2px solid var(--lm)"><div class="hub-num">tool</div><div class="hub-name">OpptyCon</div><div class="hub-desc">Multi-segment scenario modeling &amp; drift analysis</div></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BRIEFING CTA -->
-
-<!-- ═══ REVENUE THERMOSTAT — THREE BANDS ═══ -->
-<section class="sc swh" id="control-plane">
-  <div class="w rv">
-    <div class="s-ey">system architecture</div>
-    <div class="s-h" style="margin-bottom:4px">Revenue <span>Thermostat</span></div>
-    <div class="s-p" style="margin-bottom:24px">Not a flowchart. A control system. Constraints sit on top. Translation sits in the middle. Operations sit at the bottom. Feedback flows <em>upward</em>. Agents enforce vertically across all three bands.</div>
-
-    <div class="th-wrap" id="thWrap">
-      <div class="th-head">
-        <div>
-          <div class="th-title">governed<span>.revenue</span></div>
-          <div class="th-sub">control plane · three bands · vertical enforcement</div>
+        <div class="opc-metric">
+          <div class="opc-metric-label">Coverage Ratio</div>
+          <div class="opc-metric-val"><span class="grn">3.2×</span></div>
+        </div>
+        <div class="opc-metric">
+          <div class="opc-metric-label">Blended CAC</div>
+          <div class="opc-metric-val"><span class="rose">$1,847</span></div>
+        </div>
+        <div class="opc-metric">
+          <div class="opc-metric-label">Months Modeled</div>
+          <div class="opc-metric-val">24</div>
         </div>
       </div>
-
-      <!-- ══ THREE BANDS ══ -->
-      <div class="th-bands" id="thBands">
-
-        <!-- BAND 1: Economic Constraints -->
-        <div class="th-band" data-band="economic">
-          <div class="th-band-label"><span class="th-band-label-text">Economic Constraints</span><span class="th-band-label-line"></span></div>
-          <div class="th-nodes">
-            <div class="th-node" data-node="bizplan"><div class="th-node-name">Business Plan</div><div class="th-node-desc">Revenue target, growth rate, net new ARR required</div><div class="th-node-id">A1</div></div>
-            <div class="th-node" data-node="pnl"><div class="th-node-name">P&L</div><div class="th-node-desc">Revenue, COGS, OpEx — the rulebook</div><div class="th-node-id">A2</div></div>
-            <div class="th-node" data-node="margin"><div class="th-node-name">Protected Margin</div><div class="th-node-desc">Non-negotiable GM% floor. The boss.</div><div class="th-node-id">A3</div></div>
-            <div class="th-node" data-node="coverage"><div class="th-node-name">Coverage Target</div><div class="th-node-desc">4–6x pipeline multiple required</div><div class="th-node-id">A4</div></div>
-          </div>
-        </div>
-
-        <!-- BAND 2: Translation Layer -->
-        <div class="th-band" data-band="translation">
-          <div class="th-band-label"><span class="th-band-label-text">Translation Layer</span><span class="th-band-label-line"></span></div>
-          <div class="th-nodes" style="grid-template-columns:repeat(5,1fr)">
-            <div class="th-node" data-node="budgets"><div class="th-node-name">Budgets</div><div class="th-node-desc">Spend envelope from P&L</div><div class="th-node-id">B1</div></div>
-            <div class="th-node" data-node="gtm"><div class="th-node-name">GTM Model</div><div class="th-node-desc">Motions, channels, partner mix</div><div class="th-node-id">B2</div></div>
-            <div class="th-node" data-node="allocations"><div class="th-node-name">Allocations</div><div class="th-node-desc">Program spend by segment</div><div class="th-node-id">B3</div></div>
-            <div class="th-node" data-node="icpspend"><div class="th-node-name">ICP Spend</div><div class="th-node-desc">Capital routed to segments that convert</div><div class="th-node-id">B4</div></div>
-            <div class="th-node" data-node="stagedefs"><div class="th-node-name">Stage Definitions</div><div class="th-node-desc">Gate criteria, MQL→SQL, acceptance SLAs</div><div class="th-node-id">B5</div></div>
-          </div>
-        </div>
-
-        <!-- BAND 3: Dynamic Operations -->
-        <div class="th-band" data-band="operations">
-          <div class="th-band-label"><span class="th-band-label-text">Dynamic Operations</span><span class="th-band-label-line"></span></div>
-          <div class="th-nodes">
-            <div class="th-node" data-node="execution"><div class="th-node-name">Execution</div><div class="th-node-desc">Campaigns, sequences, pipeline generation</div><div class="th-node-id">C1</div></div>
-            <div class="th-node" data-node="forecasting"><div class="th-node-name">Forecasting</div><div class="th-node-desc">Commit, best case, scenario modeling</div><div class="th-node-id">C2</div></div>
-            <div class="th-node" data-node="attribution"><div class="th-node-name">Attribution</div><div class="th-node-desc">What moved the stage, not what touched the lead</div><div class="th-node-id">C3</div></div>
-            <div class="th-node" data-node="optimization"><div class="th-node-name">Optimization</div><div class="th-node-desc">Channel reweight, velocity tuning, spend shift</div><div class="th-node-id">C4</div></div>
-          </div>
-        </div>
-
-      </div><!-- end bands -->
-
-      <!-- ══ AGENT RAILS ══ -->
-      <div class="th-agents">
-        <div class="th-agents-label">Vertical enforcement rails — click to trace</div>
-        <div class="th-rails" id="thRails">
-          <button class="th-rail" data-agent="pnl" data-bands="economic,translation" data-nodes="pnl,margin,budgets,allocations,icpspend">
-            <span class="th-rail-dot" style="background:#d4a574"></span>
-            <span class="th-rail-name">P&L Agent</span>
-            <span class="th-rail-span">top + mid</span>
-          </button>
-          <button class="th-rail" data-agent="stagegate" data-bands="translation,operations" data-nodes="stagedefs,execution,forecasting">
-            <span class="th-rail-dot" style="background:#ff6b8a"></span>
-            <span class="th-rail-name">Stage Gate</span>
-            <span class="th-rail-span">mid + bottom</span>
-          </button>
-          <button class="th-rail" data-agent="coverage" data-bands="economic,operations" data-nodes="coverage,bizplan,execution,forecasting">
-            <span class="th-rail-dot" style="background:#ffc832"></span>
-            <span class="th-rail-name">Coverage</span>
-            <span class="th-rail-span">top + bottom</span>
-          </button>
-          <button class="th-rail" data-agent="attribution" data-bands="operations,translation" data-nodes="attribution,optimization,stagedefs,icpspend">
-            <span class="th-rail-dot" style="background:#64b4ff"></span>
-            <span class="th-rail-name">Attribution</span>
-            <span class="th-rail-span">bottom + mid</span>
-          </button>
-          <button class="th-rail" data-agent="orchestration" data-bands="economic,translation,operations" data-nodes="pnl,budgets,stagedefs,execution,forecasting,attribution,optimization">
-            <span class="th-rail-dot" style="background:#C8FF6E"></span>
-            <span class="th-rail-name">Orchestration</span>
-            <span class="th-rail-span">all three</span>
-          </button>
-        </div>
+    </div>
+    <div class="opc-info">
+      <h3>OpptyCon — Revenue Physics Engine</h3>
+      <p>Model your entire GTM as physics, not spreadsheets. Pipeline targets, cost structures, funnel conversion, coverage math, and phase-shifted demand across multi-year horizons.</p>
+      <div class="opc-features">
+        <div class="opc-feat">Dual-axis cost model — fixed vs variable S&M</div>
+        <div class="opc-feat">Coverage ratio enforcement with pipeline physics</div>
+        <div class="opc-feat">Phase-shifted funnel — Q4 marketing → Q1 pipeline</div>
+        <div class="opc-feat">Attrition modeling + monthly weight distributions</div>
       </div>
-
-      <!-- ══ FEEDBACK LOOPS ══ -->
-      <div class="th-loops">
-        <div class="th-loops-label">Trace the feedback loop</div>
-        <div class="th-loop-btns" id="thLoopBtns">
-          <button class="th-lb" data-loop="full" data-label="Full Loop" data-desc="P&L constrains Budgets → Budgets set Allocations → Stage Definitions govern Execution → Execution feeds Forecasting → Forecasting feeds back UP into Budgets → Attribution informs Optimization → Optimization corrects Stage Definitions. The loop closes." data-path="pnl,budgets,allocations,stagedefs,execution,forecasting,budgets,attribution,optimization,stagedefs" data-dirs="d,d,d,d,d,u,d,d,u">full thermostat</button>
-          <button class="th-lb" data-loop="forecast" data-label="Forecast Feedback" data-desc="Forecasting is not a downstream output. It is an input back into Budgets. This arrow goes upward. Without it, budgets are set once and never corrected." data-path="execution,forecasting,budgets,allocations" data-dirs="d,u,d">forecast → budget</button>
-          <button class="th-lb" data-loop="attrib" data-label="Attribution Correction" data-desc="Attribution does not just feed Optimization. It must inform Stage Definitions and ICP Governance. Otherwise it's just reporting." data-path="attribution,optimization,stagedefs,icpspend" data-dirs="d,u,d">attribution → stages</button>
-          <button class="th-lb" data-loop="cac" data-label="CAC Breach" data-desc="Spend exceeds ceiling → P&L constrains → Budgets tighten → Allocations shift → Attribution reweights → Optimization corrects → Stage Definitions adjust. Constraint flows down, correction flows up." data-path="pnl,budgets,allocations,attribution,optimization,stagedefs" data-dirs="d,d,d,d,u">cac breach</button>
-        </div>
-        <div class="th-loop-info" id="thLoopInfo">
-          <div class="th-loop-info-t" id="thLoopT"></div>
-          <div class="th-loop-info-d" id="thLoopD"></div>
-          <div class="th-loop-info-path" id="thLoopPath"></div>
-        </div>
+      <div style="display:flex;gap:12px">
+        <a href="#" class="btn btn-rose btn-md">Launch OpptyCon</a>
+        <a href="/doctrine/#opptycon" class="btn btn-secondary btn-md">Read the Docs</a>
       </div>
-
-      <div class="th-doctrine">Flowcharts imply sequence. Control systems imply constraint + feedback. This is a revenue thermostat. The difference is enormous.</div>
     </div>
   </div>
 </section>
 
-<section class="sc sdk" id="briefing">
-  <div class="w closing">
-    <div class="closing-h">This is not incremental<br>optimization. It is<br><span>structural replacement</span>.</div>
-    <div class="closing-sub">governed revenue architecture</div>
-    <div style="margin-top:32px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-      <button class="btn-fill lg" id="ctaMain">request strategic briefing</button>
-      <button class="btn-out lg" style="border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)" onclick="sTo('#library')">explore architecture</button>
-    </div>
-    <div class="closing-note">marketing the control plane by being the control plane.</div>
+<!-- ═══ DOCTRINE PREVIEW ═══ -->
+<section class="doctrine-section">
+  <div class="feat-label" style="color:var(--ink-muted)">The Doctrine</div>
+  <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,48px);font-weight:300;letter-spacing:-0.03em;line-height:1.1;margin-bottom:8px">
+    Open architecture. Governed execution.
+  </h2>
+  <p style="font-family:var(--font-mono);font-size:13px;color:var(--ink-mid);line-height:1.65;max-width:520px">
+    The complete governed revenue architecture — seven layers, five agents, closed-loop control. Read it all.
+  </p>
+  <div class="doc-cards">
+    <a href="/doctrine/#spine" class="doc-card">
+      <div class="doc-card-num">01</div>
+      <div class="doc-card-title">The Spine</div>
+      <div class="doc-card-desc">Seven horizontal layers from Economic Model through Attribution & Feedback.</div>
+    </a>
+    <a href="/doctrine/#thermostat" class="doc-card">
+      <div class="doc-card-num">02</div>
+      <div class="doc-card-title">Revenue Thermostat</div>
+      <div class="doc-card-desc">The control system visualization — constraints cascade down, feedback flows up.</div>
+    </a>
+    <a href="/doctrine/#agents" class="doc-card">
+      <div class="doc-card-num">03</div>
+      <div class="doc-card-title">Agent Specifications</div>
+      <div class="doc-card-desc">P&L, Stage Gate, Coverage, Attribution, and Orchestration agents defined.</div>
+    </a>
+    <a href="/doctrine/#sovereignty" class="doc-card">
+      <div class="doc-card-num">04</div>
+      <div class="doc-card-title">Sovereignty Map</div>
+      <div class="doc-card-desc">Build vs buy decision framework for every layer of the stack.</div>
+    </a>
+    <a href="/doctrine/#motion" class="doc-card">
+      <div class="doc-card-num">05</div>
+      <div class="doc-card-title">Motion Map</div>
+      <div class="doc-card-desc">Seven acquisition modes from inbound content through outbound signal-led.</div>
+    </a>
+    <a href="/doctrine/#opptycon" class="doc-card">
+      <div class="doc-card-num">06</div>
+      <div class="doc-card-title">OpptyCon Engine</div>
+      <div class="doc-card-desc">Revenue physics modeling — pipeline targets, funnel math, cost structures.</div>
+    </a>
   </div>
 </section>
 
-<footer class="foot"><div class="foot-text">governed revenue architecture &middot; 2026</div></footer>
-<script>
-'use strict';
-function sTo(s){document.querySelector(s)?.scrollIntoView({behavior:'smooth'})}
-function toggleMob(){document.getElementById('mobMenu').classList.toggle('open')}
-function closeMob(){document.getElementById('mobMenu').classList.remove('open')}
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
-const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.12});
-document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
-// Tabs component activation
-(function(){
-  const root=document.querySelector('.tabs-shell');
-  if(!root)return;
-  const defaultTab=root.dataset.defaultTab;
-  const tabs=Array.from(root.querySelectorAll("[role='tab']"));
-  const panels=root.querySelectorAll("[role='tabpanel']");
-  function activate(id){
-    tabs.forEach(function(btn){
-      const active=btn.dataset.tab===id;
-      btn.classList.toggle('active',active);
-      btn.setAttribute('aria-selected',active?'true':'false');
-      btn.setAttribute('tabindex',active?'0':'-1');
-    });
-    panels.forEach(function(p){
-      var show=p.dataset.panel===id;
-      p.hidden=!show;
-    });
-  }
-  activate(defaultTab);
-  tabs.forEach(function(btn){
-    btn.addEventListener('click',function(){activate(btn.dataset.tab);btn.focus()});
-  });
-  // Arrow key navigation (WAI-ARIA tabs pattern)
-  root.addEventListener('keydown',function(e){
-    if(e.target.getAttribute('role')!=='tab')return;
-    var idx=tabs.indexOf(e.target),next=-1;
-    if(e.key==='ArrowRight')next=(idx+1)%tabs.length;
-    else if(e.key==='ArrowLeft')next=(idx-1+tabs.length)%tabs.length;
-    else if(e.key==='Home')next=0;
-    else if(e.key==='End')next=tabs.length-1;
-    if(next>=0){e.preventDefault();activate(tabs[next].dataset.tab);tabs[next].focus()}
-  });
-})();
-function p(id){return parseFloat(document.getElementById(id).value.replace(/,/g,''))||0}
-function fmt(n){if(n>=1e6)return'$'+((n/1e6).toFixed(1))+'M';if(n>=1e3)return'$'+((n/1e3).toFixed(0))+'K';return'$'+n.toFixed(0)}
-let simMode='base';
-function setMode(m){
-  simMode=m;
-  document.getElementById('tab-base').classList.toggle('active', m==='base');
-  document.getElementById('tab-drift').classList.toggle('active', m==='drift');
-  document.getElementById('driftFields').style.display = (m==='drift') ? 'block' : 'none';
-  document.querySelectorAll('.drift-only').forEach(el=>el.style.display = (m==='drift') ? 'block' : 'none');
-}
+<!-- ═══ CTA ═══ -->
+<section class="cta-section" id="briefing">
+  <h2 class="cta-h2">Ready to govern your revenue?</h2>
+  <p class="cta-sub">30-minute briefing. We'll map your current GTM to the governed architecture and show you what changes.</p>
+  <div class="cta-actions">
+    <a href="#" class="btn btn-primary btn-lg btn-dot">Book a Briefing</a>
+    <a href="/doctrine/" class="btn btn-lime btn-lg">Read the Doctrine</a>
+  </div>
+</section>
 
-function runSim(){
-  const arr=p('i-arr'),acv=p('i-acv'),wr=p('i-wr')/100,cyc=p('i-cyc'),cac=p('i-cac'),cov=p('i-cov');
-  if(!arr||!acv||!wr||!cac||!cov)return;
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name"><img src="assets/netherops-logo-inv.svg" alt="NetherOps" style="height:24px;width:auto;"></div>
+      <div class="footer-brand-sub">GTM engineering for governed revenue. AI-first. Threshold-governed. Pre-seed to pre-IPO.</div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-label">Platform</div>
+        <ul class="footer-col-links">
+          <li><a href="#">OpptyCon</a></li>
+          <li><a href="/doctrine/">Doctrine</a></li>
+          <li><a href="/doctrine/#library">Library</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-label">Services</div>
+        <ul class="footer-col-links">
+          <li><a href="#services">Fractional CMO</a></li>
+          <li><a href="#services">GTM Architecture</a></li>
+          <li><a href="#services">RevOps</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-label">Company</div>
+        <ul class="footer-col-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 NetherOps · All rights reserved</span>
+  </div>
+</footer>
 
-  // Baseline requirements
-  const logos=Math.ceil(arr/acv);
-  const pipe=arr*cov;
-  const opps=Math.ceil(logos/wr);
-  const budget=logos*cac;
-  const ltv3=(acv*3*.75)/cac;
-  const qOpps=Math.ceil(opps/(365/cyc)/4);
-
-  document.getElementById('o-logos').textContent=logos.toLocaleString();
-  document.getElementById('o-pipe').textContent=fmt(pipe);
-  document.getElementById('o-opps').textContent=opps.toLocaleString();
-  document.getElementById('o-budget').textContent=fmt(budget);
-  document.getElementById('o-ltv').textContent=ltv3.toFixed(1)+'x';
-  document.getElementById('o-vel').textContent=qOpps.toLocaleString()+' / quarter';
-
-  // Animate bars
-  const pipeRatio=Math.min(pipe/(arr*5),1)*100;
-  const budgetRatio=Math.min(budget/(arr*.5),1)*100;
-  document.getElementById('bar-pipe').style.width=pipeRatio+'%';
-  document.getElementById('bar-budget').style.width=budgetRatio+'%';
-
-  // Drift: recompute required load under degradation so the target stays constant.
-  if(simMode==='drift'){
-    const wrDec=p('d-wrdec')/100;     // % relative decay
-    const cycAdd=p('d-cycadd');       // days added
-    const cacInc=p('d-cacinc')/100;   // % increase
-    const infl=p('d-infl')/100;       // % reported inflation
-
-    const wr2=Math.max(wr*(1-wrDec), 0.0001);
-    const cyc2=Math.max(cyc+cycAdd, 1);
-    const cac2=cac*(1+cacInc);
-    const pipe2=arr*cov*(1+infl);
-    const opps2=Math.ceil(logos/wr2);
-    const budget2=logos*cac2;
-    const qOpps2=Math.ceil(opps2/(365/cyc2)/4);
-
-    const pipeDelta=pipe2-pipe;
-    const budgetDelta=budget2-budget;
-    const oppDelta=opps2-opps;
-
-    // A simple volatility index: average relative increase across the three primary loads.
-    const v=( (pipe2/pipe-1) + (budget2/budget-1) + (opps2/opps-1) )/3;
-    const vScore=Math.max(0, Math.min(v, 9.99));
-
-    document.getElementById('o-drift').textContent=(vScore*100).toFixed(0)+'% volatility';
-    document.getElementById('o-piped').textContent=(pipeDelta>=0?'+':'')+fmt(pipeDelta);
-    document.getElementById('o-budged').textContent=(budgetDelta>=0?'+':'')+fmt(budgetDelta);
-    document.getElementById('o-oppsd').textContent=(oppDelta>=0?'+':'')+oppDelta.toLocaleString();
-    // Keep velocity visible as baseline; drift is implicit. If you want both, we can split the card later.
-    document.getElementById('o-vel').textContent=qOpps.toLocaleString()+' / quarter → '+qOpps2.toLocaleString()+' / quarter';
-  }
-
-  // Output animation
-  document.querySelectorAll('.sim-out-val').forEach(el=>{
-    el.style.transition='none';el.style.opacity='0';el.style.transform='translateY(6px)';
-    requestAnimationFrame(()=>{el.style.transition='opacity .5s,transform .5s';el.style.opacity='1';el.style.transform='translateY(0)'})
-  });
-}
-
-document.addEventListener('DOMContentLoaded',()=>{setMode('base')});
-
-let mx=0;
-window.addEventListener('scroll',()=>{
-  const pct=window.scrollY/(document.body.scrollHeight-window.innerHeight);
-  if(pct>mx)mx=pct;
-  const c=document.getElementById('navCta'),m=document.getElementById('ctaMain');
-  if(mx>.7){c.textContent='request strategic briefing';m.textContent='request strategic briefing'}
-  else if(mx>.35){c.textContent='assess readiness';m.textContent='assess your revenue readiness'}
-  else{c.textContent='explore framework';m.textContent='explore the framework'}
-},{passive:true});
-// ═══ REVENUE THERMOSTAT ═══
-(function(){
-  const wrap=document.getElementById('thWrap');
-  if(!wrap)return;
-  const bands=document.getElementById('thBands');
-  const info=document.getElementById('thLoopInfo'),loopT=document.getElementById('thLoopT'),loopD=document.getElementById('thLoopD'),loopPath=document.getElementById('thLoopPath');
-  let activeRail=null,activeLoop=null,timers=[];
-
-  // ── Agent rail focus ──
-  function clearRail(){
-    activeRail=null;
-    bands.classList.remove('agent-focus');
-    bands.querySelectorAll('.in-span').forEach(el=>el.classList.remove('in-span'));
-    wrap.querySelectorAll('.th-rail.active').forEach(r=>r.classList.remove('active'));
-  }
-  function clearLoop(){
-    timers.forEach(t=>clearTimeout(t));timers=[];
-    activeLoop=null;
-    bands.querySelectorAll('.beat,.up-beat').forEach(el=>{el.classList.remove('beat');el.classList.remove('up-beat')});
-    wrap.querySelectorAll('.th-lb.active').forEach(b=>b.classList.remove('active'));
-    info.classList.remove('vis');
-    wrap.querySelectorAll('.th-lb').forEach(b=>b.disabled=false);
-  }
-
-  wrap.querySelectorAll('.th-rail').forEach(rail=>{
-    rail.addEventListener('click',function(){
-      clearLoop();
-      const ag=this.dataset.agent,was=activeRail===ag;
-      clearRail();
-      if(was)return;
-      activeRail=ag;
-      this.classList.add('active');
-      bands.classList.add('agent-focus');
-      // Highlight spanned bands
-      const spanBands=this.dataset.bands.split(',');
-      const spanNodes=this.dataset.nodes.split(',');
-      bands.querySelectorAll('.th-band').forEach(b=>{
-        if(spanBands.includes(b.dataset.band))b.classList.add('in-span');
-      });
-      bands.querySelectorAll('.th-node').forEach(n=>{
-        if(spanNodes.includes(n.dataset.node))n.classList.add('in-span');
-      });
-    });
-  });
-
-  // ── Feedback loop animation ──
-  wrap.querySelectorAll('.th-lb').forEach(btn=>{
-    btn.addEventListener('click',function(){
-      const lp=this.dataset.loop,was=activeLoop===lp;
-      clearLoop();clearRail();
-      if(was)return;
-      activeLoop=lp;
-      this.classList.add('active');
-      wrap.querySelectorAll('.th-lb').forEach(b=>b.disabled=true);
-
-      const path=this.dataset.path.split(',');
-      const dirs=this.dataset.dirs.split(',');
-      loopT.textContent=this.dataset.label;
-      loopD.textContent=this.dataset.desc;
-      loopPath.innerHTML='';
-
-      // Build path chips
-      const chips=[],arrows=[];
-      // Dedupe for display (the path may revisit nodes)
-      const seen=new Set();
-      path.forEach((nodeId,i)=>{
-        const isUp=dirs[i-1]==='u';
-        if(!seen.has(nodeId+'_'+i)){
-          seen.add(nodeId+'_'+i);
-          const chip=document.createElement('span');
-          chip.className='th-loop-chip';
-          chip.dataset.node=nodeId;
-          chip.dataset.idx=i;
-          const node=bands.querySelector('[data-node="'+nodeId+'"]');
-          chip.textContent=node?node.querySelector('.th-node-name').textContent:nodeId;
-          chips.push(chip);
-          loopPath.appendChild(chip);
-          if(i<path.length-1){
-            const dir=dirs[i]||'d';
-            const arr=document.createElement('span');
-            arr.className='th-loop-arr';
-            arr.textContent=dir==='u'?'↑':'→';
-            arr.dataset.idx=i;
-            arrows.push(arr);
-            loopPath.appendChild(arr);
-          }
-        }
-      });
-      info.classList.add('vis');
-
-      // Animate sequential beats
-      path.forEach((nodeId,i)=>{
-        timers.push(setTimeout(()=>{
-          const node=bands.querySelector('[data-node="'+nodeId+'"]');
-          const isUp=i>0&&dirs[i-1]==='u';
-          if(node){
-            node.classList.add('beat');
-            if(isUp)node.classList.add('up-beat');
-          }
-          // Light chips
-          const chip=chips.find(c=>c.dataset.node===nodeId&&+c.dataset.idx===i);
-          if(chip){chip.classList.add('lit');if(isUp)chip.classList.add('up')}
-          if(i>0){
-            const arr=arrows.find(a=>+a.dataset.idx===i-1);
-            if(arr){arr.classList.add('lit');if(dirs[i-1]==='u')arr.classList.add('up')}
-          }
-        },i*380));
-      });
-      timers.push(setTimeout(()=>{wrap.querySelectorAll('.th-lb').forEach(b=>b.disabled=false)},path.length*380+300));
-    });
-  });
-})();
-</script>
 </body>
 </html>

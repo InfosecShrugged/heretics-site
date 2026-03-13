@@ -1,2 +1,14 @@
 # Netlify redirects
+
+# Old engine path
 /tools/revenue-physics-engine/*  /tools/opptycon/:splat  301
+
+# Old standalone pages → doctrine sections
+/spine-v4.html        /doctrine/#spine         301
+/agent-specs.html     /doctrine/#agents        301
+/infrastructure.html  /doctrine/#infrastructure 301
+/sovereignty-map.html /doctrine/#sovereignty   301
+/identity-graph.html  /doctrine/#identity      301
+/lexicon.html         /doctrine/#lexicon       301
+/provenance.html      /doctrine/#provenance    301
+/split-funnel-map.html /doctrine/#motion       301

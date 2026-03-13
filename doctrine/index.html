@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetherOps · Doctrine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+</style>
+<style>
+:root {
+  --bg:           #F4F4F2;
+  --bg-base:      #EBEBEB;
+  --bg-white:     #FFFFFF;
+  --bg-inverse:   #0F0F0F;
+  --bg-code:      #1C1C1C;
+  --bg-raised:    #E2E2DF;
+  --bg-sidebar:   #F9F9F8;
+  --ink:          #111111;
+  --ink-mid:      #555555;
+  --ink-muted:    #909090;
+  --ink-inv:      #F5F5F3;
+  --ink-inv-mid:  #AAAAAA;
+  --ink-code:     #C8FF6E;
+  --border-subtle: rgba(0,0,0,0.06);
+  --border-mid:    rgba(0,0,0,0.10);
+  --border-strong: rgba(0,0,0,0.22);
+  --accent:        #D64074;
+  --accent-light:  rgba(214,64,116,0.08);
+  --accent-lime:   #C8FF6E;
+  --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono:    'Chivo Mono', 'Space Mono', 'Courier New', monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 200ms;
+  --nav-h: 56px;
+  --side-w: 280px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { font-family: var(--font-display); background: var(--bg); color: var(--ink); overflow-x: hidden; }
+
+/* ═══ TOP NAV ═══ */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: var(--nav-h); display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(244,244,242,0.92);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-mid);
+}
+.topnav-left { display: flex; align-items: center; gap: 20px; }
+.topnav-logo { height: 22px; width: auto; display: block; }
+.topnav-sep {
+  width: 1px; height: 20px; background: var(--border-mid);
+}
+.topnav-title {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+}
+.topnav-links { display: flex; gap: 2px; }
+.topnav-link {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-muted);
+  text-decoration: none; padding: 8px 14px; border-radius: 4px;
+  transition: color var(--dur), background var(--dur);
+}
+.topnav-link:hover { color: var(--ink); background: var(--bg-raised); }
+.topnav-right { display: flex; align-items: center; gap: 12px; }
+.btn-nav {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 8px 18px; border-radius: 4px; border: none; cursor: pointer;
+  text-decoration: none;
+  transition: all var(--dur) var(--ease);
+}
+.btn-nav-primary { background: var(--ink); color: var(--ink-inv); }
+.btn-nav-primary:hover { opacity: 0.8; }
+.btn-nav-ghost { background: transparent; color: var(--ink-muted); border: 1px solid var(--border-mid); }
+.btn-nav-ghost:hover { color: var(--ink); border-color: var(--border-strong); }
+.mob-toggle {
+  display: none; background: none; border: none; cursor: pointer; padding: 8px;
+  flex-direction: column; gap: 4px;
+}
+.mob-toggle span { display: block; width: 18px; height: 1.5px; background: var(--ink); transition: all .3s; }
+
+/* ═══ LAYOUT ═══ */
+.layout {
+  display: flex; min-height: 100vh; padding-top: var(--nav-h);
+}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar {
+  position: fixed; top: var(--nav-h); left: 0; bottom: 0;
+  width: var(--side-w); background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-mid);
+  overflow-y: auto; overflow-x: hidden;
+  padding: 24px 0 48px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-mid) transparent;
+  z-index: 100;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+
+.side-section {
+  margin-bottom: 8px;
+}
+.side-section-label {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted);
+  padding: 8px 24px 6px; display: block;
+}
+.side-link {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px; font-weight: 400;
+  color: var(--ink-mid); text-decoration: none;
+  padding: 7px 24px 7px 24px;
+  border-left: 2px solid transparent;
+  transition: all var(--dur) var(--ease);
+  cursor: pointer;
+  letter-spacing: 0.01em;
+}
+.side-link:hover {
+  color: var(--ink); background: rgba(0,0,0,0.02);
+}
+.side-link.active {
+  color: var(--accent); font-weight: 600;
+  border-left-color: var(--accent);
+  background: var(--accent-light);
+}
+.side-link .side-icon {
+  font-size: 10px; opacity: 0.5; flex-shrink: 0; width: 16px; text-align: center;
+}
+.side-link.active .side-icon { opacity: 1; }
+.side-divider {
+  height: 1px; background: var(--border-subtle); margin: 12px 24px;
+}
+
+/* ═══ MAIN CONTENT ═══ */
+.main {
+  margin-left: var(--side-w); flex: 1;
+  padding: 48px 64px 96px;
+  max-width: 820px;
+}
+
+/* ═══ CONTENT TYPOGRAPHY ═══ */
+.doc-page { display: none; }
+.doc-page.active { display: block; }
+
+.doc-eyebrow {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.doc-eyebrow::after {
+  content: ''; flex: 1; height: 1px; background: var(--border-subtle);
+}
+.doc-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 300; letter-spacing: -0.03em; line-height: 1.15;
+  margin-bottom: 16px;
+}
+.doc-lead {
+  font-family: var(--font-mono); font-size: 14px; font-weight: 400;
+  color: var(--ink-mid); line-height: 1.7; max-width: 580px;
+  margin-bottom: 40px;
+}
+.doc-h2 {
+  font-family: var(--font-display); font-size: 24px; font-weight: 400;
+  letter-spacing: -0.02em; margin: 48px 0 16px; line-height: 1.2;
+  padding-top: 24px; border-top: 1px solid var(--border-subtle);
+}
+.doc-h3 {
+  font-family: var(--font-display); font-size: 18px; font-weight: 500;
+  letter-spacing: -0.01em; margin: 32px 0 12px; line-height: 1.3;
+}
+.doc-p {
+  font-family: var(--font-display); font-size: 15px; font-weight: 400;
+  color: var(--ink-mid); line-height: 1.75; margin-bottom: 16px;
+  max-width: 620px;
+}
+.doc-p strong { color: var(--ink); font-weight: 600; }
+.doc-p em { color: var(--accent); font-style: normal; font-weight: 500; }
+
+/* Layer cards */
+.layer-card {
+  background: var(--bg-white); border: 1px solid var(--border-mid);
+  border-radius: 8px; padding: 24px; margin-bottom: 12px;
+  transition: border-color var(--dur);
+}
+.layer-card:hover { border-color: var(--accent); }
+.layer-num {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.08em; margin-bottom: 6px;
+}
+.layer-name {
+  font-family: var(--font-display); font-size: 18px; font-weight: 400;
+  letter-spacing: -0.02em; margin-bottom: 6px;
+}
+.layer-desc {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted);
+  line-height: 1.65;
+}
+.layer-components {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;
+}
+.layer-chip {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 100px;
+  border: 1px solid var(--border-mid); color: var(--ink-muted);
+}
+
+/* Agent cards */
+.agent-card {
+  background: var(--bg-white); border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0; padding: 24px; margin-bottom: 12px;
+  border-top: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.agent-name {
+  font-family: var(--font-display); font-size: 18px; font-weight: 400;
+  letter-spacing: -0.02em; margin-bottom: 4px;
+}
+.agent-span {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 10px;
+}
+.agent-desc {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted);
+  line-height: 1.65;
+}
+
+/* Code/callout blocks */
+.callout {
+  background: var(--bg-white); border: 1px solid var(--border-mid);
+  border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+  padding: 20px 24px; margin: 24px 0;
+}
+.callout-label {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 8px;
+}
+.callout-text {
+  font-family: var(--font-display); font-size: 14px; color: var(--ink-mid);
+  line-height: 1.65; font-style: italic;
+}
+
+/* Dark code blocks */
+.code-block {
+  background: var(--bg-code); border-radius: 8px;
+  padding: 20px 24px; margin: 24px 0; overflow-x: auto;
+}
+.code-block pre {
+  font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,0.7);
+  line-height: 1.7; white-space: pre;
+}
+.code-block .hl { color: var(--ink-code); }
+.code-block .cm { color: rgba(255,255,255,0.25); }
+.code-block .rs { color: #FF6B8A; }
+
+/* Sovereignty grid */
+.sov-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0;
+}
+.sov-cell {
+  background: var(--bg-white); border: 1px solid var(--border-mid);
+  border-radius: 8px; padding: 20px;
+}
+.sov-cell-label {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 8px;
+}
+.sov-cell-title {
+  font-family: var(--font-display); font-size: 15px; font-weight: 500;
+  margin-bottom: 6px;
+}
+.sov-cell-desc {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+/* Motion lanes */
+.motion-lane {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.motion-num {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  color: var(--accent); width: 28px; flex-shrink: 0;
+}
+.motion-name {
+  font-family: var(--font-display); font-size: 15px; font-weight: 500;
+  min-width: 160px;
+}
+.motion-desc {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted);
+  line-height: 1.5;
+}
+
+/* Next/prev nav */
+.doc-nav {
+  display: flex; justify-content: space-between; margin-top: 64px;
+  padding-top: 24px; border-top: 1px solid var(--border-mid);
+}
+.doc-nav-link {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--ink-muted); text-decoration: none; padding: 12px 20px;
+  border: 1px solid var(--border-mid); border-radius: 6px;
+  transition: all var(--dur) var(--ease); cursor: pointer;
+}
+.doc-nav-link:hover {
+  color: var(--accent); border-color: var(--accent);
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 900px) {
+  .topnav-links { display: none; }
+  .mob-toggle { display: flex; }
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform .3s var(--ease);
+    z-index: 150;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 32px 20px 64px; }
+  .sov-grid { grid-template-columns: 1fr; }
+  .motion-lane { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <div class="topnav-left">
+    <a href="/"><img src="/assets/netherops-logo.svg" alt="NetherOps" class="topnav-logo"></a>
+    <div class="topnav-sep"></div>
+    <span class="topnav-title">Doctrine</span>
+  </div>
+  <div class="topnav-links">
+    <a href="/" class="topnav-link">Home</a>
+    <a href="/#services" class="topnav-link">Services</a>
+    <a href="#" class="topnav-link" onclick="nav('opptycon')">OpptyCon</a>
+    <a href="#" class="topnav-link" onclick="nav('library')">Library</a>
+  </div>
+  <div class="topnav-right">
+    <a href="/#briefing" class="btn-nav btn-nav-ghost">Book a Briefing</a>
+    <button class="mob-toggle" onclick="toggleSidebar()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="layout">
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="side-section">
+    <span class="side-section-label">Getting Started</span>
+    <a class="side-link active" data-page="overview" onclick="nav('overview')">
+      <span class="side-icon">◎</span> Overview
+    </a>
+  </div>
+
+  <div class="side-divider"></div>
+
+  <div class="side-section">
+    <span class="side-section-label">Architecture</span>
+    <a class="side-link" data-page="spine" onclick="nav('spine')">
+      <span class="side-icon">▥</span> The Spine
+    </a>
+    <a class="side-link" data-page="thermostat" onclick="nav('thermostat')">
+      <span class="side-icon">◈</span> Revenue Thermostat
+    </a>
+    <a class="side-link" data-page="agents" onclick="nav('agents')">
+      <span class="side-icon">⧫</span> Agent Specifications
+    </a>
+  </div>
+
+  <div class="side-divider"></div>
+
+  <div class="side-section">
+    <span class="side-section-label">Maps & Models</span>
+    <a class="side-link" data-page="sovereignty" onclick="nav('sovereignty')">
+      <span class="side-icon">⊞</span> Sovereignty Map
+    </a>
+    <a class="side-link" data-page="motion" onclick="nav('motion')">
+      <span class="side-icon">→</span> Motion Map
+    </a>
+    <a class="side-link" data-page="identity" onclick="nav('identity')">
+      <span class="side-icon">⊡</span> Identity Graph
+    </a>
+    <a class="side-link" data-page="infrastructure" onclick="nav('infrastructure')">
+      <span class="side-icon">⌸</span> Infrastructure
+    </a>
+  </div>
+
+  <div class="side-divider"></div>
+
+  <div class="side-section">
+    <span class="side-section-label">Tools</span>
+    <a class="side-link" data-page="opptycon" onclick="nav('opptycon')">
+      <span class="side-icon" style="color:var(--accent)">▶</span> OpptyCon Engine
+    </a>
+  </div>
+
+  <div class="side-divider"></div>
+
+  <div class="side-section">
+    <span class="side-section-label">Reference</span>
+    <a class="side-link" data-page="lexicon" onclick="nav('lexicon')">
+      <span class="side-icon">¶</span> Lexicon
+    </a>
+    <a class="side-link" data-page="provenance" onclick="nav('provenance')">
+      <span class="side-icon">↻</span> Provenance
+    </a>
+    <a class="side-link" data-page="library" onclick="nav('library')">
+      <span class="side-icon">◫</span> Library
+    </a>
+  </div>
+</aside>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="main">
+
+<!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
+<div class="doc-page active" id="page-overview">
+  <div class="doc-eyebrow">Getting Started</div>
+  <h1 class="doc-h1">Governed Revenue Architecture</h1>
+  <p class="doc-lead">A complete operating system for go-to-market. Not a playbook. Not a framework. A control system — where constraints cascade downward and feedback flows upward.</p>
+
+  <div class="callout">
+    <div class="callout-label">Core Doctrine</div>
+    <div class="callout-text">Revenue is not a pipeline. It is a closed-loop control system. The set point is economics. The sensor is attribution. The actuator is governance. The feedback loop is what makes it work.</div>
+  </div>
+
+  <h2 class="doc-h2">What This Is</h2>
+  <p class="doc-p">NetherOps builds <em>governed revenue infrastructure</em> for B2B SaaS companies from pre-seed through pre-IPO. Every engagement begins with architecture. Every architecture begins with constraints.</p>
+  <p class="doc-p">The Governed Revenue Architecture (GRA) is the intellectual foundation — a seven-layer control system that replaces the typical GTM stack diagram with something that actually governs execution. Thresholds are the strategy.</p>
+  <p class="doc-p">This doctrine is <strong>open</strong>. The competitive advantage is not the blueprint. It is the engineering to build and govern it.</p>
+
+  <h2 class="doc-h2">How It's Organized</h2>
+  <p class="doc-p">The doctrine spans several interconnected components. Start anywhere, but the recommended path is:</p>
+
+  <div class="layer-card" onclick="nav('spine')" style="cursor:pointer">
+    <div class="layer-num">START HERE</div>
+    <div class="layer-name">The Spine →</div>
+    <div class="layer-desc">Seven horizontal layers from Economic Model through Attribution & Feedback. This is the core architecture.</div>
+  </div>
+  <div class="layer-card" onclick="nav('thermostat')" style="cursor:pointer">
+    <div class="layer-num">THEN</div>
+    <div class="layer-name">Revenue Thermostat →</div>
+    <div class="layer-desc">The control system visualization. Understand how constraints cascade and feedback flows upward.</div>
+  </div>
+  <div class="layer-card" onclick="nav('agents')" style="cursor:pointer">
+    <div class="layer-num">THEN</div>
+    <div class="layer-name">Agent Specifications →</div>
+    <div class="layer-desc">Five vertical enforcement agents that span layers. These are the governance mechanism.</div>
+  </div>
+
+  <h2 class="doc-h2">Principles</h2>
+  <p class="doc-p"><strong>Governance over observation.</strong> Dashboards observe. Control planes govern. We build control planes.</p>
+  <p class="doc-p"><strong>Constraints before autonomy.</strong> Agents get freedom within boundaries. The boundaries are the strategy.</p>
+  <p class="doc-p"><strong>Feedback flows upward.</strong> Forecasting is an input to budgets, not a downstream output. Attribution informs governance, not just optimization.</p>
+  <p class="doc-p"><strong>Economics are the set point.</strong> Every motion, channel, and dollar traces back to a P&L constraint. If it doesn't connect to protected margin, it doesn't ship.</p>
+
+  <div class="doc-nav">
+    <span></span>
+    <a class="doc-nav-link" onclick="nav('spine')">Next: The Spine →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ THE SPINE ═══════════════════════ -->
+<div class="doc-page" id="page-spine">
+  <div class="doc-eyebrow">Architecture</div>
+  <h1 class="doc-h1">The Spine</h1>
+  <p class="doc-lead">Seven horizontal layers. Causality flows downward. Constraints flow upward. This is not a marketing stack — it is a control architecture.</p>
+
+  <div class="callout">
+    <div class="callout-label">Key Insight</div>
+    <div class="callout-text">Layers are horizontal. Agents are vertical. The intersection of a layer and an agent is where governance happens. Every node in the spine is both constrained from above and informed from below.</div>
+  </div>
+
+  <h2 class="doc-h2">The Seven Layers</h2>
+
+  <div class="layer-card">
+    <div class="layer-num">LAYER 01</div>
+    <div class="layer-name">Economic Model</div>
+    <div class="layer-desc">The set point. Business plan economics define every downstream constraint. Protected margin, burn rate, coverage targets, unit economics ceiling. Nothing below this layer can override it.</div>
+    <div class="layer-components">
+      <span class="layer-chip">Business Plan</span>
+      <span class="layer-chip">P&L</span>
+      <span class="layer-chip">Protected Margin</span>
+      <span class="layer-chip">Coverage Target</span>
+      <span class="layer-chip">Burn Multiple</span>
+    </div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">LAYER 02</div>
+    <div class="layer-name">ICP Governance</div>
+    <div class="layer-desc">Who you sell to is a governance decision, not a marketing one. ICP definitions, tier models, segment constraints, TAM/SAM/SOM boundaries. The ICP layer constrains every motion below it.</div>
+    <div class="layer-components">
+      <span class="layer-chip">ICP Definition</span>
+      <span class="layer-chip">Tier Model</span>
+      <span class="layer-chip">Segment Rules</span>
+      <span class="layer-chip">TAM/SAM/SOM</span>
+      <span class="layer-chip">Exclusion Criteria</span>
+    </div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">LAYER 03</div>
+    <div class="layer-name">Pipeline Architecture</div>
+    <div class="layer-desc">How pipeline is generated, governed, and allocated. Budget envelopes per channel, spend thresholds, GTM model parameters, allocation rules. This is where strategy becomes operational.</div>
+    <div class="layer-components">
+      <span class="layer-chip">Budgets</span>
+      <span class="layer-chip">GTM Model</span>
+      <span class="layer-chip">Allocations</span>
+      <span class="layer-chip">Channel Mix</span>
+      <span class="layer-chip">Coverage Math</span>
+    </div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">LAYER 04</div>
+    <div class="layer-name">Stage Definitions</div>
+    <div class="layer-desc">What qualifies as progress. Stage entry/exit criteria, conversion rate thresholds, velocity benchmarks, handoff definitions. Without governed stages, everything downstream is noise.</div>
+    <div class="layer-components">
+      <span class="layer-chip">Stage Gates</span>
+      <span class="layer-chip">Entry Criteria</span>
+      <span class="layer-chip">Exit Criteria</span>
+      <span class="layer-chip">Velocity Benchmarks</span>
+      <span class="layer-chip">Handoff SLAs</span>
+    </div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">LAYER 05</div>
+    <div class="layer-name">Agent Layer</div>
+    <div class="layer-desc">Vertical enforcement rails that span multiple layers. Agents don't process — they govern. Each agent monitors thresholds and enforces constraints across its jurisdiction.</div>
+    <div class="layer-components">
+      <span class="layer-chip">P&L Agent</span>
+      <span class="layer-chip">Stage Gate Agent</span>
+      <span class="layer-chip">Coverage Agent</span>
+      <span class="layer-chip">Attribution Agent</span>
+      <span class="layer-chip">Orchestration Agent</span>
+    </div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">LAYER 06</div>
+    <div class="layer-name">Execution Systems</div>
+    <div class="layer-desc">Where work happens. Signal surfaces, enrichment pipelines, orchestration engines, CRM, outbound, inbound, content, ABM. Every system is governed by the layers above it.</div>
+    <div class="layer-components">
+      <span class="layer-chip">Signal Surface</span>
+      <span class="layer-chip">Enrichment</span>
+      <span class="layer-chip">Orchestration</span>
+      <span class="layer-chip">CRM</span>
+      <span class="layer-chip">Demand Engines</span>
+    </div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">LAYER 07</div>
+    <div class="layer-name">Attribution & Feedback</div>
+    <div class="layer-desc">The sensor. Forecasting, attribution, optimization — but critically, these feed BACK UP into governance layers. Forecasting is an input to budgets. Attribution informs stage definitions. This closes the loop.</div>
+    <div class="layer-components">
+      <span class="layer-chip">Forecasting</span>
+      <span class="layer-chip">Attribution</span>
+      <span class="layer-chip">Optimization</span>
+      <span class="layer-chip">Feedback Loops ↑</span>
+    </div>
+  </div>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('overview')">← Overview</a>
+    <a class="doc-nav-link" onclick="nav('thermostat')">Next: Revenue Thermostat →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ REVENUE THERMOSTAT ═══════════════════════ -->
+<div class="doc-page" id="page-thermostat">
+  <div class="doc-eyebrow">Architecture</div>
+  <h1 class="doc-h1">Revenue Thermostat</h1>
+  <p class="doc-lead">Not a flowchart. A control system. The set point is economics. The sensor is attribution. The actuator is governance. Feedback loops close the system.</p>
+
+  <h2 class="doc-h2">The Control System Model</h2>
+  <p class="doc-p">A thermostat has three components: a <strong>set point</strong> (desired temperature), a <strong>sensor</strong> (actual temperature), and an <strong>actuator</strong> (heating/cooling). Revenue works the same way.</p>
+
+  <div class="code-block"><pre><span class="hl">SET POINT</span>    <span class="cm">// Economic constraints — what the business demands</span>
+  Business Plan → P&L → Protected Margin → Coverage Ratio
+
+<span class="hl">ACTUATOR</span>     <span class="cm">// Translation layer — how constraints become action</span>
+  Budgets → GTM Model → Allocations → ICP Spend → Stage Defs
+
+<span class="hl">SENSOR</span>       <span class="cm">// Operations — what actually happens</span>
+  Execution → Forecasting → Attribution → Optimization
+
+<span class="rs">FEEDBACK ↑</span>   <span class="cm">// The loop that makes it a thermostat</span>
+  Forecasting <span class="rs">→↑</span> Budgets    <span class="cm">// most critical correction</span>
+  Attribution <span class="rs">→↑</span> Stage Defs  <span class="cm">// informs governance, not just reporting</span>
+  CAC Breach  <span class="rs">→↑</span> P&L Agent   <span class="cm">// constraint enforcement</span></pre></div>
+
+  <h2 class="doc-h2">Why Feedback Flows Upward</h2>
+  <p class="doc-p">In most GTM organizations, forecasting is a downstream output — something that happens after execution. That's observation, not governance.</p>
+  <p class="doc-p">In the governed model, <em>forecasting is an input to budgets</em>. The forecast corrects the budget. The budget corrects the allocation. The allocation corrects the execution. This is a closed loop.</p>
+  <p class="doc-p">Without upward feedback, budgets are set once and never corrected. Attribution becomes just reporting. The system is open-loop — a thermostat with no thermometer.</p>
+
+  <h2 class="doc-h2">Agent Enforcement Rails</h2>
+  <p class="doc-p">Five vertical agents span the three bands, monitoring thresholds and enforcing constraints at every intersection. They are not process steps — they are enforcement mechanisms.</p>
+  <p class="doc-p">When a CAC breach is detected at the execution layer, the P&L Agent doesn't just flag it — it constrains. The constraint flows upward through budget correction. The system self-regulates.</p>
+
+  <div class="callout">
+    <div class="callout-label">The Difference</div>
+    <div class="callout-text">A flowchart shows sequence. A thermostat shows control. Flowcharts imply "do this, then that." Thermostats imply "if this threshold is breached, this constraint activates." The difference is enormous.</div>
+  </div>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('spine')">← The Spine</a>
+    <a class="doc-nav-link" onclick="nav('agents')">Next: Agent Specs →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ AGENT SPECIFICATIONS ═══════════════════════ -->
+<div class="doc-page" id="page-agents">
+  <div class="doc-eyebrow">Architecture</div>
+  <h1 class="doc-h1">Agent Specifications</h1>
+  <p class="doc-lead">Five vertical enforcement agents span the spine layers. They are not process steps. They are governance rails — monitoring thresholds, enforcing constraints, and closing feedback loops.</p>
+
+  <div class="agent-card">
+    <div class="agent-name">P&L Agent</div>
+    <div class="agent-span">Spans: Economic Model → Pipeline Architecture → Execution</div>
+    <div class="agent-desc">Monitors protected margin, burn multiple, and CAC ceilings. When a threshold is breached, the P&L Agent constrains downstream spend. It connects the economic set point to operational reality. Every dollar of GTM spend traces through this agent.</div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-name">Stage Gate Agent</div>
+    <div class="agent-span">Spans: ICP Governance → Stage Definitions → Execution</div>
+    <div class="agent-desc">Enforces stage entry/exit criteria across all pipeline motion. Prevents stage inflation, ensures handoff SLA compliance, monitors conversion velocity. Without this agent, stages are just labels. With it, they are gates.</div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-name">Coverage Agent</div>
+    <div class="agent-span">Spans: Economic Model → Pipeline Architecture → Attribution</div>
+    <div class="agent-desc">Ensures pipeline generation meets coverage ratio targets. Monitors marketing-sourced vs sales-sourced split, tracks pipeline velocity by segment, enforces coverage math across the funnel. The bridge between economics and execution.</div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-name">Attribution Agent</div>
+    <div class="agent-span">Spans: ICP Governance → Stage Definitions → Attribution</div>
+    <div class="agent-desc">Routes attribution data upward into governance decisions. Not just "which channel gets credit" — but "which stage definitions need updating" and "which ICP segments are converting." Attribution as governance input, not reporting output.</div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-name">Orchestration Agent</div>
+    <div class="agent-span">Spans: All Layers</div>
+    <div class="agent-desc">The conductor. Coordinates between agents, resolves conflicting constraints, manages the timing of feedback loops. When the P&L Agent wants to cut and the Coverage Agent needs more pipeline, the Orchestration Agent mediates.</div>
+  </div>
+
+  <h2 class="doc-h2">Agent Design Principles</h2>
+  <p class="doc-p"><strong>Agents don't execute.</strong> They govern. An agent never sends an email or creates a campaign. It monitors thresholds, enforces constraints, and triggers corrections.</p>
+  <p class="doc-p"><strong>Agents span layers.</strong> That's what makes them different from process automation. Each agent has jurisdiction across multiple spine layers, which is what enables closed-loop control.</p>
+  <p class="doc-p"><strong>Agents conflict.</strong> This is by design. The tension between a P&L Agent constraining spend and a Coverage Agent demanding more pipeline is the system working correctly. The Orchestration Agent resolves these tensions.</p>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('thermostat')">← Revenue Thermostat</a>
+    <a class="doc-nav-link" onclick="nav('sovereignty')">Next: Sovereignty Map →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SOVEREIGNTY MAP ═══════════════════════ -->
+<div class="doc-page" id="page-sovereignty">
+  <div class="doc-eyebrow">Maps & Models</div>
+  <h1 class="doc-h1">Sovereignty Map</h1>
+  <p class="doc-lead">Build vs buy vs integrate — for every layer of the stack. Not a vendor comparison. A decision framework for where you need sovereignty and where you can rent.</p>
+
+  <h2 class="doc-h2">The Framework</h2>
+  <p class="doc-p">Every component in the GTM stack sits on a spectrum from <em>full sovereignty</em> (you own and control it entirely) to <em>full dependency</em> (you rent it as a service). The map helps you decide where to be for each layer.</p>
+
+  <div class="sov-grid">
+    <div class="sov-cell">
+      <div class="sov-cell-label">Own</div>
+      <div class="sov-cell-title">Full Sovereignty</div>
+      <div class="sov-cell-desc">Custom-built. You control the logic, the data, the roadmap. Highest cost, highest control. Use for competitive differentiation and core governance.</div>
+    </div>
+    <div class="sov-cell">
+      <div class="sov-cell-label">Build On</div>
+      <div class="sov-cell-title">Platform + Custom</div>
+      <div class="sov-cell-desc">Commercial platform with significant customization. You own the configuration and logic layer. Good balance of speed and control for most GTM systems.</div>
+    </div>
+    <div class="sov-cell">
+      <div class="sov-cell-label">Configure</div>
+      <div class="sov-cell-title">SaaS + Configuration</div>
+      <div class="sov-cell-desc">Out-of-box SaaS with configuration. You control settings and workflows but not core logic. Fast to deploy, lower sovereignty. Use for execution-layer tools.</div>
+    </div>
+    <div class="sov-cell">
+      <div class="sov-cell-label">Rent</div>
+      <div class="sov-cell-title">Full Dependency</div>
+      <div class="sov-cell-desc">Vendor-managed service. Minimal control. Lowest cost and effort. Use for commodity functions where switching cost is low and differentiation is zero.</div>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Layer-by-Layer Decisions</h2>
+  <p class="doc-p"><strong>Economic Model:</strong> Always own. Your P&L constraints and governance logic are core IP.</p>
+  <p class="doc-p"><strong>ICP Governance:</strong> Own the logic, build on enrichment platforms for data.</p>
+  <p class="doc-p"><strong>Pipeline Architecture:</strong> Own the model (OpptyCon), configure execution tools.</p>
+  <p class="doc-p"><strong>Stage Definitions:</strong> Own in CRM, enforce via agents.</p>
+  <p class="doc-p"><strong>Agents:</strong> Build custom. These are the governance mechanism — don't rent your control plane.</p>
+  <p class="doc-p"><strong>Execution Systems:</strong> Configure SaaS. Signal surfaces, orchestration, CRM — these are commodity at the execution layer.</p>
+  <p class="doc-p"><strong>Attribution:</strong> Build on commercial platforms, own the feedback loop logic.</p>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('agents')">← Agent Specs</a>
+    <a class="doc-nav-link" onclick="nav('motion')">Next: Motion Map →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ MOTION MAP ═══════════════════════ -->
+<div class="doc-page" id="page-motion">
+  <div class="doc-eyebrow">Maps & Models</div>
+  <h1 class="doc-h1">Motion Map</h1>
+  <p class="doc-lead">Seven acquisition modes. Every motion governed by the spine. Every channel traced to economics. No orphan campaigns.</p>
+
+  <h2 class="doc-h2">The Seven Modes</h2>
+
+  <div class="motion-lane">
+    <div class="motion-num">01</div>
+    <div class="motion-name">Inbound Content</div>
+    <div class="motion-desc">SEO, content marketing, thought leadership, organic social. Governed by ICP relevance score and content-to-pipeline attribution.</div>
+  </div>
+  <div class="motion-lane">
+    <div class="motion-num">02</div>
+    <div class="motion-name">Inbound Paid</div>
+    <div class="motion-desc">SEM, paid social, display, retargeting. Governed by CAC ceiling per channel, ROAS thresholds, and budget allocation rules from Layer 03.</div>
+  </div>
+  <div class="motion-lane">
+    <div class="motion-num">03</div>
+    <div class="motion-name">Outbound Signal-Led</div>
+    <div class="motion-desc">Intent data, technographic signals, trigger events → sequenced outreach. Governed by signal quality thresholds and meeting-to-opp conversion rates.</div>
+  </div>
+  <div class="motion-lane">
+    <div class="motion-num">04</div>
+    <div class="motion-name">Outbound Account-Based</div>
+    <div class="motion-desc">Named account programs, ABM, 1:1 and 1:few campaigns. Governed by ICP tier, account score thresholds, and engagement-to-pipeline rates.</div>
+  </div>
+  <div class="motion-lane">
+    <div class="motion-num">05</div>
+    <div class="motion-name">Partner & Channel</div>
+    <div class="motion-desc">Referral programs, technology partnerships, channel sales, co-marketing. Governed by partner-sourced pipeline targets and co-sell attribution.</div>
+  </div>
+  <div class="motion-lane">
+    <div class="motion-num">06</div>
+    <div class="motion-name">Product-Led</div>
+    <div class="motion-desc">Free trials, freemium, self-serve, PQL-driven expansion. Governed by activation thresholds, PQL scoring, and expansion revenue targets.</div>
+  </div>
+  <div class="motion-lane">
+    <div class="motion-num">07</div>
+    <div class="motion-name">Community & Events</div>
+    <div class="motion-desc">Field events, user conferences, community programs, webinars. Governed by cost-per-engaged-account and event-to-pipeline attribution windows.</div>
+  </div>
+
+  <h2 class="doc-h2">Governance Connection</h2>
+  <p class="doc-p">Every motion connects upward to the Pipeline Architecture layer (Layer 03) where budget allocation rules determine how much investment each mode receives. The Coverage Agent monitors whether the combined output of all seven modes meets the pipeline coverage target.</p>
+  <p class="doc-p">No mode operates independently. Each reports attribution data back through the feedback layer, which informs the next budget cycle. This is what makes it governed — not just planned.</p>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('sovereignty')">← Sovereignty Map</a>
+    <a class="doc-nav-link" onclick="nav('identity')">Next: Identity Graph →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ IDENTITY GRAPH ═══════════════════════ -->
+<div class="doc-page" id="page-identity">
+  <div class="doc-eyebrow">Maps & Models</div>
+  <h1 class="doc-h1">Identity Graph</h1>
+  <p class="doc-lead">Contact and account resolution across the entire GTM surface area. Who is this person, which account do they belong to, and how do they connect to every touchpoint.</p>
+
+  <h2 class="doc-h2">The Problem</h2>
+  <p class="doc-p">Most B2B companies have the same person represented 3–5 times across their stack — once in the CRM, once in the MAP, once in the enrichment tool, once in the intent platform, once in the ad platform. Each representation is partial. None is authoritative.</p>
+  <p class="doc-p">Without a resolved identity graph, attribution is fiction, stage definitions are unreliable, and ICP governance is unenforceable. The identity graph is the prerequisite for every other governance function.</p>
+
+  <h2 class="doc-h2">Resolution Layers</h2>
+  <p class="doc-p"><strong>Contact Resolution:</strong> Deduplication, email normalization, role/title standardization, engagement history unification across all touchpoint systems.</p>
+  <p class="doc-p"><strong>Account Resolution:</strong> Company matching, hierarchy mapping, subsidiary-to-parent linkage, firmographic enrichment, account scoring consolidation.</p>
+  <p class="doc-p"><strong>Relationship Mapping:</strong> Buying committee identification, champion/detractor tracking, influence network mapping, historical engagement patterns per account.</p>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('motion')">← Motion Map</a>
+    <a class="doc-nav-link" onclick="nav('infrastructure')">Next: Infrastructure →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ INFRASTRUCTURE ═══════════════════════ -->
+<div class="doc-page" id="page-infrastructure">
+  <div class="doc-eyebrow">Maps & Models</div>
+  <h1 class="doc-h1">Infrastructure</h1>
+  <p class="doc-lead">The technical stack that implements the governed architecture. Every tool has a role. Every role traces to a spine layer. No orphan subscriptions.</p>
+
+  <h2 class="doc-h2">Stack Architecture by Domain</h2>
+  <p class="doc-p"><strong>Signal Surface:</strong> Apollo, Seamless.AI, UserGems, BuiltWith, GA4 — tools that detect buying signals and feed the top of the funnel. Governed by signal quality thresholds.</p>
+  <p class="doc-p"><strong>Data & Enrichment:</strong> Clay, Snowflake, Clearbit — the enrichment pipeline that resolves identity and adds firmographic/technographic context. Governed by data parity requirements.</p>
+  <p class="doc-p"><strong>Orchestration:</strong> HubSpot, Customer.io, LeanData — routing, sequencing, and workflow engines. Governed by routing SLAs and handoff compliance.</p>
+  <p class="doc-p"><strong>System of Record:</strong> Salesforce, Gong — the authoritative data layer. Stage definitions enforced here. Agent enforcement happens at this layer.</p>
+  <p class="doc-p"><strong>Attribution & Finance:</strong> Dreamdata, Anaplan — the measurement and planning layer. Feedback loops originate here and flow upward into budget and stage governance.</p>
+  <p class="doc-p"><strong>Forecasting:</strong> Clari, Salesforce Forecasting — the sensor. Critical upward feedback: forecast data becomes budget input, not just board reporting.</p>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('identity')">← Identity Graph</a>
+    <a class="doc-nav-link" onclick="nav('opptycon')">Next: OpptyCon →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ OPPTYCON ═══════════════════════ -->
+<div class="doc-page" id="page-opptycon">
+  <div class="doc-eyebrow">Tools</div>
+  <h1 class="doc-h1">OpptyCon — Revenue Physics Engine</h1>
+  <p class="doc-lead">Model your entire GTM as physics, not spreadsheets. Pipeline targets, cost structures, funnel conversion, coverage math, and phase-shifted demand across multi-year horizons.</p>
+
+  <h2 class="doc-h2">What It Does</h2>
+  <p class="doc-p">OpptyCon is the computational engine behind the governed revenue architecture. It takes your economic constraints (Layer 01) and models the entire cascade through pipeline generation, cost structure, funnel physics, and coverage math.</p>
+  <p class="doc-p">Unlike a spreadsheet, OpptyCon models <em>time</em> correctly. Q4 marketing spend generates Q1 pipeline. Sales hiring in March produces quota capacity in September. Attrition compounds. These phase shifts are invisible in a flat model.</p>
+
+  <h2 class="doc-h2">Core Capabilities</h2>
+  <p class="doc-p"><strong>Dual-Axis Cost Model:</strong> Separates fixed S&M (headcount, tools, infrastructure) from variable S&M (media spend, event costs, content production). Each behaves differently under scaling scenarios.</p>
+  <p class="doc-p"><strong>Coverage Ratio Enforcement:</strong> Pipeline targets are derived from ARR goals using coverage ratios. The engine enforces the math: if you need 3× coverage on a $10M target, you need $30M in qualified pipeline. If your conversion rates don't support that, the model shows it.</p>
+  <p class="doc-p"><strong>Phase-Shifted Funnel:</strong> Marketing programs in Q4 generate MQLs in Q1, which become SQLs in Q2, which close in Q3. The engine models this timing explicitly across 24+ month horizons so you can see the carry-over effects.</p>
+  <p class="doc-p"><strong>Attrition Modeling:</strong> Sales rep ramp time, quota decay, and turnover are modeled as continuous variables, not static assumptions. This shows the true cost of attrition on pipeline capacity.</p>
+  <p class="doc-p"><strong>Monthly Weight Distributions:</strong> Demand isn't flat. The engine allows custom monthly weighting for seasonal patterns, budget flush periods, and renewal timing.</p>
+
+  <h2 class="doc-h2">How It Connects to the Spine</h2>
+  <p class="doc-p">OpptyCon operationalizes Layer 01 (Economic Model) and Layer 03 (Pipeline Architecture). The outputs feed directly into budget allocation decisions and coverage ratio monitoring. When the Coverage Agent detects a gap, OpptyCon models the correction scenarios.</p>
+
+  <div style="margin:32px 0;display:flex;gap:12px">
+    <a href="#" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:12px 24px;background:var(--accent);color:#fff;border-radius:4px;text-decoration:none;transition:opacity .2s">Launch OpptyCon ▶</a>
+  </div>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('infrastructure')">← Infrastructure</a>
+    <a class="doc-nav-link" onclick="nav('lexicon')">Next: Lexicon →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ LEXICON ═══════════════════════ -->
+<div class="doc-page" id="page-lexicon">
+  <div class="doc-eyebrow">Reference</div>
+  <h1 class="doc-h1">Lexicon</h1>
+  <p class="doc-lead">Terminology used throughout the governed revenue architecture. Precise language prevents ambiguity. Ambiguity prevents governance.</p>
+
+  <h2 class="doc-h2">Core Terms</h2>
+
+  <div class="layer-card">
+    <div class="layer-name">Governed Revenue</div>
+    <div class="layer-desc">Revenue generation controlled by explicit constraints, thresholds, and feedback loops — as opposed to revenue generated by autonomous execution with after-the-fact reporting.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-name">Set Point</div>
+    <div class="layer-desc">The economic constraint that defines the target state. In the thermostat model, this is the desired temperature — the business plan economics that everything else must satisfy.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-name">Control Plane</div>
+    <div class="layer-desc">The governance layer that translates constraints into operational rules. Distinct from the "data plane" where execution happens. The control plane governs; the data plane operates.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-name">Constraint Cascade</div>
+    <div class="layer-desc">The downward flow of constraints from economic model through ICP governance, pipeline architecture, stage definitions, and into execution. Each layer is constrained by the layer above it.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-name">Feedback Loop</div>
+    <div class="layer-desc">The upward flow of operational data that corrects governance decisions. Forecasting → Budgets. Attribution → Stage Definitions. Without upward feedback, the system is open-loop.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-name">Coverage Ratio</div>
+    <div class="layer-desc">The multiplier of qualified pipeline to bookings target required to achieve revenue goals given historical conversion rates. Typically 3–5× for B2B SaaS.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-name">Phase Shift</div>
+    <div class="layer-desc">The time delay between marketing investment and pipeline generation. Q4 spend → Q1 pipeline → Q2 SQLs → Q3 closed-won. Models that ignore this produce fiction.</div>
+  </div>
+  <div class="layer-card">
+    <div class="layer-name">Protected Margin</div>
+    <div class="layer-desc">The gross margin floor that the P&L Agent enforces. No GTM motion is permitted to erode below this threshold. It is the ultimate constraint in the system.</div>
+  </div>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('opptycon')">← OpptyCon</a>
+    <a class="doc-nav-link" onclick="nav('provenance')">Next: Provenance →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PROVENANCE ═══════════════════════ -->
+<div class="doc-page" id="page-provenance">
+  <div class="doc-eyebrow">Reference</div>
+  <h1 class="doc-h1">Provenance</h1>
+  <p class="doc-lead">Data lineage and decision audit trail. Every number in the system traces back to its source. Every governance decision traces to a constraint. Trust requires traceability.</p>
+
+  <h2 class="doc-h2">Why Provenance Matters</h2>
+  <p class="doc-p">In most GTM orgs, when a board member asks "why did we spend $400K on paid social last quarter?" the answer is a chain of Slack messages, half-remembered meeting decisions, and a spreadsheet someone built in 2023.</p>
+  <p class="doc-p">In the governed model, the answer is a provenance chain: <strong>$400K paid social ← Budget allocation rule ← Pipeline coverage gap ← Coverage Agent threshold ← Economic model constraint ← Board-approved business plan.</strong></p>
+  <p class="doc-p">Every dollar traces back to a constraint. Every constraint traces back to economics. That's provenance.</p>
+
+  <h2 class="doc-h2">Data Lineage</h2>
+  <p class="doc-p">Every metric in the system carries metadata about its source, transformation chain, freshness, and confidence level. When the Coverage Agent reports a pipeline gap, the provenance layer shows exactly which source data fed that calculation and when it was last updated.</p>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('lexicon')">← Lexicon</a>
+    <a class="doc-nav-link" onclick="nav('library')">Next: Library →</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════ LIBRARY ═══════════════════════ -->
+<div class="doc-page" id="page-library">
+  <div class="doc-eyebrow">Reference</div>
+  <h1 class="doc-h1">Library</h1>
+  <p class="doc-lead">The complete architecture, open. The competitive advantage is not the blueprint — it is the engineering to build and govern it.</p>
+
+  <h2 class="doc-h2">Architecture Screens</h2>
+
+  <div class="layer-card" style="cursor:pointer" onclick="nav('spine')">
+    <div class="layer-num">SCREEN 01</div>
+    <div class="layer-name">Seven-Layer Spine →</div>
+    <div class="layer-desc">Agents, formulas, governance layers — the complete architecture.</div>
+  </div>
+  <div class="layer-card" style="cursor:pointer" onclick="nav('sovereignty')">
+    <div class="layer-num">SCREEN 02</div>
+    <div class="layer-name">Sovereignty Map →</div>
+    <div class="layer-desc">Build vs buy decision matrix for every stack layer.</div>
+  </div>
+  <div class="layer-card" style="cursor:pointer" onclick="nav('motion')">
+    <div class="layer-num">SCREEN 03</div>
+    <div class="layer-name">Motion Map →</div>
+    <div class="layer-desc">Seven acquisition mode lanes with governance connections.</div>
+  </div>
+  <div class="layer-card" style="cursor:pointer" onclick="nav('agents')">
+    <div class="layer-num">SCREEN 04</div>
+    <div class="layer-name">Agent Specifications →</div>
+    <div class="layer-desc">Registry, build sequence, enforcement templates.</div>
+  </div>
+  <div class="layer-card" style="cursor:pointer" onclick="nav('thermostat')">
+    <div class="layer-num">SCREEN 05</div>
+    <div class="layer-name">Revenue Thermostat →</div>
+    <div class="layer-desc">The control system visualization — three bands, five rails, closed loops.</div>
+  </div>
+
+  <h2 class="doc-h2">Tools</h2>
+
+  <div class="layer-card">
+    <div class="layer-num">TOOL</div>
+    <div class="layer-name">OpptyCon — Revenue Physics Engine</div>
+    <div class="layer-desc">Multi-segment scenario modeling. Pipeline physics, cost structures, coverage math, phase-shifted demand across 24+ month horizons.</div>
+    <div style="margin-top:12px">
+      <a href="#" style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--accent);text-decoration:none;letter-spacing:0.04em">Launch OpptyCon →</a>
+    </div>
+  </div>
+
+  <div class="doc-nav">
+    <a class="doc-nav-link" onclick="nav('provenance')">← Provenance</a>
+    <span></span>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ═══ ROUTING ═══
+const pages = [
+  'overview','spine','thermostat','agents','sovereignty',
+  'motion','identity','infrastructure','opptycon','lexicon',
+  'provenance','library'
+];
+
+function nav(page) {
+  // Hide all pages
+  document.querySelectorAll('.doc-page').forEach(p => p.classList.remove('active'));
+  // Show target
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+  // Update sidebar
+  document.querySelectorAll('.side-link').forEach(l => {
+    l.classList.toggle('active', l.dataset.page === page);
+  });
+  // Update hash
+  history.pushState(null, '', '#' + page);
+  // Scroll to top
+  document.querySelector('.main').scrollTo(0, 0);
+  window.scrollTo(0, 0);
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Handle initial hash
+function handleHash() {
+  const hash = location.hash.replace('#', '');
+  if (hash && pages.includes(hash)) {
+    nav(hash);
+  }
+}
+
+window.addEventListener('hashchange', handleHash);
+window.addEventListener('DOMContentLoaded', handleHash);
+</script>
+
+</body>
+</html>
