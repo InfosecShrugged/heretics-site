@@ -9,11 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <style>
 /* ═══ DUAL-ACCENT SYSTEM ═══
-   Light surfaces (bg-base, bg-surface, bg-white): Rose #D64074
-   Dark surfaces  (bg-inverse, bg-code, footer):   Lime #C8FF6E
+   Light surfaces: Rose #D64074 for text accents, links, borders
+   Light surfaces: Lime #C8FF6E for fills, badges, dots, highlights, buttons
+   Dark surfaces:  Lime #C8FF6E for everything
    Logo mark:     Black #111 on light, Lime #C8FF6E on dark
-   Never use lime as text/accent on light backgrounds.
-   Never use rose as text/accent on dark backgrounds.
+   Rule: Lime never appears as TEXT on light. Lime as FILL on light is great.
 ═══════════════════════════════ */
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
@@ -126,7 +126,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 }
 .hero-h1 em {
   font-style: normal;
-  background: linear-gradient(transparent 60%, rgba(214,64,116,0.15) 60%);
+  background: linear-gradient(transparent 55%, rgba(200,255,110,0.30) 55%);
 }
 .hero-sub {
   font-family: var(--font-mono); font-size: 13px; font-weight: 400;
@@ -146,6 +146,11 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 .signal-value {
   font-family: var(--font-display); font-size: 28px; font-weight: 300;
   letter-spacing: -0.03em; color: var(--ink); line-height: 1;
+  display: flex; align-items: center; gap: 8px;
+}
+.signal-value::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-lime); flex-shrink: 0;
 }
 .signal-value .accent-hl {
   color: var(--accent-rose);
@@ -192,6 +197,11 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   font-family: var(--font-mono); font-size: 12px; font-weight: 500;
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--border-strong);
   white-space: nowrap;
+  display: flex; align-items: center; gap: 8px;
+}
+.trust-item::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent-lime); flex-shrink: 0;
 }
 
 /* ═══ FEATURES (dark section) ═══ */
@@ -309,12 +319,14 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 }
 .doc-card {
   background: var(--bg-white); border: 1px solid var(--border-mid);
+  border-top: 2px solid var(--accent-lime);
   border-radius: 8px; padding: 28px 24px;
   text-decoration: none; color: inherit;
   transition: all var(--dur) var(--ease);
 }
 .doc-card:hover {
   border-color: var(--accent-rose);
+  border-top-color: var(--accent-lime);
   box-shadow: 0 2px 12px rgba(214,64,116,0.08);
   transform: translateY(-2px);
 }
@@ -479,7 +491,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
     </div>
   </div>
   <div class="hero-right">
-    <img class="hero-img" src="assets/hero-char.png" alt="NetherOps illustration">
+    <img class="hero-img" src="assets/hero-char.webp" alt="NetherOps illustration">
   </div>
 </section>
 
@@ -557,7 +569,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
         <div class="opc-feat">Attrition modeling + monthly weight distributions</div>
       </div>
       <div style="display:flex;gap:12px">
-        <a href="https://opptycon.netlify.app" class="btn btn-rose btn-md" data-opptycon-launch>Launch OpptyCon</a>
+        <a href="https://opptycon.netlify.app" class="btn btn-lime btn-md" data-opptycon-launch>Launch OpptyCon</a>
         <a href="/doctrine/#opptycon" class="btn btn-secondary btn-md">Read the Docs</a>
       </div>
     </div>
@@ -613,7 +625,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   <p class="cta-sub">30-minute briefing. We'll map your current GTM to the governed architecture and show you what changes.</p>
   <div class="cta-actions">
     <a href="#" class="btn btn-primary btn-lg btn-dot">Book a Briefing</a>
-    <a href="/doctrine/" class="btn btn-rose btn-lg">Read the Doctrine</a>
+    <a href="/doctrine/" class="btn btn-lime btn-lg">Read the Doctrine</a>
   </div>
 </section>
 

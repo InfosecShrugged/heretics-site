@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About · NetherOps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<style>
+/* ═══ DUAL-ACCENT SYSTEM ═══
+   Light surfaces: Rose #D64074
+   Dark surfaces:  Lime #C8FF6E
+   Logo mark:      Black #111 on light, Lime #C8FF6E on dark
+═══════════════════════════════ */
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+:root {
+  --bg-base:      #EBEBEB;
+  --bg-surface:   #F4F4F2;
+  --bg-white:     #FFFFFF;
+  --bg-inverse:   #0F0F0F;
+  --bg-raised:    #E2E2DF;
+  --ink:          #111111;
+  --ink-mid:      #555555;
+  --ink-muted:    #909090;
+  --ink-inv:      #F5F5F3;
+  --ink-inv-mid:  #AAAAAA;
+  --ink-code:     #C8FF6E;
+  --border-subtle: rgba(0,0,0,0.07);
+  --border-mid:    rgba(0,0,0,0.13);
+  --border-strong: rgba(0,0,0,0.28);
+  --accent-rose:   #D64074;
+  --accent-lime:   #C8FF6E;
+  --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono:    'Chivo Mono', 'Space Mono', 'Courier New', monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 200ms;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { font-family: var(--font-display); background: var(--bg-base); color: var(--ink); overflow-x: hidden; }
+
+/* ═══ NAV ═══ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 76px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  background: rgba(235,235,235,0.85);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-mid);
+}
+.nav-left { display: flex; align-items: center; }
+.nav-logo { height: 32px; width: auto; display: block; }
+.nav-links { display: flex; gap: 4px; }
+.nav-link {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);
+  text-decoration: none; padding: 10px 16px; border-radius: 4px;
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.nav-link:hover { color: var(--ink); background: var(--bg-raised); }
+.nav-link.active { color: var(--accent-rose); }
+.nav-right { display: flex; align-items: center; gap: 14px; }
+.btn-nav {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-weight: 600; font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  padding: 10px 20px; border-radius: 4px; cursor: pointer;
+  background: var(--ink); color: var(--ink-inv); border: 1px solid var(--ink);
+  transition: all var(--dur) var(--ease);
+}
+.btn-nav:hover { opacity: 0.8; }
+.btn-nav::after { content: '⠿'; font-size: 10px; opacity: 0.4; }
+
+/* ═══ HERO ═══ */
+.about-hero {
+  padding: 160px 48px 80px;
+  max-width: 780px;
+}
+.about-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.about-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--ink-muted); }
+.about-h1 {
+  font-family: var(--font-display); font-size: clamp(36px, 5vw, 60px);
+  font-weight: 400; line-height: 1.1; letter-spacing: -0.035em;
+  margin-bottom: 28px;
+}
+.about-lead {
+  font-family: var(--font-display); font-size: 20px; font-weight: 300;
+  line-height: 1.65; color: var(--ink-mid); max-width: 600px;
+}
+
+/* ═══ NARRATIVE BODY ═══ */
+.narrative {
+  padding: 0 48px 96px;
+  max-width: 780px;
+}
+.n-section {
+  margin-bottom: 64px;
+}
+.n-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-rose);
+  margin-bottom: 20px; padding-top: 32px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex; align-items: center; gap: 10px;
+}
+.n-label::after { content: ''; flex: 1; height: 1px; background: var(--border-subtle); }
+.n-h2 {
+  font-family: var(--font-display); font-size: clamp(24px, 3vw, 36px);
+  font-weight: 400; letter-spacing: -0.025em; line-height: 1.2;
+  margin-bottom: 20px;
+}
+.n-p {
+  font-family: var(--font-display); font-size: 16px; font-weight: 400;
+  line-height: 1.8; color: var(--ink-mid); margin-bottom: 20px;
+  max-width: 620px;
+}
+.n-p strong { color: var(--ink); font-weight: 400; }
+.n-p em {
+  font-style: normal; color: var(--accent-rose); font-weight: 400;
+}
+
+/* Pull quotes */
+.n-pull {
+  font-family: var(--font-display); font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 300; line-height: 1.45; letter-spacing: -0.02em;
+  color: var(--ink); margin: 48px 0;
+  padding-left: 24px;
+  border-left: 2px solid var(--accent-rose);
+}
+
+/* Concept cards (the 3-part structure) */
+.concept-grid {
+  display: grid; grid-template-columns: 1fr; gap: 12px;
+  margin: 40px 0;
+}
+.concept-card {
+  background: var(--bg-white); border: 1px solid var(--border-mid);
+  border-radius: 10px; padding: 28px 28px 24px;
+  transition: border-color var(--dur) var(--ease);
+}
+.concept-card:hover { border-color: var(--accent-rose); }
+.concept-mono {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-rose);
+  margin-bottom: 8px;
+}
+.concept-name {
+  font-family: var(--font-display); font-size: 20px; font-weight: 400;
+  letter-spacing: -0.02em; margin-bottom: 6px;
+}
+.concept-desc {
+  font-family: var(--font-display); font-size: 14px; font-weight: 400;
+  color: var(--ink-mid); line-height: 1.65;
+}
+.concept-meta {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted);
+  margin-top: 12px; letter-spacing: 0.02em;
+}
+
+/* Bullet list (OpptyCon mechanics) */
+.n-list {
+  list-style: none; padding: 0; margin: 24px 0;
+}
+.n-list li {
+  font-family: var(--font-display); font-size: 15px; font-weight: 400;
+  color: var(--ink-mid); line-height: 1.7;
+  padding: 10px 0 10px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+.n-list li::before {
+  content: '→'; position: absolute; left: 0;
+  color: var(--accent-rose); font-weight: 500;
+}
+
+/* Dark section (Heretics) */
+.heretics-section {
+  background: var(--bg-inverse); border-radius: 20px;
+  margin: 0 16px 8px; padding: 80px 48px;
+}
+.h-label {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.h-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+.h-h2 {
+  font-family: var(--font-display); font-size: clamp(24px, 3vw, 36px);
+  font-weight: 400; letter-spacing: -0.025em; line-height: 1.2;
+  color: var(--ink-inv); margin-bottom: 20px; max-width: 560px;
+}
+.h-p {
+  font-family: var(--font-display); font-size: 16px; font-weight: 400;
+  line-height: 1.8; color: var(--ink-inv-mid); margin-bottom: 20px;
+  max-width: 560px;
+}
+.h-p strong { color: var(--ink-inv); font-weight: 400; }
+.h-pull {
+  font-family: var(--font-display); font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 300; line-height: 1.45; letter-spacing: -0.02em;
+  color: var(--ink-inv); margin: 40px 0;
+  padding-left: 24px;
+  border-left: 2px solid var(--accent-lime);
+}
+
+/* CTA */
+.about-cta {
+  padding: 96px 48px; text-align: center;
+}
+.cta-h2 {
+  font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400; letter-spacing: -0.025em; line-height: 1.12;
+  margin-bottom: 16px;
+}
+.cta-sub {
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink-mid);
+  line-height: 1.65; max-width: 440px; margin: 0 auto 40px;
+  letter-spacing: 0.04em;
+}
+.cta-actions { display: flex; gap: 12px; justify-content: center; }
+.btn-rose {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-weight: 600; font-size: 13px;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  padding: 14px 32px; border-radius: 4px; cursor: pointer;
+  background: var(--accent-rose); color: #fff; border: 1px solid var(--accent-rose);
+  transition: all var(--dur) var(--ease);
+}
+.btn-rose:hover { opacity: 0.85; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-weight: 600; font-size: 13px;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  padding: 14px 32px; border-radius: 4px; cursor: pointer;
+  background: transparent; color: var(--ink); border: 1px solid var(--border-strong);
+  transition: all var(--dur) var(--ease);
+}
+.btn-secondary:hover { background: var(--bg-raised); }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  background: var(--bg-inverse); border-radius: 20px 20px 0 0;
+  margin: 8px 16px 0; padding: 64px 48px 32px;
+}
+.footer-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 48px; margin-bottom: 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.footer-brand-sub {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-inv-mid);
+  letter-spacing: 0.04em; max-width: 260px; line-height: 1.6;
+}
+.footer-cols { display: flex; gap: 64px; }
+.footer-col-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25);
+  margin-bottom: 16px;
+}
+.footer-col-links { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+.footer-col-links a {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-inv-mid);
+  text-decoration: none; letter-spacing: 0.03em;
+  transition: color var(--dur) var(--ease);
+}
+.footer-col-links a:hover { color: var(--ink-inv); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+.footer-copy {
+  font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.15);
+  letter-spacing: 0.04em;
+}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.about-hero > * {
+  opacity: 0; animation: fadeUp 0.7s var(--ease) forwards;
+}
+.about-hero > :nth-child(1) { animation-delay: 0.1s; }
+.about-hero > :nth-child(2) { animation-delay: 0.2s; }
+.about-hero > :nth-child(3) { animation-delay: 0.35s; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 900px) {
+  .nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .about-hero { padding: 120px 24px 48px; }
+  .narrative { padding: 0 24px 64px; }
+  .heretics-section { padding: 48px 24px; margin: 0 8px 8px; }
+  .about-cta { padding: 64px 24px; }
+  .footer { padding: 48px 24px 24px; margin: 8px 8px 0; }
+  .footer-top { flex-direction: column; gap: 32px; }
+  .footer-cols { flex-wrap: wrap; gap: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav">
+  <div class="nav-left">
+    <a href="/"><img src="/assets/netherops-logo-black.svg" alt="NetherOps" class="nav-logo"></a>
+  </div>
+  <div class="nav-links">
+    <a href="/doctrine/" class="nav-link">Doctrine</a>
+    <a href="/#services" class="nav-link">Services</a>
+    <a href="/doctrine/#opptycon" class="nav-link">OpptyCon</a>
+    <a href="/doctrine/#library" class="nav-link">Library</a>
+    <a href="/about.html" class="nav-link active">About</a>
+  </div>
+  <div class="nav-right">
+    <a href="/#briefing" class="btn-nav">Book a Briefing</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="about-hero">
+  <div class="about-eyebrow">About NetherOps</div>
+  <h1 class="about-h1">The hidden layer where capital becomes opportunity.</h1>
+  <p class="about-lead">Modern companies generate enormous amounts of activity. Campaigns launch, deals move through stages, dashboards multiply. Yet the system governing revenue is often surprisingly primitive.</p>
+</section>
+
+<!-- ═══ NARRATIVE ═══ -->
+<div class="narrative">
+
+  <!-- THE PROBLEM -->
+  <div class="n-section">
+    <div class="n-label">The Problem</div>
+    <p class="n-p">Marketing measures leads. Sales measures pipeline. Finance measures bookings. Each function produces its own numbers, its own forecasts, and its own explanations for why the quarter went the way it did.</p>
+    <p class="n-p">The result is <strong>motion without clarity</strong>.</p>
+    <p class="n-p">NetherOps was created to address that problem.</p>
+  </div>
+
+  <!-- THE APPROACH -->
+  <div class="n-section">
+    <div class="n-label">The Approach</div>
+    <h2 class="n-h2">Revenue as a governed system.</h2>
+    <p class="n-p">At its core, NetherOps treats revenue as a governed system, not a collection of disconnected departments. Instead of asking only how much pipeline exists, the platform asks a deeper question:</p>
+    <div class="n-pull">How does opportunity actually move through an organization?</div>
+    <p class="n-p">Every company has a hidden operational layer where capital, attention, and effort converge to produce opportunity. That layer is rarely visible. It exists between marketing, sales, operations, and finance — often understood intuitively but almost never modeled.</p>
+    <p class="n-p">NetherOps makes that layer <em>explicit</em>.</p>
+  </div>
+
+  <!-- OPPTYCON -->
+  <div class="n-section">
+    <div class="n-label">The Engine</div>
+    <h2 class="n-h2">Opptycon — the opportunity physics engine.</h2>
+    <p class="n-p">At the center of NetherOps is Opptycon, the opportunity physics engine. Opptycon models how opportunity forms, accelerates, stalls, and converts inside a company. Rather than treating pipeline as a static number on a dashboard, the engine examines the mechanics behind it:</p>
+    <ul class="n-list">
+      <li>How capital is deployed across channels and motions</li>
+      <li>How demand turns into opportunity through governed stages</li>
+      <li>How opportunity converts into revenue under real constraints</li>
+      <li>Where friction or distortion enters the system</li>
+    </ul>
+    <p class="n-p">In other words, Opptycon analyzes the flow of opportunity across the entire operating model.</p>
+    <div class="n-pull">The goal is not more analytics. The goal is operational gravity.</div>
+    <p class="n-p">When opportunity flows correctly, growth compounds. When it does not, companies burn capital chasing signals that never convert.</p>
+  </div>
+
+  <!-- THE STRUCTURE -->
+  <div class="n-section">
+    <div class="n-label">The Structure</div>
+    <h2 class="n-h2">Three layers of a single system.</h2>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="concept-mono">Philosophy</div>
+        <div class="concept-name">Heretics</div>
+        <div class="concept-desc">The willingness to question orthodoxy. Every meaningful advance in a discipline begins when someone challenges the assumptions everyone else quietly accepts. Heretics is the independent research and development group behind NetherOps — focused on revenue systems, economic modeling, and operational governance.</div>
+        <div class="concept-meta">The parent philosophy</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-mono">Operations</div>
+        <div class="concept-name">NetherOps</div>
+        <div class="concept-desc">The hidden operational layer beneath the surface economy. Where capital deployment, demand generation, pipeline governance, and revenue attribution converge into a single governed system. Not a dashboard. Not a tool. An operating layer that connects every function that touches revenue.</div>
+        <div class="concept-meta">The operational layer → netherops.ai</div>
+      </div>
+      <div class="concept-card">
+        <div class="concept-mono">Engine</div>
+        <div class="concept-name">Opptycon</div>
+        <div class="concept-desc">The observatory and engine that sees opportunity forming. Opportunity is the atomic unit of revenue — if capital is the blood of a company, opportunity is the metabolism. Opptycon models the physics of how opportunity flows, where it stalls, and what governs its conversion.</div>
+        <div class="concept-meta">The engine that governs opportunity flow → opptycon.netlify.app</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY THIS EXISTS -->
+  <div class="n-section">
+    <div class="n-label">Origin</div>
+    <h2 class="n-h2">Why this exists.</h2>
+    <p class="n-p">NetherOps emerged from years spent operating inside high-growth technology and cybersecurity companies, where one pattern appeared again and again:</p>
+    <p class="n-p">Organizations invested heavily in tools, dashboards, and reporting systems, yet the connection between capital deployment and revenue outcomes remained opaque.</p>
+    <p class="n-p">Pipeline appeared and disappeared without clear explanation. Marketing, sales, and finance each told slightly different stories about the same numbers.</p>
+    <p class="n-p"><strong>What was missing was a governing model.</strong></p>
+    <p class="n-p">NetherOps exists to provide that model.</p>
+  </div>
+
+</div>
+
+<!-- ═══ HERETICS (dark section) ═══ -->
+<section class="heretics-section">
+  <div class="h-label">Heretics</div>
+  <h2 class="h-h2">Every orthodoxy was once a heresy that won.</h2>
+  <div class="h-p">NetherOps is built by Heretics, an independent research and development group focused on revenue systems, economic modeling, and operational governance.</div>
+  <div class="h-p"><strong>The name is intentional.</strong></div>
+  <div class="h-p">Every meaningful advance in a discipline begins when someone questions the assumptions everyone else quietly accepts. That GTM is a department, not a system. That pipeline is a number, not a physics problem. That revenue governance means more dashboards.</div>
+  <div class="h-pull">Heretics exists to explore those questions — about growth, capital efficiency, and the mechanics that actually drive revenue inside modern companies.</div>
+  <div class="h-p">The governed revenue architecture, the seven-layer spine, the agent enforcement model, the opportunity physics engine — these are the outputs of that exploration. They are published openly. The competitive advantage is not the blueprint. It is the engineering to implement and govern it.</div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="about-cta">
+  <h2 class="cta-h2">Mission control for opportunity.</h2>
+  <p class="cta-sub">If you're building a GTM function and want it governed from the start — or fixing one that isn't — we should talk.</p>
+  <div class="cta-actions">
+    <a href="/#briefing" class="btn-rose">Book a Briefing</a>
+    <a href="/doctrine/" class="btn-secondary">Read the Doctrine</a>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <div style="margin-bottom:8px"><img src="/assets/netherops-logo-inv.svg" alt="NetherOps" style="height:24px;width:auto;"></div>
+      <div class="footer-brand-sub">GTM engineering for governed revenue. AI-first. Threshold-governed. Pre-seed to pre-IPO.</div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-label">Platform</div>
+        <ul class="footer-col-links">
+          <li><a href="/doctrine/#opptycon" data-opptycon-launch>OpptyCon</a></li>
+          <li><a href="/doctrine/">Doctrine</a></li>
+          <li><a href="/doctrine/#library">Library</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-label">Services</div>
+        <ul class="footer-col-links">
+          <li><a href="/#services">Fractional CMO</a></li>
+          <li><a href="/#services">GTM Architecture</a></li>
+          <li><a href="/#services">RevOps</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-label">Company</div>
+        <ul class="footer-col-links">
+          <li><a href="/about.html">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 NetherOps · All rights reserved</span>
+  </div>
+</footer>
+
+<script>
+const OPPTYCON_URL = 'https://opptycon.netlify.app';
+document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
+  el.href = OPPTYCON_URL;
+  el.target = '_blank';
+});
+</script>
+</body>
+</html>
