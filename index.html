@@ -557,7 +557,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
         <div class="opc-feat">Attrition modeling + monthly weight distributions</div>
       </div>
       <div style="display:flex;gap:12px">
-        <a href="#" class="btn btn-rose btn-md">Launch OpptyCon</a>
+        <a href="https://opptycon.netlify.app" class="btn btn-rose btn-md" data-opptycon-launch>Launch OpptyCon</a>
         <a href="/doctrine/#opptycon" class="btn btn-secondary btn-md">Read the Docs</a>
       </div>
     </div>
@@ -628,7 +628,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
       <div>
         <div class="footer-col-label">Platform</div>
         <ul class="footer-col-links">
-          <li><a href="#">OpptyCon</a></li>
+          <li><a href="/doctrine/#opptycon" data-opptycon-launch>OpptyCon</a></li>
           <li><a href="/doctrine/">Doctrine</a></li>
           <li><a href="/doctrine/#library">Library</a></li>
         </ul>
@@ -656,5 +656,14 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   </div>
 </footer>
 
+<script>
+/* ═══ OPPTYCON URL — change this one line when Netlify deploy is ready ═══ */
+const OPPTYCON_URL = 'https://opptycon.netlify.app';
+document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
+  if (el.getAttribute('href') === '/doctrine/#opptycon') return;
+  el.href = OPPTYCON_URL;
+  el.target = '_blank';
+});
+</script>
 </body>
 </html>

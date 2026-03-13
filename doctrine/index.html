@@ -849,7 +849,7 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
   <p class="doc-p">OpptyCon operationalizes Layer 01 (Economic Model) and Layer 03 (Pipeline Architecture). The outputs feed directly into budget allocation decisions and coverage ratio monitoring. When the Coverage Agent detects a gap, OpptyCon models the correction scenarios.</p>
 
   <div style="margin:32px 0;display:flex;gap:12px">
-    <a href="#" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:12px 24px;background:var(--accent);color:#fff;border-radius:4px;text-decoration:none;transition:opacity .2s">Launch OpptyCon ▶</a>
+    <a href="#" data-opptycon-launch style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:12px 24px;background:var(--accent);color:#fff;border-radius:4px;text-decoration:none;transition:opacity .2s">Launch OpptyCon ▶</a>
   </div>
 
   <div class="doc-nav">
@@ -929,45 +929,189 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
 <div class="doc-page" id="page-library">
   <div class="doc-eyebrow">Reference</div>
   <h1 class="doc-h1">Library</h1>
-  <p class="doc-lead">The complete architecture, open. The competitive advantage is not the blueprint — it is the engineering to build and govern it.</p>
+  <p class="doc-lead">The complete governed revenue architecture — every screen, tool, framework, and reference. Open by design. The competitive advantage is not the blueprint. It is the engineering to build and govern it.</p>
 
   <h2 class="doc-h2">Architecture Screens</h2>
+  <p class="doc-p">Nine architecture screens define the governed revenue system. Each screen is a standalone reference — a layer of the control plane you can study, share, and build from.</p>
 
   <div class="layer-card" style="cursor:pointer" onclick="nav('spine')">
-    <div class="layer-num">SCREEN 01</div>
+    <div class="layer-num">SCREEN 01 · <span style="color:var(--accent)">DOCS</span></div>
     <div class="layer-name">Seven-Layer Spine →</div>
-    <div class="layer-desc">Agents, formulas, governance layers — the complete architecture.</div>
+    <div class="layer-desc">The foundational architecture. Seven horizontal layers from Economic Model through Attribution & Feedback. Agents, formulas, governance constraints, and component maps for every layer. Start here.</div>
+    <div class="layer-components">
+      <span class="layer-chip">7 layers</span>
+      <span class="layer-chip">5 agents</span>
+      <span class="layer-chip">35+ components</span>
+    </div>
   </div>
-  <div class="layer-card" style="cursor:pointer" onclick="nav('sovereignty')">
-    <div class="layer-num">SCREEN 02</div>
-    <div class="layer-name">Sovereignty Map →</div>
-    <div class="layer-desc">Build vs buy decision matrix for every stack layer.</div>
-  </div>
-  <div class="layer-card" style="cursor:pointer" onclick="nav('motion')">
-    <div class="layer-num">SCREEN 03</div>
-    <div class="layer-name">Motion Map →</div>
-    <div class="layer-desc">Seven acquisition mode lanes with governance connections.</div>
-  </div>
-  <div class="layer-card" style="cursor:pointer" onclick="nav('agents')">
-    <div class="layer-num">SCREEN 04</div>
-    <div class="layer-name">Agent Specifications →</div>
-    <div class="layer-desc">Registry, build sequence, enforcement templates.</div>
-  </div>
+
   <div class="layer-card" style="cursor:pointer" onclick="nav('thermostat')">
-    <div class="layer-num">SCREEN 05</div>
+    <div class="layer-num">SCREEN 02 · <span style="color:var(--accent)">DOCS</span></div>
     <div class="layer-name">Revenue Thermostat →</div>
-    <div class="layer-desc">The control system visualization — three bands, five rails, closed loops.</div>
+    <div class="layer-desc">The control system visualization. Three bands (set point, actuator, sensor), five vertical enforcement rails, and closed-loop feedback. The diagram that makes the entire architecture click — constraints cascade down, feedback flows up.</div>
+    <div class="layer-components">
+      <span class="layer-chip">3 bands</span>
+      <span class="layer-chip">5 agent rails</span>
+      <span class="layer-chip">4 feedback loops</span>
+    </div>
+  </div>
+
+  <div class="layer-card" style="cursor:pointer" onclick="nav('sovereignty')">
+    <div class="layer-num">SCREEN 03 · <span style="color:var(--accent)">DOCS</span></div>
+    <div class="layer-name">Sovereignty Map →</div>
+    <div class="layer-desc">Build vs buy vs integrate — for every layer of the stack. Four sovereignty tiers (Own, Build On, Configure, Rent) mapped to each spine layer. The decision framework for where you need control and where you can rent.</div>
+    <div class="layer-components">
+      <span class="layer-chip">4 tiers</span>
+      <span class="layer-chip">7 layer decisions</span>
+      <span class="layer-chip">Buy/build matrix</span>
+    </div>
+  </div>
+
+  <div class="layer-card" style="cursor:pointer" onclick="nav('motion')">
+    <div class="layer-num">SCREEN 04 · <span style="color:var(--accent)">DOCS</span></div>
+    <div class="layer-name">Motion Map →</div>
+    <div class="layer-desc">Seven acquisition modes from inbound content through community & events. Each mode governed by spine-layer constraints, with channel-specific CAC ceilings, conversion thresholds, and attribution connections. No orphan campaigns.</div>
+    <div class="layer-components">
+      <span class="layer-chip">7 modes</span>
+      <span class="layer-chip">Governance rules per mode</span>
+      <span class="layer-chip">Coverage agent integration</span>
+    </div>
+  </div>
+
+  <div class="layer-card" style="cursor:pointer" onclick="nav('agents')">
+    <div class="layer-num">SCREEN 05 · <span style="color:var(--accent)">DOCS</span></div>
+    <div class="layer-name">Agent Specifications →</div>
+    <div class="layer-desc">Complete registry for all five enforcement agents — P&L, Stage Gate, Coverage, Attribution, and Orchestration. Span definitions, threshold parameters, enforcement behaviors, conflict resolution patterns, and build sequence.</div>
+    <div class="layer-components">
+      <span class="layer-chip">5 agents</span>
+      <span class="layer-chip">Span maps</span>
+      <span class="layer-chip">Conflict resolution</span>
+    </div>
+  </div>
+
+  <div class="layer-card" style="cursor:pointer" onclick="nav('identity')">
+    <div class="layer-num">SCREEN 06 · <span style="color:var(--accent)">DOCS</span></div>
+    <div class="layer-name">Identity Graph →</div>
+    <div class="layer-desc">Contact and account resolution across the full GTM surface. Deduplication, hierarchy mapping, buying committee identification, and cross-system unification. The prerequisite for every governance function.</div>
+    <div class="layer-components">
+      <span class="layer-chip">Contact resolution</span>
+      <span class="layer-chip">Account matching</span>
+      <span class="layer-chip">Relationship mapping</span>
+    </div>
+  </div>
+
+  <div class="layer-card" style="cursor:pointer" onclick="nav('infrastructure')">
+    <div class="layer-num">SCREEN 07 · <span style="color:var(--accent)">DOCS</span></div>
+    <div class="layer-name">Infrastructure →</div>
+    <div class="layer-desc">The technical stack mapped to spine layers. Six execution domains — Signal Surface, Data & Enrichment, Orchestration, System of Record, Attribution & Finance, Forecasting — with tool examples and governance connections.</div>
+    <div class="layer-components">
+      <span class="layer-chip">6 domains</span>
+      <span class="layer-chip">20+ tool references</span>
+      <span class="layer-chip">Spine-layer mapping</span>
+    </div>
+  </div>
+
+  <div class="layer-card" style="cursor:pointer" onclick="nav('provenance')">
+    <div class="layer-num">SCREEN 08 · <span style="color:var(--accent)">DOCS</span></div>
+    <div class="layer-name">Provenance →</div>
+    <div class="layer-desc">Data lineage and decision audit trail. Every number traces to its source, every governance decision traces to a constraint. The chain from "$400K paid social" back to "board-approved business plan" — documented and queryable.</div>
+    <div class="layer-components">
+      <span class="layer-chip">Decision audit trail</span>
+      <span class="layer-chip">Data lineage</span>
+      <span class="layer-chip">Constraint traceability</span>
+    </div>
+  </div>
+
+  <div class="layer-card" style="cursor:pointer" onclick="nav('lexicon')">
+    <div class="layer-num">SCREEN 09 · <span style="color:var(--accent)">DOCS</span></div>
+    <div class="layer-name">Lexicon →</div>
+    <div class="layer-desc">Complete terminology for the governed revenue architecture. Precise definitions for governed revenue, set point, control plane, constraint cascade, feedback loop, coverage ratio, phase shift, protected margin, and more.</div>
+    <div class="layer-components">
+      <span class="layer-chip">8+ core terms</span>
+      <span class="layer-chip">Cross-referenced</span>
+      <span class="layer-chip">Disambiguation</span>
+    </div>
   </div>
 
   <h2 class="doc-h2">Tools</h2>
+  <p class="doc-p">Interactive engines that operationalize the architecture. Model scenarios, simulate constraints, and test governance responses before committing resources.</p>
+
+  <div class="agent-card" style="cursor:pointer" onclick="nav('opptycon')">
+    <div class="agent-name">OpptyCon — Revenue Physics Engine</div>
+    <div class="agent-span">Operationalizes: Layer 01 (Economic Model) + Layer 03 (Pipeline Architecture)</div>
+    <div class="agent-desc">Multi-segment scenario modeling across 24+ month horizons. Dual-axis cost model (fixed vs variable S&M), coverage ratio enforcement, phase-shifted funnel physics (Q4 marketing → Q1 pipeline), attrition modeling, and monthly demand weighting. The computational engine behind every budget and coverage decision.</div>
+    <div style="margin-top:16px;display:flex;gap:12px;align-items:center">
+      <a href="#" data-opptycon-launch style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:8px 18px;background:var(--accent);color:#fff;border-radius:4px;text-decoration:none">Launch OpptyCon ▶</a>
+      <a href="#" onclick="event.preventDefault();nav('opptycon')" style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--accent);text-decoration:none;letter-spacing:0.04em">Read the Docs →</a>
+    </div>
+  </div>
+
+  <div class="agent-card">
+    <div class="agent-name">Revenue Thermostat — Interactive Visualization</div>
+    <div class="agent-span">Visualizes: Three-band control system + agent enforcement rails</div>
+    <div class="agent-desc">Interactive four-band architecture diagram with clickable agent rails and animated feedback loop traces. Click any agent to see its enforcement span light up across bands. Trigger feedback scenarios (full thermostat loop, forecast→budget correction, attribution→stages, CAC breach) and watch constraints cascade in real time.</div>
+    <div style="margin-top:16px">
+      <a href="#" onclick="event.preventDefault();nav('thermostat')" style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--accent);text-decoration:none;letter-spacing:0.04em">View Thermostat Docs →</a>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Frameworks</h2>
+  <p class="doc-p">Repeatable decision frameworks extracted from the architecture. Each framework is a structured approach to a specific GTM governance problem.</p>
 
   <div class="layer-card">
-    <div class="layer-num">TOOL</div>
-    <div class="layer-name">OpptyCon — Revenue Physics Engine</div>
-    <div class="layer-desc">Multi-segment scenario modeling. Pipeline physics, cost structures, coverage math, phase-shifted demand across 24+ month horizons.</div>
-    <div style="margin-top:12px">
-      <a href="#" style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--accent);text-decoration:none;letter-spacing:0.04em">Launch OpptyCon →</a>
-    </div>
+    <div class="layer-num">FRAMEWORK</div>
+    <div class="layer-name">Constraint-First GTM Planning</div>
+    <div class="layer-desc">Start with economics, not campaigns. Define protected margin → derive coverage ratio → set pipeline targets → allocate budget by mode → enforce thresholds. The inverse of how most companies plan GTM.</div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">FRAMEWORK</div>
+    <div class="layer-name">Sovereignty Decision Matrix</div>
+    <div class="layer-desc">For each stack component: What is the switching cost? Does it touch governance logic? Is it a competitive differentiator? The answers map to Own / Build On / Configure / Rent. Applied per spine layer.</div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">FRAMEWORK</div>
+    <div class="layer-name">Agent Build Sequence</div>
+    <div class="layer-desc">Don't build all five agents at once. Start with P&L Agent (economic guardrails), then Stage Gate (pipeline integrity), then Coverage (volume enforcement), then Attribution (feedback quality), then Orchestration (conflict resolution). Each agent makes the next one more effective.</div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">FRAMEWORK</div>
+    <div class="layer-name">Feedback Loop Audit</div>
+    <div class="layer-desc">Map your current GTM: which loops are open (no upward feedback) vs closed (data feeds back into governance)? Most orgs have zero closed loops. The audit identifies which to close first for maximum governance impact.</div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">FRAMEWORK</div>
+    <div class="layer-name">Phase-Shift Calendar</div>
+    <div class="layer-desc">Map the time delay between investment and pipeline by channel. Paid search: 2-4 weeks. Content/SEO: 3-6 months. Outbound: 6-8 weeks. Events: 4-12 weeks. The calendar shows when each Q's investment actually produces pipeline — essential for budget timing.</div>
+  </div>
+
+  <h2 class="doc-h2">Reference</h2>
+  <p class="doc-p">Supporting materials, definitions, and background context for the governed revenue architecture.</p>
+
+  <div class="layer-card">
+    <div class="layer-num">REFERENCE</div>
+    <div class="layer-name">Stage-by-Stage Revenue Benchmarks</div>
+    <div class="layer-desc">Pre-Seed / Seed: finding signal, $0–$1M ARR. Series A: proving repeatability, $1–$5M ARR. Series B/C: scaling governed motion, $5–$30M ARR. Pre-IPO: institutionalizing the control plane, $30M+ ARR. Primary constraints and architecture priorities at each stage.</div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">REFERENCE</div>
+    <div class="layer-name">Governance vs Observation Checklist</div>
+    <div class="layer-desc">Is your dashboard governing or observing? 12-point diagnostic: Does it trigger actions? Does it enforce thresholds? Does data flow upward into budget decisions? Can it constrain spend autonomously? Most GTM tools score 1-2 out of 12.</div>
+  </div>
+
+  <div class="layer-card">
+    <div class="layer-num">REFERENCE</div>
+    <div class="layer-name">The $135M Scenario</div>
+    <div class="layer-desc">Side-by-side comparison: the same $135M revenue target modeled with ungoverned execution (stack of tools, manual attribution, open-loop budgets) vs governed architecture (constraint cascade, agent enforcement, closed-loop feedback). What changes, what breaks, what holds.</div>
+  </div>
+
+  <div class="callout" style="margin-top:32px">
+    <div class="callout-label">Open Architecture</div>
+    <div class="callout-text">This entire doctrine is published openly. Every screen, framework, and reference is available for study. The architecture is not the moat — the engineering to implement and govern it is. If you can build it yourself, you should. If you want it built for you, that's what NetherOps does.</div>
   </div>
 
   <div class="doc-nav">
@@ -1020,6 +1164,13 @@ function handleHash() {
 
 window.addEventListener('hashchange', handleHash);
 window.addEventListener('DOMContentLoaded', handleHash);
+
+/* ═══ OPPTYCON URL — change this one line when Netlify deploy is ready ═══ */
+const OPPTYCON_URL = 'https://opptycon.netlify.app';
+document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
+  el.href = OPPTYCON_URL;
+  el.target = '_blank';
+});
 </script>
 
 </body>
