@@ -6,9 +6,12 @@
 <title>Infrastructure Requirements — Governed Revenue Architecture</title>
 <meta name="description" content="Infrastructure stack for agentic GTM. Canonical data layer, event model, control plane services, tooling layer, HITL workflow, eval harness, observability.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--bk:#1a1918;--gy:#f0f0f0;--or:#ff6e3e;--pu:#bcbeff;--wh:#fff;--g50:#f8f8f8;--g3:#d9d9d9;--g4:#ccc;--g5:#b5b5b5;--g6:#a3a3a3;--g7:#747474;--g9:#2b2b2b;--ft:'Oxanium',sans-serif;--mn:'Space Mono',monospace;--sm:cubic-bezier(.32,.72,0,1);--ez:cubic-bezier(.215,.61,.355,1)}
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap');
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+:root{--bk:#111111;--gy:#EBEBEB;--or:#111111;--pu:#bcbeff;--wh:#fff;--g50:#F4F4F2;--g3:rgba(0,0,0,0.13);--g4:rgba(0,0,0,0.07);--g5:rgba(0,0,0,0.28);--g6:#909090;--g7:#555555;--g9:#0F0F0F;--ft:'TWK Everett','Helvetica Neue',sans-serif;--mn:'Chivo Mono','Space Mono',monospace;--sm:cubic-bezier(.32,.72,0,1);--ez:cubic-bezier(.215,.61,.355,1)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{font-family:var(--ft);font-weight:400;background:var(--gy);color:var(--bk);overflow-x:hidden;line-height:1.4}
@@ -27,7 +30,7 @@ a{color:inherit;text-decoration:none}
 .btn-out{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:transparent;color:var(--bk);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
 .btn-out:hover{background:var(--bk);color:var(--wh)}
 .btn-fill{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:var(--bk);color:var(--wh);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
-.btn-fill:hover{background:var(--or);border-color:var(--or);color:var(--bk)}
+.btn-fill:hover{background:#C8FF6E;border-color:#C8FF6E;color:#111111}
 .ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
 .ham span{display:block;width:18px;height:1.5px;background:var(--bk);transition:all .3s var(--ez)}
 .mob-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--gy);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
@@ -145,8 +148,8 @@ a{color:inherit;text-decoration:none}
 
 <nav class="nav" id="nav">
   <div class="n-logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-    <span class="n-word">governed revenue</span>
+    <img src="/netherops-logo.svg" alt="NetherOps" style="height:22px">
+    <span class="n-word">netherops</span>
   </div>
   <div class="nr">
     <a class="n-lnk" href="index.html">home</a>
@@ -155,7 +158,7 @@ a{color:inherit;text-decoration:none}
     <a class="n-lnk" href="sovereignty-map.html">sovereignty</a>
     <a class="n-lnk" href="lexicon.html">lexicon</a>
     <a class="n-lnk" href="provenance.html">provenance</a>
-    <a class="n-lnk" href="tools/revenue-physics-engine.html">physics engine</a>
+    <a class="n-lnk" href="tools/opptycon/">opptycon</a>
     <button class="ham" onclick="document.getElementById('mobMenu').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
@@ -166,7 +169,7 @@ a{color:inherit;text-decoration:none}
   </div>
   <a class="mob-lnk" href="spine-v4.html">spine</a>
   <a class="mob-lnk" href="agent-specs.html">agent specs</a>
-  <a class="mob-lnk" href="tools/revenue-physics-engine.html">physics engine</a>
+  <a class="mob-lnk" href="tools/opptycon/">opptycon</a>
   <a class="mob-lnk" href="sovereignty-map.html">sovereignty map</a>
   <a class="mob-lnk" href="split-funnel-map.html">motion map</a>
   <a class="mob-lnk" href="lexicon.html">lexicon</a>

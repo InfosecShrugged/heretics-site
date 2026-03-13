@@ -1,1 +1,2 @@
-# Netlify redirects\n
+# Netlify redirects
+/tools/revenue-physics-engine/*  /tools/opptycon/:splat  301

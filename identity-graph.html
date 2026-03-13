@@ -5,21 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Identity & Relationship Graph — Screen 05</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap');
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
 :root {
-  --bg:#f0f0f0;--bg-panel:#e8e8e8;--bg-card:#ffffff;--bg-hover:#f8f8f8;--bg-formula:#f5f5f5;
-  --text-1:#1a1918;--text-2:#747474;--text-3:#a3a3a3;
-  --border:rgba(24,23,15,.10);--border-s:rgba(24,23,15,.22);
-  --accent:#ff6e3e;--scrollbar:rgba(24,23,15,.18);
+  --bg:#EBEBEB;--bg-panel:#e8e8e8;--bg-card:#ffffff;--bg-hover:#F4F4F2;--bg-formula:#F4F4F2;
+  --text-1:#111111;--text-2:#555555;--text-3:#909090;
+  --border:rgba(0,0,0,0.07);--border-s:rgba(0,0,0,0.13);
+  --accent:#111111;--scrollbar:rgba(0,0,0,0.18);
   --c-graph:#1A5276;--c-resolve:#2E7D32;--c-role:#6C3483;--c-opp:#C0392B;
   --c-activity:#8B6914;--c-route:#5A3E8A;--c-danger:#B83030;--c-safe:#117A65;
   --ease:cubic-bezier(.4,0,.2,1);--fast:140ms;--med:300ms;--slow:600ms;
-  --font-sans:'Oxanium',system-ui,sans-serif;
-  --mn:'Space Mono','Menlo',monospace;
-  --font-serif:'Oxanium','Georgia',serif;
+  --font-sans:'TWK Everett','Helvetica Neue',sans-serif;
+  --mn:'Chivo Mono','Space Mono',monospace;
+  --font-serif:'TWK Everett','Georgia',serif;
 }
-.mode-warroom{--bg:#1a1918;--bg-panel:#222120;--bg-card:#2b2b2b;--bg-hover:#333231;--bg-formula:#252423;--text-1:#e8e8e8;--text-2:#a3a3a3;--text-3:#747474;--border:rgba(200,220,240,.07);--border-s:rgba(200,220,240,.16);--accent:#ff6e3e;--scrollbar:rgba(200,220,240,.18)}
-.mode-monument{--bg:#f8f8f8;--bg-panel:#f0f0f0;--bg-card:#ffffff;--bg-hover:#FFFFFF;--bg-formula:#f5f5f5;--text-1:#1a1918;--text-2:#747474;--text-3:#b5b5b5;--border:rgba(8,8,7,.07);--border-s:rgba(8,8,7,.18);--accent:#1a1918;--scrollbar:rgba(8,8,7,.18)}
+.mode-warroom{--bg:#0F0F0F;--bg-panel:#222120;--bg-card:#2b2b2b;--bg-hover:#333231;--bg-formula:#252423;--text-1:#F5F5F3;--text-2:#AAAAAA;--text-3:#747474;--border:rgba(200,220,240,.07);--border-s:rgba(200,220,240,.16);--accent:#111111;--scrollbar:rgba(200,220,240,.18)}
+.mode-monument{--bg:#F4F4F2;--bg-panel:#EBEBEB;--bg-card:#ffffff;--bg-hover:#FFFFFF;--bg-formula:#F4F4F2;--text-1:#111111;--text-2:#555555;--text-3:#909090;--border:rgba(8,8,7,.07);--border-s:rgba(8,8,7,.18);--accent:#111111;--scrollbar:rgba(8,8,7,.18)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:13px;-webkit-font-smoothing:antialiased}
 body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var(--text-1);min-height:100vh;transition:background var(--slow) var(--ease),color var(--slow) var(--ease)}
@@ -128,22 +131,22 @@ body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var
 
 .nav{position:sticky;top:0;z-index:100;padding:0 20px;height:56px;display:flex;align-items:center;background:var(--bg);border-bottom:1px solid var(--border-s,rgba(26,25,24,.15));transition:background .4s}
 .n-logo{display:flex;align-items:center;gap:8px}
-.n-logo svg{color:var(--text-1,#1a1918)}
+.n-logo svg{color:var(--text-1,#111111)}
 .nr{margin-left:auto;display:flex;align-items:center;gap:4px}
-.n-lnk{font-family:var(--mn,'Space Mono',monospace);font-size:9px;padding:5px 8px;color:var(--text-2,#747474);text-decoration:none;white-space:nowrap;transition:color .3s;text-transform:lowercase;letter-spacing:.02em}
-.n-lnk:hover{color:var(--text-1,#1a1918)}
-.btn-out2,.btn-fill2{font-family:var(--mn,'Space Mono',monospace);font-size:10px;padding:14px 16px;border:1px solid var(--text-1,#1a1918);cursor:pointer;transition:all .4s;white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:block;text-align:center;flex:1}
-.btn-out2{background:transparent;color:var(--text-1,#1a1918)}
-.btn-out2:hover{background:var(--text-1,#1a1918);color:var(--bg,#f0f0f0)}
-.btn-fill2{background:var(--text-1,#1a1918);color:var(--bg,#f0f0f0)}
-.btn-fill2:hover{background:var(--accent,#ff6e3e);border-color:var(--accent,#ff6e3e)}
+.n-lnk{font-family:var(--mn,'Chivo Mono',monospace);font-size:9px;padding:5px 8px;color:var(--text-2,#747474);text-decoration:none;white-space:nowrap;transition:color .3s;text-transform:lowercase;letter-spacing:.02em}
+.n-lnk:hover{color:var(--text-1,#111111)}
+.btn-out2,.btn-fill2{font-family:var(--mn,'Chivo Mono',monospace);font-size:10px;padding:14px 16px;border:1px solid var(--text-1,#111111);cursor:pointer;transition:all .4s;white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:block;text-align:center;flex:1}
+.btn-out2{background:transparent;color:var(--text-1,#111111)}
+.btn-out2:hover{background:var(--text-1,#111111);color:var(--bg,#EBEBEB)}
+.btn-fill2{background:var(--text-1,#111111);color:var(--bg,#EBEBEB)}
+.btn-fill2:hover{background:#C8FF6E;border-color:#C8FF6E;color:#111111}
 .ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
-.ham span{display:block;width:18px;height:1.5px;background:var(--text-1,#1a1918);transition:all .3s}
-.mob-nav{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--bg,#f0f0f0);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
+.ham span{display:block;width:18px;height:1.5px;background:var(--text-1,#111111);transition:all .3s}
+.mob-nav{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--bg,#EBEBEB);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
 .mob-nav.open{display:flex}
 .mob-btns2{display:flex;gap:8px;margin-bottom:24px}
-.mob-lnk{font-family:var(--mn,'Space Mono',monospace);font-size:12px;padding:14px 0;color:var(--text-2,#747474);border-bottom:1px solid var(--border,rgba(26,25,24,.08));text-transform:lowercase;letter-spacing:.02em;display:block;text-decoration:none}
-.mob-lnk:hover{color:var(--text-1,#1a1918)}
+.mob-lnk{font-family:var(--mn,'Chivo Mono',monospace);font-size:12px;padding:14px 0;color:var(--text-2,#747474);border-bottom:1px solid var(--border,rgba(26,25,24,.08));text-transform:lowercase;letter-spacing:.02em;display:block;text-decoration:none}
+.mob-lnk:hover{color:var(--text-1,#111111)}
 @media(max-width:960px){.n-lnk{display:none}.ham{display:flex}}
 
 @media(max-width:768px){
@@ -178,8 +181,8 @@ body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var
 
 <nav class="nav" id="pageNav">
   <div class="n-logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="width:22px;height:22px"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-    <span style="font-family:var(--mn);font-size:11px;font-weight:400;letter-spacing:.02em">governed revenue</span>
+    <img src="/netherops-logo.svg" alt="NetherOps" style="height:22px">
+    <span style="font-family:var(--mn);font-size:11px;font-weight:400;letter-spacing:.02em">netherops</span>
   </div>
   <div class="nr">
     <a class="n-lnk" href="index.html">home</a>
@@ -189,7 +192,7 @@ body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var
     <a class="n-lnk" href="lexicon.html">lexicon</a>
     <a class="n-lnk" href="identity-graph.html">identity</a>
     <a class="n-lnk" href="provenance.html">provenance</a>
-    <a class="n-lnk" href="tools/revenue-physics-engine.html">physics engine</a>
+    <a class="n-lnk" href="tools/opptycon/">opptycon</a>
     <button class="ham" onclick="document.getElementById('mobNav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
@@ -204,7 +207,7 @@ body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var
   <a class="mob-lnk" href="lexicon.html">lexicon</a>
   <a class="mob-lnk" href="identity-graph.html">identity graph</a>
   <a class="mob-lnk" href="provenance.html">provenance</a>
-  <a class="mob-lnk" href="tools/revenue-physics-engine.html">physics engine</a>
+  <a class="mob-lnk" href="tools/opptycon/">opptycon</a>
 </div>
 
 <div class="container">
