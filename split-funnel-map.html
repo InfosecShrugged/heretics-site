@@ -13,11 +13,11 @@
   --bg:#EBEBEB;--bg-panel:#E2E2DF;--bg-card:#ffffff;--bg-hover:#F4F4F2;--bg-formula:#F4F4F2;
   --text-1:#111111;--text-2:#555555;--text-3:#909090;
   --border:rgba(0,0,0,0.07);--border-s:rgba(0,0,0,0.13);
-  --accent:#111111;--scrollbar:rgba(24,23,15,.18);
+  --accent:#111111;--lm:#C8FF6E;--lmD:rgba(200,255,110,0.15);--scrollbar:rgba(24,23,15,.18);
   --c-capture:#1565C0;--c-condition:#5A7A2A;--c-cold:#5D6D7E;--c-intercept:#C0392B;
   --c-partner:#1A5276;--c-field:#6C3483;--c-expand:#117A65;
   --c-feedback:#2A4A6B;--c-gravity:#B83030;--c-agent:#5A3E8A;--c-security:#8B0000;
-  --ease:cubic-bezier(.4,0,.2,1);--fast:140ms;--med:300ms;--slow:600ms;
+  --ease:cubic-bezier(.22,1,.36,1);--fast:140ms;--med:300ms;--slow:600ms;
   --font-sans:'TWK Everett','Helvetica Neue',system-ui,sans-serif;
   --mn:'Chivo Mono','Space Mono',monospace;
   --font-serif:'TWK Everett','Georgia',serif;
@@ -46,7 +46,7 @@ body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var
 .header{margin-bottom:20px;padding-top:24px}
 .header-eyebrow{font-family:var(--mn);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px}
 .header h1{font-family:var(--font-serif);font-size:clamp(24px,3vw,34px);font-weight:300;line-height:1.1;color:var(--text-1);margin-bottom:8px;transition:color var(--slow)}
-.header h1 em{color:var(--accent);font-style:normal}
+.header h1 em{color:var(--lm);font-style:normal}
 .header p{font-size:12px;color:var(--text-2);max-width:720px;line-height:1.8}
 
 .principles{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
