@@ -1,4 +1,7 @@
 # Netlify redirects
 
+# app.heretics.io serves the full site (index-main.html)
+https://app.heretics.io/  /index-main.html  200
+
 # Old engine path
 /tools/revenue-physics-engine/*  /tools/opptycon/:splat  301
