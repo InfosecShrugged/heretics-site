@@ -129,8 +129,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   font-style: normal;
   background: linear-gradient(transparent 55%, rgba(200,255,110,0.30) 55%);
 }
-.hero-h1 .type-line { display: block; }
-.hero-h1 .type-line-2 { font-size: clamp(24px, 3.2vw, 44px); color: var(--ink-mid); margin-top: 8px; }
+.hero-h1 .type-line { display: inline; }
 .type-cursor {
   display: inline-block; width: 2px; height: 0.85em;
   background: var(--accent-lime); margin-left: 2px;
@@ -479,7 +478,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 <section class="hero">
   <div class="hero-left">
     <div class="hero-eyebrow">Governed Revenue Architecture</div>
-    <h1 class="hero-h1" id="heroH1"><span class="type-line" id="typeLine1"></span><span class="type-line type-line-2" id="typeLine2"></span></h1>
+    <h1 class="hero-h1" id="heroH1"><span class="type-line" id="typeLine"></span></h1>
     <p class="hero-sub">AI-first GTM engineering from pre-seed to pre-IPO. Every motion governed. Every dollar traced. Every channel architected.</p>
     <div class="hero-actions">
       <a href="#briefing" class="btn btn-primary btn-lg btn-dot">Book a Briefing</a>
@@ -689,49 +688,64 @@ document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
 
 /* ═══ HERO TYPING EFFECT ═══ */
 (function(){
-  const line1 = "Here's to the Operators.";
-  const line2 = 'Because GTM should run on <em>thresholds</em>, not opinions.';
-  const el1 = document.getElementById('typeLine1');
-  const el2 = document.getElementById('typeLine2');
-  const cursor = document.createElement('span');
+  var lines = [
+    { text: "Here\u2019s to the Operators.", speed: 45 },
+    { text: 'Because GTM should run on <em>thresholds</em>, not opinions.', speed: 35 }
+  ];
+  var el = document.getElementById('typeLine');
+  var cursor = document.createElement('span');
   cursor.className = 'type-cursor';
-  let i = 0;
 
-  function typeLine(text, el, speed, cb) {
-    i = 0;
+  function typeText(text, speed, cb) {
+    var i = 0;
     el.innerHTML = '';
     el.appendChild(cursor);
     function tick() {
       if (i < text.length) {
-        // Handle HTML tags — insert whole tag at once
         if (text[i] === '<') {
-          const close = text.indexOf('>', i);
-          const tag = text.slice(i, close + 1);
-          cursor.insertAdjacentHTML('beforebegin', tag);
+          var close = text.indexOf('>', i);
+          cursor.insertAdjacentHTML('beforebegin', text.slice(i, close + 1));
           i = close + 1;
         } else {
           cursor.insertAdjacentText('beforebegin', text[i]);
           i++;
         }
         setTimeout(tick, speed);
-      } else if (cb) {
-        cb();
-      }
+      } else if (cb) cb();
     }
     tick();
   }
 
-  // Wait for fadeUp animation to finish on h1 (delay 0.2s + 0.8s duration)
-  setTimeout(function() {
-    typeLine(line1, el1, 45, function() {
+  function eraseText(speed, cb) {
+    function tick() {
+      var prev = cursor.previousSibling;
+      if (prev) {
+        if (prev.nodeType === 1) prev.remove();
+        else if (prev.textContent.length > 1) prev.textContent = prev.textContent.slice(0, -1);
+        else prev.remove();
+        setTimeout(tick, speed);
+      } else if (cb) cb();
+    }
+    tick();
+  }
+
+  var idx = 0;
+  function runLine() {
+    typeText(lines[idx].text, lines[idx].speed, function() {
       setTimeout(function() {
-        el1.removeChild(cursor);
-        typeLine(line2, el2, 35, function() {
-          // Keep cursor blinking at end
-        });
-      }, 400);
+        if (idx < lines.length - 1) {
+          eraseText(25, function() {
+            idx++;
+            setTimeout(runLine, 300);
+          });
+        }
+        // Last line: cursor keeps blinking
+      }, 1500);
     });
-  }, 1100);
+  }
+
+  // Start after fadeUp animation completes
+  setTimeout(runLine, 1100);
 })();
 </script>
 </body>
