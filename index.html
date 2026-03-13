@@ -8,11 +8,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <style>
+/* ═══ DUAL-ACCENT SYSTEM ═══
+   Light surfaces (bg-base, bg-surface, bg-white): Rose #D64074
+   Dark surfaces  (bg-inverse, bg-code, footer):   Lime #C8FF6E
+   Logo mark:     Black #111 on light, Lime #C8FF6E on dark
+   Never use lime as text/accent on light backgrounds.
+   Never use rose as text/accent on dark backgrounds.
+═══════════════════════════════ */
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
-</style>
-<style>
 :root {
   --bg-base:      #EBEBEB;
   --bg-surface:   #F4F4F2;
@@ -116,12 +121,12 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 .hero-h1 {
   font-family: var(--font-display);
   font-size: clamp(40px, 5.5vw, 72px);
-  font-weight: 300; line-height: 1.06; letter-spacing: -0.035em;
+  font-weight: 400; line-height: 1.06; letter-spacing: -0.035em;
   color: var(--ink); margin-bottom: 28px;
 }
 .hero-h1 em {
   font-style: normal;
-  background: linear-gradient(transparent 60%, rgba(200,255,110,0.35) 60%);
+  background: linear-gradient(transparent 60%, rgba(214,64,116,0.15) 60%);
 }
 .hero-sub {
   font-family: var(--font-mono); font-size: 13px; font-weight: 400;
@@ -142,8 +147,8 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   font-family: var(--font-display); font-size: 28px; font-weight: 300;
   letter-spacing: -0.03em; color: var(--ink); line-height: 1;
 }
-.signal-value .lime {
-  color: var(--accent-lime-dark);
+.signal-value .accent-hl {
+  color: var(--accent-rose);
   font-family: var(--font-mono); font-size: 11px; font-weight: 600;
   letter-spacing: 0.06em; vertical-align: middle;
 }
@@ -203,7 +208,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 .feat-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
 .feat-h2 {
   font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
-  font-weight: 300; letter-spacing: -0.03em; line-height: 1.1;
+  font-weight: 400; letter-spacing: -0.03em; line-height: 1.1;
   color: var(--ink-inv); margin-bottom: 12px; max-width: 560px;
 }
 .feat-sub {
@@ -222,7 +227,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   color: rgba(255,255,255,0.2); letter-spacing: 0.1em; margin-bottom: 20px;
 }
 .feat-cell-title {
-  font-family: var(--font-display); font-size: 22px; font-weight: 300;
+  font-family: var(--font-display); font-size: 22px; font-weight: 400;
   color: var(--ink-inv); letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.25;
 }
 .feat-cell-body {
@@ -274,7 +279,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 .opc-metric-val .grn { color: var(--accent-lime-dark); }
 .opc-info h3 {
   font-family: var(--font-display); font-size: clamp(24px, 3vw, 40px);
-  font-weight: 300; letter-spacing: -0.025em; line-height: 1.15;
+  font-weight: 400; letter-spacing: -0.025em; line-height: 1.15;
   margin-bottom: 16px;
 }
 .opc-info p {
@@ -333,7 +338,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 }
 .cta-h2 {
   font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
-  font-weight: 300; letter-spacing: -0.025em; line-height: 1.12;
+  font-weight: 400; letter-spacing: -0.025em; line-height: 1.12;
   color: var(--ink); margin-bottom: 16px;
 }
 .cta-sub {
@@ -433,7 +438,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 <!-- ═══ NAV ═══ -->
 <nav class="nav">
   <div class="nav-left">
-    <a href="/"><img src="assets/netherops-logo.svg" alt="NetherOps" class="nav-logo"></a>
+    <a href="/"><img src="assets/netherops-logo-black.svg" alt="NetherOps" class="nav-logo"></a>
   </div>
   <div class="nav-links">
     <a href="/doctrine/" class="nav-link">Doctrine</a>
@@ -461,7 +466,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
     <div class="hero-signals">
       <div class="signal-item">
         <div class="signal-label">Coverage</div>
-        <div class="signal-value">Full-stack <span class="lime">GTM</span></div>
+        <div class="signal-value">Full-stack <span class="accent-hl">GTM</span></div>
       </div>
       <div class="signal-item">
         <div class="signal-label">Stage</div>
@@ -469,7 +474,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
       </div>
       <div class="signal-item">
         <div class="signal-label">Method</div>
-        <div class="signal-value">Governed <span class="lime">↑</span></div>
+        <div class="signal-value">Governed <span class="accent-hl">↑</span></div>
       </div>
     </div>
   </div>
@@ -562,7 +567,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 <!-- ═══ DOCTRINE PREVIEW ═══ -->
 <section class="doctrine-section">
   <div class="feat-label" style="color:var(--ink-muted)">The Doctrine</div>
-  <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,48px);font-weight:300;letter-spacing:-0.03em;line-height:1.1;margin-bottom:8px">
+  <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,48px);font-weight:400;letter-spacing:-0.03em;line-height:1.1;margin-bottom:8px">
     Open architecture. Governed execution.
   </h2>
   <p style="font-family:var(--font-mono);font-size:13px;color:var(--ink-mid);line-height:1.65;max-width:520px">
@@ -608,7 +613,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   <p class="cta-sub">30-minute briefing. We'll map your current GTM to the governed architecture and show you what changes.</p>
   <div class="cta-actions">
     <a href="#" class="btn btn-primary btn-lg btn-dot">Book a Briefing</a>
-    <a href="/doctrine/" class="btn btn-lime btn-lg">Read the Doctrine</a>
+    <a href="/doctrine/" class="btn btn-rose btn-lg">Read the Doctrine</a>
   </div>
 </section>
 

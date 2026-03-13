@@ -8,11 +8,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <style>
+/* ═══ DUAL-ACCENT SYSTEM ═══
+   Light surfaces: Rose #D64074 (--accent)
+   Dark surfaces:  Lime #C8FF6E (--ink-code, --accent-lime)
+   Logo mark:      Black #111 on light, Lime #C8FF6E on dark
+═══════════════════════════════ */
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
-</style>
-<style>
 :root {
   --bg:           #F4F4F2;
   --bg-base:      #EBEBEB;
@@ -165,7 +168,7 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
 .doc-h1 {
   font-family: var(--font-display);
   font-size: clamp(28px, 3.5vw, 42px);
-  font-weight: 300; letter-spacing: -0.03em; line-height: 1.15;
+  font-weight: 400; letter-spacing: -0.03em; line-height: 1.15;
   margin-bottom: 16px;
 }
 .doc-lead {
@@ -347,7 +350,7 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
 <!-- ═══ TOP NAV ═══ -->
 <nav class="topnav">
   <div class="topnav-left">
-    <a href="/"><img src="/assets/netherops-logo.svg" alt="NetherOps" class="topnav-logo"></a>
+    <a href="/"><img src="/assets/netherops-logo-black.svg" alt="NetherOps" class="topnav-logo"></a>
     <div class="topnav-sep"></div>
     <span class="topnav-title">Doctrine</span>
   </div>
