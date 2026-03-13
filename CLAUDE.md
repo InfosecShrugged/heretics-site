@@ -1,105 +1,100 @@
-# heretics.io
+# CLAUDE.md — NetherOps Project Instructions
 
-Personal marketing site + Governed Revenue Architecture (GRA) framework.
-Owner: Nicky Sorenson — cybersecurity GTM leader, 18+ years.
-This is the durable asset that outlives any job.
+## Project Overview
 
-## Tech Stack
+**NetherOps** builds tools and frameworks for governed revenue operations. The methodology is the **Governed Revenue Architecture (GRA)**. The primary product is **OpptyCon** — an interactive revenue simulation and governance control surface.
 
-- Static HTML/CSS/JS site
-- Deployed on Netlify (`heretics-site` repo)
-- No framework — vanilla HTML with CSS custom properties
-- Google Fonts: Oxanium (display), Space Mono (code/mono)
+## Naming
 
-## Design System: Dark Technical
+- **Company**: NetherOps (cap N, cap O, one word)
+- **Product**: OpptyCon (cap O, cap C, one word)
+- **Methodology**: Governed Revenue Architecture (GRA)
+- **Legacy names (never use)**: heretics, heretics.io, Revenue Physics Engine, Heretic Engine
 
-All visual decisions flow from `docs/skills/aesthetics/dark-technical.md`. Core tokens:
+## Repos
 
+| Repo | Purpose | Stack | Deploy |
+|------|---------|-------|--------|
+| `netherops-site` | Marketing/content site | Static HTML/CSS/JS | Netlify |
+| `opptycon` | Revenue simulation engine | React/Vite/Tailwind | Built → netherops-site/tools/opptycon/ |
+
+## Design System: BigFilter · Signal Architecture
+
+Source: `bigfilter-design-system.html`. Derived from scorecard.io.
+
+### Fonts
+
+- **Display**: TWK Everett Light (300) — self-hosted `.otf` via `@font-face`
+- **Functional**: Chivo Mono — Google Fonts. All labels, CTAs, tags, nav, code
+- CSS: `--font-display: 'TWK Everett', 'Helvetica Neue', sans-serif;`
+- CSS: `--font-mono: 'Chivo Mono', 'Space Mono', monospace;`
+
+### Colors
+
+- **Ground**: `#EBEBEB` (warm light gray — NOT white, NOT cool gray)
+- **Surface**: `#F4F4F2` · Cards/white: `#FFFFFF` · Raised/hover: `#E2E2DF`
+- **Ink**: `#111111` primary · `#555555` mid · `#909090` muted
+- **Inverse**: `#0F0F0F` bg · `#F5F5F3` text · `#AAAAAA` mid
+- **Accent**: `#111111` (black CTA) · `#C8FF6E` (lime — max 1 per screen)
+- **Borders**: `rgba(0,0,0,0.07)` subtle · `rgba(0,0,0,0.13)` mid · `rgba(0,0,0,0.28)` strong
+- **Semantic**: `#D44C38` error · `#2E7D32` success
+
+### Rules
+
+1. TWK Everett is always weight 300 for headlines
+2. Chivo Mono does ALL functional text — always uppercase for labels/CTAs
+3. Black is the primary accent. Lime is the attention color (1 per screen max)
+4. Ground is warm gray `#EBEBEB`, never pure white
+5. Borders use rgba, not hex
+6. CTA buttons carry a `⠿` dot suffix
+7. Tags are pill-shaped with optional 5px status dots
+
+### Engine Token Object (App.jsx)
+
+```javascript
+const C = {
+  bg:"#EBEBEB", bgAlt:"#F4F4F2", card:"#FFFFFF",
+  border:"rgba(0,0,0,0.13)", borderL:"rgba(0,0,0,0.07)",
+  accent:"#111111", accentD:"rgba(0,0,0,0.06)",
+  lime:"#C8FF6E", limeD:"rgba(200,255,110,0.15)",
+  green:"#2E7D32", greenD:"rgba(46,125,50,0.10)",
+  amber:"#E89F0C", amberD:"rgba(232,159,12,0.10)",
+  rose:"#D44C38", roseD:"rgba(212,76,56,0.10)",
+  violet:"#6D28D9", violetD:"rgba(109,40,217,0.10)",
+  blue:"#2563EB", blueD:"rgba(37,99,235,0.10)",
+  text:"#111111", muted:"#555555", dim:"#909090",
+  inv:"#F5F5F3", invMid:"#AAAAAA", code:"#C8FF6E",
+  ch:["#111111","#2E7D32","#2563EB","#6D28D9","#E89F0C","#D44C38","#C8FF6E","#0891B2"],
+};
 ```
-Background:  #0A0C10 (base), #0F1117 (surface), #161B27 (elevated)
-Text:        #E8EAF0 (primary), #8892A4 (secondary), #4B5568 (tertiary)
-Accent:      #F97316 (orange — interactive affordances ONLY)
-Fonts:       Oxanium (display), Space Grotesk (body), Space Mono (code/data)
-```
 
-Rules:
-- Accent orange is for links, primary buttons, active states. Never decoration.
-- Monospace for ALL data values — metrics, IDs, timestamps.
-- Uppercase tracking for section labels (0.1em, text-xs).
-- Grain overlay on backgrounds at 3–5% opacity.
-- 1px subtle borders on cards. No shadows on dark backgrounds.
-
-## Architecture
-
-```
-/
-├── index.html              # Main site — GRA framework, positioning, calculator
-├── css/
-│   └── styles.css          # Tokens as CSS custom properties
-├── js/
-│   └── calculator.js       # Revenue Physics Calculator
-├── assets/
-│   └── images/
-├── docs/
-│   └── skills/             # Methodology library (read on demand)
-│       ├── dave-kellogg.md
-│       ├── atomic-design-system.md
-│       ├── narrative-ux.md
-│       ├── color-type-theory.md
-│       └── aesthetics/
-│           ├── dark-technical.md
-│           └── clean-different.md
-├── CLAUDE.md               # You are here
-└── netlify.toml
-```
-
-## Commands
+## Build & Deploy
 
 ```bash
-# Local dev
-open index.html             # No build step — static site
+# Build OpptyCon
+cd opptycon && npm install && npm run build
 
-# Deploy
-git add -A && git commit -m "description" && git push origin main
-# Netlify auto-deploys from main branch
-
-# Check deploy status
-netlify status
+# Deploy to site
+cd ../netherops-site
+rm -rf tools/opptycon && mkdir -p tools/opptycon
+cp -r ../opptycon/dist/* tools/opptycon/
+git add -A && git commit -m "Update OpptyCon" && git push
 ```
 
-## Skills Library
+Vite config must set `base: '/tools/opptycon/'`.
 
-The `docs/skills/` directory contains methodology docs. Read them when the task calls for it:
+## Architecture Philosophy
 
-| Skill | When to read | File |
-|---|---|---|
-| Dave Kellogg GTM | Pipeline, positioning, metrics, board comms, GTM strategy | `docs/skills/dave-kellogg.md` |
-| Atomic Design System | Building/modifying UI components, new pages, design tokens | `docs/skills/atomic-design-system.md` |
-| Narrative UX | Turning positioning into page structure, persuasion flow | `docs/skills/narrative-ux.md` |
-| Color/Type Theory | Palette decisions, type pairing, design system foundations | `docs/skills/color-type-theory.md` |
+- Governance over observation — show control mechanisms, not dashboards
+- Constraint cascades — P&L → governance → agents → execution
+- Closed-loop feedback — every output traceable to an input
+- Four-band model: Constraints → Governance → Agents → Execution
 
-Do NOT read all skills upfront. Read the one(s) relevant to the current task.
+## Font References to Replace
 
-## Key Conventions
-
-- This site is a calling card, not a startup product. Quality > speed.
-- GRA (Governed Revenue Architecture) is the core IP. Treat it like a product.
-- Revenue Physics Calculator must remain functional after any change.
-- Every page follows the narrative-ux pipeline: Big Idea → persuasion arc → UX flow → implementation.
-- No generic cyber aesthetics. This should look like it was built by someone with taste.
-
-## What NOT to Do
-
-- Don't use AI-generic copy ("unlock", "supercharge", "revolutionary").
-- Don't break the dark-technical token system with ad-hoc colors.
-- Don't add build tooling or frameworks unless explicitly asked.
-- Don't commit .env or API keys.
-- Don't overwrite main branch without confirming (prior incident resolved).
-
-## Context for GTM Work
-
-When working on positioning, messaging, or strategic content:
-- Read `docs/skills/dave-kellogg.md` for frameworks
-- Nicky's ICP: demand leaders at B2B SaaS companies ($10M–$200M ARR) inheriting broken GTM
-- Core positioning: GRA = governance layer for revenue operations
-- Competitive frame: not a tool, not an agency — a methodology
+| Old | New |
+|-----|-----|
+| `'Oxanium'` | `'TWK Everett'` |
+| `'Space Mono'` | `'Chivo Mono'` |
+| `'DM Mono'` | `'Chivo Mono'` |
+| `'DM Sans'` | `'TWK Everett'` |

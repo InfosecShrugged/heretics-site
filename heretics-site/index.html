@@ -6,7 +6,12 @@
 <title>Governed Revenue Architecture</title>
 <meta name="description" content="A governed, agentic orchestration and control plane for modern GTM. Constrained probabilistic revenue system.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+</style>
 <style>:root{--bk:#1a1918;--gy:#f0f0f0;--or:#ff6e3e;--pu:#bcbeff;--wh:#fff;--g50:#f8f8f8;--g3:#d9d9d9;--g4:#ccc;--g5:#b5b5b5;--g6:#a3a3a3;--g7:#747474;--g9:#2b2b2b;--ft:'Oxanium',sans-serif;--mn:'Space Mono',monospace;--sm:cubic-bezier(.32,.72,0,1);--ez:cubic-bezier(.215,.61,.355,1)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
@@ -198,6 +203,90 @@ a{color:inherit;text-decoration:none}
 .closing-note{font-family:var(--mn);font-size:9px;color:var(--g5);margin-top:28px;font-style:italic;font-weight:400}
 .foot{padding:32px 20px;border-top:1px solid var(--g3);text-align:center}
 .foot-text{font-family:var(--mn);font-size:9px;color:var(--g5);letter-spacing:.06em}
+
+/* ═══ REVENUE THERMOSTAT — THREE BANDS + VERTICAL RAILS ═══ */
+.th-wrap{background:var(--wh);border:1px solid var(--g3);padding:clamp(16px,3vw,28px);position:relative;overflow:hidden}
+/* Header */
+.th-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--g3)}
+.th-title{font-family:var(--ft);font-size:clamp(13px,2vw,16px);font-weight:600;color:var(--g9)}
+.th-title span{color:var(--or)}
+.th-sub{font-family:var(--mn);font-size:7px;color:var(--g6);letter-spacing:.06em;text-transform:uppercase}
+
+/* ── Three horizontal bands ── */
+.th-bands{display:flex;flex-direction:column;gap:0;position:relative}
+.th-band{padding:16px 14px 14px;border:1px solid var(--g3);border-bottom:none;position:relative;transition:background .4s}
+.th-band:last-child{border-bottom:1px solid var(--g3)}
+.th-band-label{font-family:var(--mn);font-size:6.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.th-band-label-text{white-space:nowrap}
+.th-band-label-line{flex:1;height:1px;background:var(--g3)}
+/* Band accent colors */
+.th-band[data-band="economic"] .th-band-label-text{color:rgba(180,130,60,.6)}
+.th-band[data-band="translation"] .th-band-label-text{color:rgba(120,110,200,.5)}
+.th-band[data-band="operations"] .th-band-label-text{color:rgba(60,160,120,.5)}
+/* Nodes grid */
+.th-nodes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:640px){.th-nodes{grid-template-columns:1fr 1fr}}
+.th-node{padding:10px 12px;border:1px solid var(--g3);background:var(--g50);transition:all .4s;cursor:default;position:relative}
+.th-node:hover{border-color:var(--g4);background:var(--wh)}
+.th-node-name{font-family:var(--ft);font-size:11px;font-weight:500;color:var(--g9);margin-bottom:2px}
+.th-node-desc{font-family:var(--mn);font-size:6.5px;color:var(--g6);letter-spacing:.02em;line-height:1.4}
+/* Node ID for connections */
+.th-node-id{position:absolute;top:3px;right:6px;font-family:var(--mn);font-size:5px;color:var(--g4);letter-spacing:.04em}
+
+/* ── Feedback arrows (SVG overlay) ── */
+.th-svg{position:absolute;inset:0;pointer-events:none;z-index:2}
+.th-arrow{stroke:var(--or);stroke-width:1.5;fill:none;opacity:.15;transition:opacity .4s}
+.th-arrow-head{fill:var(--or);opacity:.15;transition:opacity .4s}
+.th-arrow.up{stroke:rgba(220,60,90,.5);opacity:.12}
+.th-arrow-head.up{fill:rgba(220,60,90,.5);opacity:.12}
+/* Active states */
+.th-arrow.active{opacity:.5!important;stroke-width:2}
+.th-arrow-head.active{opacity:.5!important}
+.th-arrow.active.up{stroke:rgba(220,60,90,.7);opacity:.4!important}
+.th-arrow-head.active.up{fill:rgba(220,60,90,.7);opacity:.4!important}
+
+/* ── Vertical agent rails ── */
+.th-agents{margin-top:16px;padding-top:12px;border-top:1px solid var(--g3)}
+.th-agents-label{font-family:var(--mn);font-size:6.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:8px}
+.th-rails{display:flex;flex-wrap:wrap;gap:6px}
+.th-rail{display:flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid var(--g3);background:var(--g50);cursor:pointer;transition:all .3s}
+.th-rail:hover{border-color:var(--g4);background:var(--wh)}
+.th-rail.active{border-color:var(--or);background:rgba(255,110,62,.03)}
+.th-rail-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.th-rail-name{font-family:var(--mn);font-size:7.5px;color:var(--g7);letter-spacing:.02em}
+.th-rail.active .th-rail-name{color:var(--or)}
+.th-rail-span{font-family:var(--mn);font-size:5.5px;color:var(--g5);letter-spacing:.02em;margin-left:2px}
+
+/* Agent focus: highlight spanned bands + nodes */
+.th-bands.agent-focus .th-band{opacity:.35;transition:opacity .35s}
+.th-bands.agent-focus .th-band.in-span{opacity:1}
+.th-bands.agent-focus .th-node{opacity:.3;transition:opacity .35s}
+.th-bands.agent-focus .th-node.in-span{opacity:1;border-color:var(--or);background:rgba(255,110,62,.02)}
+
+/* ── Feedback loop trigger ── */
+.th-loops{margin-top:12px;padding-top:10px;border-top:1px solid var(--g3)}
+.th-loops-label{font-family:var(--mn);font-size:6.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--g6);margin-bottom:8px}
+.th-loop-btns{display:flex;gap:5px;flex-wrap:wrap}
+.th-lb{font-family:var(--mn);font-size:8px;padding:5px 12px;border:1px solid var(--g3);background:transparent;color:var(--g7);cursor:pointer;transition:all .3s;text-transform:lowercase;letter-spacing:.02em}
+.th-lb:hover{border-color:var(--g5);color:var(--g9)}
+.th-lb.active{border-color:var(--or);color:var(--or);background:rgba(255,110,62,.03)}
+.th-lb:disabled{opacity:.2;cursor:default}
+.th-loop-info{margin-top:8px;padding:8px 12px;border:1px solid var(--g3);background:var(--g50);display:none}
+.th-loop-info.vis{display:block}
+.th-loop-info-t{font-family:var(--mn);font-size:8px;font-weight:700;color:var(--or);margin-bottom:2px}
+.th-loop-info-d{font-family:var(--ft);font-size:10.5px;color:var(--g7);line-height:1.5}
+.th-loop-info-path{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px;align-items:center}
+.th-loop-chip{font-family:var(--mn);font-size:7px;padding:2px 6px;border:1px solid var(--g3);color:var(--g5);transition:all .3s}
+.th-loop-chip.lit{border-color:var(--g4);color:var(--g9)}
+.th-loop-chip.lit.up{border-color:rgba(220,60,90,.25);color:rgba(200,50,50,.6)}
+.th-loop-arr{font-family:var(--mn);font-size:7px;color:var(--g4);transition:color .3s}
+.th-loop-arr.lit{color:var(--g7)}
+.th-loop-arr.lit.up{color:rgba(200,50,50,.4)}
+/* Beat states on nodes */
+.th-node.beat{border-color:var(--or)!important;background:rgba(255,110,62,.03)!important;opacity:1!important;transition:all .25s!important}
+.th-node.beat.up-beat{border-color:rgba(220,60,90,.35)!important;background:rgba(220,60,90,.02)!important}
+/* Doctrine */
+.th-doctrine{font-family:var(--ft);font-size:10px;color:var(--g5);font-style:italic;margin-top:14px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -211,6 +300,7 @@ a{color:inherit;text-decoration:none}
     <a class="n-link" href="#control">control plane</a>
     <a class="n-link" href="#simulate">simulate</a>
     <a class="n-link" href="#library">library</a>
+    <a class="n-link" href="#control-plane">system map</a>
     <a class="n-link" href="tools/revenue-physics-engine.html">physics engine</a>
     <button class="btn-out" onclick="sTo('#briefing')">explore framework</button>
     <button class="btn-fill" id="navCta" onclick="sTo('#briefing')">strategic briefing</button>
@@ -226,6 +316,7 @@ a{color:inherit;text-decoration:none}
   <a class="mob-nav-link" href="#control" onclick="closeMob()">control plane</a>
   <a class="mob-nav-link" href="#simulate" onclick="closeMob()">simulate</a>
   <a class="mob-nav-link" href="#library" onclick="closeMob()">library</a>
+  <a class="mob-nav-link" href="#control-plane" onclick="closeMob()">system map</a>
   <a class="mob-nav-link" href="tools/revenue-physics-engine.html" onclick="closeMob()">physics engine</a>
 </div>
 
@@ -486,6 +577,114 @@ a{color:inherit;text-decoration:none}
 </section>
 
 <!-- BRIEFING CTA -->
+
+<!-- ═══ REVENUE THERMOSTAT — THREE BANDS ═══ -->
+<section class="sc swh" id="control-plane">
+  <div class="w rv">
+    <div class="s-ey">system architecture</div>
+    <div class="s-h" style="margin-bottom:4px">Revenue <span>Thermostat</span></div>
+    <div class="s-p" style="margin-bottom:24px">Not a flowchart. A control system. Constraints sit on top. Translation sits in the middle. Operations sit at the bottom. Feedback flows <em>upward</em>. Agents enforce vertically across all three bands.</div>
+
+    <div class="th-wrap" id="thWrap">
+      <div class="th-head">
+        <div>
+          <div class="th-title">governed<span>.revenue</span></div>
+          <div class="th-sub">control plane · three bands · vertical enforcement</div>
+        </div>
+      </div>
+
+      <!-- ══ THREE BANDS ══ -->
+      <div class="th-bands" id="thBands">
+
+        <!-- BAND 1: Economic Constraints -->
+        <div class="th-band" data-band="economic">
+          <div class="th-band-label"><span class="th-band-label-text">Economic Constraints</span><span class="th-band-label-line"></span></div>
+          <div class="th-nodes">
+            <div class="th-node" data-node="bizplan"><div class="th-node-name">Business Plan</div><div class="th-node-desc">Revenue target, growth rate, net new ARR required</div><div class="th-node-id">A1</div></div>
+            <div class="th-node" data-node="pnl"><div class="th-node-name">P&L</div><div class="th-node-desc">Revenue, COGS, OpEx — the rulebook</div><div class="th-node-id">A2</div></div>
+            <div class="th-node" data-node="margin"><div class="th-node-name">Protected Margin</div><div class="th-node-desc">Non-negotiable GM% floor. The boss.</div><div class="th-node-id">A3</div></div>
+            <div class="th-node" data-node="coverage"><div class="th-node-name">Coverage Target</div><div class="th-node-desc">4–6x pipeline multiple required</div><div class="th-node-id">A4</div></div>
+          </div>
+        </div>
+
+        <!-- BAND 2: Translation Layer -->
+        <div class="th-band" data-band="translation">
+          <div class="th-band-label"><span class="th-band-label-text">Translation Layer</span><span class="th-band-label-line"></span></div>
+          <div class="th-nodes" style="grid-template-columns:repeat(5,1fr)">
+            <div class="th-node" data-node="budgets"><div class="th-node-name">Budgets</div><div class="th-node-desc">Spend envelope from P&L</div><div class="th-node-id">B1</div></div>
+            <div class="th-node" data-node="gtm"><div class="th-node-name">GTM Model</div><div class="th-node-desc">Motions, channels, partner mix</div><div class="th-node-id">B2</div></div>
+            <div class="th-node" data-node="allocations"><div class="th-node-name">Allocations</div><div class="th-node-desc">Program spend by segment</div><div class="th-node-id">B3</div></div>
+            <div class="th-node" data-node="icpspend"><div class="th-node-name">ICP Spend</div><div class="th-node-desc">Capital routed to segments that convert</div><div class="th-node-id">B4</div></div>
+            <div class="th-node" data-node="stagedefs"><div class="th-node-name">Stage Definitions</div><div class="th-node-desc">Gate criteria, MQL→SQL, acceptance SLAs</div><div class="th-node-id">B5</div></div>
+          </div>
+        </div>
+
+        <!-- BAND 3: Dynamic Operations -->
+        <div class="th-band" data-band="operations">
+          <div class="th-band-label"><span class="th-band-label-text">Dynamic Operations</span><span class="th-band-label-line"></span></div>
+          <div class="th-nodes">
+            <div class="th-node" data-node="execution"><div class="th-node-name">Execution</div><div class="th-node-desc">Campaigns, sequences, pipeline generation</div><div class="th-node-id">C1</div></div>
+            <div class="th-node" data-node="forecasting"><div class="th-node-name">Forecasting</div><div class="th-node-desc">Commit, best case, scenario modeling</div><div class="th-node-id">C2</div></div>
+            <div class="th-node" data-node="attribution"><div class="th-node-name">Attribution</div><div class="th-node-desc">What moved the stage, not what touched the lead</div><div class="th-node-id">C3</div></div>
+            <div class="th-node" data-node="optimization"><div class="th-node-name">Optimization</div><div class="th-node-desc">Channel reweight, velocity tuning, spend shift</div><div class="th-node-id">C4</div></div>
+          </div>
+        </div>
+
+      </div><!-- end bands -->
+
+      <!-- ══ AGENT RAILS ══ -->
+      <div class="th-agents">
+        <div class="th-agents-label">Vertical enforcement rails — click to trace</div>
+        <div class="th-rails" id="thRails">
+          <button class="th-rail" data-agent="pnl" data-bands="economic,translation" data-nodes="pnl,margin,budgets,allocations,icpspend">
+            <span class="th-rail-dot" style="background:#d4a574"></span>
+            <span class="th-rail-name">P&L Agent</span>
+            <span class="th-rail-span">top + mid</span>
+          </button>
+          <button class="th-rail" data-agent="stagegate" data-bands="translation,operations" data-nodes="stagedefs,execution,forecasting">
+            <span class="th-rail-dot" style="background:#ff6b8a"></span>
+            <span class="th-rail-name">Stage Gate</span>
+            <span class="th-rail-span">mid + bottom</span>
+          </button>
+          <button class="th-rail" data-agent="coverage" data-bands="economic,operations" data-nodes="coverage,bizplan,execution,forecasting">
+            <span class="th-rail-dot" style="background:#ffc832"></span>
+            <span class="th-rail-name">Coverage</span>
+            <span class="th-rail-span">top + bottom</span>
+          </button>
+          <button class="th-rail" data-agent="attribution" data-bands="operations,translation" data-nodes="attribution,optimization,stagedefs,icpspend">
+            <span class="th-rail-dot" style="background:#64b4ff"></span>
+            <span class="th-rail-name">Attribution</span>
+            <span class="th-rail-span">bottom + mid</span>
+          </button>
+          <button class="th-rail" data-agent="orchestration" data-bands="economic,translation,operations" data-nodes="pnl,budgets,stagedefs,execution,forecasting,attribution,optimization">
+            <span class="th-rail-dot" style="background:#ff6e3e"></span>
+            <span class="th-rail-name">Orchestration</span>
+            <span class="th-rail-span">all three</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ FEEDBACK LOOPS ══ -->
+      <div class="th-loops">
+        <div class="th-loops-label">Trace the feedback loop</div>
+        <div class="th-loop-btns" id="thLoopBtns">
+          <button class="th-lb" data-loop="full" data-label="Full Loop" data-desc="P&L constrains Budgets → Budgets set Allocations → Stage Definitions govern Execution → Execution feeds Forecasting → Forecasting feeds back UP into Budgets → Attribution informs Optimization → Optimization corrects Stage Definitions. The loop closes." data-path="pnl,budgets,allocations,stagedefs,execution,forecasting,budgets,attribution,optimization,stagedefs" data-dirs="d,d,d,d,d,u,d,d,u">full thermostat</button>
+          <button class="th-lb" data-loop="forecast" data-label="Forecast Feedback" data-desc="Forecasting is not a downstream output. It is an input back into Budgets. This arrow goes upward. Without it, budgets are set once and never corrected." data-path="execution,forecasting,budgets,allocations" data-dirs="d,u,d">forecast → budget</button>
+          <button class="th-lb" data-loop="attrib" data-label="Attribution Correction" data-desc="Attribution does not just feed Optimization. It must inform Stage Definitions and ICP Governance. Otherwise it's just reporting." data-path="attribution,optimization,stagedefs,icpspend" data-dirs="d,u,d">attribution → stages</button>
+          <button class="th-lb" data-loop="cac" data-label="CAC Breach" data-desc="Spend exceeds ceiling → P&L constrains → Budgets tighten → Allocations shift → Attribution reweights → Optimization corrects → Stage Definitions adjust. Constraint flows down, correction flows up." data-path="pnl,budgets,allocations,attribution,optimization,stagedefs" data-dirs="d,d,d,d,u">cac breach</button>
+        </div>
+        <div class="th-loop-info" id="thLoopInfo">
+          <div class="th-loop-info-t" id="thLoopT"></div>
+          <div class="th-loop-info-d" id="thLoopD"></div>
+          <div class="th-loop-info-path" id="thLoopPath"></div>
+        </div>
+      </div>
+
+      <div class="th-doctrine">Flowcharts imply sequence. Control systems imply constraint + feedback. This is a revenue thermostat. The difference is enormous.</div>
+    </div>
+  </div>
+</section>
+
 <section class="sc sdk" id="briefing">
   <div class="w closing">
     <div class="closing-h">This is not incremental<br>optimization. It is<br><span>structural replacement</span>.</div>
@@ -627,6 +826,118 @@ window.addEventListener('scroll',()=>{
   else if(mx>.35){c.textContent='assess readiness';m.textContent='assess your revenue readiness'}
   else{c.textContent='explore framework';m.textContent='explore the framework'}
 },{passive:true});
+// ═══ REVENUE THERMOSTAT ═══
+(function(){
+  const wrap=document.getElementById('thWrap');
+  if(!wrap)return;
+  const bands=document.getElementById('thBands');
+  const info=document.getElementById('thLoopInfo'),loopT=document.getElementById('thLoopT'),loopD=document.getElementById('thLoopD'),loopPath=document.getElementById('thLoopPath');
+  let activeRail=null,activeLoop=null,timers=[];
+
+  // ── Agent rail focus ──
+  function clearRail(){
+    activeRail=null;
+    bands.classList.remove('agent-focus');
+    bands.querySelectorAll('.in-span').forEach(el=>el.classList.remove('in-span'));
+    wrap.querySelectorAll('.th-rail.active').forEach(r=>r.classList.remove('active'));
+  }
+  function clearLoop(){
+    timers.forEach(t=>clearTimeout(t));timers=[];
+    activeLoop=null;
+    bands.querySelectorAll('.beat,.up-beat').forEach(el=>{el.classList.remove('beat');el.classList.remove('up-beat')});
+    wrap.querySelectorAll('.th-lb.active').forEach(b=>b.classList.remove('active'));
+    info.classList.remove('vis');
+    wrap.querySelectorAll('.th-lb').forEach(b=>b.disabled=false);
+  }
+
+  wrap.querySelectorAll('.th-rail').forEach(rail=>{
+    rail.addEventListener('click',function(){
+      clearLoop();
+      const ag=this.dataset.agent,was=activeRail===ag;
+      clearRail();
+      if(was)return;
+      activeRail=ag;
+      this.classList.add('active');
+      bands.classList.add('agent-focus');
+      // Highlight spanned bands
+      const spanBands=this.dataset.bands.split(',');
+      const spanNodes=this.dataset.nodes.split(',');
+      bands.querySelectorAll('.th-band').forEach(b=>{
+        if(spanBands.includes(b.dataset.band))b.classList.add('in-span');
+      });
+      bands.querySelectorAll('.th-node').forEach(n=>{
+        if(spanNodes.includes(n.dataset.node))n.classList.add('in-span');
+      });
+    });
+  });
+
+  // ── Feedback loop animation ──
+  wrap.querySelectorAll('.th-lb').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      const lp=this.dataset.loop,was=activeLoop===lp;
+      clearLoop();clearRail();
+      if(was)return;
+      activeLoop=lp;
+      this.classList.add('active');
+      wrap.querySelectorAll('.th-lb').forEach(b=>b.disabled=true);
+
+      const path=this.dataset.path.split(',');
+      const dirs=this.dataset.dirs.split(',');
+      loopT.textContent=this.dataset.label;
+      loopD.textContent=this.dataset.desc;
+      loopPath.innerHTML='';
+
+      // Build path chips
+      const chips=[],arrows=[];
+      // Dedupe for display (the path may revisit nodes)
+      const seen=new Set();
+      path.forEach((nodeId,i)=>{
+        const isUp=dirs[i-1]==='u';
+        if(!seen.has(nodeId+'_'+i)){
+          seen.add(nodeId+'_'+i);
+          const chip=document.createElement('span');
+          chip.className='th-loop-chip';
+          chip.dataset.node=nodeId;
+          chip.dataset.idx=i;
+          const node=bands.querySelector('[data-node="'+nodeId+'"]');
+          chip.textContent=node?node.querySelector('.th-node-name').textContent:nodeId;
+          chips.push(chip);
+          loopPath.appendChild(chip);
+          if(i<path.length-1){
+            const dir=dirs[i]||'d';
+            const arr=document.createElement('span');
+            arr.className='th-loop-arr';
+            arr.textContent=dir==='u'?'↑':'→';
+            arr.dataset.idx=i;
+            arrows.push(arr);
+            loopPath.appendChild(arr);
+          }
+        }
+      });
+      info.classList.add('vis');
+
+      // Animate sequential beats
+      path.forEach((nodeId,i)=>{
+        timers.push(setTimeout(()=>{
+          const node=bands.querySelector('[data-node="'+nodeId+'"]');
+          const isUp=i>0&&dirs[i-1]==='u';
+          if(node){
+            node.classList.add('beat');
+            if(isUp)node.classList.add('up-beat');
+          }
+          // Light chips
+          const chip=chips.find(c=>c.dataset.node===nodeId&&+c.dataset.idx===i);
+          if(chip){chip.classList.add('lit');if(isUp)chip.classList.add('up')}
+          if(i>0){
+            const arr=arrows.find(a=>+a.dataset.idx===i-1);
+            if(arr){arr.classList.add('lit');if(dirs[i-1]==='u')arr.classList.add('up')}
+          }
+        },i*380));
+      });
+      timers.push(setTimeout(()=>{wrap.querySelectorAll('.th-lb').forEach(b=>b.disabled=false)},path.length*380+300));
+    });
+  });
+})();
 </script>
 </body>
 </html>
