@@ -3,40 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Infrastructure Requirements — Governed Revenue Architecture</title>
+<title>Infrastructure | NetherOps</title>
 <meta name="description" content="Infrastructure stack for agentic GTM. Canonical data layer, event model, control plane services, tooling layer, HITL workflow, eval harness, observability.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <style>
-:root{--bk:#1a1918;--gy:#f0f0f0;--or:#ff6e3e;--pu:#bcbeff;--wh:#fff;--g50:#f8f8f8;--g3:#d9d9d9;--g4:#ccc;--g5:#b5b5b5;--g6:#a3a3a3;--g7:#747474;--g9:#2b2b2b;--ft:'Oxanium',sans-serif;--mn:'Space Mono',monospace;--sm:cubic-bezier(.32,.72,0,1);--ez:cubic-bezier(.215,.61,.355,1)}
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+:root{--bk:#111111;--gy:#EBEBEB;--or:#D64074;--pu:#bcbeff;--wh:#fff;--g50:#F4F4F2;--g3:rgba(0,0,0,0.13);--g4:rgba(0,0,0,0.13);--g5:#909090;--g6:#909090;--g7:#555555;--g9:#0F0F0F;--ft:'TWK Everett','Helvetica Neue',sans-serif;--mn:'Chivo Mono','Space Mono',monospace;--sm:cubic-bezier(0.22,1,0.36,1);--ez:cubic-bezier(0.22,1,0.36,1);--lm:#C8FF6E}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
 body{font-family:var(--ft);font-weight:400;background:var(--gy);color:var(--bk);overflow-x:hidden;line-height:1.4}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--g4);border-radius:2px}
 a{color:inherit;text-decoration:none}
 
-/* NAV */
-.nav{position:sticky;top:0;z-index:100;padding:0 20px;height:56px;display:flex;align-items:center;background:var(--gy);border-bottom:1px solid var(--g3);transition:background .4s var(--ez)}
-.nav.scrolled{background:rgba(240,240,240,.88);backdrop-filter:blur(12px)}
-.n-logo{display:flex;align-items:center;gap:8px}
-.n-logo svg{width:22px;height:22px}
-.n-word{font-family:var(--mn);font-size:11px;font-weight:400;letter-spacing:.02em}
-.nr{margin-left:auto;display:flex;align-items:center;gap:4px}
-.n-lnk{font-family:var(--mn);font-size:9px;padding:5px 8px;color:var(--g7);text-decoration:none;white-space:nowrap;transition:color .3s var(--ez);text-transform:lowercase;letter-spacing:.02em}
-.n-lnk:hover{color:var(--bk)}
+/* BUTTONS */
 .btn-out{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:transparent;color:var(--bk);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
 .btn-out:hover{background:var(--bk);color:var(--wh)}
 .btn-fill{font-family:var(--mn);font-size:10px;padding:7px 16px;border:1px solid var(--bk);background:var(--bk);color:var(--wh);cursor:pointer;transition:all .4s var(--ez);white-space:nowrap;text-transform:lowercase;letter-spacing:.02em;text-decoration:none;display:inline-block}
 .btn-fill:hover{background:var(--or);border-color:var(--or);color:var(--bk)}
-.ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:4px;margin-left:8px}
-.ham span{display:block;width:18px;height:1.5px;background:var(--bk);transition:all .3s var(--ez)}
-.mob-menu{display:none;position:fixed;top:56px;left:0;right:0;bottom:0;background:var(--gy);padding:24px 20px;z-index:99;flex-direction:column;gap:4px;overflow-y:auto}
-.mob-menu.open{display:flex}
-.mob-btns{display:flex;gap:8px;margin-bottom:24px}
-.mob-btns .btn-out,.mob-btns .btn-fill{flex:1;text-align:center;padding:14px 8px;font-size:11px}
-.mob-lnk{font-family:var(--mn);font-size:12px;padding:14px 0;color:var(--g7);border-bottom:1px solid var(--g3);text-transform:lowercase;letter-spacing:.02em;display:block;text-decoration:none}
-.mob-lnk:hover{color:var(--bk)}
-@media(max-width:960px){.n-lnk{display:none}.ham{display:flex}}
 
 /* LAYOUT */
 .w{max-width:1100px;margin:0 auto;padding:0 20px}
@@ -54,7 +41,7 @@ a{color:inherit;text-decoration:none}
 
 /* SECTIONS */
 .sc{padding:clamp(60px,10vw,100px) 0}
-.sdk{background:var(--bk);color:var(--wh)}
+.sdk{background:var(--bk);color:var(--wh);--or:#C8FF6E}
 .swh{background:var(--wh)}
 .s-ey{font-family:var(--mn);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--g7);margin-bottom:14px}
 .sdk .s-ey{color:var(--g6)}
@@ -85,7 +72,7 @@ a{color:inherit;text-decoration:none}
 .sub-text{font-size:13px;font-weight:300;color:var(--g7);line-height:1.65;flex:1}
 .sdk .sub-text{color:var(--g5)}
 .sub-text code{font-family:var(--mn);font-size:11px;color:var(--or);background:var(--g50);padding:1px 5px;border:1px solid var(--g3)}
-.sdk .sub-text code{background:rgba(255,110,62,.08);border-color:rgba(255,110,62,.15)}
+.sdk .sub-text code{background:rgba(200,255,110,.08);border-color:rgba(200,255,110,.15)}
 @media(max-width:640px){.sub-label{width:100%}.sub-text{width:100%}}
 
 /* RULE BAR */
@@ -153,43 +140,12 @@ a{color:inherit;text-decoration:none}
 <a href="/split-funnel-map" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none">Motion</a>
 <a href="/agent-specs" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none">Agents</a>
 <a href="/lexicon" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none">Lexicon</a>
+<a href="/infrastructure" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:#C8FF6E;text-decoration:none">Infrastructure</a>
 </div>
 <a href="https://opptycon.netlify.app" target="_blank" style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#C8FF6E;text-decoration:none;padding:4px 12px;border:1px solid rgba(200,255,110,0.2);border-radius:3px">OpptyCon ▶</a>
 </div>
-<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;600&display=swap" rel="stylesheet">
 
 
-<nav class="nav" id="nav">
-  <div class="n-logo">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-    <span class="n-word">governed revenue</span>
-  </div>
-  <div class="nr">
-    <a class="n-lnk" href="index.html">home</a>
-    <a class="n-lnk" href="spine-v4.html">spine</a>
-    <a class="n-lnk" href="agent-specs.html">agents</a>
-    <a class="n-lnk" href="sovereignty-map.html">sovereignty</a>
-    <a class="n-lnk" href="lexicon.html">lexicon</a>
-    <a class="n-lnk" href="provenance.html">provenance</a>
-    <a class="n-lnk" href="tools/revenue-physics-engine.html">physics engine</a>
-    <button class="ham" onclick="document.getElementById('mobMenu').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
-  </div>
-</nav>
-<div class="mob-menu" id="mobMenu">
-  <div class="mob-btns">
-    <a class="btn-out" href="index.html" style="flex:1;text-align:center">home</a>
-    <a class="btn-fill" href="index.html#briefing" style="flex:1;text-align:center">strategic briefing</a>
-  </div>
-  <a class="mob-lnk" href="spine-v4.html">spine</a>
-  <a class="mob-lnk" href="agent-specs.html">agent specs</a>
-  <a class="mob-lnk" href="tools/revenue-physics-engine.html">physics engine</a>
-  <a class="mob-lnk" href="sovereignty-map.html">sovereignty map</a>
-  <a class="mob-lnk" href="split-funnel-map.html">motion map</a>
-  <a class="mob-lnk" href="lexicon.html">lexicon</a>
-  <a class="mob-lnk" href="identity-graph.html">identity graph</a>
-  <a class="mob-lnk" href="provenance.html">provenance</a>
-  <a class="mob-lnk" href="infrastructure.html" style="color:var(--or)">infrastructure</a>
-</div>
 
 <!-- HERO -->
 <section class="hero w">
@@ -437,12 +393,10 @@ a{color:inherit;text-decoration:none}
   </div>
 </section>
 
-<footer class="foot"><div class="foot-text">governed revenue architecture &middot; infrastructure requirements &middot; 2026</div></footer>
+<footer class="foot"><div class="foot-text">NetherOps &middot; infrastructure requirements &middot; 2026</div></footer>
 
 <script>
 'use strict';
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40)},{passive:true});
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 </script>
