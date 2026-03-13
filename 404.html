@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetherOps — Coming Soon</title>
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<meta name="description" content="Introducing governed revenue operations. From the Heretics team.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root {
+  --bg: #EBEBEB;
+  --text: #111111;
+  --muted: #555555;
+  --dim: #909090;
+  --accent-rose: #D64074;
+  --accent-lime: #C8FF6E;
+  --border: rgba(0,0,0,0.13);
+  --border-light: rgba(0,0,0,0.07);
+  --font-display: 'TWK Everett', 'Helvetica Neue', sans-serif;
+  --font-mono: 'Chivo Mono', 'Space Mono', monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html,body{
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-display);
+  -webkit-font-smoothing:antialiased;
+}
+
+.page{
+  position:relative;
+  width:100%;height:100vh;height:100dvh;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  overflow:hidden;
+}
+
+/* ── Subtle grain ── */
+.page::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:0.018;pointer-events:none;z-index:100;
+}
+
+/* ── Video layer ── */
+.video-track{
+  position:absolute;inset:0;
+  pointer-events:none;z-index:1;
+}
+
+.video-walker{
+  position:absolute;
+  bottom:-4%;
+  right:5%;
+  height:75vh;width:auto;
+  mix-blend-mode:multiply;
+  filter:brightness(1.15) contrast(1.4);
+  opacity:0.09;
+  transform-origin:center bottom;
+  -webkit-mask-image:radial-gradient(ellipse 70% 78% at center 50%,black 35%,transparent 100%);
+  mask-image:radial-gradient(ellipse 70% 78% at center 50%,black 35%,transparent 100%);
+  animation:approach 6.3s linear infinite;
+}
+
+@keyframes approach{
+  0%  {transform:scale(.92);opacity:.05}
+  15% {opacity:.09}
+  85% {opacity:.09}
+  100%{transform:scale(1.06);opacity:.03}
+}
+
+/* ── Content ── */
+.content{
+  position:relative;z-index:10;
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;
+  opacity:0;
+  animation:fadeUp 1.4s var(--ease) .2s both;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to  {opacity:1;transform:translateY(0)}
+}
+
+/* Logo — black mark on light bg */
+.logo{
+  width:clamp(240px,42vw,420px);
+  height:auto;
+  margin-bottom:48px;
+}
+
+/* Headline */
+.headline{
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(15px,2.6vw,22px);
+  line-height:1.65;
+  color:var(--muted);
+  letter-spacing:.01em;
+  max-width:440px;
+  margin-bottom:56px;
+}
+
+.headline em{
+  font-style:normal;
+  color:var(--accent-rose);
+}
+
+.headline strong{
+  font-weight:700;
+  color:var(--text);
+}
+
+/* Status pill */
+.status{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 20px;
+  border:1px solid var(--border);
+  border-radius:100px;
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+
+.status-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent-lime);
+  animation:pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes pulse{
+  0%,100%{opacity:.35;box-shadow:0 0 0 0 rgba(200,255,110,0)}
+  50%    {opacity:1;  box-shadow:0 0 12px 2px rgba(200,255,110,.25)}
+}
+
+/* ── Bottom bar ── */
+.bottom-bar{
+  position:absolute;bottom:0;left:0;right:0;z-index:10;
+  padding:20px 32px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--border-light);
+  opacity:0;
+  animation:fadeUp .8s var(--ease) 1.2s both;
+}
+
+.bottom-bar a{
+  font-family:var(--font-mono);
+  font-size:11px;letter-spacing:.08em;
+  color:var(--dim);text-decoration:none;
+  transition:color .3s;
+}
+.bottom-bar a:hover{color:var(--accent-rose)}
+
+.bottom-label{
+  font-family:var(--font-mono);
+  font-size:10px;letter-spacing:.15em;
+  color:var(--dim);text-transform:uppercase;
+}
+
+/* ── Corner accent ── */
+.corner{
+  position:absolute;top:-1px;right:-1px;
+  width:200px;height:200px;z-index:2;
+  opacity:.04;
+  background:radial-gradient(ellipse at top right,var(--accent-rose) 0%,transparent 70%);
+}
+
+/* ── Mobile ── */
+@media(max-width:640px){
+  .video-walker{height:55vh;right:2%}
+  .logo{width:220px;margin-bottom:36px}
+  .headline{font-size:14px;margin-bottom:40px;padding:0 24px}
+  .status{font-size:10px;padding:6px 16px}
+  .bottom-bar{padding:16px 20px;flex-direction:column;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="corner"></div>
+
+  <!-- Walking character -->
+  <div class="video-track">
+    <video class="video-walker" autoplay loop muted playsinline>
+      <source src="assets/walk-forward.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- Center content -->
+  <div class="content">
+    <img src="assets/netherops-logo-black.svg" alt="NetherOps" class="logo">
+
+    <div class="headline">
+      Introducing <em>governed revenue operations</em><br>
+      from the <strong>NetherOps</strong> team.
+    </div>
+
+    <div class="status">
+      <div class="status-dot"></div>
+      coming soon
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <div class="bottom-label">2026</div>
+    <a href="mailto:nick@netherops.io">nick@netherops.io</a>
+  </div>
+</div>
+
+</body>
+</html>
