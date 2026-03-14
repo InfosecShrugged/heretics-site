@@ -6,7 +6,7 @@
  *
  * Optional config:
  *   window.OPPTY_CONFIG = {
- *     endpoint: '/.netlify/functions/oppty-chat',
+ *     endpoint: '/api/oppty-chat',
  *     avatar: '/assets/oppty-avatar.png',
  *     position: 'right',
  *   };
@@ -16,7 +16,7 @@
 
   const cfg = Object.assign(
     {
-      endpoint: '/.netlify/functions/oppty-chat',
+      endpoint: '/api/oppty-chat',
       avatar: '/assets/oppty-avatar.png',
       greeting:
         'I\'m Oppty — your governed revenue advisor. Ask me about pipeline coverage, CAC payback, the Rule of 60, board metrics, or anything GTM. I\'ve read every Kellblog post so you don\'t have to.',
