@@ -262,6 +262,45 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   padding: 4px 14px;
 }
 
+/* ═══ NAV DROPDOWN ═══ */
+.has-dropdown { position: relative; }
+.dropdown-toggle {
+  display: inline-flex; align-items: center;
+  background: none; border: none; cursor: pointer;
+  font: inherit; color: inherit; padding: inherit;
+  letter-spacing: inherit; text-transform: inherit;
+}
+.dropdown-toggle svg { transition: transform 0.2s; }
+.nav-dropdown {
+  position: absolute; top: calc(100% + 8px);
+  left: 50%; transform: translateX(-50%);
+  min-width: 240px; background: var(--bg-white, #fff);
+  border: 1px solid var(--border-mid, rgba(0,0,0,0.13));
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  padding: 8px; opacity: 0; visibility: hidden;
+  transition: opacity 0.15s, visibility 0.15s;
+  z-index: 1000;
+}
+.has-dropdown:hover .nav-dropdown,
+.has-dropdown:focus-within .nav-dropdown { opacity: 1; visibility: visible; }
+.has-dropdown:hover .dropdown-toggle svg { transform: rotate(180deg); }
+.nav-dropdown a {
+  display: block; padding: 10px 14px;
+  font-family: var(--font-display, 'TWK Everett', sans-serif);
+  font-size: 14px; font-weight: 400;
+  color: var(--ink-mid, #555); text-decoration: none;
+  text-transform: none; letter-spacing: normal;
+  transition: background 0.12s, color 0.12s;
+}
+.nav-dropdown a:hover { background: var(--bg-base, #EBEBEB); color: var(--ink, #111); }
+.dropdown-divider { height: 1px; background: var(--border-subtle, rgba(0,0,0,0.07)); margin: 6px 8px; }
+.dropdown-label {
+  display: block; font-size: 10px;
+  font-family: var(--font-mono, 'Chivo Mono', monospace);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-muted, #909090); margin-top: 2px; font-weight: 500;
+}
+
 /* ═══ OPPTYCON SECTION ═══ */
 .opptycon-section {
   padding: 96px 48px;
@@ -465,7 +504,21 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   <div class="nav-links">
     <a href="/doctrine/" class="nav-link">Doctrine</a>
     <a href="#services" class="nav-link">Services</a>
-    <a href="/doctrine/#opptycon" class="nav-link">OpptyCon</a>
+    <div class="has-dropdown">
+      <button class="nav-link dropdown-toggle" aria-expanded="false">
+        OpptyCon
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin-left:4px"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
+      </button>
+      <div class="nav-dropdown">
+        <a href="/opptycon/">Overview</a>
+        <div class="dropdown-divider"></div>
+        <a href="/opptycon/operators/">Operators<span class="dropdown-label">RevOps · MarOps</span></a>
+        <a href="/opptycon/heads-of-gtm/">GTM Leaders<span class="dropdown-label">VP Marketing · CMO · Demand Gen</span></a>
+        <a href="/opptycon/finance/">Finance<span class="dropdown-label">CFO · FP&amp;A · Strategic Finance</span></a>
+        <a href="/opptycon/leadership/">Leadership<span class="dropdown-label">CEO · CRO · COO</span></a>
+        <a href="/opptycon/capital/">Capital<span class="dropdown-label">VC · PE · Operating Partners</span></a>
+      </div>
+    </div>
     <a href="/doctrine/#library" class="nav-link">Library</a>
     <a href="#about" class="nav-link">About</a>
   </div>
@@ -650,9 +703,19 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
       <div>
         <div class="footer-col-label">Platform</div>
         <ul class="footer-col-links">
-          <li><a href="/doctrine/#opptycon" data-opptycon-launch>OpptyCon</a></li>
+          <li><a href="/opptycon/">OpptyCon</a></li>
           <li><a href="/doctrine/">Doctrine</a></li>
           <li><a href="/doctrine/#library">Library</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-label">Solutions</div>
+        <ul class="footer-col-links">
+          <li><a href="/opptycon/operators/">For Operators</a></li>
+          <li><a href="/opptycon/heads-of-gtm/">For GTM Leaders</a></li>
+          <li><a href="/opptycon/finance/">For Finance</a></li>
+          <li><a href="/opptycon/leadership/">For Leadership</a></li>
+          <li><a href="/opptycon/capital/">For Capital</a></li>
         </ul>
       </div>
       <div>
@@ -749,5 +812,6 @@ document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
   setTimeout(runLine, 1100);
 })();
 </script>
+<script src="/oppty-widget.js" defer></script>
 </body>
 </html>
