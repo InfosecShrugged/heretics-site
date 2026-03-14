@@ -412,6 +412,42 @@ img { max-width: 100%; display: block; }
   transform: translateY(-2px);
 }
 
+/* Hero split layout — text left, character right */
+.hero-split {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.hero-split .hero-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-split .hero-character {
+  flex: 0 0 380px;
+  max-width: 380px;
+}
+
+.hero-split .hero-character img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 4px 24px rgba(0,0,0,0.06));
+}
+
+@media (max-width: 900px) {
+  .hero-split {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .hero-split .hero-character {
+    flex: none;
+    max-width: 280px;
+    align-self: center;
+  }
+}
+
 .page-hero .hero-cta svg {
   width: 16px;
   height: 16px;
