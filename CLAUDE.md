@@ -18,55 +18,83 @@
 | `netherops-site` | Marketing/content site | Static HTML/CSS/JS | Netlify |
 | `opptycon` | Revenue simulation engine | React/Vite/Tailwind | Built → netherops-site/tools/opptycon/ |
 
-## Design System: BigFilter · Signal Architecture
+## Design System: Three-Mode Dual Accent
 
-Source: `bigfilter-design-system.html`. Derived from scorecard.io.
+Live reference: `/design-system/` (marketing) and `/design-system/opptycon` (app, light+dark).
 
 ### Fonts
 
-- **Display**: TWK Everett Light (300) — self-hosted `.otf` via `@font-face`
+- **Display**: TWK Everett — self-hosted `.otf` via `@font-face` (300/400/700)
 - **Functional**: Chivo Mono — Google Fonts. All labels, CTAs, tags, nav, code
-- CSS: `--font-display: 'TWK Everett', 'Helvetica Neue', sans-serif;`
-- CSS: `--font-mono: 'Chivo Mono', 'Space Mono', monospace;`
+- CSS: `--font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;`
+- CSS: `--font-mono: 'Chivo Mono', 'Space Mono', 'Courier New', monospace;`
 
-### Colors
+### The Accent Rule
 
-- **Ground**: `#EBEBEB` (warm light gray — NOT white, NOT cool gray)
-- **Surface**: `#F4F4F2` · Cards/white: `#FFFFFF` · Raised/hover: `#E2E2DF`
-- **Ink**: `#111111` primary · `#555555` mid · `#909090` muted
-- **Inverse**: `#0F0F0F` bg · `#F5F5F3` text · `#AAAAAA` mid
-- **Accent**: `#111111` (black CTA) · `#C8FF6E` (lime — max 1 per screen)
-- **Borders**: `rgba(0,0,0,0.07)` subtle · `rgba(0,0,0,0.13)` mid · `rgba(0,0,0,0.28)` strong
-- **Semantic**: `#D44C38` error · `#2E7D32` success
+```
+Light surfaces → Rose #D64074 for TEXT accents, links, borders
+Light surfaces → Lime #C8FF6E for FILLS, badges, dots, buttons
+Dark surfaces  → Lime #C8FF6E for EVERYTHING
+Dark surfaces  → Rose #D64074 for governance alerts / constraint breaches ONLY
+Lime NEVER appears as text on light backgrounds (1.5:1 contrast — fails)
+```
+
+### CSS Variables (Marketing Site)
+
+```css
+:root {
+  --bg:          #EBEBEB;
+  --bg-surface:  #F4F4F2;
+  --bg-white:    #FFFFFF;
+  --bg-inverse:  #0F0F0F;
+  --bg-code:     #1C1C1C;
+  --bg-raised:   #E2E2DF;
+  --ink:         #111111;
+  --ink-mid:     #555555;
+  --ink-muted:   #909090;
+  --ink-inv:     #F5F5F3;
+  --ink-inv-mid: #AAAAAA;
+  --ink-code:    #C8FF6E;
+  --border-subtle: rgba(0,0,0,0.07);
+  --border-mid:    rgba(0,0,0,0.13);
+  --border-strong: rgba(0,0,0,0.28);
+  --accent-rose:       #D64074;
+  --accent-rose-hover:  #C23668;
+  --accent-rose-dim:    rgba(214,64,116,0.10);
+  --accent-lime:       #C8FF6E;
+  --accent-lime-dark:  #9BE040;
+  --accent-lime-dim:   rgba(200,255,110,0.12);
+  --accent-lime-hi:    rgba(200,255,110,0.30);
+  --green:  #1A8A4A;
+  --amber:  #C07800;
+  --red:    #CC3340;
+  --blue:   #2563EB;
+  --violet: #7C4DDB;
+  --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono:    'Chivo Mono', 'Space Mono', 'Courier New', monospace;
+}
+```
+
+### Typography Rules
+
+| Element | Font | Weight | Style |
+|---------|------|--------|-------|
+| Headlines | TWK Everett | 300 (Light) | negative letter-spacing |
+| Body text | TWK Everett | 400 (Regular) | — |
+| Metric values | TWK Everett | 300 (Light) | thin = precision |
+| Module labels | Chivo Mono | 500 | uppercase, 0.08-0.12em tracking |
+| Data/numbers | Chivo Mono | 400 | tabular |
+| Small labels | Chivo Mono | 500 | 9-10px, uppercase, 0.08em tracking |
 
 ### Rules
 
-1. TWK Everett is always weight 300 for headlines
+1. TWK Everett weight 300 for headlines, 400 for body
 2. Chivo Mono does ALL functional text — always uppercase for labels/CTAs
-3. Black is the primary accent. Lime is the attention color (1 per screen max)
+3. Rose is the text accent on light. Lime is the fill accent on light. Lime does everything on dark.
 4. Ground is warm gray `#EBEBEB`, never pure white
 5. Borders use rgba, not hex
-6. CTA buttons carry a `⠿` dot suffix
+6. Lime NEVER as text on light backgrounds
 7. Tags are pill-shaped with optional 5px status dots
-
-### Engine Token Object (App.jsx)
-
-```javascript
-const C = {
-  bg:"#EBEBEB", bgAlt:"#F4F4F2", card:"#FFFFFF",
-  border:"rgba(0,0,0,0.13)", borderL:"rgba(0,0,0,0.07)",
-  accent:"#111111", accentD:"rgba(0,0,0,0.06)",
-  lime:"#C8FF6E", limeD:"rgba(200,255,110,0.15)",
-  green:"#2E7D32", greenD:"rgba(46,125,50,0.10)",
-  amber:"#E89F0C", amberD:"rgba(232,159,12,0.10)",
-  rose:"#D44C38", roseD:"rgba(212,76,56,0.10)",
-  violet:"#6D28D9", violetD:"rgba(109,40,217,0.10)",
-  blue:"#2563EB", blueD:"rgba(37,99,235,0.10)",
-  text:"#111111", muted:"#555555", dim:"#909090",
-  inv:"#F5F5F3", invMid:"#AAAAAA", code:"#C8FF6E",
-  ch:["#111111","#2E7D32","#2563EB","#6D28D9","#E89F0C","#D44C38","#C8FF6E","#0891B2"],
-};
-```
 
 ## Build & Deploy
 
