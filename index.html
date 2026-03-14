@@ -180,9 +180,24 @@ html,body{
   background:radial-gradient(ellipse at top right,var(--accent-rose) 0%,transparent 70%);
 }
 
+/* ── Mobile hero image (replaces video) ── */
+.mobile-hero{
+  display:none;
+}
+
 /* ── Mobile ── */
 @media(max-width:640px){
-  .video-walker{height:55vh;right:2%}
+  .video-track{display:none}
+  .mobile-hero{
+    display:block;
+    position:absolute;
+    bottom:-5%;right:-8%;
+    width:65vw;height:auto;
+    opacity:0.09;
+    mix-blend-mode:multiply;
+    pointer-events:none;
+    z-index:1;
+  }
   .logo{width:220px;margin-bottom:36px}
   .headline{font-size:14px;margin-bottom:40px;padding:0 24px}
   .status{font-size:10px;padding:6px 16px}
@@ -201,6 +216,9 @@ html,body{
       <source src="assets/walk-forward.mp4" type="video/mp4">
     </video>
   </div>
+
+  <!-- Static hero (mobile only) -->
+  <img src="assets/hero-char-coming-soon.png" alt="" class="mobile-hero">
 
   <!-- Center content -->
   <div class="content">
