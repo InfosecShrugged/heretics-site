@@ -1,24 +1,19 @@
 /**
- * Oppty — The Wise Duck Chat Widget
+ * Oppty — The Wise Duck Chat Widget (v2 — BIG DUCK)
  * NetherOps / OpptyCon Knowledge Bot
  *
- * Usage: Add to any page:
- *   <script src="/oppty-widget.js" defer></script>
+ * Usage: <script src="/oppty-widget.js" defer></script>
  *
- * Optional config (before the script tag):
- *   <script>
- *     window.OPPTY_CONFIG = {
- *       endpoint: '/.netlify/functions/oppty-chat',  // API endpoint
- *       avatar: '/assets/oppty-avatar.png',           // Duck avatar image
- *       greeting: 'Ask me anything about revenue operations, pipeline physics, or GTM strategy.',
- *       position: 'right',                            // 'right' or 'left'
- *     };
- *   </script>
+ * Optional config:
+ *   window.OPPTY_CONFIG = {
+ *     endpoint: '/.netlify/functions/oppty-chat',
+ *     avatar: '/assets/oppty-avatar.png',
+ *     position: 'right',
+ *   };
  */
 (function () {
   'use strict';
 
-  // --- CONFIG ---
   const cfg = Object.assign(
     {
       endpoint: '/.netlify/functions/oppty-chat',
@@ -30,12 +25,13 @@
     window.OPPTY_CONFIG || {}
   );
 
+  const posR = cfg.position === 'right';
+
   // --- INJECT STYLES ---
   const style = document.createElement('style');
   style.textContent = `
     @import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap');
 
-    /* Reset for widget */
     #oppty-widget, #oppty-widget * {
       box-sizing: border-box;
       margin: 0;
@@ -44,89 +40,144 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* --- Floating Bubble --- */
-    #oppty-bubble {
+    /* ============================
+       THE BIG DUCK — Resting State
+       ============================ */
+    #oppty-duck {
       position: fixed;
-      bottom: 24px;
-      ${cfg.position}: 24px;
+      bottom: -8px;
+      ${posR ? 'right' : 'left'}: 16px;
       z-index: 99999;
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: #1a1918;
-      border: 2px solid #D64074;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 0 rgba(214,64,116,0.4);
-      transition: transform 0.2s, box-shadow 0.2s;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+      /* No clipping — let the duck breathe */
     }
 
-    #oppty-bubble:hover {
-      transform: scale(1.08);
-      box-shadow: 0 6px 28px rgba(0,0,0,0.3), 0 0 0 4px rgba(214,64,116,0.15);
+    #oppty-duck:hover {
+      transform: translateY(-8px) scale(1.03);
+      filter: drop-shadow(0 12px 32px rgba(0,0,0,0.35));
     }
 
-    #oppty-bubble.has-pulse {
-      animation: oppty-pulse 2s ease-in-out infinite;
+    #oppty-duck:active {
+      transform: translateY(-4px) scale(0.98);
     }
 
-    @keyframes oppty-pulse {
-      0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 0 rgba(214,64,116,0.4); }
-      50% { box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 8px rgba(214,64,116,0); }
+    #oppty-duck img {
+      width: 160px;
+      height: auto;
+      display: block;
+      pointer-events: none;
     }
 
-    #oppty-bubble img {
-      width: 48px;
-      height: 48px;
+    /* Pulsing ring behind the duck */
+    #oppty-duck-ring {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      object-fit: cover;
+      background: radial-gradient(circle, rgba(214,64,116,0.15) 0%, transparent 70%);
+      animation: oppty-ring-pulse 2.5s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
     }
 
-    /* Fallback SVG icon if no image */
-    #oppty-bubble .oppty-icon-fallback {
-      width: 32px;
-      height: 32px;
-      color: #D64074;
+    @keyframes oppty-ring-pulse {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.6; }
+      50% { transform: translateX(-50%) scale(1.4); opacity: 0; }
     }
 
-    /* Close X when open */
-    #oppty-bubble .oppty-close-icon {
-      display: none;
-      width: 24px;
-      height: 24px;
+    /* Speech hint bubble */
+    #oppty-hint {
+      position: absolute;
+      top: -8px;
+      ${posR ? 'right' : 'left'}: 100%;
+      ${posR ? 'margin-right' : 'margin-left'}: -20px;
+      background: #1a1918;
       color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 10px;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
     }
 
-    #oppty-widget.open #oppty-bubble .oppty-close-icon { display: block; }
-    #oppty-widget.open #oppty-bubble img,
-    #oppty-widget.open #oppty-bubble .oppty-icon-fallback { display: none; }
-    #oppty-widget.open #oppty-bubble { background: #D64074; border-color: #D64074; }
-    #oppty-widget.open #oppty-bubble.has-pulse { animation: none; }
+    #oppty-hint::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      ${posR ? 'right' : 'left'}: -6px;
+      transform: translateY(-50%) rotate(45deg);
+      width: 12px;
+      height: 12px;
+      background: #1a1918;
+      border-radius: 2px;
+    }
 
-    /* --- Chat Panel --- */
+    #oppty-duck:hover #oppty-hint {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Name tag under the duck */
+    #oppty-nametag {
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #D64074;
+      color: #fff;
+      font-family: 'TWK Everett', 'Helvetica Neue', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 10px;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(214,64,116,0.4);
+      pointer-events: none;
+    }
+
+    /* Hide duck when chat is open */
+    #oppty-widget.open #oppty-duck {
+      transform: translateY(200px) scale(0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s ease-in, opacity 0.2s;
+    }
+
+    /* ============================
+       CHAT PANEL
+       ============================ */
     #oppty-panel {
       position: fixed;
-      bottom: 104px;
-      ${cfg.position}: 24px;
+      bottom: 24px;
+      ${posR ? 'right' : 'left'}: 24px;
       z-index: 99998;
-      width: 400px;
+      width: 420px;
       max-width: calc(100vw - 48px);
-      height: 560px;
-      max-height: calc(100vh - 140px);
+      height: 600px;
+      max-height: calc(100vh - 48px);
       background: #fff;
       border: 1px solid rgba(0,0,0,0.13);
       border-radius: 0;
-      box-shadow: 0 12px 48px rgba(0,0,0,0.15);
+      box-shadow: 0 16px 64px rgba(0,0,0,0.18);
       display: flex;
       flex-direction: column;
       overflow: hidden;
       opacity: 0;
       visibility: hidden;
-      transform: translateY(12px) scale(0.96);
-      transition: opacity 0.25s, visibility 0.25s, transform 0.25s;
+      transform: translateY(40px) scale(0.92);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
       transform-origin: bottom ${cfg.position};
     }
 
@@ -140,24 +191,20 @@
     #oppty-header {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       padding: 16px 20px;
       background: #1a1918;
-      color: #fff;
       flex-shrink: 0;
     }
 
     #oppty-header-avatar {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      background: #2a2928;
       border: 2px solid #D64074;
       overflow: hidden;
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: #2a2928;
     }
 
     #oppty-header-avatar img {
@@ -166,21 +213,42 @@
       object-fit: cover;
     }
 
-    #oppty-header-info h3 {
+    #oppty-header-text h3 {
       font-family: 'TWK Everett', 'Helvetica Neue', sans-serif;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 400;
-      letter-spacing: -0.02em;
       color: #fff;
+      letter-spacing: -0.02em;
     }
 
-    #oppty-header-info span {
+    #oppty-header-text span {
       font-size: 12px;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.45);
       font-family: 'Chivo Mono', 'Space Mono', monospace;
     }
 
-    /* --- Messages Area --- */
+    /* Close button */
+    #oppty-close-btn {
+      margin-left: auto;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    #oppty-close-btn:hover {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+
+    /* --- Messages --- */
     #oppty-messages {
       flex: 1;
       overflow-y: auto;
@@ -200,12 +268,12 @@
       padding: 12px 16px;
       border-radius: 0;
       font-size: 14px;
-      line-height: 1.6;
-      animation: oppty-msg-in 0.25s ease-out;
+      line-height: 1.65;
+      animation: oppty-msg-in 0.3s ease-out;
     }
 
     @keyframes oppty-msg-in {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -233,68 +301,39 @@
       font-size: 13px;
       background: #EBEBEB;
       padding: 1px 5px;
-      border-radius: 0;
+      border-radius: 3px;
     }
-    .oppty-msg.bot ul, .oppty-msg.bot ol {
-      padding-left: 20px;
-      margin: 8px 0;
-    }
-    .oppty-msg.bot li { margin-bottom: 4px; }
+    .oppty-msg.bot ul, .oppty-msg.bot ol { padding-left: 18px; margin: 6px 0; }
+    .oppty-msg.bot li { margin-bottom: 3px; }
 
-    /* Greeting message */
+    /* Greeting */
     .oppty-msg.greeting {
-      background: linear-gradient(135deg, #FFFFFF 0%, rgba(214,64,116,0.06) 100%);
+      background: linear-gradient(135deg, #fff 0%, rgba(214,64,116,0.06) 100%);
       border: 1px solid rgba(214,64,116,0.25);
+      max-width: 92%;
     }
 
-    .oppty-msg.greeting .greeting-title {
+    .oppty-msg.greeting .g-title {
       font-family: 'TWK Everett', 'Helvetica Neue', sans-serif;
       font-weight: 400;
       font-size: 15px;
       color: #D64074;
       margin-bottom: 6px;
-    }
-
-    /* Thinking dots */
-    .oppty-thinking {
-      align-self: flex-start;
       display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 14px 20px;
-      background: #fff;
-      border: 1px solid rgba(0,0,0,0.07);
-      border-radius: 0;
-      border-bottom-left-radius: 4px;
-      animation: oppty-msg-in 0.2s ease-out;
+      gap: 6px;
     }
 
-    .oppty-thinking .dot {
-      width: 6px;
-      height: 6px;
-      background: #909090;
-      border-radius: 50%;
-      animation: oppty-bounce 1.2s infinite;
-    }
-
-    .oppty-thinking .dot:nth-child(2) { animation-delay: 0.15s; }
-    .oppty-thinking .dot:nth-child(3) { animation-delay: 0.3s; }
-
-    @keyframes oppty-bounce {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-      30% { transform: translateY(-6px); opacity: 1; }
-    }
-
-    /* --- Suggested Prompts --- */
+    /* Suggestions */
     .oppty-suggestions {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     .oppty-suggestion {
-      padding: 6px 12px;
+      padding: 7px 14px;
       font-size: 12px;
       font-weight: 500;
       color: #D64074;
@@ -302,7 +341,7 @@
       border: 1px solid rgba(214,64,116,0.25);
       border-radius: 20px;
       cursor: pointer;
-      transition: background 0.15s, color 0.15s;
+      transition: all 0.15s;
       white-space: nowrap;
     }
 
@@ -312,7 +351,37 @@
       border-color: #D64074;
     }
 
-    /* --- Input Area --- */
+    /* Thinking dots */
+    .oppty-thinking {
+      align-self: flex-start;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 14px 20px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 0;
+      border-bottom-left-radius: 4px;
+      animation: oppty-msg-in 0.2s ease-out;
+    }
+
+    .oppty-thinking .dot {
+      width: 7px;
+      height: 7px;
+      background: #c0c0c0;
+      border-radius: 50%;
+      animation: oppty-bounce 1.2s infinite;
+    }
+
+    .oppty-thinking .dot:nth-child(2) { animation-delay: 0.15s; }
+    .oppty-thinking .dot:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes oppty-bounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+      30% { transform: translateY(-8px); opacity: 1; }
+    }
+
+    /* --- Input --- */
     #oppty-input-area {
       display: flex;
       align-items: flex-end;
@@ -326,18 +395,18 @@
     #oppty-input {
       flex: 1;
       border: 1px solid rgba(0,0,0,0.13);
-      border-radius: 10px;
+      border-radius: 0;
       padding: 10px 14px;
       font-size: 14px;
       font-family: 'TWK Everett', 'Helvetica Neue', sans-serif;
       color: #1a1918;
       resize: none;
       max-height: 100px;
-      min-height: 40px;
+      min-height: 42px;
       line-height: 1.4;
       outline: none;
-      transition: border-color 0.15s;
       background: #F4F4F2;
+      transition: border-color 0.15s, background 0.15s;
     }
 
     #oppty-input:focus {
@@ -345,15 +414,13 @@
       background: #fff;
     }
 
-    #oppty-input::placeholder {
-      color: #909090;
-    }
+    #oppty-input::placeholder { color: #909090; }
 
     #oppty-send {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border: none;
-      border-radius: 10px;
+      border-radius: 0;
       background: #D64074;
       color: #fff;
       cursor: pointer;
@@ -365,7 +432,7 @@
     }
 
     #oppty-send:hover { background: #C23668; }
-    #oppty-send:active { transform: scale(0.95); }
+    #oppty-send:active { transform: scale(0.94); }
     #oppty-send:disabled { background: rgba(0,0,0,0.13); cursor: not-allowed; }
     #oppty-send svg { width: 18px; height: 18px; }
 
@@ -379,13 +446,16 @@
       flex-shrink: 0;
     }
 
-    #oppty-footer a { color: #D64074; font-weight: 500; }
+    #oppty-footer a { color: #D64074; font-weight: 500; text-decoration: none; }
 
     /* --- Mobile --- */
-    @media (max-width: 480px) {
+    @media (max-width: 520px) {
+      #oppty-duck img { width: 120px; }
+      #oppty-nametag { font-size: 10px; padding: 2px 10px; }
+
       #oppty-panel {
         bottom: 0;
-        ${cfg.position}: 0;
+        ${posR ? 'right' : 'left'}: 0;
         width: 100vw;
         max-width: 100vw;
         height: 100vh;
@@ -393,15 +463,6 @@
         border-radius: 0;
         border: none;
       }
-
-      #oppty-bubble {
-        bottom: 16px;
-        ${cfg.position}: 16px;
-        width: 56px;
-        height: 56px;
-      }
-
-      #oppty-widget.open #oppty-bubble { display: none; }
     }
   `;
   document.head.appendChild(style);
@@ -411,43 +472,50 @@
   widget.id = 'oppty-widget';
 
   widget.innerHTML = `
+    <!-- THE BIG DUCK -->
+    <div id="oppty-duck">
+      <div id="oppty-duck-ring"></div>
+      <img src="${cfg.avatar}" alt="Oppty the Wise Duck" onerror="this.style.fontSize='100px';this.style.width='160px';this.style.textAlign='center';this.outerHTML='<div style=\\'font-size:120px;width:160px;text-align:center;pointer-events:none\\'>🦆</div>'">
+      <div id="oppty-nametag">Ask Oppty</div>
+      <div id="oppty-hint">Got a GTM question?</div>
+    </div>
+
+    <!-- CHAT PANEL -->
     <div id="oppty-panel">
       <div id="oppty-header">
         <div id="oppty-header-avatar">
-          <img src="${cfg.avatar}" alt="Oppty" onerror="this.parentElement.innerHTML='🦆'">
+          <img src="${cfg.avatar}" alt="Oppty" onerror="this.parentElement.innerHTML='<span style=\\'font-size:28px;display:flex;align-items:center;justify-content:center;width:100%;height:100%\\'>🦆</span>'">
         </div>
-        <div id="oppty-header-info">
+        <div id="oppty-header-text">
           <h3>Oppty</h3>
           <span>Governed Revenue Advisor</span>
         </div>
+        <button id="oppty-close-btn" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
       <div id="oppty-messages"></div>
       <div id="oppty-input-area">
         <textarea id="oppty-input" placeholder="Ask about pipeline, metrics, GTM…" rows="1"></textarea>
         <button id="oppty-send" aria-label="Send">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"/>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>
         </button>
       </div>
       <div id="oppty-footer">Powered by <a href="/opptycon/">OpptyCon</a> · NetherOps</div>
     </div>
-    <div id="oppty-bubble" class="has-pulse">
-      <img src="${cfg.avatar}" alt="Oppty" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <svg class="oppty-icon-fallback" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-      <svg class="oppty-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </div>
   `;
   document.body.appendChild(widget);
 
   // --- STATE ---
-  const messages = []; // { role: 'user'|'assistant', content: string }
+  const messages = [];
   let isLoading = false;
 
   // --- REFS ---
-  const bubble = document.getElementById('oppty-bubble');
+  const duck = document.getElementById('oppty-duck');
   const panel = document.getElementById('oppty-panel');
+  const closeBtn = document.getElementById('oppty-close-btn');
   const msgContainer = document.getElementById('oppty-messages');
   const input = document.getElementById('oppty-input');
   const sendBtn = document.getElementById('oppty-send');
@@ -458,22 +526,23 @@
       'What is pipeline coverage?',
       'Explain the Rule of 60',
       'How do I fix a broken funnel?',
-      'What metrics matter for a board deck?',
+      'Board deck metrics?',
     ];
 
-    const greetingHTML = `
+    msgContainer.innerHTML = \`
       <div class="oppty-msg bot greeting">
-        <div class="greeting-title">🦆 Quack. I mean — greetings.</div>
-        <p>${cfg.greeting}</p>
+        <div class="g-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D64074" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Quack. I mean — greetings.
+        </div>
+        <p>\${cfg.greeting}</p>
         <div class="oppty-suggestions">
-          ${suggestions.map((s) => `<button class="oppty-suggestion">${s}</button>`).join('')}
+          \${suggestions.map(s => \`<button class="oppty-suggestion">\${s}</button>\`).join('')}
         </div>
       </div>
-    `;
-    msgContainer.innerHTML = greetingHTML;
+    \`;
 
-    // Suggestion click handlers
-    msgContainer.querySelectorAll('.oppty-suggestion').forEach((btn) => {
+    msgContainer.querySelectorAll('.oppty-suggestion').forEach(btn => {
       btn.addEventListener('click', () => {
         input.value = btn.textContent;
         sendMessage();
@@ -483,33 +552,28 @@
 
   showGreeting();
 
-  // --- TOGGLE ---
-  bubble.addEventListener('click', () => {
-    widget.classList.toggle('open');
-    if (widget.classList.contains('open')) {
-      bubble.classList.remove('has-pulse');
-      setTimeout(() => input.focus(), 300);
-    }
+  // --- OPEN / CLOSE ---
+  function openChat() {
+    widget.classList.add('open');
+    setTimeout(() => input.focus(), 350);
+  }
+
+  function closeChat() {
+    widget.classList.remove('open');
+  }
+
+  duck.addEventListener('click', openChat);
+  closeBtn.addEventListener('click', closeChat);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && widget.classList.contains('open')) closeChat();
   });
 
-  // Close on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && widget.classList.contains('open')) {
-      widget.classList.remove('open');
-    }
-  });
-
-  // --- RENDER MESSAGE ---
+  // --- RENDER ---
   function renderMessage(role, content) {
     const div = document.createElement('div');
-    div.className = `oppty-msg ${role === 'user' ? 'user' : 'bot'}`;
-
-    if (role === 'assistant') {
-      div.innerHTML = markdownToHTML(content);
-    } else {
-      div.textContent = content;
-    }
-
+    div.className = \`oppty-msg \${role === 'user' ? 'user' : 'bot'}\`;
+    div.innerHTML = role === 'assistant' ? markdownToHTML(content) : escapeHTML(content);
     msgContainer.appendChild(div);
     scrollToBottom();
   }
@@ -529,46 +593,41 @@
   }
 
   function scrollToBottom() {
-    requestAnimationFrame(() => {
-      msgContainer.scrollTop = msgContainer.scrollHeight;
-    });
+    requestAnimationFrame(() => { msgContainer.scrollTop = msgContainer.scrollHeight; });
   }
 
-  // --- MARKDOWN (minimal) ---
+  function escapeHTML(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  // --- MARKDOWN ---
   function markdownToHTML(text) {
     return text
-      // Code blocks
       .replace(/`([^`]+)`/g, '<code>$1</code>')
-      // Bold
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      // Italic
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      // Unordered lists
       .replace(/^[\s]*[-•]\s+(.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul>${match}</ul>`)
-      // Numbered lists
-      .replace(/^[\s]*\d+\.\s+(.+)$/gm, '<li>$1</li>')
-      // Paragraphs
-      .split('\n\n')
-      .map((p) => {
+      .replace(/(<li>.*<\/li>\n?)+/g, m => \`<ul>\${m}</ul>\`)
+      .split('\\n\\n')
+      .map(p => {
         p = p.trim();
         if (!p) return '';
         if (p.startsWith('<ul>') || p.startsWith('<ol>') || p.startsWith('<li>')) return p;
-        return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+        return \`<p>\${p.replace(/\\n/g, '<br>')}</p>\`;
       })
       .join('');
   }
 
-  // --- SEND MESSAGE ---
+  // --- SEND ---
   async function sendMessage() {
     const text = input.value.trim();
     if (!text || isLoading) return;
 
-    // Clear suggestions on first message
     const suggestions = msgContainer.querySelector('.oppty-suggestions');
     if (suggestions) suggestions.remove();
 
-    // Add user message
     messages.push({ role: 'user', content: text });
     renderMessage('user', text);
     input.value = '';
@@ -582,34 +641,21 @@
       const res = await fetch(cfg.endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: messages,
-          siteUrl: window.location.origin,
-        }),
+        body: JSON.stringify({ messages, siteUrl: window.location.origin }),
       });
 
       hideThinking();
 
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || `HTTP ${res.status}`);
-      }
+      if (!res.ok) throw new Error(\`HTTP \${res.status}\`);
 
       const data = await res.json();
-      const reply = data.reply || 'I seem to have lost my train of thought. Try again?';
-
+      const reply = data.reply || 'Lost my train of thought. Try again?';
       messages.push({ role: 'assistant', content: reply });
       renderMessage('assistant', reply);
     } catch (err) {
       hideThinking();
       console.error('Oppty error:', err);
-
-      const errorMsg =
-        err.message === 'API key not configured'
-          ? 'My knowledge connection isn\'t configured yet. Ask your administrator to set the ANTHROPIC_API_KEY environment variable in Netlify.'
-          : 'Something went sideways. Even a samurai duck has off moments. Try again in a second.';
-
-      renderMessage('assistant', errorMsg);
+      renderMessage('assistant', 'Something went sideways. Even a samurai duck has off moments — try again.');
     }
 
     isLoading = false;
@@ -617,20 +663,15 @@
     input.focus();
   }
 
-  // --- INPUT HANDLERS ---
   sendBtn.addEventListener('click', sendMessage);
-
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   });
 
-  // Auto-resize textarea
   function autoResize() {
     input.style.height = 'auto';
     input.style.height = Math.min(input.scrollHeight, 100) + 'px';
   }
   input.addEventListener('input', autoResize);
+
 })();
