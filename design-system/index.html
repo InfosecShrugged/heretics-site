@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetherOps Design System — Marketing Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+
+:root {
+  --bg:          #EBEBEB;
+  --bg-surface:  #F4F4F2;
+  --bg-white:    #FFFFFF;
+  --bg-inverse:  #0F0F0F;
+  --bg-code:     #1C1C1C;
+  --bg-raised:   #E2E2DF;
+  --ink:         #111111;
+  --ink-mid:     #555555;
+  --ink-muted:   #909090;
+  --ink-inv:     #F5F5F3;
+  --ink-inv-mid: #AAAAAA;
+  --ink-code:    #C8FF6E;
+  --border-subtle: rgba(0,0,0,0.07);
+  --border-mid:    rgba(0,0,0,0.13);
+  --border-strong: rgba(0,0,0,0.28);
+  --accent-rose:   #D64074;
+  --accent-rose-hover: #C23668;
+  --accent-rose-dim:   rgba(214,64,116,0.10);
+  --accent-lime:   #C8FF6E;
+  --accent-lime-dark: #9BE040;
+  --accent-lime-dim: rgba(200,255,110,0.12);
+  --accent-lime-hi:  rgba(200,255,110,0.30);
+  --green:  #1A8A4A;
+  --amber:  #C07800;
+  --red:    #CC3340;
+  --blue:   #2563EB;
+  --violet: #7C4DDB;
+  --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono:    'Chivo Mono', 'Space Mono', 'Courier New', monospace;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-display);
+  background: var(--bg);
+  color: var(--ink);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page { max-width: 960px; margin: 0 auto; padding: 64px 32px 96px; }
+
+/* ─── Header ─── */
+.ds-header {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--border-mid);
+  margin-bottom: 56px;
+}
+.ds-header h1 {
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.ds-header .subtitle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-muted);
+}
+.ds-header .profile-badge {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 4px 12px;
+  background: var(--accent-lime);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 9999px;
+}
+
+/* ─── Sections ─── */
+.section { margin-bottom: 64px; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-rose);
+  margin-bottom: 8px;
+}
+.section h2 {
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+/* ─── Swatches ─── */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+.swatch {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.swatch:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.swatch:active { transform: translateY(0); }
+.swatch-color { height: 72px; }
+.swatch-info {
+  padding: 10px 12px;
+  background: var(--bg-white);
+}
+.swatch-name {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 2px;
+}
+.swatch-hex {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+.swatch.dark-swatch .swatch-info { background: #1C1C1C; }
+.swatch.dark-swatch .swatch-name { color: #F5F5F3; }
+.swatch.dark-swatch .swatch-hex { color: #AAAAAA; }
+
+.copied-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--bg-inverse);
+  color: var(--accent-lime);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: all 0.25s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+.copied-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ─── Accent Rule ─── */
+.rule-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--r-lg);
+  padding: 32px;
+  margin-bottom: 16px;
+}
+.rule-card h3 {
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+.rule-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 14px;
+}
+.rule-row:last-child { border-bottom: none; }
+.rule-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.rule-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  min-width: 90px;
+}
+.rule-never {
+  background: rgba(204,51,64,0.06);
+  border: 1px solid rgba(204,51,64,0.15);
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--red);
+}
+
+/* ─── Typography ─── */
+.type-specimen {
+  background: var(--bg-white);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: 32px;
+  margin-bottom: 12px;
+}
+.type-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.type-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-muted);
+}
+.type-token {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-rose);
+  background: var(--accent-rose-dim);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.type-sample-display {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+.type-sample-display-light {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.type-sample-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-mid);
+}
+.type-sample-mono-data {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+/* ─── Component Examples ─── */
+.comp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 640px) { .comp-grid { grid-template-columns: 1fr; } }
+
+.comp-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: 24px;
+}
+.comp-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  color: var(--ink-muted);
+  margin-bottom: 16px;
+}
+.comp-items { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* Buttons */
+.btn-lime {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: var(--accent-lime);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: none;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-lime:hover { background: var(--accent-lime-dark); }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: transparent;
+  color: var(--accent-rose);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--accent-rose);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-outline:hover { background: var(--accent-rose-dim); }
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 9999px;
+}
+.badge-lime { background: var(--accent-lime); color: var(--ink); }
+.badge-rose { background: var(--accent-rose-dim); color: var(--accent-rose); }
+.badge-green { background: rgba(26,138,74,0.08); color: var(--green); }
+.badge-amber { background: rgba(192,120,0,0.08); color: var(--amber); }
+.badge-red { background: rgba(204,51,64,0.08); color: var(--red); }
+
+/* Status dots */
+.dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.dot-lime { background: var(--accent-lime); }
+.dot-green { background: var(--green); }
+.dot-amber { background: var(--amber); }
+.dot-red { background: var(--red); }
+
+/* Links */
+.link-rose {
+  color: var(--accent-rose);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(214,64,116,0.25);
+  transition: border-color 0.15s;
+}
+.link-rose:hover { border-color: var(--accent-rose); }
+
+/* ─── Dark Inverse Panel ─── */
+.inverse-panel {
+  background: var(--bg-inverse);
+  border-radius: var(--r-xl);
+  padding: 40px;
+  color: var(--ink-inv);
+}
+.inverse-panel .section-label { color: var(--accent-lime); }
+.inverse-panel h3 {
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  color: var(--ink-inv);
+}
+.inverse-panel .rule-row { border-color: rgba(255,255,255,0.08); color: var(--ink-inv); }
+.inverse-panel .rule-label { color: var(--ink-inv-mid); }
+
+.inv-comp-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; align-items: center; }
+
+.btn-lime-inv {
+  padding: 8px 18px;
+  background: var(--accent-lime);
+  color: var(--bg-inverse);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: none;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+.link-lime {
+  color: var(--accent-lime);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200,255,110,0.30);
+}
+.badge-lime-inv {
+  display: inline-flex;
+  padding: 3px 10px;
+  background: rgba(200,255,110,0.12);
+  color: var(--accent-lime);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 9999px;
+}
+.code-inline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-code);
+  color: var(--ink-code);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* ─── Spacing ─── */
+.spacing-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 0;
+}
+.spacing-bar {
+  height: 8px;
+  background: var(--accent-lime);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+.spacing-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  min-width: 50px;
+}
+.spacing-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mid);
+  min-width: 35px;
+}
+
+/* ─── Radii ─── */
+.radii-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+.radii-item {
+  width: 72px;
+  height: 72px;
+  background: var(--bg-white);
+  border: 1px solid var(--border-mid);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.radii-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mid);
+}
+.radii-name {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ─── Semantic ─── */
+.semantic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+}
+.semantic-card {
+  border-radius: var(--r-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.semantic-name {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.semantic-hex {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.7;
+}
+.semantic-use {
+  font-size: 12px;
+  opacity: 0.85;
+  line-height: 1.4;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="ds-header">
+    <div class="subtitle">Design system reference</div>
+    <h1>NetherOps — Marketing Site</h1>
+    <span class="profile-badge">Light only · Static HTML/CSS/JS</span>
+  </header>
+
+  <!-- ═══ ACCENT SYSTEM ═══ -->
+  <section class="section">
+    <div class="section-label">01 — Accent system</div>
+    <h2>Three-mode dual accent</h2>
+
+    <div class="rule-card">
+      <h3>Light surfaces</h3>
+      <div class="rule-row">
+        <div class="rule-dot" style="background: var(--accent-rose);"></div>
+        <div class="rule-label">Rose</div>
+        <div>Text accents, links, borders, hover states</div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-dot" style="background: var(--accent-lime);"></div>
+        <div class="rule-label">Lime</div>
+        <div>Fills, badges, dots, buttons, highlights, progress bars</div>
+      </div>
+      <div class="rule-never">
+        ✕ Lime never appears as text on light backgrounds — 1.5:1 contrast ratio fails WCAG
+      </div>
+    </div>
+
+    <div class="inverse-panel">
+      <div class="section-label">Dark inverse panels</div>
+      <h3>On dark surfaces, lime handles everything</h3>
+      <div class="rule-row">
+        <div class="rule-dot" style="background: var(--accent-lime);"></div>
+        <div class="rule-label">Lime</div>
+        <div style="color: var(--ink-inv);">Text, links, fills, badges, buttons — the only accent color</div>
+      </div>
+      <div class="inv-comp-row">
+        <button class="btn-lime-inv">Action</button>
+        <a href="#" class="link-lime" onclick="return false">Link text</a>
+        <span class="badge-lime-inv">Status</span>
+        <span class="dot-lime"></span>
+        <span class="code-inline">code example</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COLORS ═══ -->
+  <section class="section">
+    <div class="section-label">02 — Color palette</div>
+    <h2>Surfaces and ink</h2>
+
+    <div class="swatch-grid" id="swatch-grid">
+      <!-- Populated by JS -->
+    </div>
+  </section>
+
+  <!-- ═══ TYPOGRAPHY ═══ -->
+  <section class="section">
+    <div class="section-label">03 — Typography</div>
+    <h2>TWK Everett + Chivo Mono</h2>
+
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-label">Display · TWK Everett 400</span>
+        <span class="type-token">font-family: var(--font-display)</span>
+      </div>
+      <div class="type-sample-display">Governed revenue operations</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-label">Data · TWK Everett 300 (Light)</span>
+        <span class="type-token">font-weight: 300</span>
+      </div>
+      <div class="type-sample-display-light">$2.4M</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-label">Module label · Chivo Mono 500</span>
+        <span class="type-token">font-family: var(--font-mono)</span>
+      </div>
+      <div class="type-sample-mono">Pipeline Coverage · Constraint Engine · Attribution</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-label">Data table · Chivo Mono 400</span>
+        <span class="type-token">tabular figures</span>
+      </div>
+      <div class="type-sample-mono-data">
+        Revenue: $1,284,000 &nbsp;·&nbsp; Coverage: 3.2× &nbsp;·&nbsp; CAC: $12,400 &nbsp;·&nbsp; LTV/CAC: 4.8
+      </div>
+    </div>
+
+    <div class="type-specimen" style="padding: 24px 32px;">
+      <div class="type-meta">
+        <span class="type-label">Body · TWK Everett 400</span>
+        <span class="type-token">14–16px · line-height 1.55</span>
+      </div>
+      <p style="font-size: 15px; line-height: 1.6; color: var(--ink-mid); max-width: 560px;">
+        The revenue thermostat enforces constraints downward through the GTM model while feedback loops flow upward — forecasting informs budgets, attribution shapes ICP governance, and CAC breaches trigger correction cascades.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ COMPONENTS ═══ -->
+  <section class="section">
+    <div class="section-label">04 — Components</div>
+    <h2>Buttons, badges, links</h2>
+
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-title">Buttons</div>
+        <div class="comp-items">
+          <button class="btn-lime">Primary action</button>
+          <button class="btn-outline">Secondary</button>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-title">Badges & pills</div>
+        <div class="comp-items">
+          <span class="badge badge-lime">Active</span>
+          <span class="badge badge-rose">Governance</span>
+          <span class="badge badge-green">Passing</span>
+          <span class="badge badge-amber">Warning</span>
+          <span class="badge badge-red">Breach</span>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-title">Status dots</div>
+        <div class="comp-items" style="gap: 16px;">
+          <span style="display:flex; align-items:center; gap:6px;"><span class="dot dot-lime"></span><span style="font-size:13px;">Active</span></span>
+          <span style="display:flex; align-items:center; gap:6px;"><span class="dot dot-green"></span><span style="font-size:13px;">Passing</span></span>
+          <span style="display:flex; align-items:center; gap:6px;"><span class="dot dot-amber"></span><span style="font-size:13px;">Warning</span></span>
+          <span style="display:flex; align-items:center; gap:6px;"><span class="dot dot-red"></span><span style="font-size:13px;">Breach</span></span>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-title">Links & inline</div>
+        <div class="comp-items" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+          <a href="#" class="link-rose" onclick="return false">Rose link on light surface →</a>
+          <span style="font-size:13px;">Inline <code class="code-inline">code token</code> on light</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SEMANTIC COLORS ═══ -->
+  <section class="section">
+    <div class="section-label">05 — Semantic colors</div>
+    <h2>Governance and metric states</h2>
+
+    <div class="semantic-grid">
+      <div class="semantic-card" style="background: rgba(26,138,74,0.08);">
+        <div class="semantic-name" style="color: var(--green);">Green</div>
+        <div class="semantic-hex" style="color: var(--green);">#1A8A4A</div>
+        <div class="semantic-use" style="color: var(--green);">Passing coverage, growth, healthy metrics</div>
+      </div>
+      <div class="semantic-card" style="background: rgba(192,120,0,0.08);">
+        <div class="semantic-name" style="color: var(--amber);">Amber</div>
+        <div class="semantic-hex" style="color: var(--amber);">#C07800</div>
+        <div class="semantic-use" style="color: var(--amber);">Approaching threshold, at ceiling</div>
+      </div>
+      <div class="semantic-card" style="background: rgba(204,51,64,0.08);">
+        <div class="semantic-name" style="color: var(--red);">Red</div>
+        <div class="semantic-hex" style="color: var(--red);">#CC3340</div>
+        <div class="semantic-use" style="color: var(--red);">Breach, decline, over budget</div>
+      </div>
+      <div class="semantic-card" style="background: rgba(37,99,235,0.08);">
+        <div class="semantic-name" style="color: var(--blue);">Blue</div>
+        <div class="semantic-hex" style="color: var(--blue);">#2563EB</div>
+        <div class="semantic-use" style="color: var(--blue);">Informational, neutral data</div>
+      </div>
+      <div class="semantic-card" style="background: rgba(124,77,219,0.08);">
+        <div class="semantic-name" style="color: var(--violet);">Violet</div>
+        <div class="semantic-hex" style="color: var(--violet);">#7C4DDB</div>
+        <div class="semantic-use" style="color: var(--violet);">Drivers panel, special categories</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SPACING ═══ -->
+  <section class="section">
+    <div class="section-label">06 — Spacing scale</div>
+    <h2>Consistent spatial rhythm</h2>
+
+    <div style="background: var(--bg-white); border: 1px solid var(--border-subtle); border-radius: var(--r-lg); padding: 24px 32px;">
+      <div class="spacing-row"><span class="spacing-label">xs</span><div class="spacing-bar" style="width: 4px;"></div><span class="spacing-value">4px</span></div>
+      <div class="spacing-row"><span class="spacing-label">sm</span><div class="spacing-bar" style="width: 8px;"></div><span class="spacing-value">8px</span></div>
+      <div class="spacing-row"><span class="spacing-label">md</span><div class="spacing-bar" style="width: 16px;"></div><span class="spacing-value">16px</span></div>
+      <div class="spacing-row"><span class="spacing-label">lg</span><div class="spacing-bar" style="width: 24px;"></div><span class="spacing-value">24px</span></div>
+      <div class="spacing-row"><span class="spacing-label">xl</span><div class="spacing-bar" style="width: 32px;"></div><span class="spacing-value">32px</span></div>
+      <div class="spacing-row"><span class="spacing-label">2xl</span><div class="spacing-bar" style="width: 48px;"></div><span class="spacing-value">48px</span></div>
+      <div class="spacing-row"><span class="spacing-label">3xl</span><div class="spacing-bar" style="width: 64px;"></div><span class="spacing-value">64px</span></div>
+      <div class="spacing-row"><span class="spacing-label">4xl</span><div class="spacing-bar" style="width: 96px;"></div><span class="spacing-value">96px</span></div>
+    </div>
+  </section>
+
+  <!-- ═══ RADII ═══ -->
+  <section class="section">
+    <div class="section-label">07 — Border radii</div>
+    <h2>Corner rounding</h2>
+
+    <div class="radii-grid">
+      <div class="radii-item" style="border-radius: 6px;"><span class="radii-val">6px</span><span class="radii-name">sm</span></div>
+      <div class="radii-item" style="border-radius: 10px;"><span class="radii-val">10px</span><span class="radii-name">md</span></div>
+      <div class="radii-item" style="border-radius: 14px;"><span class="radii-val">14px</span><span class="radii-name">lg</span></div>
+      <div class="radii-item" style="border-radius: 20px;"><span class="radii-val">20px</span><span class="radii-name">xl</span></div>
+      <div class="radii-item" style="border-radius: 9999px;"><span class="radii-val">full</span><span class="radii-name">pill</span></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Toast -->
+<div class="copied-toast" id="toast">Copied</div>
+
+<script>
+const swatches = [
+  { name: 'Ground',    hex: '#EBEBEB',  var: '--bg' },
+  { name: 'Surface',   hex: '#F4F4F2',  var: '--bg-surface' },
+  { name: 'Card',      hex: '#FFFFFF',  var: '--bg-white' },
+  { name: 'Raised',    hex: '#E2E2DF',  var: '--bg-raised' },
+  { name: 'Ink',       hex: '#111111',  var: '--ink' },
+  { name: 'Ink mid',   hex: '#555555',  var: '--ink-mid' },
+  { name: 'Ink muted', hex: '#909090',  var: '--ink-muted' },
+  { name: 'Rose',      hex: '#D64074',  var: '--accent-rose' },
+  { name: 'Rose hover', hex: '#C23668', var: '--accent-rose-hover' },
+  { name: 'Lime',      hex: '#C8FF6E',  var: '--accent-lime' },
+  { name: 'Lime dark', hex: '#9BE040',  var: '--accent-lime-dark' },
+  { name: 'Inverse',   hex: '#0F0F0F',  var: '--bg-inverse', dark: true },
+  { name: 'Code bg',   hex: '#1C1C1C',  var: '--bg-code', dark: true },
+  { name: 'Inv text',  hex: '#F5F5F3',  var: '--ink-inv', dark: true },
+  { name: 'Inv mid',   hex: '#AAAAAA',  var: '--ink-inv-mid', dark: true },
+  { name: 'Code text', hex: '#C8FF6E',  var: '--ink-code', dark: true },
+];
+
+const grid = document.getElementById('swatch-grid');
+const toast = document.getElementById('toast');
+
+swatches.forEach(s => {
+  const el = document.createElement('div');
+  el.className = 'swatch' + (s.dark ? ' dark-swatch' : '');
+  el.innerHTML = `
+    <div class="swatch-color" style="background: ${s.hex};"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">${s.name}</div>
+      <div class="swatch-hex">${s.hex}</div>
+    </div>
+  `;
+  el.addEventListener('click', () => {
+    navigator.clipboard.writeText(s.hex).then(() => {
+      toast.textContent = `Copied ${s.hex}`;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1200);
+    });
+  });
+  grid.appendChild(el);
+});
+</script>
+</body>
+</html>

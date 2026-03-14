@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpptyCon Design System — Revenue Physics Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+
+:root {
+  --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono:    'Chivo Mono', 'Space Mono', 'Courier New', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+body.light {
+  background: #EBEBEB;
+  color: #111111;
+}
+body.dark {
+  background: #0F0F0F;
+  color: #F5F5F3;
+}
+
+.page { max-width: 960px; margin: 0 auto; padding: 64px 32px 96px; }
+
+/* ─── Theme Toggle ─── */
+.theme-bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 32px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: background 0.4s, border-color 0.4s;
+}
+.light .theme-bar {
+  background: rgba(235,235,235,0.85);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+.dark .theme-bar {
+  background: rgba(15,15,15,0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.theme-bar-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+.light .theme-bar-label { color: #909090; }
+.dark .theme-bar-label { color: #666666; }
+
+.theme-toggle {
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.theme-toggle button {
+  padding: 6px 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.light .theme-toggle button {
+  background: rgba(0,0,0,0.04);
+  color: #909090;
+}
+.light .theme-toggle button.active {
+  background: #C8FF6E;
+  color: #111111;
+}
+.dark .theme-toggle button {
+  background: rgba(255,255,255,0.04);
+  color: #666666;
+}
+.dark .theme-toggle button.active {
+  background: #C8FF6E;
+  color: #0F0F0F;
+}
+
+/* ─── Header ─── */
+.ds-header { padding: 48px 0 40px; margin-bottom: 56px; transition: border-color 0.4s; }
+.light .ds-header { border-bottom: 1px solid rgba(0,0,0,0.13); }
+.dark .ds-header { border-bottom: 1px solid rgba(255,255,255,0.10); }
+.ds-header h1 { font-size: 32px; font-weight: 400; letter-spacing: -0.03em; margin-bottom: 8px; }
+.ds-header .subtitle {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.10em;
+}
+.light .ds-header .subtitle { color: #909090; }
+.dark .ds-header .subtitle { color: #666666; }
+
+.profile-badges { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.profile-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  border-radius: 9999px;
+}
+.light .profile-badge { background: #C8FF6E; color: #111; }
+.dark .profile-badge { background: rgba(200,255,110,0.12); color: #C8FF6E; }
+.profile-badge.rose-badge {
+  background: rgba(214,64,116,0.10);
+  color: #D64074;
+}
+
+/* ─── Sections ─── */
+.section { margin-bottom: 64px; }
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+.light .section-label { color: #D64074; }
+.dark .section-label { color: #C8FF6E; }
+.section h2 { font-size: 22px; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 24px; }
+
+/* ─── Rule Cards ─── */
+.rule-card {
+  border-radius: 14px;
+  padding: 32px;
+  margin-bottom: 16px;
+  transition: all 0.4s ease;
+}
+.light .rule-card { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.13); }
+.dark .rule-card { background: #1C1C1C; border: 1px solid rgba(255,255,255,0.06); }
+.rule-card h3 { font-size: 15px; font-weight: 400; margin-bottom: 16px; }
+.rule-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; font-size: 14px;
+  transition: border-color 0.4s;
+}
+.light .rule-row { border-bottom: 1px solid rgba(0,0,0,0.05); }
+.dark .rule-row { border-bottom: 1px solid rgba(255,255,255,0.04); }
+.rule-row:last-child { border-bottom: none; }
+.rule-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.rule-label {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  min-width: 100px;
+}
+.light .rule-label { color: #909090; }
+.dark .rule-label { color: #666666; }
+
+.rule-never {
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-size: 13px;
+}
+.light .rule-never { background: rgba(204,51,64,0.06); border: 1px solid rgba(204,51,64,0.15); color: #CC3340; }
+.dark .rule-never { background: rgba(204,51,64,0.08); border: 1px solid rgba(204,51,64,0.15); color: #E74C3C; }
+
+.rule-special {
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 16px;
+  font-size: 13px;
+}
+.light .rule-special { background: rgba(214,64,116,0.06); border: 1px solid rgba(214,64,116,0.12); color: #D64074; }
+.dark .rule-special { background: rgba(214,64,116,0.08); border: 1px solid rgba(214,64,116,0.12); color: #D64074; }
+
+/* ─── Swatches ─── */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+.swatch {
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.4s;
+}
+.light .swatch { border: 1px solid rgba(0,0,0,0.07); }
+.dark .swatch { border: 1px solid rgba(255,255,255,0.06); }
+.swatch:hover { transform: translateY(-2px); }
+.light .swatch:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.dark .swatch:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.30); }
+.swatch-color { height: 64px; }
+.swatch-info { padding: 8px 10px; transition: background 0.4s; }
+.light .swatch-info { background: #FFFFFF; }
+.dark .swatch-info { background: #1C1C1C; }
+.swatch-name { font-size: 11px; font-weight: 400; margin-bottom: 1px; }
+.swatch-hex { font-family: var(--font-mono); font-size: 10px; }
+.light .swatch-hex { color: #909090; }
+.dark .swatch-hex { color: #666666; }
+
+.copied-toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  font-family: var(--font-mono); font-size: 11px;
+  padding: 8px 16px; border-radius: 8px;
+  opacity: 0; transition: all 0.25s ease;
+  pointer-events: none; z-index: 100;
+  background: #0F0F0F; color: #C8FF6E;
+}
+.dark .copied-toast { background: #FFFFFF; color: #111; }
+.copied-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ─── Typography ─── */
+.type-specimen {
+  border-radius: 14px;
+  padding: 32px;
+  margin-bottom: 12px;
+  transition: all 0.4s;
+}
+.light .type-specimen { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.07); }
+.dark .type-specimen { background: #1C1C1C; border: 1px solid rgba(255,255,255,0.06); }
+.type-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+.type-label {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.10em;
+}
+.light .type-label { color: #909090; }
+.dark .type-label { color: #666666; }
+.type-token {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.light .type-token { color: #D64074; background: rgba(214,64,116,0.08); }
+.dark .type-token { color: #C8FF6E; background: rgba(200,255,110,0.08); }
+
+.type-sample-display { font-size: 36px; font-weight: 400; letter-spacing: -0.03em; line-height: 1.2; }
+.type-sample-light { font-size: 48px; font-weight: 300; letter-spacing: -0.02em; line-height: 1.1; }
+.type-sample-mono {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.10em;
+}
+.light .type-sample-mono { color: #555555; }
+.dark .type-sample-mono { color: #AAAAAA; }
+.type-sample-mono-data { font-family: var(--font-mono); font-size: 14px; font-weight: 400; }
+
+/* ─── Components ─── */
+.comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .comp-grid { grid-template-columns: 1fr; } }
+.comp-card { border-radius: 14px; padding: 24px; transition: all 0.4s; }
+.light .comp-card { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.07); }
+.dark .comp-card { background: #1C1C1C; border: 1px solid rgba(255,255,255,0.06); }
+.comp-title {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.10em;
+  margin-bottom: 16px;
+}
+.light .comp-title { color: #909090; }
+.dark .comp-title { color: #666666; }
+.comp-items { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px;
+  background: #C8FF6E; color: #111;
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  border: none; border-radius: 6px; cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: #9BE040; }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  border-radius: 6px; cursor: pointer;
+  transition: all 0.15s;
+}
+.light .btn-secondary { color: #D64074; border: 1px solid #D64074; }
+.light .btn-secondary:hover { background: rgba(214,64,116,0.08); }
+.dark .btn-secondary { color: #C8FF6E; border: 1px solid rgba(200,255,110,0.20); }
+.dark .btn-secondary:hover { background: rgba(200,255,110,0.08); }
+
+/* Badges */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  border-radius: 9999px;
+}
+.badge-lime { background: #C8FF6E; color: #111; }
+.dark .badge-lime { background: rgba(200,255,110,0.12); color: #C8FF6E; }
+.badge-rose { background: rgba(214,64,116,0.10); color: #D64074; }
+
+/* Semantic badges — same in both modes */
+.badge-green-l { background: rgba(26,138,74,0.08); color: #1A8A4A; }
+.dark .badge-green-l { background: rgba(46,204,113,0.10); color: #2ECC71; }
+.badge-amber-l { background: rgba(192,120,0,0.08); color: #C07800; }
+.dark .badge-amber-l { background: rgba(240,160,48,0.10); color: #F0A030; }
+.badge-red-l { background: rgba(204,51,64,0.08); color: #CC3340; }
+.dark .badge-red-l { background: rgba(231,76,60,0.10); color: #E74C3C; }
+
+/* Links */
+.link-accent { text-decoration: none; transition: all 0.15s; }
+.light .link-accent { color: #D64074; border-bottom: 1px solid rgba(214,64,116,0.25); }
+.light .link-accent:hover { border-color: #D64074; }
+.dark .link-accent { color: #C8FF6E; border-bottom: 1px solid rgba(200,255,110,0.25); }
+.dark .link-accent:hover { border-color: #C8FF6E; }
+
+/* Dots */
+.dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+/* ─── Semantic Colors ─── */
+.semantic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+.semantic-card {
+  border-radius: 10px;
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: background 0.4s;
+}
+.semantic-name {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.semantic-hex { font-family: var(--font-mono); font-size: 11px; opacity: 0.7; }
+.semantic-use { font-size: 12px; opacity: 0.85; line-height: 1.4; }
+
+/* ─── Chart Preview ─── */
+.chart-preview {
+  border-radius: 14px;
+  padding: 32px;
+  transition: all 0.4s;
+}
+.light .chart-preview { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.07); }
+.dark .chart-preview { background: #1C1C1C; border: 1px solid rgba(255,255,255,0.06); }
+
+.chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; margin-top: 16px; }
+.chart-bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.chart-bar {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  transition: height 0.4s ease, background 0.4s ease;
+  min-height: 4px;
+}
+.chart-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.light .chart-label { color: #909090; }
+.dark .chart-label { color: #666666; }
+
+/* ─── Spacing / Radii ─── */
+.spacing-row { display: flex; align-items: center; gap: 16px; padding: 6px 0; }
+.spacing-bar { height: 8px; border-radius: 4px; transition: width 0.3s ease, background 0.4s; }
+.light .spacing-bar { background: #C8FF6E; }
+.dark .spacing-bar { background: #C8FF6E; }
+.spacing-label { font-family: var(--font-mono); font-size: 11px; min-width: 50px; }
+.light .spacing-label { color: #909090; }
+.dark .spacing-label { color: #666666; }
+.spacing-value { font-family: var(--font-mono); font-size: 11px; min-width: 35px; }
+.light .spacing-value { color: #555555; }
+.dark .spacing-value { color: #AAAAAA; }
+
+.info-card { border-radius: 14px; padding: 24px 32px; transition: all 0.4s; }
+.light .info-card { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.07); }
+.dark .info-card { background: #1C1C1C; border: 1px solid rgba(255,255,255,0.06); }
+
+.radii-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+.radii-item {
+  width: 72px; height: 72px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: all 0.4s;
+}
+.light .radii-item { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.13); }
+.dark .radii-item { background: #1C1C1C; border: 1px solid rgba(255,255,255,0.10); }
+.radii-val { font-family: var(--font-mono); font-size: 11px; }
+.light .radii-val { color: #555555; }
+.dark .radii-val { color: #AAAAAA; }
+.radii-name {
+  font-family: var(--font-mono);
+  font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.light .radii-name { color: #909090; }
+.dark .radii-name { color: #666666; }
+
+/* ─── Shadow Specimens ─── */
+.shadow-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+@media (max-width: 640px) { .shadow-grid { grid-template-columns: 1fr; } }
+.shadow-item {
+  height: 80px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.4s;
+}
+.light .shadow-item { background: #FFFFFF; }
+.dark .shadow-item { background: #1C1C1C; }
+.shadow-label {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.light .shadow-label { color: #909090; }
+.dark .shadow-label { color: #666666; }
+</style>
+</head>
+<body class="dark">
+
+<!-- Theme toggle bar -->
+<div class="theme-bar">
+  <span class="theme-bar-label">OpptyCon design system</span>
+  <div class="theme-toggle">
+    <button id="btn-light" onclick="setMode('light')">Light</button>
+    <button id="btn-dark" class="active" onclick="setMode('dark')">Dark</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="ds-header">
+    <div class="subtitle">Application design system reference</div>
+    <h1>OpptyCon — Revenue Physics Engine</h1>
+    <div class="profile-badges">
+      <span class="profile-badge">Light + Dark modes</span>
+      <span class="profile-badge">React / Vite / Tailwind</span>
+      <span class="profile-badge rose-badge">Governance-first semantics</span>
+    </div>
+  </header>
+
+  <!-- ═══ ACCENT SYSTEM ═══ -->
+  <section class="section">
+    <div class="section-label">01 — Accent system</div>
+    <h2>Three-mode dual accent — the accent logic inverts per surface</h2>
+
+    <div class="rule-card" id="light-rules">
+      <h3>Light mode</h3>
+      <div class="rule-row">
+        <div class="rule-dot" style="background: #D64074;"></div>
+        <div class="rule-label">Rose</div>
+        <div>Primary — text accents, links, borders, hover states, chart lead</div>
+      </div>
+      <div class="rule-row">
+        <div class="rule-dot" style="background: #C8FF6E;"></div>
+        <div class="rule-label">Lime</div>
+        <div>Secondary — fills, badges, dots, buttons, highlights, progress</div>
+      </div>
+      <div class="rule-never">
+        ✕ Lime never as text on light — 1.5:1 contrast fails WCAG
+      </div>
+    </div>
+
+    <div class="rule-card" id="dark-rules">
+      <h3>Dark mode</h3>
+      <div class="rule-row">
+        <div class="rule-dot" style="background: #C8FF6E;"></div>
+        <div class="rule-label">Lime</div>
+        <div>Primary — text, links, fills, badges, buttons, chart lead — everything</div>
+      </div>
+      <div class="rule-special">
+        ◆ Rose #D64074 appears on dark ONLY for governance constraint alerts — CAC breach, coverage violation, margin warning
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COLORS ═══ -->
+  <section class="section">
+    <div class="section-label">02 — Color palette</div>
+    <h2>Surfaces, ink, and accents</h2>
+    <div class="swatch-grid" id="swatch-grid"></div>
+  </section>
+
+  <!-- ═══ TYPOGRAPHY ═══ -->
+  <section class="section">
+    <div class="section-label">03 — Typography</div>
+    <h2>TWK Everett + Chivo Mono</h2>
+
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-label">Display · TWK Everett 400</span>
+        <span class="type-token">Headings · negative tracking</span>
+      </div>
+      <div class="type-sample-display">Pipeline coverage model</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-label">Metric data · TWK Everett 300</span>
+        <span class="type-token">Light weight = precision</span>
+      </div>
+      <div class="type-sample-light">$2.4M</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-label">Module label · Chivo Mono 500</span>
+        <span class="type-token">Uppercase · 0.08–0.12em tracking</span>
+      </div>
+      <div class="type-sample-mono">Pipeline · Coverage · Constraints · Attribution</div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-meta">
+        <span class="type-label">Data table · Chivo Mono 400</span>
+        <span class="type-token">Tabular figures</span>
+      </div>
+      <div class="type-sample-mono-data">
+        ARR: $14,280,000 &nbsp;·&nbsp; Coverage: 3.2× &nbsp;·&nbsp; CAC: $12,400
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COMPONENTS ═══ -->
+  <section class="section">
+    <div class="section-label">04 — Components</div>
+    <h2>Buttons, badges, links, status</h2>
+
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-title">Buttons</div>
+        <div class="comp-items">
+          <button class="btn-primary">Primary</button>
+          <button class="btn-secondary">Secondary</button>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-title">Badges</div>
+        <div class="comp-items">
+          <span class="badge badge-lime">Active</span>
+          <span class="badge badge-rose">Governance</span>
+          <span class="badge badge-green-l">Passing</span>
+          <span class="badge badge-amber-l">Warning</span>
+          <span class="badge badge-red-l">Breach</span>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-title">Links</div>
+        <div class="comp-items" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+          <a href="#" class="link-accent" onclick="return false">Accent link adapts per mode →</a>
+          <span style="font-size: 13px;">Rose on light, lime on dark</span>
+        </div>
+      </div>
+
+      <div class="comp-card">
+        <div class="comp-title">Status dots</div>
+        <div class="comp-items" style="gap: 16px;">
+          <span style="display:flex;align-items:center;gap:6px;"><span class="dot" style="background:#C8FF6E;"></span><span style="font-size:13px;">Active</span></span>
+          <span style="display:flex;align-items:center;gap:6px;" id="dot-green"><span class="dot"></span><span style="font-size:13px;">Passing</span></span>
+          <span style="display:flex;align-items:center;gap:6px;" id="dot-amber"><span class="dot"></span><span style="font-size:13px;">Warning</span></span>
+          <span style="display:flex;align-items:center;gap:6px;" id="dot-red"><span class="dot"></span><span style="font-size:13px;">Breach</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SEMANTIC COLORS ═══ -->
+  <section class="section">
+    <div class="section-label">05 — Semantic colors</div>
+    <h2>Calibrated per mode — brighter on dark for readability</h2>
+    <div class="semantic-grid" id="semantic-grid"></div>
+  </section>
+
+  <!-- ═══ CHART PALETTE ═══ -->
+  <section class="section">
+    <div class="section-label">06 — Chart palette</div>
+    <h2>Lead color swaps per mode</h2>
+
+    <div class="chart-preview">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span class="type-sample-mono" id="chart-mode-label">Dark mode — lime-led</span>
+        <span class="type-sample-mono" id="chart-series-label">6 series</span>
+      </div>
+      <div class="chart-bars" id="chart-bars"></div>
+    </div>
+  </section>
+
+  <!-- ═══ SHADOWS ═══ -->
+  <section class="section">
+    <div class="section-label">07 — Elevation</div>
+    <h2>Shadows shift weight per mode</h2>
+
+    <div class="shadow-grid" id="shadow-grid">
+      <div class="shadow-item" id="sh-card"><span class="shadow-label">Card</span></div>
+      <div class="shadow-item" id="sh-elevated"><span class="shadow-label">Elevated</span></div>
+      <div class="shadow-item" id="sh-glow"><span class="shadow-label">Glow (dark)</span></div>
+    </div>
+  </section>
+
+  <!-- ═══ SPACING ═══ -->
+  <section class="section">
+    <div class="section-label">08 — Spacing scale</div>
+    <h2>Consistent spatial rhythm</h2>
+
+    <div class="info-card">
+      <div class="spacing-row"><span class="spacing-label">xs</span><div class="spacing-bar" style="width:4px;"></div><span class="spacing-value">4px</span></div>
+      <div class="spacing-row"><span class="spacing-label">sm</span><div class="spacing-bar" style="width:8px;"></div><span class="spacing-value">8px</span></div>
+      <div class="spacing-row"><span class="spacing-label">md</span><div class="spacing-bar" style="width:16px;"></div><span class="spacing-value">16px</span></div>
+      <div class="spacing-row"><span class="spacing-label">lg</span><div class="spacing-bar" style="width:24px;"></div><span class="spacing-value">24px</span></div>
+      <div class="spacing-row"><span class="spacing-label">xl</span><div class="spacing-bar" style="width:32px;"></div><span class="spacing-value">32px</span></div>
+      <div class="spacing-row"><span class="spacing-label">2xl</span><div class="spacing-bar" style="width:48px;"></div><span class="spacing-value">48px</span></div>
+      <div class="spacing-row"><span class="spacing-label">3xl</span><div class="spacing-bar" style="width:64px;"></div><span class="spacing-value">64px</span></div>
+      <div class="spacing-row"><span class="spacing-label">4xl</span><div class="spacing-bar" style="width:96px;"></div><span class="spacing-value">96px</span></div>
+    </div>
+  </section>
+
+  <!-- ═══ RADII ═══ -->
+  <section class="section">
+    <div class="section-label">09 — Border radii</div>
+    <h2>Corner rounding</h2>
+
+    <div class="radii-grid">
+      <div class="radii-item" style="border-radius:6px;"><span class="radii-val">6px</span><span class="radii-name">sm</span></div>
+      <div class="radii-item" style="border-radius:10px;"><span class="radii-val">10px</span><span class="radii-name">md</span></div>
+      <div class="radii-item" style="border-radius:14px;"><span class="radii-val">14px</span><span class="radii-name">lg</span></div>
+      <div class="radii-item" style="border-radius:20px;"><span class="radii-val">20px</span><span class="radii-name">xl</span></div>
+      <div class="radii-item" style="border-radius:9999px;"><span class="radii-val">full</span><span class="radii-name">pill</span></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Toast -->
+<div class="copied-toast" id="toast">Copied</div>
+
+<script>
+const LIGHT = {
+  swatches: [
+    { name: 'Ground',     hex: '#EBEBEB' },
+    { name: 'Surface',    hex: '#F4F4F2' },
+    { name: 'Card',       hex: '#FFFFFF' },
+    { name: 'Raised',     hex: '#E2E2DF' },
+    { name: 'Ink',        hex: '#111111' },
+    { name: 'Ink mid',    hex: '#555555' },
+    { name: 'Ink muted',  hex: '#909090' },
+    { name: 'Ghost',      hex: '#C4C4C4' },
+    { name: 'Accent (rose)', hex: '#D64074' },
+    { name: 'Rose hover', hex: '#C23668' },
+    { name: 'Lime fill',  hex: '#C8FF6E' },
+    { name: 'Lime dark',  hex: '#9BE040' },
+  ],
+  semantics: [
+    { name: 'Green',  hex: '#1A8A4A', bg: 'rgba(26,138,74,0.08)',  use: 'Passing, growth' },
+    { name: 'Amber',  hex: '#C07800', bg: 'rgba(192,120,0,0.08)',  use: 'At threshold' },
+    { name: 'Red',    hex: '#CC3340', bg: 'rgba(204,51,64,0.08)',  use: 'Breach, decline' },
+    { name: 'Blue',   hex: '#2563EB', bg: 'rgba(37,99,235,0.08)',  use: 'Info, chart secondary' },
+    { name: 'Violet', hex: '#7C4DDB', bg: 'rgba(124,77,219,0.08)', use: 'Drivers, segments' },
+  ],
+  chart: ['#D64074','#2563EB','#1A8A4A','#7C4DDB','#C07800','#0891B2'],
+  chartLabel: 'Light mode — rose-led',
+  shadows: {
+    card: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+    elevated: '0 4px 16px rgba(0,0,0,0.08)',
+    glow: 'none',
+  },
+  dotColors: { green: '#1A8A4A', amber: '#C07800', red: '#CC3340' },
+};
+
+const DARK = {
+  swatches: [
+    { name: 'Ground',     hex: '#0F0F0F' },
+    { name: 'Alt bg',     hex: '#171717' },
+    { name: 'Card',       hex: '#1C1C1C' },
+    { name: 'Card hover', hex: '#252525' },
+    { name: 'Ink',        hex: '#F5F5F3' },
+    { name: 'Ink mid',    hex: '#AAAAAA' },
+    { name: 'Ink muted',  hex: '#666666' },
+    { name: 'Ghost',      hex: '#444444' },
+    { name: 'Accent (lime)', hex: '#C8FF6E' },
+    { name: 'Lime hover', hex: '#9BE040' },
+    { name: 'Rose (gov)',  hex: '#D64074' },
+    { name: 'Rose dim',   hex: 'rgba(214,64,116,0.10)' },
+  ],
+  semantics: [
+    { name: 'Green',  hex: '#2ECC71', bg: 'rgba(46,204,113,0.10)',  use: 'Passing, growth' },
+    { name: 'Amber',  hex: '#F0A030', bg: 'rgba(240,160,48,0.10)',  use: 'At threshold' },
+    { name: 'Red',    hex: '#E74C3C', bg: 'rgba(231,76,60,0.10)',   use: 'Breach, decline' },
+    { name: 'Blue',   hex: '#4A90D9', bg: 'rgba(74,144,217,0.10)',  use: 'Info, chart secondary' },
+    { name: 'Violet', hex: '#8B5CF6', bg: 'rgba(139,92,246,0.10)',  use: 'Drivers, segments' },
+  ],
+  chart: ['#C8FF6E','#4A90D9','#2ECC71','#8B5CF6','#F0A030','#D64074'],
+  chartLabel: 'Dark mode — lime-led',
+  shadows: {
+    card: '0 1px 3px rgba(0,0,0,0.20), 0 1px 2px rgba(0,0,0,0.12)',
+    elevated: '0 4px 16px rgba(0,0,0,0.30)',
+    glow: '0 0 40px rgba(200,255,110,0.10)',
+  },
+  dotColors: { green: '#2ECC71', amber: '#F0A030', red: '#E74C3C' },
+};
+
+let mode = 'dark';
+const toast = document.getElementById('toast');
+
+function setMode(m) {
+  mode = m;
+  document.body.className = m;
+  document.getElementById('btn-light').className = m === 'light' ? 'active' : '';
+  document.getElementById('btn-dark').className = m === 'dark' ? 'active' : '';
+  renderSwatches();
+  renderSemantics();
+  renderChart();
+  renderShadows();
+  renderDots();
+}
+
+function copyHex(hex) {
+  navigator.clipboard.writeText(hex).then(() => {
+    toast.textContent = 'Copied ' + hex;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1200);
+  });
+}
+
+function renderSwatches() {
+  const data = mode === 'dark' ? DARK : LIGHT;
+  const grid = document.getElementById('swatch-grid');
+  grid.innerHTML = '';
+  data.swatches.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'swatch';
+    el.innerHTML = `<div class="swatch-color" style="background:${s.hex};"></div><div class="swatch-info"><div class="swatch-name">${s.name}</div><div class="swatch-hex">${s.hex}</div></div>`;
+    el.addEventListener('click', () => copyHex(s.hex));
+    grid.appendChild(el);
+  });
+}
+
+function renderSemantics() {
+  const data = mode === 'dark' ? DARK : LIGHT;
+  const grid = document.getElementById('semantic-grid');
+  grid.innerHTML = '';
+  data.semantics.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'semantic-card';
+    el.style.background = s.bg;
+    el.innerHTML = `<div class="semantic-name" style="color:${s.hex}">${s.name}</div><div class="semantic-hex" style="color:${s.hex}">${s.hex}</div><div class="semantic-use" style="color:${s.hex}">${s.use}</div>`;
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => copyHex(s.hex));
+    grid.appendChild(el);
+  });
+}
+
+function renderChart() {
+  const data = mode === 'dark' ? DARK : LIGHT;
+  document.getElementById('chart-mode-label').textContent = data.chartLabel;
+  const bars = document.getElementById('chart-bars');
+  bars.innerHTML = '';
+  const heights = [110, 85, 95, 70, 60, 45];
+  const labels = ['S1','S2','S3','S4','S5','S6'];
+  data.chart.forEach((color, i) => {
+    const g = document.createElement('div');
+    g.className = 'chart-bar-group';
+    g.innerHTML = `<div class="chart-bar" style="height:${heights[i]}px;background:${color};"></div><span class="chart-label">${labels[i]}</span>`;
+    bars.appendChild(g);
+  });
+}
+
+function renderShadows() {
+  const data = mode === 'dark' ? DARK : LIGHT;
+  document.getElementById('sh-card').style.boxShadow = data.shadows.card;
+  document.getElementById('sh-elevated').style.boxShadow = data.shadows.elevated;
+  const glowEl = document.getElementById('sh-glow');
+  glowEl.style.boxShadow = data.shadows.glow;
+  glowEl.style.opacity = data.shadows.glow === 'none' ? '0.4' : '1';
+}
+
+function renderDots() {
+  const data = mode === 'dark' ? DARK : LIGHT;
+  document.querySelector('#dot-green .dot').style.background = data.dotColors.green;
+  document.querySelector('#dot-amber .dot').style.background = data.dotColors.amber;
+  document.querySelector('#dot-red .dot').style.background = data.dotColors.red;
+}
+
+// Init
+setMode('dark');
+</script>
+</body>
+</html>
