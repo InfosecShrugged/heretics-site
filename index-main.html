@@ -51,33 +51,7 @@
 html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
 body { font-family: var(--font-display); background: var(--bg-base); color: var(--ink); overflow-x: hidden; }
 
-/* ═══ NAV ═══ */
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  height: 76px; display: flex; align-items: center; justify-content: space-between;
-  padding: 0 48px;
-  background: rgba(235,235,235,0.85);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-mid);
-}
-.nav-left { display: flex; align-items: center; }
-.nav-logo { height: 32px; width: auto; display: block; }
-.nav-links { display: flex; gap: 4px; }
-.nav-link {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
-  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);
-  text-decoration: none; padding: 10px 16px; border-radius: 4px;
-  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
-}
-.nav-link:hover { color: var(--ink); background: var(--bg-raised); }
-.nav-right { display: flex; align-items: center; gap: 14px; }
-.nav-login {
-  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
-  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted);
-  text-decoration: none; padding: 10px 16px;
-  transition: color var(--dur) var(--ease);
-}
-.nav-login:hover { color: var(--ink); }
+/* Nav handled by /components/nav.js */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
   font-family: var(--font-mono); font-weight: 600;
@@ -262,44 +236,6 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   padding: 4px 14px;
 }
 
-/* ═══ NAV DROPDOWN ═══ */
-.has-dropdown { position: relative; }
-.dropdown-toggle {
-  display: inline-flex; align-items: center;
-  background: none; border: none; cursor: pointer;
-  font: inherit; color: inherit; padding: inherit;
-  letter-spacing: inherit; text-transform: inherit;
-}
-.dropdown-toggle svg { transition: transform 0.2s; }
-.nav-dropdown {
-  position: absolute; top: calc(100% + 8px);
-  left: 50%; transform: translateX(-50%);
-  min-width: 240px; background: var(--bg-white, #fff);
-  border: 1px solid var(--border-mid, rgba(0,0,0,0.13));
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-  padding: 8px; opacity: 0; visibility: hidden;
-  transition: opacity 0.15s, visibility 0.15s;
-  z-index: 1000;
-}
-.has-dropdown:hover .nav-dropdown,
-.has-dropdown:focus-within .nav-dropdown { opacity: 1; visibility: visible; }
-.has-dropdown:hover .dropdown-toggle svg { transform: rotate(180deg); }
-.nav-dropdown a {
-  display: block; padding: 10px 14px;
-  font-family: var(--font-display, 'TWK Everett', sans-serif);
-  font-size: 14px; font-weight: 400;
-  color: var(--ink-mid, #555); text-decoration: none;
-  text-transform: none; letter-spacing: normal;
-  transition: background 0.12s, color 0.12s;
-}
-.nav-dropdown a:hover { background: var(--bg-base, #EBEBEB); color: var(--ink, #111); }
-.dropdown-divider { height: 1px; background: var(--border-subtle, rgba(0,0,0,0.07)); margin: 6px 8px; }
-.dropdown-label {
-  display: block; font-size: 10px;
-  font-family: var(--font-mono, 'Chivo Mono', monospace);
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--ink-muted, #909090); margin-top: 2px; font-weight: 500;
-}
 
 /* ═══ OPPTYCON SECTION ═══ */
 .opptycon-section {
@@ -474,8 +410,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 900px) {
-  .nav { padding: 0 24px; }
-  .nav-links { display: none; }
+  /* nav handled by shared component */
   .hero { grid-template-columns: 1fr; min-height: auto; }
   .hero-left { padding: 60px 24px 40px; max-width: none; }
   .hero-right { height: 50vh; }
@@ -497,36 +432,8 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 <body>
 
 <!-- ═══ NAV ═══ -->
-<nav class="nav">
-  <div class="nav-left">
-    <a href="/"><img src="assets/netherops-logo-black.svg" alt="NetherOps" class="nav-logo"></a>
-  </div>
-  <div class="nav-links">
-    <a href="/doctrine/" class="nav-link">Doctrine</a>
-    <a href="#services" class="nav-link">Services</a>
-    <div class="has-dropdown">
-      <button class="nav-link dropdown-toggle" aria-expanded="false">
-        OpptyCon
-        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin-left:4px"><path d="M3 4.5L6 7.5L9 4.5"/></svg>
-      </button>
-      <div class="nav-dropdown">
-        <a href="/opptycon/">Overview</a>
-        <div class="dropdown-divider"></div>
-        <a href="/opptycon/operators/">Operators<span class="dropdown-label">RevOps · MarOps</span></a>
-        <a href="/opptycon/heads-of-gtm/">GTM Leaders<span class="dropdown-label">VP Marketing · CMO · Demand Gen</span></a>
-        <a href="/opptycon/finance/">Finance<span class="dropdown-label">CFO · FP&amp;A · Strategic Finance</span></a>
-        <a href="/opptycon/leadership/">Leadership<span class="dropdown-label">CEO · CRO · COO</span></a>
-        <a href="/opptycon/capital/">Capital<span class="dropdown-label">VC · PE · Operating Partners</span></a>
-      </div>
-    </div>
-    <a href="/doctrine/#library" class="nav-link">Library</a>
-    <a href="#about" class="nav-link">About</a>
-  </div>
-  <div class="nav-right">
-    <a href="#" class="nav-login">Login</a>
-    <a href="#briefing" class="btn btn-primary btn-sm btn-dot">Book a Briefing</a>
-  </div>
-</nav>
+<div id="site-nav"></div>
+<script src="/components/nav.js"></script>
 
 <!-- ═══ HERO ═══ -->
 <section class="hero">
