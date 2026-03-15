@@ -37,6 +37,8 @@
     "  font-family: 'TWK Everett', 'Helvetica Neue', sans-serif;",
     "  -webkit-font-smoothing: antialiased;",
     "}",
+    "#oppty-widget { position: fixed; top: 0; left: 0; width: 0; height: 0; overflow: visible; pointer-events: none; z-index: 99999; }",
+    "#oppty-widget > * { pointer-events: auto; }",
     "",
     "#oppty-duck {",
     "  position: fixed; bottom: -8px;",
