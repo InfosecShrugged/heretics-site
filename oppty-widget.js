@@ -37,7 +37,6 @@
     "  font-family: 'TWK Everett', 'Helvetica Neue', sans-serif;",
     "  -webkit-font-smoothing: antialiased;",
     "}",
-    "#oppty-widget { display: contents; }",
     "",
     "#oppty-duck {",
     "  position: fixed; bottom: -8px;",
@@ -89,11 +88,6 @@
     "  box-shadow: 0 2px 8px rgba(214,64,116,0.4); pointer-events: none;",
     "}",
     "",
-    "#oppty-widget.open #oppty-duck {",
-    "  transform: translateY(200px) scale(0.5); opacity: 0;",
-    "  pointer-events: none; transition: transform 0.3s ease-in, opacity 0.2s;",
-    "}",
-    "",
     "#oppty-panel {",
     "  position: fixed; bottom: 24px;",
     "  " + (posR ? "right" : "left") + ": 24px;",
@@ -104,10 +98,8 @@
     "  display: flex; flex-direction: column; overflow: hidden;",
     "  opacity: 0; visibility: hidden;",
     "  transform: translateY(40px) scale(0.92);",
-    "  transition: none;",
     "  transform-origin: bottom " + cfg.position + ";",
     "}",
-    "#oppty-widget.open #oppty-panel { opacity: 1; visibility: visible; transform: translateY(0) scale(1); transition: opacity 0.3s, visibility 0.3s, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }",
     "",
     "#oppty-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: #1a1918; flex-shrink: 0; }",
     "#oppty-header-avatar { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #D64074; overflow: hidden; flex-shrink: 0; background: #2a2928; }",
@@ -213,6 +205,7 @@
 
   // --- REFS ---
   var duck = document.getElementById('oppty-duck');
+  var panel = document.getElementById('oppty-panel');
   var closeBtn = document.getElementById('oppty-close-btn');
   var msgContainer = document.getElementById('oppty-messages');
   var input = document.getElementById('oppty-input');
@@ -249,21 +242,43 @@
 
   showGreeting();
 
-  // --- OPEN / CLOSE ---
+  // --- OPEN / CLOSE (JS-driven — CSS transitions break on this page) ---
+  var isOpen = false;
+
   function openChat() {
-    widget.classList.add('open');
-    setTimeout(function() { input.focus(); }, 350);
+    if (isOpen) return;
+    isOpen = true;
+    // Hide duck
+    duck.style.transform = 'translateY(200px) scale(0.5)';
+    duck.style.opacity = '0';
+    duck.style.pointerEvents = 'none';
+    duck.style.transition = 'transform 0.3s ease-in, opacity 0.2s';
+    // Show panel
+    panel.style.visibility = 'visible';
+    panel.style.opacity = '1';
+    panel.style.transform = 'translateY(0) scale(1)';
+    setTimeout(function() { input.focus(); }, 100);
   }
 
   function closeChat() {
-    widget.classList.remove('open');
+    if (!isOpen) return;
+    isOpen = false;
+    // Show duck
+    duck.style.transform = '';
+    duck.style.opacity = '';
+    duck.style.pointerEvents = '';
+    duck.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s';
+    // Hide panel
+    panel.style.opacity = '0';
+    panel.style.transform = 'translateY(40px) scale(0.92)';
+    setTimeout(function() { if (!isOpen) panel.style.visibility = 'hidden'; }, 300);
   }
 
   duck.addEventListener('click', openChat);
   closeBtn.addEventListener('click', closeChat);
 
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && widget.classList.contains('open')) closeChat();
+    if (e.key === 'Escape' && isOpen) closeChat();
   });
 
   // --- RENDER ---
