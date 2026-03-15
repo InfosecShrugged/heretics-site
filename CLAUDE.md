@@ -230,3 +230,8 @@ These are from a DIFFERENT project (BigFilter) or outdated instructions. Do NOT 
 | `#d9d9d9` (old border) | `rgba(0,0,0,0.13)` |
 | `#2d8a56` (old green) | `#1A8A4A` |
 | `#d42e4a` (old rose) | `#CC3340` (semantic red) |
+
+### Known Bug: Escaped Template Literals
+When writing JS files with template literals, ALWAYS run `node --check filename.js` 
+after creating or editing. Claude Code sometimes escapes backticks as \` during file 
+creation, which silently kills the entire script with no visible error.
