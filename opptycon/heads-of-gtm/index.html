@@ -9,31 +9,8 @@
 </head>
 <body>
 
-  <nav class="site-nav" id="siteNav">
-    <div class="container-wide">
-      <a href="/" class="nav-logo"><img src="/assets/netherops-logo.svg" alt="NetherOps" onerror="this.style.display='none'"> NetherOps</a>
-      <ul class="nav-links">
-        <li><a href="/doctrine/">Doctrine</a></li>
-        <li><a href="/#services">Services</a></li>
-        <li class="active">
-          <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">OpptyCon <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 4.5L6 7.5L9 4.5"/></svg></button>
-          <div class="nav-dropdown">
-            <a href="/opptycon/">Overview</a>
-            <div class="dropdown-divider"></div>
-            <a href="/opptycon/operators/">Operators<span class="dropdown-label">RevOps · MarOps</span></a>
-            <a href="/opptycon/heads-of-gtm/" class="dropdown-active">GTM Leaders<span class="dropdown-label">VP Marketing · CMO · Demand Gen</span></a>
-            <a href="/opptycon/finance/">Finance<span class="dropdown-label">CFO · FP&amp;A · Strategic Finance</span></a>
-            <a href="/opptycon/leadership/">Leadership<span class="dropdown-label">CEO · CRO · COO</span></a>
-            <a href="/opptycon/capital/">Capital<span class="dropdown-label">VC · PE · Operating Partners</span></a>
-          </div>
-        </li>
-        <li><a href="/doctrine/#library">Library</a></li>
-        <li><a href="/#about">About</a></li>
-      </ul>
-      <div class="nav-actions"><a href="#" class="btn-nav-ghost">Login</a><a href="#briefing" class="btn-nav-primary">Book a Briefing</a></div>
-      <button class="nav-toggle" onclick="document.getElementById('siteNav').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
-    </div>
-  </nav>
+  <div id="site-nav" data-active="opptycon" data-sub="heads-of-gtm"></div>
+  <script src="/components/nav.js"></script>
 
   <header class="page-hero has-character">
     <div class="container">
@@ -125,7 +102,6 @@
       <div class="footer-bottom">&copy; 2026 NetherOps &middot; All rights reserved</div>
     </div>
   </footer>
-  <script>document.querySelectorAll('.dropdown-toggle').forEach(btn=>{btn.addEventListener('click',function(e){if(window.innerWidth<=900){e.preventDefault();this.closest('li').classList.toggle('mobile-open')}})});</script>
 <script src="/oppty-widget.js" defer></script>
 </body>
 </html>
