@@ -3,244 +3,764 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NetherOps — Coming Soon</title>
+<title>NetherOps · GTM Engineering</title>
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-<meta name="description" content="Introducing governed revenue operations. From the Heretics team.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <style>
+/* ═══ DUAL-ACCENT SYSTEM ═══
+   Light surfaces: Rose #D64074 for text accents, links, borders
+   Light surfaces: Lime #C8FF6E for fills, badges, dots, highlights, buttons
+   Dark surfaces:  Lime #C8FF6E for everything
+   Logo mark:     Black #111 on light, Lime #C8FF6E on dark
+   Rule: Lime never appears as TEXT on light. Lime as FILL on light is great.
+═══════════════════════════════ */
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
-
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
 :root {
-  --bg: #EBEBEB;
-  --text: #111111;
-  --muted: #555555;
-  --dim: #909090;
-  --accent-rose: #D64074;
-  --accent-lime: #C8FF6E;
-  --border: rgba(0,0,0,0.13);
-  --border-light: rgba(0,0,0,0.07);
-  --font-display: 'TWK Everett', 'Helvetica Neue', sans-serif;
-  --font-mono: 'Chivo Mono', 'Space Mono', monospace;
+  --bg-base:      #EBEBEB;
+  --bg-surface:   #F4F4F2;
+  --bg-white:     #FFFFFF;
+  --bg-inverse:   #0F0F0F;
+  --bg-code:      #1C1C1C;
+  --bg-raised:    #E2E2DF;
+  --ink:          #111111;
+  --ink-mid:      #555555;
+  --ink-muted:    #909090;
+  --ink-inv:      #F5F5F3;
+  --ink-inv-mid:  #AAAAAA;
+  --ink-code:     #C8FF6E;
+  --border-subtle: rgba(0,0,0,0.07);
+  --border-mid:    rgba(0,0,0,0.13);
+  --border-strong: rgba(0,0,0,0.28);
+  --accent:        #111111;
+  --accent-text:   #F5F5F3;
+  --accent-lime:   #C8FF6E;
+  --accent-lime-dark: #9BE040;
+  --accent-rose:   #D64074;
+  --accent-rose-light: rgba(214,64,116,0.10);
+  --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono:    'Chivo Mono', 'Space Mono', 'Courier New', monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 200ms;
 }
 
-html,body{
-  height:100%;
-  overflow:hidden;
-  background:var(--bg);
-  color:var(--text);
-  font-family:var(--font-display);
-  -webkit-font-smoothing:antialiased;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { font-family: var(--font-display); background: var(--bg-base); color: var(--ink); overflow-x: hidden; }
+
+/* Nav handled by /components/nav.js */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+  border: 1px solid transparent; border-radius: 4px; cursor: pointer;
+  transition: all var(--dur) var(--ease); white-space: nowrap;
+}
+.btn:active { transform: translateY(1px); }
+.btn-sm { font-size: 11px; padding: 10px 20px; }
+.btn-md { font-size: 11px; padding: 11px 24px; }
+.btn-lg { font-size: 13px; padding: 14px 32px; }
+.btn-primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.btn-primary:hover { opacity: 0.8; }
+.btn-secondary { background: transparent; color: var(--ink); border-color: var(--border-strong); }
+.btn-secondary:hover { background: var(--bg-raised); }
+.btn-lime { background: var(--accent-lime); color: var(--ink); border-color: var(--accent-lime); }
+.btn-lime:hover { background: var(--accent-lime-dark); border-color: var(--accent-lime-dark); }
+.btn-rose { background: var(--accent-rose); color: #fff; border-color: var(--accent-rose); }
+.btn-rose:hover { opacity: 0.85; }
+.btn-dot::after { content: '⠿'; font-size: 10px; opacity: 0.4; }
+
+/* ═══ HERO ═══ */
+.hero {
+  min-height: 100vh; display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 76px 0 0;
+  position: relative; overflow: hidden;
+}
+.hero-left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 80px 48px 80px 48px;
+  max-width: 680px;
+  position: relative; z-index: 2;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--ink-muted); }
+.hero-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5.5vw, 72px);
+  font-weight: 400; line-height: 1.06; letter-spacing: -0.035em;
+  color: var(--ink); margin-bottom: 28px;
+  min-height: 2.2em;
+}
+.hero-h1 em {
+  font-style: normal;
+  background: linear-gradient(transparent 55%, rgba(200,255,110,0.30) 55%);
+}
+.hero-h1 .type-line { display: inline; }
+.type-cursor {
+  display: inline-block; width: 2px; height: 0.85em;
+  background: var(--accent-lime); margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.6s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.hero-sub {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 400;
+  line-height: 1.75; color: var(--ink-mid); text-transform: uppercase;
+  letter-spacing: 0.04em; max-width: 420px; margin-bottom: 40px;
+}
+.hero-actions { display: flex; gap: 12px; align-items: center; margin-bottom: 56px; }
+.hero-signals {
+  display: flex; gap: 32px; padding-top: 32px;
+  border-top: 1px solid var(--border-subtle);
+}
+.signal-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+.signal-value {
+  font-family: var(--font-display); font-size: 28px; font-weight: 300;
+  letter-spacing: -0.03em; color: var(--ink); line-height: 1;
+  display: flex; align-items: center; gap: 8px;
+}
+.signal-value::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-lime); flex-shrink: 0;
+}
+.signal-value .accent-hl {
+  color: var(--accent-rose);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.06em; vertical-align: middle;
+}
+.hero-right {
+  position: relative;
+  overflow: visible;
+}
+.hero-img {
+  position: absolute;
+  bottom: 0; right: 0;
+  height: 88%;
+  width: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  filter: brightness(1.1) contrast(1.35);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 90%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 90%, transparent 100%);
+}
+/* Hair wind overlay — displacement filter masked to actual hair pixels */
+.hero-hair {
+  position: absolute;
+  bottom: 0; right: 0;
+  height: 88%;
+  width: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+  filter: url(#hair-wind) brightness(1.1) contrast(1.35);
+  -webkit-mask-image: url(assets/hero-hair-mask.png);
+  mask-image: url(assets/hero-hair-mask.png);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+  pointer-events: none;
+}
+.hero-right::before {
+  content: '';
+  position: absolute; left: -40px; top: 0; bottom: 0; width: 100px;
+  background: linear-gradient(to right, var(--bg-base), transparent);
+  z-index: 1; pointer-events: none;
+}
+.hero-right::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0; height: 100px;
+  background: linear-gradient(to top, var(--bg-base), transparent);
+  z-index: 1; pointer-events: none;
 }
 
-.page{
-  position:relative;
-  width:100%;height:100vh;height:100dvh;
-  display:flex;flex-direction:column;
-  justify-content:center;align-items:center;
-  overflow:hidden;
+/* ═══ TRUST BAR ═══ */
+.trust {
+  padding: 48px;
+  border-top: 1px solid var(--border-mid);
+  display: flex; align-items: center; gap: 48px;
+}
+.trust-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted);
+  white-space: nowrap;
+}
+.trust-items { display: flex; gap: 40px; align-items: center; flex: 1; }
+.trust-item {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--border-strong);
+  white-space: nowrap;
+  display: flex; align-items: center; gap: 8px;
+}
+.trust-item::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent-lime); flex-shrink: 0;
 }
 
-/* ── Subtle grain ── */
-.page::before{
-  content:'';position:absolute;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity:0.018;pointer-events:none;z-index:100;
+/* ═══ FEATURES (dark section) ═══ */
+.features {
+  background: var(--bg-inverse); border-radius: 20px;
+  margin: 8px 16px; padding: 96px 48px;
+}
+.feat-label {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.25);
+  margin-bottom: 32px;
+  display: flex; align-items: center; gap: 12px;
+}
+.feat-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+.feat-h2 {
+  font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400; letter-spacing: -0.03em; line-height: 1.1;
+  color: var(--ink-inv); margin-bottom: 12px; max-width: 560px;
+}
+.feat-sub {
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink-inv-mid);
+  line-height: 1.65; max-width: 460px; margin-bottom: 64px;
+}
+.feat-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06); border-radius: 12px;
+  overflow: hidden;
+}
+.feat-cell { background: var(--bg-inverse); padding: 40px 32px; }
+.feat-cell-num {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,0.2); letter-spacing: 0.1em; margin-bottom: 20px;
+}
+.feat-cell-title {
+  font-family: var(--font-display); font-size: 22px; font-weight: 400;
+  color: var(--ink-inv); letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.25;
+}
+.feat-cell-body {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-inv-mid); line-height: 1.7;
+}
+.feat-cell-tag {
+  margin-top: 24px; display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-code); background: rgba(200,255,110,0.06);
+  border: 1px solid rgba(200,255,110,0.15); border-radius: 100px;
+  padding: 4px 14px;
 }
 
-/* ── Video layer ── */
-.video-track{
-  position:absolute;inset:0;
-  pointer-events:none;z-index:1;
+
+/* ═══ OPPTYCON SECTION ═══ */
+.opptycon-section {
+  padding: 96px 48px;
+  border-top: 1px solid var(--border-subtle);
+}
+.opc-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center; margin-top: 48px;
+}
+.opc-visual {
+  background: var(--bg-inverse); border-radius: 12px; padding: 40px;
+  position: relative; overflow: hidden;
+}
+.opc-visual::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 40%, rgba(200,255,110,0.06), transparent 60%);
+  pointer-events: none;
+}
+.opc-gauge {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.opc-metric {
+  padding: 16px; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px;
+}
+.opc-metric-label {
+  font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3);
+  margin-bottom: 8px;
+}
+.opc-metric-val {
+  font-family: var(--font-display); font-size: 24px; font-weight: 300;
+  color: var(--ink-inv); letter-spacing: -0.02em;
+}
+.opc-metric-val .rose { color: var(--accent-rose); }
+.opc-metric-val .grn { color: var(--accent-lime-dark); }
+.opc-info h3 {
+  font-family: var(--font-display); font-size: clamp(24px, 3vw, 40px);
+  font-weight: 400; letter-spacing: -0.025em; line-height: 1.15;
+  margin-bottom: 16px;
+}
+.opc-info p {
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink-mid);
+  line-height: 1.7; max-width: 440px; margin-bottom: 32px;
+}
+.opc-features {
+  display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px;
+}
+.opc-feat {
+  display: flex; align-items: baseline; gap: 10px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-mid);
+  letter-spacing: 0.02em;
+}
+.opc-feat::before {
+  content: '→'; color: var(--accent-rose); font-weight: 600; flex-shrink: 0;
 }
 
-.video-walker{
-  position:absolute;
-  bottom:-4%;
-  right:5%;
-  height:75vh;width:auto;
-  mix-blend-mode:multiply;
-  filter:brightness(1.15) contrast(1.4);
-  opacity:0.09;
-  transform-origin:center bottom;
-  -webkit-mask-image:radial-gradient(ellipse 70% 78% at center 50%,black 35%,transparent 100%);
-  mask-image:radial-gradient(ellipse 70% 78% at center 50%,black 35%,transparent 100%);
-  animation:approach 6.3s linear infinite;
+/* ═══ DOCTRINE PREVIEW ═══ */
+.doctrine-section {
+  background: var(--bg-surface); border-radius: 20px;
+  margin: 8px 16px; padding: 96px 48px;
+}
+.doc-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-top: 48px;
+}
+.doc-card {
+  background: var(--bg-white); border: 1px solid var(--border-mid);
+  border-top: 2px solid var(--accent-lime);
+  border-radius: 8px; padding: 28px 24px;
+  text-decoration: none; color: inherit;
+  transition: all var(--dur) var(--ease);
+}
+.doc-card:hover {
+  border-color: var(--accent-rose);
+  border-top-color: var(--accent-lime);
+  box-shadow: 0 2px 12px rgba(214,64,116,0.08);
+  transform: translateY(-2px);
+}
+.doc-card-num {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  color: var(--accent-rose); letter-spacing: 0.08em; margin-bottom: 12px;
+}
+.doc-card-title {
+  font-family: var(--font-display); font-size: 18px; font-weight: 400;
+  letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.doc-card-desc {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted);
+  line-height: 1.6;
 }
 
-@keyframes approach{
-  0%  {transform:scale(.92);opacity:.05}
-  15% {opacity:.09}
-  85% {opacity:.09}
-  100%{transform:scale(1.06);opacity:.03}
+/* ═══ CTA SECTION ═══ */
+.cta-section {
+  padding: 96px 48px; text-align: center;
+  border-top: 1px solid var(--border-subtle);
+}
+.cta-h2 {
+  font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400; letter-spacing: -0.025em; line-height: 1.12;
+  color: var(--ink); margin-bottom: 16px;
+}
+.cta-sub {
+  font-family: var(--font-mono); font-size: 13px; color: var(--ink-mid);
+  line-height: 1.65; max-width: 440px; margin: 0 auto 40px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.cta-actions { display: flex; gap: 12px; justify-content: center; }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  background: var(--bg-inverse); border-radius: 20px 20px 0 0;
+  margin: 8px 16px 0; padding: 64px 48px 32px;
+}
+.footer-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 48px; margin-bottom: 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.footer-brand-name {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-inv);
+  margin-bottom: 8px;
+}
+.footer-brand-sub {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-inv-mid);
+  letter-spacing: 0.04em; max-width: 260px; line-height: 1.6;
+}
+.footer-cols { display: flex; gap: 64px; }
+.footer-col-label {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.25);
+  margin-bottom: 16px;
+}
+.footer-col-links { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+.footer-col-links a {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-inv-mid);
+  text-decoration: none; letter-spacing: 0.03em;
+  transition: color var(--dur) var(--ease);
+}
+.footer-col-links a:hover { color: var(--ink-inv); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy {
+  font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.15);
+  letter-spacing: 0.04em;
 }
 
-/* ── Content ── */
-.content{
-  position:relative;z-index:10;
-  text-align:center;
-  display:flex;flex-direction:column;align-items:center;
-  opacity:0;
-  animation:fadeUp 1.4s var(--ease) .2s both;
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.hero-left > * {
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease) forwards;
+}
+.hero-left > :nth-child(1) { animation-delay: 0.1s; }
+.hero-left > :nth-child(2) { animation-delay: 0.2s; }
+.hero-left > :nth-child(3) { animation-delay: 0.35s; }
+.hero-left > :nth-child(4) { animation-delay: 0.5s; }
+.hero-left > :nth-child(5) { animation-delay: 0.65s; }
+.hero-img {
+  opacity: 0;
+  animation: fadeIn 1.2s var(--ease) 0.3s forwards;
+}
+.hero-hair {
+  opacity: 0;
+  animation: fadeIn 1.2s var(--ease) 0.3s forwards;
 }
 
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px)}
-  to  {opacity:1;transform:translateY(0)}
-}
-
-/* Logo — black mark on light bg */
-.logo{
-  width:clamp(240px,42vw,420px);
-  height:auto;
-  margin-bottom:48px;
-}
-
-/* Headline */
-.headline{
-  font-family:var(--font-display);
-  font-weight:400;
-  font-size:clamp(15px,2.6vw,22px);
-  line-height:1.65;
-  color:var(--muted);
-  letter-spacing:.01em;
-  max-width:440px;
-  margin-bottom:56px;
-}
-
-.headline em{
-  font-style:normal;
-  color:var(--accent-rose);
-}
-
-.headline strong{
-  font-weight:700;
-  color:var(--text);
-}
-
-/* Status pill */
-.status{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:8px 20px;
-  border:1px solid var(--border);
-  border-radius:100px;
-  font-family:var(--font-mono);
-  font-size:11px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:var(--dim);
-}
-
-.status-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--accent-lime);
-  animation:pulse 2.8s ease-in-out infinite;
-}
-
-@keyframes pulse{
-  0%,100%{opacity:.35;box-shadow:0 0 0 0 rgba(200,255,110,0)}
-  50%    {opacity:1;  box-shadow:0 0 12px 2px rgba(200,255,110,.25)}
-}
-
-/* ── Bottom bar ── */
-.bottom-bar{
-  position:absolute;bottom:0;left:0;right:0;z-index:10;
-  padding:20px 32px;
-  display:flex;justify-content:space-between;align-items:center;
-  border-top:1px solid var(--border-light);
-  opacity:0;
-  animation:fadeUp .8s var(--ease) 1.2s both;
-}
-
-.bottom-bar a{
-  font-family:var(--font-mono);
-  font-size:11px;letter-spacing:.08em;
-  color:var(--dim);text-decoration:none;
-  transition:color .3s;
-}
-.bottom-bar a:hover{color:var(--accent-rose)}
-
-.bottom-label{
-  font-family:var(--font-mono);
-  font-size:10px;letter-spacing:.15em;
-  color:var(--dim);text-transform:uppercase;
-}
-
-/* ── Corner accent ── */
-.corner{
-  position:absolute;top:-1px;right:-1px;
-  width:200px;height:200px;z-index:2;
-  opacity:.04;
-  background:radial-gradient(ellipse at top right,var(--accent-rose) 0%,transparent 70%);
-}
-
-/* ── Mobile hero image (replaces video) ── */
-.mobile-hero{
-  display:none;
-}
-
-/* ── Mobile ── */
-@media(max-width:640px){
-  .video-track{display:none}
-  .mobile-hero{
-    display:block;
-    position:absolute;
-    bottom:-5%;right:-8%;
-    width:65vw;height:auto;
-    opacity:0.09;
-    mix-blend-mode:multiply;
-    pointer-events:none;
-    z-index:1;
-  }
-  .logo{width:220px;margin-bottom:36px}
-  .headline{font-size:14px;margin-bottom:40px;padding:0 24px}
-  .status{font-size:10px;padding:6px 16px}
-  .bottom-bar{padding:16px 20px;flex-direction:column;gap:8px}
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 900px) {
+  /* nav handled by shared component */
+  .hero { grid-template-columns: 1fr; min-height: auto; overflow: hidden; }
+  .hero-left { padding: 60px 24px 40px; max-width: none; }
+  .hero-right { height: 60vh; position: relative; overflow: hidden; }
+  .hero-img { position: relative; height: 100%; width: auto; max-width: 100%; margin: 0 auto; display: block; right: auto; bottom: auto; }
+  .hero-hair { position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: 100%; width: auto; max-width: 100%; margin: 0 auto; display: block; }
+  .trust { flex-direction: column; gap: 16px; padding: 32px 24px; }
+  .trust-items { flex-wrap: wrap; gap: 16px; }
+  .features { padding: 64px 24px; margin: 8px 8px; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .opptycon-section { padding: 64px 24px; }
+  .opc-grid { grid-template-columns: 1fr; }
+  .doctrine-section { padding: 64px 24px; margin: 8px 8px; }
+  .doc-cards { grid-template-columns: 1fr; }
+  .cta-section { padding: 64px 24px; }
+  .footer { padding: 48px 24px 24px; margin: 8px 8px 0; }
+  .footer-top { flex-direction: column; gap: 32px; }
+  .footer-cols { flex-wrap: wrap; gap: 32px; }
 }
 </style>
 </head>
 <body>
 
-<div class="page">
-  <div class="corner"></div>
+<!-- SVG displacement filter for hair wind — one-way rightward flow -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="hair-wind" x="-5%" y="-5%" width="110%" height="110%">
+      <!-- Low X freq = wide horizontal bands, high Y freq = vertical grain → rightward streaks -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.02" numOctaves="2" seed="3" result="noise">
+        <animate attributeName="baseFrequency" values="0.004 0.02;0.006 0.025;0.003 0.018;0.005 0.022;0.004 0.02" dur="8s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1"/>
+      </feTurbulence>
+      <!-- Same channel for both axes = correlated horizontal push, minimal vertical scatter -->
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="R"/>
+    </filter>
+  </defs>
+</svg>
 
-  <!-- Walking character -->
-  <div class="video-track">
-    <video class="video-walker" autoplay loop muted playsinline>
-      <source src="assets/walk-forward.mp4" type="video/mp4">
-    </video>
-  </div>
+<!-- ═══ NAV ═══ -->
+<div id="site-nav"></div>
+<script src="/components/nav.js"></script>
 
-  <!-- Static hero (mobile only) -->
-  <img src="assets/hero-char-coming-soon.png" alt="" class="mobile-hero">
-
-  <!-- Center content -->
-  <div class="content">
-    <img src="assets/netherops-logo-lime-mark.svg" alt="NetherOps" class="logo">
-
-    <div class="headline">
-      Introducing <em>governed revenue operations</em><br>
-      from the <strong>NetherOps</strong> team.
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Governed Revenue Architecture</div>
+    <h1 class="hero-h1" id="heroH1"><span class="type-line" id="typeLine"></span></h1>
+    <p class="hero-sub">AI-first GTM engineering from pre-seed to pre-IPO. Every motion governed. Every dollar traced. Every channel architected.</p>
+    <div class="hero-actions">
+      <a href="#briefing" class="btn btn-primary btn-lg btn-dot">Book a Briefing</a>
+      <a href="/doctrine/" class="btn btn-secondary btn-lg">Read the Doctrine</a>
     </div>
-
-    <div class="status">
-      <div class="status-dot"></div>
-      coming soon
+    <div class="hero-signals">
+      <div class="signal-item">
+        <div class="signal-label">Coverage</div>
+        <div class="signal-value">Full-stack <span class="accent-hl">GTM</span></div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-label">Stage</div>
+        <div class="signal-value">Pre-seed → IPO</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-label">Method</div>
+        <div class="signal-value">Governed <span class="accent-hl">↑</span></div>
+      </div>
     </div>
   </div>
+  <div class="hero-right">
+    <img class="hero-img" src="assets/hero-char.png" alt="NetherOps illustration">
+    <img class="hero-hair" src="assets/hero-char.png" alt="" aria-hidden="true">
+  </div>
+</section>
 
-  <!-- Bottom bar -->
-  <div class="bottom-bar">
-    <div class="bottom-label">2026</div>
-    <a href="mailto:nick@heretics.io">nick@heretics.io</a>
+<!-- ═══ TRUST ═══ -->
+<div class="trust">
+  <div class="trust-label">Built for</div>
+  <div class="trust-items">
+    <div class="trust-item">Fractional CMO</div>
+    <div class="trust-item">GTM Architecture</div>
+    <div class="trust-item">RevOps / MarOps</div>
+    <div class="trust-item">Demand Gen</div>
+    <div class="trust-item">PMM / Brand / PR</div>
+    <div class="trust-item">Growth</div>
   </div>
 </div>
 
+<!-- ═══ DARK FEATURES ═══ -->
+<section class="features" id="services">
+  <div class="feat-label">The Method</div>
+  <h2 class="feat-h2">Bespoke GTM infrastructure, governed by control planes.</h2>
+  <p class="feat-sub">Every engagement starts with architecture. Every architecture starts with constraints. Thresholds are the strategy.</p>
+  <div class="feat-grid">
+    <div class="feat-cell">
+      <div class="feat-cell-num">01</div>
+      <div class="feat-cell-title">Revenue Architecture</div>
+      <div class="feat-cell-body">Full-stack GTM design from ICP governance through pipeline operations. Not a playbook — a control system.</div>
+      <div class="feat-cell-tag">→ Architecture</div>
+    </div>
+    <div class="feat-cell">
+      <div class="feat-cell-num">02</div>
+      <div class="feat-cell-title">Fractional Leadership</div>
+      <div class="feat-cell-body">CMO / VP Marketing capacity with OpptyCon governance baked in. AI-first execution. Threshold-governed spend.</div>
+      <div class="feat-cell-tag">→ Leadership</div>
+    </div>
+    <div class="feat-cell">
+      <div class="feat-cell-num">03</div>
+      <div class="feat-cell-title">Execution Engineering</div>
+      <div class="feat-cell-body">Demand gen, digital, content, ABM — but every motion tied to a control plane with feedback loops flowing upward.</div>
+      <div class="feat-cell-tag">→ Execution</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OPPTYCON ═══ -->
+<section class="opptycon-section">
+  <div class="feat-label" style="color:var(--ink-muted)">The Engine</div>
+  <div class="opc-grid">
+    <div class="opc-visual">
+      <div class="opc-gauge">
+        <div class="opc-metric">
+          <div class="opc-metric-label">Pipeline Target</div>
+          <div class="opc-metric-val">$4.2M</div>
+        </div>
+        <div class="opc-metric">
+          <div class="opc-metric-label">Coverage Ratio</div>
+          <div class="opc-metric-val"><span class="grn">3.2×</span></div>
+        </div>
+        <div class="opc-metric">
+          <div class="opc-metric-label">Blended CAC</div>
+          <div class="opc-metric-val"><span class="rose">$1,847</span></div>
+        </div>
+        <div class="opc-metric">
+          <div class="opc-metric-label">Months Modeled</div>
+          <div class="opc-metric-val">24</div>
+        </div>
+      </div>
+    </div>
+    <div class="opc-info">
+      <h3>OpptyCon — Revenue Physics Engine</h3>
+      <p>Model your entire GTM as physics, not spreadsheets. Pipeline targets, cost structures, funnel conversion, coverage math, and phase-shifted demand across multi-year horizons.</p>
+      <div class="opc-features">
+        <div class="opc-feat">Dual-axis cost model — fixed vs variable S&M</div>
+        <div class="opc-feat">Coverage ratio enforcement with pipeline physics</div>
+        <div class="opc-feat">Phase-shifted funnel — Q4 marketing → Q1 pipeline</div>
+        <div class="opc-feat">Attrition modeling + monthly weight distributions</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <a href="https://opptycon.netlify.app" class="btn btn-lime btn-md" data-opptycon-launch>Launch OpptyCon</a>
+        <a href="/doctrine/#opptycon" class="btn btn-secondary btn-md">Read the Docs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DOCTRINE PREVIEW ═══ -->
+<section class="doctrine-section">
+  <div class="feat-label" style="color:var(--ink-muted)">The Doctrine</div>
+  <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,48px);font-weight:400;letter-spacing:-0.03em;line-height:1.1;margin-bottom:8px">
+    Open architecture. Governed execution.
+  </h2>
+  <p style="font-family:var(--font-mono);font-size:13px;color:var(--ink-mid);line-height:1.65;max-width:520px">
+    The complete governed revenue architecture — seven layers, five agents, closed-loop control. Read it all.
+  </p>
+  <div class="doc-cards">
+    <a href="/doctrine/#spine" class="doc-card">
+      <div class="doc-card-num">01</div>
+      <div class="doc-card-title">The Spine</div>
+      <div class="doc-card-desc">Seven horizontal layers from Economic Model through Attribution & Feedback.</div>
+    </a>
+    <a href="/doctrine/#thermostat" class="doc-card">
+      <div class="doc-card-num">02</div>
+      <div class="doc-card-title">Revenue Thermostat</div>
+      <div class="doc-card-desc">The control system visualization — constraints cascade down, feedback flows up.</div>
+    </a>
+    <a href="/doctrine/#agents" class="doc-card">
+      <div class="doc-card-num">03</div>
+      <div class="doc-card-title">Agent Specifications</div>
+      <div class="doc-card-desc">P&L, Stage Gate, Coverage, Attribution, and Orchestration agents defined.</div>
+    </a>
+    <a href="/doctrine/#sovereignty" class="doc-card">
+      <div class="doc-card-num">04</div>
+      <div class="doc-card-title">Sovereignty Map</div>
+      <div class="doc-card-desc">Build vs buy decision framework for every layer of the stack.</div>
+    </a>
+    <a href="/doctrine/#motion" class="doc-card">
+      <div class="doc-card-num">05</div>
+      <div class="doc-card-title">Motion Map</div>
+      <div class="doc-card-desc">Seven acquisition modes from inbound content through outbound signal-led.</div>
+    </a>
+    <a href="/doctrine/#opptycon" class="doc-card">
+      <div class="doc-card-num">06</div>
+      <div class="doc-card-title">OpptyCon Engine</div>
+      <div class="doc-card-desc">Revenue physics modeling — pipeline targets, funnel math, cost structures.</div>
+    </a>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section" id="briefing">
+  <h2 class="cta-h2">Ready to govern your revenue?</h2>
+  <p class="cta-sub">30-minute briefing. We'll map your current GTM to the governed architecture and show you what changes.</p>
+  <div class="cta-actions">
+    <a href="#" class="btn btn-primary btn-lg btn-dot">Book a Briefing</a>
+    <a href="/doctrine/" class="btn btn-lime btn-lg">Read the Doctrine</a>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name"><img src="assets/netherops-logo-inv.svg" alt="NetherOps" style="height:24px;width:auto;"></div>
+      <div class="footer-brand-sub">GTM engineering for governed revenue. AI-first. Threshold-governed. Pre-seed to pre-IPO.</div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="footer-col-label">Platform</div>
+        <ul class="footer-col-links">
+          <li><a href="/opptycon/">OpptyCon</a></li>
+          <li><a href="/doctrine/">Doctrine</a></li>
+          <li><a href="/doctrine/#library">Library</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-label">Solutions</div>
+        <ul class="footer-col-links">
+          <li><a href="/opptycon/operators/">For Operators</a></li>
+          <li><a href="/opptycon/heads-of-gtm/">For GTM Leaders</a></li>
+          <li><a href="/opptycon/finance/">For Finance</a></li>
+          <li><a href="/opptycon/leadership/">For Leadership</a></li>
+          <li><a href="/opptycon/capital/">For Capital</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-label">Services</div>
+        <ul class="footer-col-links">
+          <li><a href="#services">Fractional CMO</a></li>
+          <li><a href="#services">GTM Architecture</a></li>
+          <li><a href="#services">RevOps</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-label">Company</div>
+        <ul class="footer-col-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 NetherOps · All rights reserved</span>
+  </div>
+</footer>
+
+<script>
+/* ═══ OPPTYCON URL — change this one line when Netlify deploy is ready ═══ */
+const OPPTYCON_URL = 'https://opptycon.netlify.app';
+document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
+  if (el.getAttribute('href') === '/doctrine/#opptycon') return;
+  el.href = OPPTYCON_URL;
+  el.target = '_blank';
+});
+
+/* ═══ HERO TYPING EFFECT ═══ */
+(function(){
+  var lines = [
+    { text: "Here\u2019s to the Operators.", speed: 45 },
+    { text: 'Because GTM should run on <em>thresholds</em>, not opinions.', speed: 35 }
+  ];
+  var el = document.getElementById('typeLine');
+  var cursor = document.createElement('span');
+  cursor.className = 'type-cursor';
+
+  function typeText(text, speed, cb) {
+    var i = 0;
+    el.innerHTML = '';
+    el.appendChild(cursor);
+    function tick() {
+      if (i < text.length) {
+        if (text[i] === '<') {
+          var close = text.indexOf('>', i);
+          cursor.insertAdjacentHTML('beforebegin', text.slice(i, close + 1));
+          i = close + 1;
+        } else {
+          cursor.insertAdjacentText('beforebegin', text[i]);
+          i++;
+        }
+        setTimeout(tick, speed);
+      } else if (cb) cb();
+    }
+    tick();
+  }
+
+  function eraseText(speed, cb) {
+    function tick() {
+      var prev = cursor.previousSibling;
+      if (prev) {
+        if (prev.nodeType === 1) prev.remove();
+        else if (prev.textContent.length > 1) prev.textContent = prev.textContent.slice(0, -1);
+        else prev.remove();
+        setTimeout(tick, speed);
+      } else if (cb) cb();
+    }
+    tick();
+  }
+
+  var idx = 0;
+  function runLine() {
+    typeText(lines[idx].text, lines[idx].speed, function() {
+      setTimeout(function() {
+        if (idx < lines.length - 1) {
+          eraseText(25, function() {
+            idx++;
+            setTimeout(runLine, 300);
+          });
+        }
+        // Last line: cursor keeps blinking
+      }, 1500);
+    });
+  }
+
+  // Start after fadeUp animation completes
+  setTimeout(runLine, 1100);
+})();
+</script>
+<script src="/oppty-widget.js" defer></script>
 </body>
 </html>
