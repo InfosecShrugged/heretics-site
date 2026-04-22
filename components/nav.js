@@ -266,20 +266,6 @@
       flex-shrink: 0;
     }
 
-    .sn-login {
-      padding: 8px 16px;
-      font-family: 'Chivo Mono', 'Space Mono', monospace;
-      font-size: 12px;
-      font-weight: 500;
-      color: #909090;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .sn-login:hover { color: #111111; }
-
     .sn-cta {
       display: inline-flex;
       align-items: center;
