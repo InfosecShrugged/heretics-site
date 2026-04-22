@@ -73,12 +73,11 @@
             </div>
           </li>
           <li><a href="/doctrine/#library" class="${active === 'library' ? 'sn-active' : ''}">Library</a></li>
-          <li><a href="/#about" class="${active === 'about' ? 'sn-active' : ''}">About</a></li>
+          <li><a href="https://heretics.io" class="${active === 'about' ? 'sn-active' : ''}">About</a></li>
         </ul>
 
         <div class="sn-actions">
-          <a href="#" class="sn-login">Login</a>
-          <a href="#briefing" class="sn-cta">Book a Briefing</a>
+          <a href="/#briefing" class="sn-cta">Book a Briefing</a>
         </div>
 
         <button class="sn-hamburger" id="snHamburger" aria-label="Menu">
