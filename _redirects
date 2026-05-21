@@ -1,7 +1,14 @@
 # Netlify redirects
 
-# app.heretics.io serves the full site (index-main.html)
-https://app.heretics.io/  /index-main.html  200!
+# Migration 2026-05-21: app.heretics.io → netherops.com (the NetherOps delivery-system
+# site has moved to its own domain). 301 permanent — search engines transfer ranking
+# signal; existing bookmarks still resolve.
+https://app.heretics.io/*       https://netherops.com/:splat       301!
+http://app.heretics.io/*        https://netherops.com/:splat       301!
 
-# Old engine path
-/tools/revenue-physics-engine/*  /tools/opptycon/:splat  301
+# Canonical host: www → apex
+https://www.netherops.com/*     https://netherops.com/:splat       301!
+http://www.netherops.com/*      https://netherops.com/:splat       301!
+
+# Legacy tool path
+/tools/revenue-physics-engine/* /tools/opptycon/:splat              301
