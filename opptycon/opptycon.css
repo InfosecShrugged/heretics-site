@@ -354,9 +354,10 @@ img { max-width: 100%; display: block; }
    PAGE HERO
    ============================================ */
 .page-hero {
-  padding: calc(var(--nav-h) + 80px) 0 80px;
+  padding: calc(var(--nav-h) + 120px) 0 120px;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border-mid);
+  text-align: center;
 }
 
 .page-hero .eyebrow {
@@ -364,17 +365,19 @@ img { max-width: 100%; display: block; }
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   color: var(--accent-rose);
-  margin-bottom: 16px;
+  margin-bottom: 28px;
 }
 
 .page-hero h1 {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
   font-weight: 300;
   color: var(--ink);
-  margin-bottom: 20px;
-  max-width: 720px;
+  margin: 0 auto 36px;
+  max-width: 18ch;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
 }
 
 .page-hero h1 em {
@@ -385,9 +388,9 @@ img { max-width: 100%; display: block; }
 .page-hero .hero-sub {
   font-size: 18px;
   color: var(--ink-mid);
-  max-width: 600px;
-  line-height: 1.7;
-  margin-bottom: 32px;
+  max-width: 56ch;
+  line-height: 1.65;
+  margin: 0 auto 40px;
 }
 
 .page-hero .hero-cta {
@@ -410,72 +413,6 @@ img { max-width: 100%; display: block; }
   background: var(--accent-lime-dark);
   color: var(--ink);
   transform: translateY(-2px);
-}
-
-/* Hero split layout — matches app.heretics.io hero pattern */
-.page-hero.has-character {
-  padding: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
-}
-
-.page-hero.has-character .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: calc(var(--nav-h) + 48px) 48px 48px;
-  max-width: none;
-}
-
-.hero-character {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.hero-character img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
-  mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 3%, black 92%, transparent 100%);
-}
-
-.hero-character::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 120px;
-  background: linear-gradient(to right, var(--bg-surface), transparent);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.hero-character::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 160px;
-  background: linear-gradient(to top, var(--bg-surface), transparent);
-  z-index: 1;
-  pointer-events: none;
-}
-
-@media (max-width: 900px) {
-  .page-hero.has-character {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-  .page-hero.has-character .container {
-    padding: calc(var(--nav-h) + 48px) 24px 48px;
-  }
-  .hero-character {
-    height: 50vh;
-  }
 }
 
 .page-hero .hero-cta svg {
@@ -900,8 +837,14 @@ img { max-width: 100%; display: block; }
    RESPONSIVE
    ============================================ */
 @media (max-width: 700px) {
-  .page-hero { padding: calc(var(--nav-h) + 48px) 0 48px; }
-  .page-hero h1 { font-size: 1.8rem; }
+  .page-hero { padding: calc(var(--nav-h) + 56px) 0 64px; }
+  .page-hero h1 {
+    font-size: clamp(2rem, 9vw, 3.2rem);
+    margin-bottom: 28px;
+    max-width: 14ch;
+  }
+  .page-hero .eyebrow { margin-bottom: 20px; }
+  .page-hero .hero-sub { font-size: 16px; margin-bottom: 28px; }
   .section { padding: 56px 0; }
   .outcomes-grid { grid-template-columns: 1fr; }
   .role-grid { grid-template-columns: 1fr; }
