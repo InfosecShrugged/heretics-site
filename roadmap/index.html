@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roadmap — what's shipped, what's coming | NetherOps</title>
+  <meta name="description" content="The public roadmap for OpptyCon and the NetherOps framework. What's shipped today, what's on the build queue, what's research. Honest read of the doctrine-vs-product gap.">
+
+  <!-- TWK Everett — match other doctrine pages -->
+  <style>
+    @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf'); font-weight: 300; font-display: swap; }
+    @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf'); font-weight: 700; font-display: swap; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #EBEBEB;
+      --surface: #F4F4F2;
+      --white: #FFFFFF;
+      --ink: #111111;
+      --ink-mid: #555555;
+      --ink-dim: #909090;
+      --rose: #D64074;
+      --lime: #C8FF6E;
+      --amber: #C07800;
+      --blue: #2563EB;
+      --green: #1A8A4A;
+      --red: #CC3340;
+      --border: rgba(0,0,0,0.13);
+      --border-soft: rgba(0,0,0,0.07);
+      --mono: 'Chivo Mono', monospace;
+      --display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: var(--display); margin: 0;
+      line-height: 1.55; -webkit-font-smoothing: antialiased;
+      padding-top: 70px; /* nav clearance */
+    }
+    .container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+    .eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rose); margin-bottom: 18px; }
+    h1 { font-weight: 300; font-size: clamp(36px, 6.5vw, 72px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 24px; max-width: 22ch; }
+    h1 em { font-style: italic; color: var(--rose); font-weight: 300; }
+    .lede { font-size: 17px; line-height: 1.7; color: var(--ink-mid); max-width: 65ch; margin: 0 0 36px; }
+    h2 { font-weight: 400; font-size: clamp(26px, 4vw, 40px); line-height: 1.12; letter-spacing: -0.018em; margin: 64px 0 18px; max-width: 24ch; }
+    h2 em { color: var(--rose); font-style: italic; font-weight: 400; }
+    h3 { font-weight: 600; font-size: 17px; margin: 28px 0 8px; }
+    p { font-size: 15px; line-height: 1.7; color: var(--ink-mid); margin: 0 0 14px; max-width: 70ch; }
+    p strong, p b { color: var(--ink); font-weight: 600; }
+    a { color: var(--rose); text-decoration: underline; text-underline-offset: 2px; }
+    .section-label { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 8px; }
+
+    /* Status legend chips */
+    .legend { display: flex; gap: 10px; flex-wrap: wrap; margin: 24px 0 12px; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: var(--white); border: 1px solid var(--border); border-radius: 0; font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: var(--ink); }
+    .chip::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex: none; }
+    .chip.shipped::before { background: var(--green); }
+    .chip.roadmap::before { background: var(--blue); }
+    .chip.research::before { background: var(--amber); }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    th { text-align: left; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); padding: 10px 12px 10px 0; border-bottom: 1px solid var(--border); }
+    td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--border-soft); vertical-align: top; color: var(--ink-mid); line-height: 1.55; }
+    td strong { color: var(--ink); font-weight: 600; }
+    td:first-child { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--ink); width: 30%; }
+    td.status-cell { width: 110px; }
+    .status-pill { display: inline-block; padding: 2px 8px; font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 0; }
+    .status-pill.shipped { background: rgba(26,138,74,0.12); color: var(--green); }
+    .status-pill.roadmap { background: rgba(37,99,235,0.12); color: var(--blue); }
+    .status-pill.research { background: rgba(192,120,0,0.12); color: var(--amber); }
+
+    /* Callouts */
+    .callout { background: var(--white); border-left: 3px solid var(--rose); padding: 20px 22px; margin: 24px 0; border-radius: 0; }
+    .callout .label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rose); margin-bottom: 10px; }
+    .callout p { margin-bottom: 8px; color: var(--ink); font-size: 14px; }
+    .callout p:last-child { margin-bottom: 0; }
+
+    .small-print { font-size: 13px; color: var(--ink-dim); line-height: 1.7; margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border-soft); }
+    .small-print a { color: var(--ink-mid); }
+  </style>
+</head>
+<body>
+
+  <div id="site-nav" data-active="roadmap"></div>
+  <script src="/components/nav.js"></script>
+
+  <div class="container" style="padding-top: 60px; padding-bottom: 80px;">
+
+    <div class="eyebrow">Public Roadmap · v1 · 2026-05-22</div>
+    <h1>What's <em>shipped</em>, what's coming, what's still doctrine.</h1>
+    <p class="lede">
+      The full NetherOps framework — the doctrine, the spine, the agent specs, the sovereignty map — describes a control system that's substantially bigger than the OpptyCon product today. That's deliberate: the framework is the IP, the product is one expression of it. This page makes the gap honest.
+    </p>
+
+    <div class="legend">
+      <span class="chip shipped">📍 SHIPPED — in the product today</span>
+      <span class="chip roadmap">🛠️ ROADMAP — on the build queue</span>
+      <span class="chip research">🔬 RESEARCH — design intent</span>
+    </div>
+
+    <h2>What's <em>shipped</em> in OpptyCon today.</h2>
+    <p>The product as of May 2026. Live in the app, used by buyers, generating decisions.</p>
+
+    <table>
+      <thead><tr><th>Capability</th><th class="status-cell">Status</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>7 Persona Views</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>CFO, CEO, CRO, CMO, VC, Board, RevOps — each surfaces 5 first-5-min questions tuned to the persona.</td></tr>
+        <tr><td>6 Governance Domains</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>P&amp;L, Stage Definitions, ICP, Coverage, Attribution, Forecast — prioritized verdicts (critical / warning / healthy).</td></tr>
+        <tr><td>Multi-year Glideslope</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>1-3 year ARR projection with Y2 growth + conversion lift inputs, NORAM seasonality.</td></tr>
+        <tr><td>Phase-shifted Funnel</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>SQO and MQL lead-quarter modeling — Q4 spend → Q1 pipeline → Q3 close.</td></tr>
+        <tr><td>3-Motion Mix</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>CREATE / CONVERT / ACCELERATE allocation with channels inside each motion, per-motion ROI signals.</td></tr>
+        <tr><td>Horizon Planner + Lever Ladder</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>Time-bounded target feasibility (e.g. $5M → $20M in 18 months). Shows velocity-required vs bench-can-produce, lever ladder to close the gap.</td></tr>
+        <tr><td>Phase 0 — CRM Readiness</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>15-question A-F diagnostic across foundation / pipeline integrity / attribution / forecasting.</td></tr>
+        <tr><td>Data Confidence Callout</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>Flags when too many hard-to-measure inputs are still at module defaults — output is then directional, not forecast.</td></tr>
+        <tr><td>Calendar-anchored Labels</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>Every month/quarter/year shows real dates anchored to a Plan Start Date (no more abstract "Q1 / Y2").</td></tr>
+        <tr><td>Onboarding → Persona Routing</td><td class="status-cell"><span class="status-pill shipped">Shipped</span></td><td>First-run wizard asks role, then routes to that persona's view on plan activation.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>What's on the <em>roadmap</em> (next 2-4 weeks, then months 2-3).</h2>
+    <p>Concrete near-term builds, sequenced by leverage and dependency. These map directly to claims on the doctrine pages.</p>
+
+    <h3>Weeks 2-4 — high-leverage, low-cost</h3>
+    <table>
+      <thead><tr><th>Build</th><th class="status-cell">Status</th><th>Why first</th></tr></thead>
+      <tbody>
+        <tr><td>Provenance logging</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>The largest single unbuilt claim on <a href="/provenance/">/provenance</a> and foundational to every other agent claim. Cheap to start, unlocks everything downstream.</td></tr>
+        <tr><td>Customer Health surface</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>NRR + churn-prob + expansion-prob as first-class inputs feeding a "Retention & Expansion" view. Maps to /spine-v4's Customer Health Agent claim. CFOs and CROs ask for this directly.</td></tr>
+        <tr><td>Velocity as diagnostic</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>Promote the Velocity module from "display median days per stage" to "flag stalls vs benchmarks." Closes the velocity-as-diagnostic claim from /spine-v4.</td></tr>
+        <tr><td>Motion taxonomy resolution</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>Doctrine says 7 motions, split-funnel says 7 lanes, product uses 3 motions. Three taxonomies for one concept. Pick one and use it everywhere.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Months 2-3 — bigger product moves</h3>
+    <table>
+      <thead><tr><th>Build</th><th class="status-cell">Status</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Dual probability model (P_base × P_accel)</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>Research → MVP in the Pipeline module. Maps to <a href="/spine-v4/">/spine-v4</a>'s core mechanic. Significant work.</td></tr>
+        <tr><td>BDR bifurcation</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>Split SDR count into Cold Prospecting + Signal Interception pools. Feeds Coverage agent + Pipeline math.</td></tr>
+        <tr><td>Identity Graph primitive</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>Light version — canonical lead/account IDs in the data ingestion adapter. Foundation for the account-atomic refactor.</td></tr>
+        <tr><td>SPI + Revenue Density as first-class metrics</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>The lexicon names these as anchor metrics; OpptyCon doesn't compute either today.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>What's still <em>doctrine</em> (months 4+ or design intent).</h2>
+    <p>Things on the framework pages that aren't on the near-term build queue. They remain the IP horizon — they tell the story of where the property is going.</p>
+
+    <table>
+      <thead><tr><th>Doctrine claim</th><th class="status-cell">Status</th><th>Source page</th></tr></thead>
+      <tbody>
+        <tr><td>Full 11-agent registry</td><td class="status-cell"><span class="status-pill research">Research</span></td><td><a href="/spine-v4/">/spine-v4</a></td></tr>
+        <tr><td>Control plane primitives (4 layers)</td><td class="status-cell"><span class="status-pill research">Research</span></td><td><a href="/agent-specs/">/agent-specs</a></td></tr>
+        <tr><td>8-layer infrastructure stack</td><td class="status-cell"><span class="status-pill research">Research</span></td><td><a href="/infrastructure/">/infrastructure</a></td></tr>
+        <tr><td>Account-atomic data model</td><td class="status-cell"><span class="status-pill research">Research</span></td><td><a href="/identity-graph/">/identity-graph</a></td></tr>
+        <tr><td>Territory + Pod architecture</td><td class="status-cell"><span class="status-pill research">Research</span></td><td><a href="/spine-v4/">/spine-v4</a></td></tr>
+        <tr><td>Sovereignty Stack adjudicator</td><td class="status-cell"><span class="status-pill research">Research</span></td><td><a href="/sovereignty-map/">/sovereignty-map</a></td></tr>
+        <tr><td>7-lane motion model with lane-level KPIs</td><td class="status-cell"><span class="status-pill research">Research</span></td><td><a href="/split-funnel-map/">/split-funnel-map</a></td></tr>
+        <tr><td>Read/Recommend/Write agent progression</td><td class="status-cell"><span class="status-pill research">Research</span></td><td><a href="/agent-specs/">/agent-specs</a></td></tr>
+      </tbody>
+    </table>
+
+    <h2>The terminology <em>collision</em>.</h2>
+    <div class="callout">
+      <div class="label">Honest read</div>
+      <p>The <a href="/lexicon/">/lexicon</a> page <strong>retires</strong> terms OpptyCon is built on: MQL, Funnel, Attribution, Demand Gen, Lead, CPL, ROI, Awareness. Replacements named: APS, Acquisition Lanes, Stage Ledger, Provenance, Account, Cost per Lane Outcome, SPI delta.</p>
+      <p>Both are correct in their context: the lexicon names where the framework is going; OpptyCon uses the terms every buyer's CRM is built on. The lexicon page now carries a transitional-status callout acknowledging this. As the framework matures, the product evolves with it.</p>
+    </div>
+
+    <h2>About this page.</h2>
+    <p>
+      v1 of the public roadmap, written 2026-05-22 after a doctrine-vs-product audit. Full audit document (with the bidirectional gap analysis, the three strategic paths, and decision-level open items) lives in the OpptyCon repo at <code style="font-family:var(--mono);font-size:13px;color:var(--ink);background:var(--surface);padding:2px 6px;">docs/ROADMAP.md</code>.
+    </p>
+    <p>Updated when major product ships or direction shifts. Send corrections to <a href="mailto:nick@heretics.io">nick@heretics.io</a>.</p>
+
+    <div class="small-print">
+      &copy; 2026 NetherOps · <a href="/">Home</a> · <a href="/doctrine/">Doctrine</a> · <a href="/opptycon/">OpptyCon</a> · <a href="https://heretics.io">Heretics</a>
+    </div>
+
+  </div>
+
+</body>
+</html>
