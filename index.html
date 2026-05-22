@@ -102,14 +102,16 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
 .house-strip{background:var(--dark);color:#9A9A90;padding:32px 0 20px;border-top:1px solid rgba(255,255,255,0.06)}
 .house-strip .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
 .house-strip .h-label{font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#56564E;text-align:center;margin-bottom:12px;grid-column:1/-1}
-.house-strip a{display:block;text-align:center;color:#9A9A90;transition:opacity .2s}
+.house-strip a,
+.house-strip .you{display:block;text-align:center;color:#9A9A90;transition:opacity .2s}
 .house-strip a:hover{opacity:.7}
-.house-strip a strong{display:block;color:#ECECE6;font-weight:600;font-size:13px;letter-spacing:0.02em}
-.house-strip a .jh{display:block;font-size:9px;color:#7E7E76;font-family:var(--mono);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px}
-.house-strip a .url{display:block;font-size:9px;color:var(--lime);font-family:var(--mono);margin-top:6px}
+.house-strip strong{display:block;color:#ECECE6;font-weight:600;font-size:13px;letter-spacing:0.02em}
+.house-strip .jh{display:block;font-size:9px;color:#7E7E76;font-family:var(--mono);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px}
+.house-strip .url{display:block;font-size:9px;color:var(--lime);font-family:var(--mono);margin-top:6px;letter-spacing:0.04em}
 .house-strip .you{opacity:.45;cursor:default}
+.house-strip .you strong{color:#9A9A90}
 .house-strip .you .jh{color:#56564E}
-.house-strip .you-here{color:#56564E;font-size:9px;font-family:var(--mono);margin-top:6px;display:block;letter-spacing:0.08em}
+.house-strip .you-here{color:#56564E;font-size:9px;font-family:var(--mono);margin-top:6px;display:block;letter-spacing:0.08em;text-transform:uppercase}
 
 @media(max-width:860px){
   .hero-split,.arch-split{grid-template-columns:1fr}
@@ -137,20 +139,14 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
 <header class="hero">
   <span class="plus" style="top:80px;left:30px">+</span>
   <span class="plus" style="top:200px;right:30px">+</span>
-  <div class="wrap hero-split">
-    <div>
-      <div class="coverbar"><span>Coverage / <b>Full-stack GTM</b></span><span>Stage / <b>Pre-seed → IPO</b></span><span>Method / <b>Governed ↑</b></span></div>
-      <h1>Here's to the Operators.</h1>
-      <p class="lede">AI-first GTM engineering from pre-seed to pre-IPO. <b>Operator-run. Method-governed. Engine-supported.</b></p>
-      <div class="cta-row">
-        <a href="/#cta" class="btn">Book a Briefing →</a>
-        <a href="/doctrine/" class="btn btn-v">Read the Doctrine</a>
-      </div>
+  <div class="wrap">
+    <div class="coverbar"><span>Coverage / <b>Full-stack GTM</b></span><span>Stage / <b>Pre-seed → IPO</b></span><span>Method / <b>Governed ↑</b></span></div>
+    <h1>Here's to the Operators.</h1>
+    <p class="lede">AI-first GTM engineering from pre-seed to pre-IPO. <b>Operator-run. Method-governed. Engine-supported.</b></p>
+    <div class="cta-row">
+      <a href="/#cta" class="btn">Book a Briefing →</a>
+      <a href="/doctrine/" class="btn btn-v">Read the Doctrine</a>
     </div>
-    <figure class="char">
-      <span class="tick" style="top:6%;right:2%">// operator_01</span>
-      <img src="assets/hero-char.png" alt="NetherOps samurai-operator, facing forward">
-    </figure>
   </div>
 </header>
 
