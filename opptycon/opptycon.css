@@ -1,6 +1,6 @@
 /* ============================================
    OpptyCon Pages — Shared Styles
-   Design System: BigFilter (app.heretics.io)
+   Design System: NetherOps grey + violet (per DS spec §6.2)
    ============================================ */
 
 /* --- Fonts --- */
@@ -12,12 +12,12 @@
 
 /* --- Tokens --- */
 :root {
-  --bg-base:      #EBEBEB;
-  --bg-surface:   #F4F4F2;
+  --bg-base:      #D6D6D1;
+  --bg-surface:   #E0E0DB;
   --bg-white:     #FFFFFF;
   --bg-inverse:   #0F0F0F;
   --bg-code:      #1C1C1C;
-  --bg-raised:    #E2E2DF;
+  --bg-raised:    #CACAC4;
   --ink:          #111111;
   --ink-mid:      #555555;
   --ink-muted:    #909090;
@@ -31,8 +31,8 @@
   --accent-text:   #F5F5F3;
   --accent-lime:   #C8FF6E;
   --accent-lime-dark: #9BE040;
-  --accent-rose:   #D64074;
-  --accent-rose-light: rgba(214,64,116,0.10);
+  --accent-violet:   #5B3DF0;
+  --accent-violet-light: rgba(91,61,240,0.10);
   --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono:    'Chivo Mono', 'Space Mono', 'Courier New', monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -76,7 +76,7 @@ code, .mono {
   font-family: var(--font-mono);
 }
 
-a { color: var(--accent-rose); text-decoration: none; transition: color var(--dur) var(--ease); }
+a { color: var(--accent-violet); text-decoration: none; transition: color var(--dur) var(--ease); }
 a:hover { color: var(--ink); }
 
 img { max-width: 100%; display: block; }
@@ -222,8 +222,8 @@ img { max-width: 100%; display: block; }
 }
 
 .nav-dropdown a.dropdown-active {
-  color: var(--accent-rose);
-  background: var(--accent-rose-light);
+  color: var(--accent-violet);
+  background: var(--accent-violet-light);
 }
 
 .nav-dropdown .dropdown-label {
@@ -366,13 +366,14 @@ img { max-width: 100%; display: block; }
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  color: var(--accent-rose);
+  color: var(--accent-violet);
   margin-bottom: 28px;
 }
 
 .page-hero h1 {
   font-size: clamp(2.5rem, 7vw, 5.5rem);
-  font-weight: 300;
+  font-weight: 800;
+  text-transform: uppercase;
   color: var(--ink);
   margin: 0 auto 36px;
   max-width: 18ch;
@@ -381,8 +382,8 @@ img { max-width: 100%; display: block; }
 }
 
 .page-hero h1 em {
-  font-style: italic;
-  color: var(--accent-rose);
+  font-style: normal;
+  color: var(--accent-violet);
 }
 
 .page-hero .hero-sub {
@@ -443,7 +444,7 @@ img { max-width: 100%; display: block; }
 
 .section h2 {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 300;
+  font-weight: 800;
   margin-bottom: 16px;
   max-width: 640px;
 }
@@ -493,20 +494,20 @@ img { max-width: 100%; display: block; }
 }
 
 .outcome-card:hover {
-  border-color: var(--accent-rose);
+  border-color: var(--accent-violet);
   box-shadow: var(--shadow-sm);
 }
 
 .outcome-card .outcome-icon {
   width: 36px;
   height: 36px;
-  background: var(--accent-rose-light);
+  background: var(--accent-violet-light);
   border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  color: var(--accent-rose);
+  color: var(--accent-violet);
 }
 
 .outcome-card h3 {
@@ -545,7 +546,7 @@ img { max-width: 100%; display: block; }
 }
 
 .capability-item:hover {
-  border-color: var(--accent-rose);
+  border-color: var(--accent-violet);
 }
 
 .capability-item .cap-marker {
@@ -576,7 +577,7 @@ img { max-width: 100%; display: block; }
 .control-item {
   padding: 20px 24px;
   background: var(--bg-white);
-  border-left: 3px solid var(--accent-rose);
+  border-left: 3px solid var(--accent-violet);
   border-radius: 0;
   font-size: 15px;
   color: var(--ink);
@@ -658,7 +659,7 @@ img { max-width: 100%; display: block; }
 }
 
 .role-card:hover {
-  border-color: var(--accent-rose);
+  border-color: var(--accent-violet);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
@@ -669,7 +670,7 @@ img { max-width: 100%; display: block; }
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--accent-rose);
+  color: var(--accent-violet);
   margin-bottom: 12px;
 }
 
@@ -703,7 +704,7 @@ img { max-width: 100%; display: block; }
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--accent-rose);
+  color: var(--accent-violet);
   transition: gap var(--dur) var(--ease);
 }
 
@@ -743,7 +744,7 @@ img { max-width: 100%; display: block; }
   font-family: var(--font-display);
   font-size: 28px;
   font-weight: 300;
-  color: var(--accent-rose);
+  color: var(--accent-violet);
   margin-bottom: 4px;
 }
 
