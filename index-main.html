@@ -95,8 +95,9 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 .hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--ink-muted); }
 .hero-h1 {
   font-family: var(--font-display);
-  font-size: clamp(40px, 5.5vw, 72px);
-  font-weight: 400; line-height: 1.06; letter-spacing: -0.035em;
+  font-size: clamp(42px, 6.6vw, 92px);
+  font-weight: 900; line-height: 0.92; letter-spacing: -0.035em;
+  text-transform: uppercase; max-width: 12ch;
   color: var(--ink); margin-bottom: 28px;
   min-height: 2.2em;
 }
@@ -222,9 +223,10 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 }
 .feat-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
 .feat-h2 {
-  font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
-  font-weight: 400; letter-spacing: -0.03em; line-height: 1.1;
-  color: var(--ink-inv); margin-bottom: 12px; max-width: 560px;
+  font-family: var(--font-display); font-size: clamp(26px, 4vw, 46px);
+  font-weight: 800; letter-spacing: -0.025em; line-height: 1.02;
+  text-transform: uppercase;
+  color: var(--ink-inv); margin-bottom: 12px; max-width: 20ch;
 }
 .feat-sub {
   font-family: var(--font-mono); font-size: 13px; color: var(--ink-inv-mid);
@@ -355,8 +357,9 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   border-top: 1px solid var(--border-subtle);
 }
 .cta-h2 {
-  font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
-  font-weight: 400; letter-spacing: -0.025em; line-height: 1.12;
+  font-family: var(--font-display); font-size: clamp(26px, 4vw, 46px);
+  font-weight: 800; letter-spacing: -0.025em; line-height: 1.02;
+  text-transform: uppercase;
   color: var(--ink); margin-bottom: 16px;
 }
 .cta-sub {
