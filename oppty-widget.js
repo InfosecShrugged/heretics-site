@@ -164,12 +164,13 @@
   var widget = document.createElement('div');
   widget.id = 'oppty-widget';
 
+  /* Per user direction — character imagery removed (samurai illustration
+     was the "duck"). Widget trigger is now a clean violet pill that matches
+     the design system. The old character asset stays in /assets/ for later
+     re-enable. */
   var duckHTML =
-    '<div id="oppty-duck">' +
-      '<div id="oppty-duck-ring"></div>' +
-      '<img src="' + cfg.avatar + '" alt="Oppty the Wise Duck" onerror="this.outerHTML=\'<div style=\\\'font-size:120px;width:160px;text-align:center;pointer-events:none\\\'>\\ud83e\\udd86</div>\'">' +
-      '<div id="oppty-nametag">Ask Oppty</div>' +
-      '<div id="oppty-hint">Got a GTM question?</div>' +
+    '<div id="oppty-duck" style="position:fixed;' + (posR ? 'right' : 'left') + ':22px;bottom:22px;z-index:9999;cursor:pointer;">' +
+      '<div id="oppty-nametag" style="font-size:13px;padding:14px 24px;background:#5B3DF0;color:#fff;border-radius:999px;font-family:\'JetBrains Mono\',\'Chivo Mono\',monospace;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;box-shadow:0 6px 22px rgba(91,61,240,0.35);transition:transform .2s,box-shadow .2s;">Ask Oppty &nbsp;⠿</div>' +
     '</div>';
 
   var panelHTML =
