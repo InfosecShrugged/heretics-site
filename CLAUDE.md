@@ -22,6 +22,8 @@
 
 ## Design System — NetherOps (Light-Only Profile)
 
+> **Updated 2026-05-22 per DS spec §6.2:** Rose `#D64074` retired as brand accent; replaced with Violet `#5B3DF0` (light) / `#8C73FF` (dark lift). Lime `#C8FF6E` still the shared signal.
+
 > **CRITICAL: This site uses the NetherOps design system. NOT BigFilter. NOT Syne/DM Sans/IBM Plex Mono. NOT orange #E85D2A. If you see these in the codebase, they are WRONG and should be replaced.**
 
 ### The Three-Mode Dual Accent Rule
@@ -29,7 +31,7 @@
 ```
 MEMORIZE THIS:
 
-Light surfaces → Rose #D64074 for TEXT accents, links, borders
+Light surfaces → Violet #5B3DF0 for TEXT accents, links, borders
 Light surfaces → Lime #C8FF6E for FILLS, badges, dots, buttons, highlights
 Dark panels   → Lime #C8FF6E for EVERYTHING (text, links, fills, badges)
 
@@ -81,10 +83,10 @@ Chivo Mono loads via Google Fonts CDN.
   --border-mid:    rgba(0,0,0,0.13);
   --border-strong: rgba(0,0,0,0.28);
 
-  /* Accent — Rose (text, links, borders on light) */
-  --accent-rose:       #D64074;
-  --accent-rose-hover: #C23668;
-  --accent-rose-dim:   rgba(214,64,116,0.10);
+  /* Accent — Violet (text, links, borders on light) — per DS spec §6.2 */
+  --accent-violet:       #5B3DF0;
+  --accent-violet-hover: #4830C0;
+  --accent-violet-dim:   rgba(91,61,240,0.10);
 
   /* Accent — Lime (fills, badges, dots, buttons on light; EVERYTHING on dark) */
   --accent-lime:      #C8FF6E;
@@ -222,14 +224,14 @@ These are from a DIFFERENT project (BigFilter) or outdated instructions. Do NOT 
 | IBM Plex Mono (font) | Chivo Mono |
 | Oxanium (font) | TWK Everett |
 | Space Mono (font) | Chivo Mono |
-| `#E85D2A` (orange accent) | `#D64074` (rose) + `#C8FF6E` (lime) |
-| `#ff6e3e` (old orange) | `#D64074` (rose) + `#C8FF6E` (lime) |
+| `#E85D2A` (orange accent) | `#5B3DF0` (violet, per DS §6.2) + `#C8FF6E` (lime) |
+| `#ff6e3e` (old orange) | `#5B3DF0` (violet, per DS §6.2) + `#C8FF6E` (lime) |
 | `#f0f0f0` (old bg) | `#EBEBEB` |
 | `#f8f8f8` (old surface) | `#F4F4F2` |
 | `#1a1918` (old text) | `#111111` |
 | `#d9d9d9` (old border) | `rgba(0,0,0,0.13)` |
 | `#2d8a56` (old green) | `#1A8A4A` |
-| `#d42e4a` (old rose) | `#CC3340` (semantic red) |
+| `#d42e4a` (old rose) | `#CC3340` (semantic red) — note: brand accent is now #5B3DF0 violet, not rose |
 
 ### Known Bug: Escaped Template Literals
 When writing JS files with template literals, ALWAYS run `node --check filename.js` 
