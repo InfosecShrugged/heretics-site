@@ -299,26 +299,27 @@
 
     .sn-cta:hover { background: #333; }
 
-    /* Light/dark toggle per DS spec §10 — NetherOps canonical = grey; toggle to dark */
+    /* Light/dark toggle per DS spec §10 — NetherOps canonical = grey; toggle to dark.
+       Per DS spec selection boxes use violet (the property accent). */
     .sn-theme-toggle {
       font-family: 'JetBrains Mono', 'Chivo Mono', 'Space Mono', monospace;
       font-size: 10px; font-weight: 500;
       letter-spacing: 0.12em; text-transform: uppercase;
       background: transparent;
-      border: 1px solid rgba(0,0,0,0.16);
+      border: 1px solid #5B3DF0;
       color: #56564E;
       padding: 6px 10px;
       border-radius: 0;
       cursor: pointer;
       display: inline-flex; align-items: center; gap: 6px;
-      transition: border-color 0.2s, color 0.2s;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
-    .sn-theme-toggle:hover { border-color: #131316; color: #131316; }
+    .sn-theme-toggle:hover { background: rgba(91,61,240,0.06); color: #131316; }
     .sn-theme-sep { color: #B0B0AA; }
     body:not(.dark) .sn-theme-toggle [data-grey] { color: #131316; font-weight: 600; }
     body:not(.dark) .sn-theme-toggle [data-dark]  { color: #B0B0AA; }
-    body.dark .sn-theme-toggle { border-color: rgba(255,255,255,0.18); color: #9A9A90; }
-    body.dark .sn-theme-toggle:hover { border-color: #ECECE6; color: #ECECE6; }
+    body.dark .sn-theme-toggle { border-color: #8C73FF; color: #9A9A90; }
+    body.dark .sn-theme-toggle:hover { background: rgba(140,115,255,0.10); color: #ECECE6; }
     body.dark .sn-theme-toggle [data-grey] { color: #9A9A90; }
     body.dark .sn-theme-toggle [data-dark]  { color: #ECECE6; font-weight: 600; }
     body.dark .sn-theme-sep { color: #555; }

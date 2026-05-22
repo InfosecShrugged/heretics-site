@@ -65,8 +65,8 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 .btn-lg { font-size: 13px; padding: 14px 32px; }
 .btn-primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
 .btn-primary:hover { opacity: 0.8; }
-.btn-secondary { background: transparent; color: var(--ink); border-color: var(--border-strong); }
-.btn-secondary:hover { background: var(--bg-raised); }
+.btn-secondary { background: transparent; color: var(--accent-violet); border-color: var(--accent-violet); }
+.btn-secondary:hover { background: var(--accent-violet); color: #fff; }
 .btn-lime { background: var(--accent-lime); color: var(--ink); border-color: var(--accent-lime); }
 .btn-lime:hover { background: var(--accent-lime-dark); border-color: var(--accent-lime-dark); }
 .btn-rose { background: var(--accent-violet); color: #fff; border-color: var(--accent-violet); }
@@ -795,8 +795,7 @@ document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
 /* ═══ HERO TYPING EFFECT ═══ */
 (function(){
   var lines = [
-    { text: "Here\u2019s to the Operators.", speed: 45 },
-    { text: 'Because GTM should run on <em>thresholds</em>, not opinions.', speed: 35 }
+    { text: "Here\u2019s to the Operators.", speed: 45 }
   ];
   var el = document.getElementById('typeLine');
   var cursor = document.createElement('span');
