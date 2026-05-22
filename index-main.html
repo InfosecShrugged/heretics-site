@@ -405,6 +405,14 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.15);
   letter-spacing: 0.04em;
 }
+/* Status bar per DS spec §3b — `> connection secure · governed` */
+.footer-status {
+  font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em; text-transform: lowercase;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.footer-status-glyph { color: var(--accent-lime); font-weight: 600; }
+.footer-status-sep { color: rgba(255,255,255,0.18); }
 
 /* ═══ ANIMATIONS ═══ */
 @keyframes fadeUp {
@@ -763,6 +771,12 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   </div>
   <div class="footer-bottom">
     <span class="footer-copy">© 2026 NetherOps · All rights reserved</span>
+    <span class="footer-status" aria-label="System status">
+      <span class="footer-status-glyph">&gt;</span>
+      connection secure
+      <span class="footer-status-sep">·</span>
+      governed
+    </span>
   </div>
 </footer>
 
