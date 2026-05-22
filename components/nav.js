@@ -51,23 +51,31 @@
               <a href="/opptycon/" class="${activeSub === 'overview' ? 'sn-sub-active' : ''}">Overview</a>
               <div class="sn-divider"></div>
               <a href="/opptycon/operators/" class="${activeSub === 'operators' ? 'sn-sub-active' : ''}">
-                Operators
+                Operators / RevOps
                 <span class="sn-sub-label">RevOps · MarOps</span>
               </a>
               <a href="/opptycon/heads-of-gtm/" class="${activeSub === 'heads-of-gtm' ? 'sn-sub-active' : ''}">
-                GTM Leaders
-                <span class="sn-sub-label">VP Marketing · CMO · Demand Gen</span>
+                CRO / GTM Leaders
+                <span class="sn-sub-label">CRO · VP Sales · Head of GTM</span>
+              </a>
+              <a href="/opptycon/cmo/" class="${activeSub === 'cmo' ? 'sn-sub-active' : ''}">
+                CMO / Marketing
+                <span class="sn-sub-label">CMO · VP Marketing · Demand Gen</span>
               </a>
               <a href="/opptycon/finance/" class="${activeSub === 'finance' ? 'sn-sub-active' : ''}">
-                Finance
+                CFO / Finance
                 <span class="sn-sub-label">CFO · FP&amp;A · Strategic Finance</span>
               </a>
               <a href="/opptycon/leadership/" class="${activeSub === 'leadership' ? 'sn-sub-active' : ''}">
-                Leadership
-                <span class="sn-sub-label">CEO · CRO · COO</span>
+                CEO / Leadership
+                <span class="sn-sub-label">CEO · COO · Founder</span>
+              </a>
+              <a href="/opptycon/board/" class="${activeSub === 'board' ? 'sn-sub-active' : ''}">
+                Board Members
+                <span class="sn-sub-label">Operating Board · Independent Directors</span>
               </a>
               <a href="/opptycon/capital/" class="${activeSub === 'capital' ? 'sn-sub-active' : ''}">
-                Capital
+                VC / Capital
                 <span class="sn-sub-label">VC · PE · Operating Partners</span>
               </a>
             </div>

@@ -293,6 +293,25 @@ body{font-family:var(--font-sans);font-weight:300;background:var(--bg);color:var
         <tr><td class="legacy-old">ROI (campaign-level)</td><td class="legacy-new">Lift vs Baseline + Learning Latency</td><td>Campaign ROI ignores mode, segment, and time-to-validated-lift</td></tr>
       </tbody>
     </table>
+
+    <!-- Transitional Status — added per docs/ROADMAP.md §3d to resolve the terminology
+         collision: doctrine retires terms still in active use across OpptyCon + every
+         buyer's CRM. Acknowledges where the product lives today vs where the framework
+         is going. -->
+    <div style="margin-top:32px;padding:20px 22px;background:rgba(214,64,116,0.05);border-left:3px solid #D64074;border-radius:0">
+      <div style="font-family:'Chivo Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#D64074;margin-bottom:10px">Transitional Status — Honesty Note</div>
+      <p style="font-size:14px;line-height:1.7;color:#111;margin:0 0 12px">
+        The terms on the left remain in active use across OpptyCon today and across most buyer CRMs.
+        The lexicon names where the framework is going, not where the product is.
+      </p>
+      <p style="font-size:13px;line-height:1.7;color:#555;margin:0">
+        OpptyCon currently models the funnel as Inquiry → MQL → SQL → SQO → Won — the
+        primitives the buyer's CRM is built on. No buyer's pipeline forecasts from APS
+        thresholds yet. As the framework matures, the product evolves with it. For where
+        each concept lives today — shipped, on the roadmap, or research — see
+        <a href="/roadmap" style="color:#D64074;text-decoration:underline;text-underline-offset:2px">the roadmap</a>.
+      </p>
+    </div>
   </div>
 
   <!-- OPERATING PRINCIPLE -->
