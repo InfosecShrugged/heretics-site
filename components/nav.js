@@ -323,24 +323,43 @@
     body.dark .sn-theme-toggle [data-dark]  { color: #ECECE6; font-weight: 600; }
     body.dark .sn-theme-sep { color: #555; }
 
-    /* NetherOps dark mode per DS spec §6.2 — ground flips, violet recalibrates */
+    /* NetherOps dark mode per DS spec §6.2 — flips :root vars so every page-level
+       ink/border reference recalibrates correctly. Previous version only flipped
+       body bg/color which left H1/headlines unreadable on dark ground. */
     body.dark {
-      background: #131316 !important;
-      color: #ECECE6;
+      --bg-base:      #131316;
+      --bg-surface:   #1B1B20;
+      --bg-white:     #1F1F25;
+      --bg-inverse:   #0F0F0F;
+      --bg-raised:    #24242B;
+      --ink:          #ECECE6;
+      --ink-mid:      #9A9A90;
+      --ink-muted:    #6E6E66;
+      --ink-inv:      #131316;
+      --ink-inv-mid:  #56564E;
+      --border-subtle: rgba(255,255,255,0.06);
+      --border-mid:    rgba(255,255,255,0.12);
+      --border-strong: rgba(255,255,255,0.28);
+      --accent-violet:       #8C73FF;
+      --accent-violet-hover: #A695FF;
+      background: var(--bg-base) !important;
+      color: var(--ink);
     }
     body.dark .site-nav,
     body.dark .sn {
       background: rgba(19,19,22,0.9) !important;
       border-bottom-color: rgba(255,255,255,0.08);
     }
-    body.dark .sn-links a {
-      color: #ECECE6 !important;
-    }
+    body.dark .sn-links a { color: var(--ink-mid) !important; }
+    body.dark .sn-links a:hover { color: var(--ink) !important; }
     body.dark .sn-cta {
-      background: #ECECE6;
-      color: #131316;
+      background: var(--ink);
+      color: var(--bg-base);
     }
-    body.dark .sn-cta:hover { background: #8C73FF; color: #131316; }
+    body.dark .sn-cta:hover { background: var(--accent-violet); color: var(--bg-base); }
+    /* Hide the samurai character imagery on dark — image isn't optimized for dark bg */
+    body.dark .hero-img,
+    body.dark .hero-hair { display: none !important; }
 
     /* Hamburger */
     .sn-hamburger {
