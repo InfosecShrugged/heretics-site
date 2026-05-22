@@ -28,9 +28,9 @@
   --border-subtle: rgba(0,0,0,0.07);
   --border-mid:    rgba(0,0,0,0.13);
   --border-strong: rgba(0,0,0,0.28);
-  --accent-rose:   #D64074;
-  --accent-rose-hover: #C23668;
-  --accent-rose-dim:   rgba(214,64,116,0.10);
+  --accent-violet:   #5B3DF0;
+  --accent-violet-hover: #4830C0;
+  --accent-violet-dim:   rgba(91,61,240,0.10);
   --accent-lime:   #C8FF6E;
   --accent-lime-dark: #9BE040;
   --accent-lime-dim: rgba(200,255,110,0.12);
@@ -100,7 +100,7 @@ body {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--accent-rose);
+  color: var(--accent-violet);
   margin-bottom: 8px;
 }
 .section h2 {
@@ -240,8 +240,8 @@ body {
 .type-token {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--accent-rose);
-  background: var(--accent-rose-dim);
+  color: var(--accent-violet);
+  background: var(--accent-violet-dim);
   padding: 3px 8px;
   border-radius: 4px;
 }
@@ -326,18 +326,18 @@ body {
   gap: 6px;
   padding: 8px 18px;
   background: transparent;
-  color: var(--accent-rose);
+  color: var(--accent-violet);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  border: 1px solid var(--accent-rose);
+  border: 1px solid var(--accent-violet);
   border-radius: var(--r-sm);
   cursor: pointer;
   transition: all 0.15s;
 }
-.btn-outline:hover { background: var(--accent-rose-dim); }
+.btn-outline:hover { background: var(--accent-violet-dim); }
 
 /* Badges */
 .badge {
@@ -353,7 +353,7 @@ body {
   border-radius: 9999px;
 }
 .badge-lime { background: var(--accent-lime); color: var(--ink); }
-.badge-rose { background: var(--accent-rose-dim); color: var(--accent-rose); }
+.badge-rose { background: var(--accent-violet-dim); color: var(--accent-violet); }
 .badge-green { background: rgba(26,138,74,0.08); color: var(--green); }
 .badge-amber { background: rgba(192,120,0,0.08); color: var(--amber); }
 .badge-red { background: rgba(204,51,64,0.08); color: var(--red); }
@@ -367,12 +367,12 @@ body {
 
 /* Links */
 .link-rose {
-  color: var(--accent-rose);
+  color: var(--accent-violet);
   text-decoration: none;
-  border-bottom: 1px solid rgba(214,64,116,0.25);
+  border-bottom: 1px solid rgba(91,61,240,0.25);
   transition: border-color 0.15s;
 }
-.link-rose:hover { border-color: var(--accent-rose); }
+.link-rose:hover { border-color: var(--accent-violet); }
 
 /* ─── Dark Inverse Panel ─── */
 .inverse-panel {
@@ -534,7 +534,7 @@ body {
     <div class="rule-card">
       <h3>Light surfaces</h3>
       <div class="rule-row">
-        <div class="rule-dot" style="background: var(--accent-rose);"></div>
+        <div class="rule-dot" style="background: var(--accent-violet);"></div>
         <div class="rule-label">Rose</div>
         <div>Text accents, links, borders, hover states</div>
       </div>
@@ -750,8 +750,8 @@ const swatches = [
   { name: 'Ink',       hex: '#111111',  var: '--ink' },
   { name: 'Ink mid',   hex: '#555555',  var: '--ink-mid' },
   { name: 'Ink muted', hex: '#909090',  var: '--ink-muted' },
-  { name: 'Rose',      hex: '#D64074',  var: '--accent-rose' },
-  { name: 'Rose hover', hex: '#C23668', var: '--accent-rose-hover' },
+  { name: 'Rose',      hex: '#5B3DF0',  var: '--accent-violet' },
+  { name: 'Rose hover', hex: '#4830C0', var: '--accent-violet-hover' },
   { name: 'Lime',      hex: '#C8FF6E',  var: '--accent-lime' },
   { name: 'Lime dark', hex: '#9BE040',  var: '--accent-lime-dark' },
   { name: 'Inverse',   hex: '#0F0F0F',  var: '--bg-inverse', dark: true },

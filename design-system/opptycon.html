@@ -126,8 +126,8 @@ body.dark {
 .light .profile-badge { background: #C8FF6E; color: #111; }
 .dark .profile-badge { background: rgba(200,255,110,0.12); color: #C8FF6E; }
 .profile-badge.rose-badge {
-  background: rgba(214,64,116,0.10);
-  color: #D64074;
+  background: rgba(91,61,240,0.10);
+  color: #5B3DF0;
 }
 
 /* ─── Sections ─── */
@@ -138,7 +138,7 @@ body.dark {
   text-transform: uppercase; letter-spacing: 0.12em;
   margin-bottom: 8px;
 }
-.light .section-label { color: #D64074; }
+.light .section-label { color: #5B3DF0; }
 .dark .section-label { color: #C8FF6E; }
 .section h2 { font-size: 22px; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 24px; }
 
@@ -185,8 +185,8 @@ body.dark {
   margin-top: 16px;
   font-size: 13px;
 }
-.light .rule-special { background: rgba(214,64,116,0.06); border: 1px solid rgba(214,64,116,0.12); color: #D64074; }
-.dark .rule-special { background: rgba(214,64,116,0.08); border: 1px solid rgba(214,64,116,0.12); color: #D64074; }
+.light .rule-special { background: rgba(91,61,240,0.06); border: 1px solid rgba(91,61,240,0.12); color: #5B3DF0; }
+.dark .rule-special { background: rgba(91,61,240,0.08); border: 1px solid rgba(91,61,240,0.12); color: #5B3DF0; }
 
 /* ─── Swatches ─── */
 .swatch-grid {
@@ -249,7 +249,7 @@ body.dark {
   padding: 3px 8px;
   border-radius: 4px;
 }
-.light .type-token { color: #D64074; background: rgba(214,64,116,0.08); }
+.light .type-token { color: #5B3DF0; background: rgba(91,61,240,0.08); }
 .dark .type-token { color: #C8FF6E; background: rgba(200,255,110,0.08); }
 
 .type-sample-display { font-size: 36px; font-weight: 400; letter-spacing: -0.03em; line-height: 1.2; }
@@ -302,8 +302,8 @@ body.dark {
   border-radius: 6px; cursor: pointer;
   transition: all 0.15s;
 }
-.light .btn-secondary { color: #D64074; border: 1px solid #D64074; }
-.light .btn-secondary:hover { background: rgba(214,64,116,0.08); }
+.light .btn-secondary { color: #5B3DF0; border: 1px solid #5B3DF0; }
+.light .btn-secondary:hover { background: rgba(91,61,240,0.08); }
 .dark .btn-secondary { color: #C8FF6E; border: 1px solid rgba(200,255,110,0.20); }
 .dark .btn-secondary:hover { background: rgba(200,255,110,0.08); }
 
@@ -318,7 +318,7 @@ body.dark {
 }
 .badge-lime { background: #C8FF6E; color: #111; }
 .dark .badge-lime { background: rgba(200,255,110,0.12); color: #C8FF6E; }
-.badge-rose { background: rgba(214,64,116,0.10); color: #D64074; }
+.badge-rose { background: rgba(91,61,240,0.10); color: #5B3DF0; }
 
 /* Semantic badges — same in both modes */
 .badge-green-l { background: rgba(26,138,74,0.08); color: #1A8A4A; }
@@ -330,8 +330,8 @@ body.dark {
 
 /* Links */
 .link-accent { text-decoration: none; transition: all 0.15s; }
-.light .link-accent { color: #D64074; border-bottom: 1px solid rgba(214,64,116,0.25); }
-.light .link-accent:hover { border-color: #D64074; }
+.light .link-accent { color: #5B3DF0; border-bottom: 1px solid rgba(91,61,240,0.25); }
+.light .link-accent:hover { border-color: #5B3DF0; }
 .dark .link-accent { color: #C8FF6E; border-bottom: 1px solid rgba(200,255,110,0.25); }
 .dark .link-accent:hover { border-color: #C8FF6E; }
 
@@ -471,7 +471,7 @@ body.dark {
     <div class="rule-card" id="light-rules">
       <h3>Light mode</h3>
       <div class="rule-row">
-        <div class="rule-dot" style="background: #D64074;"></div>
+        <div class="rule-dot" style="background: #5B3DF0;"></div>
         <div class="rule-label">Rose</div>
         <div>Primary — text accents, links, borders, hover states, chart lead</div>
       </div>
@@ -493,7 +493,7 @@ body.dark {
         <div>Primary — text, links, fills, badges, buttons, chart lead — everything</div>
       </div>
       <div class="rule-special">
-        ◆ Rose #D64074 appears on dark ONLY for governance constraint alerts — CAC breach, coverage violation, margin warning
+        ◆ Rose #5B3DF0 appears on dark ONLY for governance constraint alerts — CAC breach, coverage violation, margin warning
       </div>
     </div>
   </section>
@@ -670,8 +670,8 @@ const LIGHT = {
     { name: 'Ink mid',    hex: '#555555' },
     { name: 'Ink muted',  hex: '#909090' },
     { name: 'Ghost',      hex: '#C4C4C4' },
-    { name: 'Accent (rose)', hex: '#D64074' },
-    { name: 'Rose hover', hex: '#C23668' },
+    { name: 'Accent (rose)', hex: '#5B3DF0' },
+    { name: 'Rose hover', hex: '#4830C0' },
     { name: 'Lime fill',  hex: '#C8FF6E' },
     { name: 'Lime dark',  hex: '#9BE040' },
   ],
@@ -682,7 +682,7 @@ const LIGHT = {
     { name: 'Blue',   hex: '#2563EB', bg: 'rgba(37,99,235,0.08)',  use: 'Info, chart secondary' },
     { name: 'Violet', hex: '#7C4DDB', bg: 'rgba(124,77,219,0.08)', use: 'Drivers, segments' },
   ],
-  chart: ['#D64074','#2563EB','#1A8A4A','#7C4DDB','#C07800','#0891B2'],
+  chart: ['#5B3DF0','#2563EB','#1A8A4A','#7C4DDB','#C07800','#0891B2'],
   chartLabel: 'Light mode — rose-led',
   shadows: {
     card: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
@@ -704,8 +704,8 @@ const DARK = {
     { name: 'Ghost',      hex: '#444444' },
     { name: 'Accent (lime)', hex: '#C8FF6E' },
     { name: 'Lime hover', hex: '#9BE040' },
-    { name: 'Rose (gov)',  hex: '#D64074' },
-    { name: 'Rose dim',   hex: 'rgba(214,64,116,0.10)' },
+    { name: 'Rose (gov)',  hex: '#5B3DF0' },
+    { name: 'Rose dim',   hex: 'rgba(91,61,240,0.10)' },
   ],
   semantics: [
     { name: 'Green',  hex: '#2ECC71', bg: 'rgba(46,204,113,0.10)',  use: 'Passing, growth' },
@@ -714,7 +714,7 @@ const DARK = {
     { name: 'Blue',   hex: '#4A90D9', bg: 'rgba(74,144,217,0.10)',  use: 'Info, chart secondary' },
     { name: 'Violet', hex: '#8B5CF6', bg: 'rgba(139,92,246,0.10)',  use: 'Drivers, segments' },
   ],
-  chart: ['#C8FF6E','#4A90D9','#2ECC71','#8B5CF6','#F0A030','#D64074'],
+  chart: ['#C8FF6E','#4A90D9','#2ECC71','#8B5CF6','#F0A030','#5B3DF0'],
   chartLabel: 'Dark mode — lime-led',
   shadows: {
     card: '0 1px 3px rgba(0,0,0,0.20), 0 1px 2px rgba(0,0,0,0.12)',

@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ═══ DUAL-ACCENT SYSTEM ═══
-   Light surfaces: Rose #D64074 for text accents, links, borders
+   Light surfaces: Rose #5B3DF0 for text accents, links, borders
    Light surfaces: Lime #C8FF6E for fills, badges, dots, highlights, buttons
    Dark surfaces:  Lime #C8FF6E for everything
    Logo mark:     Black #111 on light, Lime #C8FF6E on dark
@@ -39,8 +39,8 @@
   --accent-text:   #F5F5F3;
   --accent-lime:   #C8FF6E;
   --accent-lime-dark: #9BE040;
-  --accent-rose:   #D64074;
-  --accent-rose-light: rgba(214,64,116,0.10);
+  --accent-violet:   #5B3DF0;
+  --accent-violet-light: rgba(91,61,240,0.10);
   --font-display: 'TWK Everett', 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono:    'JetBrains Mono', 'Chivo Mono', 'Space Mono', 'Courier New', monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -69,7 +69,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 .btn-secondary:hover { background: var(--bg-raised); }
 .btn-lime { background: var(--accent-lime); color: var(--ink); border-color: var(--accent-lime); }
 .btn-lime:hover { background: var(--accent-lime-dark); border-color: var(--accent-lime-dark); }
-.btn-rose { background: var(--accent-rose); color: #fff; border-color: var(--accent-rose); }
+.btn-rose { background: var(--accent-violet); color: #fff; border-color: var(--accent-violet); }
 .btn-rose:hover { opacity: 0.85; }
 .btn-dot::after { content: '⠿'; font-size: 10px; opacity: 0.4; }
 
@@ -137,7 +137,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   background: var(--accent-lime); flex-shrink: 0;
 }
 .signal-value .accent-hl {
-  color: var(--accent-rose);
+  color: var(--accent-violet);
   font-family: var(--font-mono); font-size: 11px; font-weight: 600;
   letter-spacing: 0.06em; vertical-align: middle;
 }
@@ -291,7 +291,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   font-family: var(--font-display); font-size: 24px; font-weight: 300;
   color: var(--ink-inv); letter-spacing: -0.02em;
 }
-.opc-metric-val .rose { color: var(--accent-rose); }
+.opc-metric-val .rose { color: var(--accent-violet); }
 .opc-metric-val .grn { color: var(--accent-lime-dark); }
 .opc-info h3 {
   font-family: var(--font-display); font-size: clamp(24px, 3vw, 40px);
@@ -311,7 +311,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   letter-spacing: 0.02em;
 }
 .opc-feat::before {
-  content: '→'; color: var(--accent-rose); font-weight: 600; flex-shrink: 0;
+  content: '→'; color: var(--accent-violet); font-weight: 600; flex-shrink: 0;
 }
 
 /* ═══ DOCTRINE PREVIEW ═══ */
@@ -331,14 +331,14 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   transition: all var(--dur) var(--ease);
 }
 .doc-card:hover {
-  border-color: var(--accent-rose);
+  border-color: var(--accent-violet);
   border-top-color: var(--accent-lime);
-  box-shadow: 0 2px 12px rgba(214,64,116,0.08);
+  box-shadow: 0 2px 12px rgba(91,61,240,0.08);
   transform: translateY(-2px);
 }
 .doc-card-num {
   font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-  color: var(--accent-rose); letter-spacing: 0.08em; margin-bottom: 12px;
+  color: var(--accent-violet); letter-spacing: 0.08em; margin-bottom: 12px;
 }
 .doc-card-title {
   font-family: var(--font-display); font-size: 18px; font-weight: 400;
@@ -641,7 +641,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
     #briefing .briefing-field textarea { font-family: var(--font-display); font-size: 15px; color: var(--ink); background: var(--bg-white); border: 1px solid var(--border-mid); border-radius: 10px; padding: 0 16px; height: 48px; width: 100%; transition: border-color 180ms ease; }
     #briefing .briefing-field textarea { height: auto; padding: 14px 16px; min-height: 96px; line-height: 1.5; resize: vertical; }
     #briefing .briefing-field input:focus,
-    #briefing .briefing-field textarea:focus { outline: none; border-color: var(--accent-rose); }
+    #briefing .briefing-field textarea:focus { outline: none; border-color: var(--accent-violet); }
     #briefing .briefing-field textarea::placeholder { color: var(--ink-muted); font-style: italic; }
     #briefing .briefing-submit-row { display: flex; gap: 14px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
     #briefing .briefing-honeypot { position: absolute; left: -9999px; }

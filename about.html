@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <style>
 /* ═══ DUAL-ACCENT SYSTEM ═══
-   Light surfaces: Rose #D64074
+   Light surfaces: Rose #5B3DF0
    Dark surfaces:  Lime #C8FF6E
    Logo mark:      Black #111 on light, Lime #C8FF6E on dark
 ═══════════════════════════════ */
@@ -32,7 +32,7 @@
   --border-subtle: rgba(0,0,0,0.07);
   --border-mid:    rgba(0,0,0,0.13);
   --border-strong: rgba(0,0,0,0.28);
-  --accent-rose:   #D64074;
+  --accent-violet:   #5B3DF0;
   --accent-lime:   #C8FF6E;
   --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono:    'Chivo Mono', 'Space Mono', 'Courier New', monospace;
@@ -63,7 +63,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
 .nav-link:hover { color: var(--ink); background: var(--bg-raised); }
-.nav-link.active { color: var(--accent-rose); }
+.nav-link.active { color: var(--accent-violet); }
 .nav-right { display: flex; align-items: center; gap: 14px; }
 .btn-nav {
   display: inline-flex; align-items: center; gap: 6px;
@@ -108,7 +108,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 }
 .n-label {
   font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-rose);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-violet);
   margin-bottom: 20px; padding-top: 32px;
   border-top: 1px solid var(--border-subtle);
   display: flex; align-items: center; gap: 10px;
@@ -126,7 +126,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 }
 .n-p strong { color: var(--ink); font-weight: 400; }
 .n-p em {
-  font-style: normal; color: var(--accent-rose); font-weight: 400;
+  font-style: normal; color: var(--accent-violet); font-weight: 400;
 }
 
 /* Pull quotes */
@@ -135,7 +135,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   font-weight: 300; line-height: 1.45; letter-spacing: -0.02em;
   color: var(--ink); margin: 48px 0;
   padding-left: 24px;
-  border-left: 2px solid var(--accent-rose);
+  border-left: 2px solid var(--accent-violet);
 }
 
 /* Concept cards (the 3-part structure) */
@@ -148,10 +148,10 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   border-radius: 10px; padding: 28px 28px 24px;
   transition: border-color var(--dur) var(--ease);
 }
-.concept-card:hover { border-color: var(--accent-rose); }
+.concept-card:hover { border-color: var(--accent-violet); }
 .concept-mono {
   font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-rose);
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-violet);
   margin-bottom: 8px;
 }
 .concept-name {
@@ -180,7 +180,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 }
 .n-list li::before {
   content: '→'; position: absolute; left: 0;
-  color: var(--accent-rose); font-weight: 500;
+  color: var(--accent-violet); font-weight: 500;
 }
 
 /* Dark section (Heretics) */
@@ -234,7 +234,7 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   font-family: var(--font-mono); font-weight: 600; font-size: 13px;
   letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
   padding: 14px 32px; border-radius: 4px; cursor: pointer;
-  background: var(--accent-rose); color: #fff; border: 1px solid var(--accent-rose);
+  background: var(--accent-violet); color: #fff; border: 1px solid var(--accent-violet);
   transition: all var(--dur) var(--ease);
 }
 .btn-rose:hover { opacity: 0.85; }
