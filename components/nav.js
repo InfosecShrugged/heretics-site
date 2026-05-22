@@ -87,6 +87,11 @@
 
         <div class="sn-actions">
           <a href="/#briefing" class="sn-cta">Book a Briefing</a>
+          <button class="sn-theme-toggle" type="button" aria-label="Toggle light/dark mode" onclick="window.netherops_toggleTheme()">
+            <span data-grey>Grey</span>
+            <span class="sn-theme-sep">/</span>
+            <span data-dark>Dark</span>
+          </button>
         </div>
 
         <button class="sn-hamburger" id="snHamburger" aria-label="Menu">
@@ -294,6 +299,49 @@
 
     .sn-cta:hover { background: #333; }
 
+    /* Light/dark toggle per DS spec §10 — NetherOps canonical = grey; toggle to dark */
+    .sn-theme-toggle {
+      font-family: 'JetBrains Mono', 'Chivo Mono', 'Space Mono', monospace;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.16);
+      color: #56564E;
+      padding: 6px 10px;
+      border-radius: 0;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .sn-theme-toggle:hover { border-color: #131316; color: #131316; }
+    .sn-theme-sep { color: #B0B0AA; }
+    body:not(.dark) .sn-theme-toggle [data-grey] { color: #131316; font-weight: 600; }
+    body:not(.dark) .sn-theme-toggle [data-dark]  { color: #B0B0AA; }
+    body.dark .sn-theme-toggle { border-color: rgba(255,255,255,0.18); color: #9A9A90; }
+    body.dark .sn-theme-toggle:hover { border-color: #ECECE6; color: #ECECE6; }
+    body.dark .sn-theme-toggle [data-grey] { color: #9A9A90; }
+    body.dark .sn-theme-toggle [data-dark]  { color: #ECECE6; font-weight: 600; }
+    body.dark .sn-theme-sep { color: #555; }
+
+    /* NetherOps dark mode per DS spec §6.2 — ground flips, violet recalibrates */
+    body.dark {
+      background: #131316 !important;
+      color: #ECECE6;
+    }
+    body.dark .site-nav,
+    body.dark .sn {
+      background: rgba(19,19,22,0.9) !important;
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+    body.dark .sn-links a {
+      color: #ECECE6 !important;
+    }
+    body.dark .sn-cta {
+      background: #ECECE6;
+      color: #131316;
+    }
+    body.dark .sn-cta:hover { background: #8C73FF; color: #131316; }
+
     /* Hamburger */
     .sn-hamburger {
       display: none;
@@ -360,6 +408,28 @@
     }
   `;
   document.head.appendChild(style);
+
+  // === LIGHT/DARK TOGGLE per DS spec §10 ===
+  (function () {
+    var KEY = 'netherops-theme';
+    function apply(theme) {
+      if (theme === 'dark') document.body.classList.add('dark');
+      else document.body.classList.remove('dark');
+    }
+    function get() {
+      try { return localStorage.getItem(KEY) || 'light'; }  // canonical = grey (light)
+      catch (e) { return 'light'; }
+    }
+    function set(theme) {
+      try { localStorage.setItem(KEY, theme); } catch (e) {}
+      apply(theme);
+    }
+    window.netherops_toggleTheme = function () {
+      var current = document.body.classList.contains('dark') ? 'dark' : 'light';
+      set(current === 'dark' ? 'light' : 'dark');
+    };
+    apply(get());
+  })();
 
   // === INTERACTIONS ===
   const hamburger = document.getElementById('snHamburger');
