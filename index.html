@@ -107,22 +107,51 @@ section{padding:80px 0;border-top:1px solid var(--ink)}
 .arch .wrap{padding:80px 30px}
 .arch-split{display:grid;grid-template-columns:0.85fr 1.15fr;gap:40px;align-items:center}
 .away{position:relative;min-height:420px;display:flex;align-items:flex-end;justify-content:center}
-.away:before{content:"";position:absolute;left:10%;top:6%;width:64%;height:88%;background:#C8FF6E;opacity:.08;border-radius:4px}
 .away.placeholder{align-items:center;justify-content:center;border:1px dashed rgba(255,255,255,.18);border-radius:6px}
-.away.placeholder:before{display:none}
 .away.placeholder .ph{font-family:var(--mono);font-size:11px;color:#7E7E76;text-align:center;letter-spacing:0.08em;text-transform:uppercase;line-height:1.7;padding:0 30px}
-/* OpptyCon screenshot grid (replaces the placeholder; live image src on each .oc-shot) */
-.opptycon-frame{align-items:stretch;justify-content:stretch;min-height:480px;padding:0}
-.opptycon-frame:before{content:"";position:absolute;left:-4%;top:-4%;width:84%;height:90%;background:#C8FF6E;opacity:.06;border-radius:6px;z-index:0}
-.oc-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:1fr 1fr;gap:10px;width:100%;height:100%;min-height:480px}
-.oc-shot{position:relative;display:block;border:1px solid rgba(255,255,255,0.10);border-radius:4px;background:#0F0F0F center/cover no-repeat;overflow:hidden;transition:transform .25s,border-color .2s,box-shadow .25s}
-.oc-shot:hover{transform:translateY(-2px);border-color:rgba(200,255,110,0.32);box-shadow:0 8px 28px rgba(200,255,110,0.10)}
-.oc-shot-lg{grid-row:span 2}
-.oc-shot[data-shot="dashboard"]{background-image:url('/assets/opptycon/dashboard.png')}
-.oc-shot[data-shot="marketing"]{background-image:url('/assets/opptycon/marketing-plan.png')}
-.oc-shot[data-shot="hiring"]{background-image:url('/assets/opptycon/ae-hiring-plan.png')}
-.oc-shot[data-shot="cro"]{background-image:url('/assets/opptycon/cro.png')}
-.oc-cap{position:absolute;left:10px;bottom:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#ECECE6;background:rgba(15,15,15,0.72);padding:4px 7px;border-radius:2px;backdrop-filter:blur(4px)}
+/* Engine showcase — Command Center as the primary tile + CFO View as a
+   secondary stacked tile, both dark SVGs. Violet glow underneath per
+   image-36 treatment. */
+.opptycon-frame{
+  align-items:stretch;justify-content:flex-start;
+  min-height:520px;padding:0;border:none;
+  background:transparent;
+}
+.opptycon-frame:before{
+  content:"";position:absolute;
+  left:-6%;top:8%;width:96%;height:84%;
+  background:radial-gradient(ellipse at 30% 50%,rgba(140,115,255,0.22),rgba(140,115,255,0) 70%);
+  filter:blur(40px);
+  z-index:0;pointer-events:none;
+}
+.oc-grid{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:1fr;
+  grid-template-rows:auto auto;
+  gap:14px;width:100%;
+}
+.oc-tile{
+  position:relative;display:block;
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:6px;background:#16161C;
+  overflow:hidden;
+  transition:transform .25s,border-color .2s,box-shadow .25s;
+  text-decoration:none;
+}
+.oc-tile:hover{
+  transform:translateY(-2px);
+  border-color:rgba(140,115,255,0.40);
+  box-shadow:0 14px 40px rgba(140,115,255,0.18);
+}
+.oc-tile svg{display:block;width:100%;height:auto}
+.oc-tile-cfo{align-self:end;max-width:55%}
+.oc-cap{
+  position:absolute;left:14px;top:12px;
+  font-family:var(--mono);font-size:9px;letter-spacing:0.14em;
+  text-transform:uppercase;color:#9A9A92;
+  pointer-events:none;
+}
 .arch .sec-h{color:#ECECE6}.arch .sec-label{color:#8C73FF}
 .layers{list-style:none;margin-top:26px;display:grid;gap:9px}
 .layers li{font-family:var(--mono);font-size:12px;color:#B6B6AC;padding-left:20px;position:relative}
@@ -216,9 +245,12 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
   <div class="arch-split">
     <figure class="away opptycon-frame">
       <div class="oc-grid">
-        <a href="https://app.netherops.com" class="oc-shot oc-shot-lg" data-shot="dashboard"><span class="oc-cap">Dashboard · CRO view</span></a>
-        <a href="https://app.netherops.com" class="oc-shot" data-shot="marketing"><span class="oc-cap">Marketing Plan</span></a>
-        <a href="https://app.netherops.com" class="oc-shot" data-shot="hiring"><span class="oc-cap">AE Hiring</span></a>
+        <a href="https://app.netherops.com" class="oc-tile" aria-label="OpptyCon Command Center">
+          <img src="/assets/opptycon/opptycon-command-center-dark.svg" alt="OpptyCon Command Center — Target ARR $20M, LTV:CAC 656x, Magic Number 3.46, Rule of 40 = 302, Funnel Health Grade B">
+        </a>
+        <a href="https://app.netherops.com" class="oc-tile oc-tile-cfo" aria-label="OpptyCon CFO View">
+          <img src="/assets/opptycon/opptycon-persona-cfo-dark.svg" alt="OpptyCon CFO View — Burn Multiple 1.2x, Magic 3.46, Margin 78%, CAC Payback 0.2mo, Runway 22mo, Rule of 40 = 302, Capital Efficiency: GOVERNED">
+        </a>
       </div>
     </figure>
     <div>

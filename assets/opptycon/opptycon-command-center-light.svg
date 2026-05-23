@@ -1,0 +1,116 @@
+<svg viewBox="0 0 1000 360" xmlns="http://www.w3.org/2000/svg" font-family="'Archivo','Helvetica Neue',Arial,sans-serif">
+  <!-- Light mode (OpptyCon grey). Fonts referenced, not embedded: Archivo (display) + JetBrains Mono (labels). Falls back gracefully. -->
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#5B3DF0" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#5B3DF0" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .mono{font-family:'JetBrains Mono','Courier New',monospace;}
+      .ink{fill:#15151A;} .mut{fill:#56564E;} .faint{fill:#8E8A80;} .dim{fill:#9A968C;}
+      .lime{fill:#5B7A2E;} .violet{fill:#5B3DF0;}
+      .lbl{font-size:8.5px;letter-spacing:1.2px;}
+      .item{font-size:11px;}
+      .tlabel{font-size:8px;letter-spacing:1px;}
+      .tval{font-weight:800;font-size:23px;letter-spacing:-0.5px;}
+    </style>
+  </defs>
+
+  <!-- card -->
+  <rect x="0.5" y="0.5" width="999" height="359" rx="10" fill="#ECECE7" stroke="rgba(0,0,0,0.12)"/>
+  <rect x="0.5" y="0.5" width="999" height="359" rx="10" fill="url(#glow)"/>
+
+  <!-- window bar -->
+  <circle cx="20" cy="23" r="4.5" fill="rgba(0,0,0,0.18)"/>
+  <circle cx="36" cy="23" r="4.5" fill="rgba(0,0,0,0.18)"/>
+  <circle cx="52" cy="23" r="4.5" fill="rgba(0,0,0,0.18)"/>
+  <text x="72" y="28" class="ink" font-weight="700" font-size="14">Command Center</text>
+  <text x="210" y="27" class="mono faint" font-size="9">Every metric derived from your model inputs</text>
+  <line x1="0" y1="46" x2="1000" y2="46" stroke="rgba(0,0,0,0.09)"/>
+
+  <!-- rail -->
+  <line x1="170" y1="46" x2="170" y2="360" stroke="rgba(0,0,0,0.08)"/>
+  <text x="16" y="72" class="mono dim lbl">PERSONA VIEWS</text>
+  <!-- active CFO -->
+  <rect x="0" y="80" width="170" height="20" fill="rgba(91,122,46,0.12)"/>
+  <rect x="0" y="80" width="2" height="20" fill="#5B7A2E"/>
+  <text x="16" y="94" class="mono item lime">CFO View</text>
+  <text x="16" y="115" class="mono item mut">CEO View</text>
+  <text x="16" y="136" class="mono item mut">CRO View</text>
+  <text x="16" y="157" class="mono item mut">CMO View</text>
+  <text x="16" y="178" class="mono item mut">VC View</text>
+  <text x="16" y="199" class="mono item mut">PE View</text>
+  <text x="16" y="220" class="mono item mut">Board View</text>
+  <text x="16" y="241" class="mono item mut">RevOps View</text>
+  <text x="16" y="270" class="mono dim lbl">REVENUE</text>
+  <text x="16" y="292" class="mono item mut">Target Tracker</text>
+  <text x="16" y="313" class="mono item mut">Glidescope</text>
+  <text x="16" y="334" class="mono item mut">QBR Metrics</text>
+
+  <!-- directional note -->
+  <rect x="190" y="62" width="2" height="20" fill="#5B7A2E"/>
+  <text x="200" y="76" class="mono lime" font-size="10">Directional · not forecast — 27/28 hard-to-measure inputs still at defaults</text>
+
+  <!-- metric tiles -->
+  <g>
+    <rect x="190" y="94" width="183" height="80" rx="4" fill="none" stroke="rgba(0,0,0,0.10)"/>
+    <text x="204" y="118" class="mono tlabel faint">TARGET ARR</text>
+    <text x="204" y="148" class="ink tval">$20.0M</text>
+
+    <rect x="385" y="94" width="183" height="80" rx="4" fill="none" stroke="rgba(0,0,0,0.10)"/>
+    <text x="399" y="118" class="mono tlabel faint">LTV : CAC</text>
+    <text x="399" y="148" class="violet tval">656.6x</text>
+
+    <rect x="580" y="94" width="183" height="80" rx="4" fill="none" stroke="rgba(0,0,0,0.10)"/>
+    <text x="594" y="118" class="mono tlabel faint">MAGIC NUMBER</text>
+    <text x="594" y="148" class="ink tval">3.46</text>
+
+    <rect x="775" y="94" width="183" height="80" rx="4" fill="none" stroke="rgba(0,0,0,0.10)"/>
+    <text x="789" y="118" class="mono tlabel faint">RULE OF 40</text>
+    <text x="789" y="148" class="lime tval">302</text>
+  </g>
+
+  <!-- funnel health -->
+  <rect x="190" y="190" width="768" height="150" rx="4" fill="none" stroke="rgba(0,0,0,0.10)"/>
+  <text x="206" y="216" class="mono faint" font-size="9" letter-spacing="1px">FUNNEL HEALTH</text>
+  <text x="942" y="216" class="mono lime" font-size="9" letter-spacing="1px" text-anchor="end">GRADE B</text>
+
+  <!-- 5 bars -->
+  <g class="mono">
+    <!-- col positions: 206,357,508,659,810 each width 137 -->
+    <!-- 30 -->
+    <text x="274" y="256" class="violet" font-weight="800" font-size="17" text-anchor="middle" font-family="'Archivo',sans-serif">30%</text>
+    <rect x="206" y="266" width="137" height="5" rx="2.5" fill="rgba(0,0,0,0.08)"/>
+    <rect x="206" y="266" width="41" height="5" rx="2.5" fill="#5B7A2E"/>
+    <text x="274" y="290" class="lime" font-size="7.5" letter-spacing="1px" text-anchor="middle">GOOD</text>
+    <!-- 40 -->
+    <text x="425" y="256" class="violet" font-weight="800" font-size="17" text-anchor="middle" font-family="'Archivo',sans-serif">40%</text>
+    <rect x="357" y="266" width="137" height="5" rx="2.5" fill="rgba(0,0,0,0.08)"/>
+    <rect x="357" y="266" width="55" height="5" rx="2.5" fill="#5B7A2E"/>
+    <text x="425" y="290" class="lime" font-size="7.5" letter-spacing="1px" text-anchor="middle">GOOD</text>
+    <!-- 75 -->
+    <text x="576" y="256" class="violet" font-weight="800" font-size="17" text-anchor="middle" font-family="'Archivo',sans-serif">75%</text>
+    <rect x="508" y="266" width="137" height="5" rx="2.5" fill="rgba(0,0,0,0.08)"/>
+    <rect x="508" y="266" width="103" height="5" rx="2.5" fill="#5B7A2E"/>
+    <text x="576" y="290" class="lime" font-size="7.5" letter-spacing="1px" text-anchor="middle">GOOD</text>
+    <!-- 50 -->
+    <text x="727" y="256" class="violet" font-weight="800" font-size="17" text-anchor="middle" font-family="'Archivo',sans-serif">50%</text>
+    <rect x="659" y="266" width="137" height="5" rx="2.5" fill="rgba(0,0,0,0.08)"/>
+    <rect x="659" y="266" width="68" height="5" rx="2.5" fill="#5B7A2E"/>
+    <text x="727" y="290" class="lime" font-size="7.5" letter-spacing="1px" text-anchor="middle">GOOD</text>
+    <!-- 30 -->
+    <text x="878" y="256" class="violet" font-weight="800" font-size="17" text-anchor="middle" font-family="'Archivo',sans-serif">30%</text>
+    <rect x="810" y="266" width="137" height="5" rx="2.5" fill="rgba(0,0,0,0.08)"/>
+    <rect x="810" y="266" width="41" height="5" rx="2.5" fill="#5B7A2E"/>
+    <text x="878" y="290" class="lime" font-size="7.5" letter-spacing="1px" text-anchor="middle">GOOD</text>
+  </g>
+
+  <!-- stage labels under bars -->
+  <g class="mono faint" font-size="7.5" letter-spacing="0.5px" text-anchor="middle">
+    <text x="274" y="320">INQUIRY→MQL</text>
+    <text x="425" y="320">MQL→SQL</text>
+    <text x="576" y="320">SQL→MEETING</text>
+    <text x="727" y="320">MEETING→SQO</text>
+    <text x="878" y="320">SQO→WON</text>
+  </g>
+</svg>
