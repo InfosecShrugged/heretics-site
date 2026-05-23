@@ -41,12 +41,13 @@ nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 90%,
 .toggle{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--violet);background:transparent;color:var(--ink);padding:6px 10px;cursor:pointer;transition:all .2s}
 .toggle:hover{background:var(--violet);color:#fff}
 
-.hero{position:relative;overflow:visible;padding:60px 0 0;z-index:2}
-.hero-split{display:grid;grid-template-columns:1fr 1.1fr;gap:24px;align-items:start;min-height:720px;position:relative}
+.hero{position:relative;overflow:visible;padding:60px 0 0;z-index:2;min-height:780px}
+.hero-split{display:block;position:relative}
+.hero-copy{max-width:760px;position:relative;z-index:3}
 .coverbar{display:flex;gap:34px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mut);margin-bottom:40px;flex-wrap:wrap}
 .coverbar b{color:var(--ink);font-weight:500}
-h1{font-weight:900;font-size:clamp(42px,6.6vw,92px);line-height:0.92;letter-spacing:-0.035em;text-transform:uppercase;max-width:12ch;color:var(--ink)}
-.lede{font-family:var(--mono);font-size:14px;line-height:1.7;color:var(--mut);max-width:48ch;margin-top:28px}
+h1{font-weight:900;font-size:clamp(64px,10vw,156px);line-height:0.86;letter-spacing:-0.045em;text-transform:uppercase;max-width:11ch;color:var(--ink)}
+.lede{font-family:var(--mono);font-size:14px;line-height:1.7;color:var(--mut);max-width:48ch;margin-top:32px}
 .lede b{color:var(--ink);font-weight:500}
 .cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;letter-spacing:0.06em;text-transform:uppercase;padding:14px 22px;transition:transform .15s;border:1px solid var(--ink)}
@@ -54,34 +55,38 @@ h1{font-weight:900;font-size:clamp(42px,6.6vw,92px);line-height:0.92;letter-spac
 .btn-v{background:transparent;color:var(--violet);border:1px solid var(--violet)}
 .btn-v:hover{background:var(--violet);color:#fff}
 
-.char{position:relative;align-self:end;display:flex;align-items:flex-end;justify-content:flex-end;margin-bottom:-220px;z-index:5;pointer-events:none}
-.char img{position:relative;height:1020px;max-width:100%;width:auto;object-fit:contain;filter:saturate(1.02)}
-/* Hair-wave overlay — second copy of the figure, masked to hair pixels only,
-   pushed by SVG displacement filter for a continuous wind effect.
-   Mask file isolates hair geometry; filter id="hair-wind" lives in <svg> at body end. */
-.char .hero-hair{
-  position:absolute;bottom:0;right:0;
-  height:1020px;width:auto;
-  mix-blend-mode:multiply;
-  filter:url(#hair-wind) brightness(1.05) contrast(1.2);
-  -webkit-mask-image:url('/assets/hero-hair-mask.png');
-          mask-image:url('/assets/hero-hair-mask.png');
-  -webkit-mask-size:100% 100%;
-          mask-size:100% 100%;
-  -webkit-mask-mode:alpha;
-          mask-mode:alpha;
-  -webkit-mask-repeat:no-repeat;
-          mask-repeat:no-repeat;
+/* Character anchored to the VIEWPORT'S right edge (not .wrap edge), with
+   negative right offset so she's half-clipped off-screen — matches mockup.
+   Extends below the hero into the method section; her foot lands over the
+   "03 EXECUTION ENGINEERING" cell. */
+.char{
+  position:absolute;
+  top:90px;
+  right:-220px;            /* push half her width past the viewport edge */
+  bottom:-260px;           /* foot extends 260px into method section */
+  width:auto;
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  z-index:5;
   pointer-events:none;
 }
+.char img{
+  position:relative;
+  height:100%;
+  width:auto;
+  max-width:none;
+  object-fit:contain;
+  filter:saturate(1.02);
+}
 body.dark .char{display:none}  /* light-only until white edge is feathered against dark */
-body.dark .hero-split{grid-template-columns:1fr}
-/* Below the breakpoint we collapse to a single column and contain the
-   character to a reasonable height so she doesn't overflow chaotically. */
+/* Below the breakpoint, contain the character and put her below the copy
+   in normal flow (no clipping chaos on narrow screens). */
 @media(max-width:860px){
-  .char{margin-bottom:0;min-height:360px;justify-content:center}
-  .char img{height:360px}
-  .hero{padding-bottom:30px}
+  .char{position:relative;top:auto;right:auto;bottom:auto;min-height:360px;justify-content:center;margin-top:30px}
+  .char img{height:380px}
+  .hero{padding-bottom:30px;min-height:auto}
+  h1{font-size:clamp(48px,12vw,80px)}
 }
 
 section{padding:80px 0;border-top:1px solid var(--ink)}
@@ -176,20 +181,19 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
   <span class="plus" style="top:200px;right:30px">+</span>
   <div class="wrap">
     <div class="hero-split">
-      <div>
+      <div class="hero-copy">
         <div class="coverbar"><span>Coverage / <b>Full-stack GTM</b></span><span>Stage / <b>Pre-seed → IPO</b></span><span>Method / <b>Governed ↑</b></span></div>
-        <h1>Here's to the Operators.</h1>
+        <h1>Here's<br>to the<br>Operators.</h1>
         <p class="lede">AI-first GTM engineering from pre-seed to pre-IPO. <b>Operator-run. Method-governed. Engine-supported.</b></p>
         <div class="cta-row">
           <a href="/#cta" class="btn">Book a Briefing →</a>
           <a href="/doctrine/" class="btn btn-v">Read the Doctrine</a>
         </div>
       </div>
-      <div class="char">
-        <img src="/assets/hero-char.png" alt="Operator">
-        <img class="hero-hair" src="/assets/hero-char.png" alt="" aria-hidden="true">
-      </div>
     </div>
+  </div>
+  <div class="char">
+    <img src="/assets/hero-char.png" alt="Operator">
   </div>
 </header>
 
