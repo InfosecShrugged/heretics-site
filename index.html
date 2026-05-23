@@ -172,6 +172,33 @@ section{padding:80px 0;border-top:1px solid var(--ink)}
 .d-h{font-weight:700;font-size:17px;margin:auto 0 10px;letter-spacing:-0.01em}
 .d-p{font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--mut)}
 
+/* Briefing form — two-column on #cta section */
+.cta-split{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:start}
+.cta-copy .sec-sub{margin-bottom:18px}
+.cta-meta{margin-top:24px;border-top:1px solid var(--line);padding-top:18px;display:grid;gap:10px}
+.cta-meta-row{display:grid;grid-template-columns:80px 1fr;gap:12px;font-family:var(--mono);font-size:11px;line-height:1.5}
+.cta-meta-k{color:var(--violet);font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+.cta-meta-v{color:var(--mut)}
+.brief-form{display:grid;gap:14px;padding:32px;background:rgba(255,255,255,0.55);border:1px solid var(--ink);border-radius:0;box-shadow:0 4px 18px rgba(0,0,0,0.06)}
+.brief-field{display:grid;gap:6px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mut)}
+.brief-field em{text-transform:none;letter-spacing:0;font-style:italic;color:var(--faint);font-size:9px}
+.brief-field input,.brief-field textarea{font-family:var(--display);font-size:14px;font-weight:400;color:var(--ink);background:#fff;border:1px solid var(--line);padding:11px 13px;border-radius:0;outline:none;transition:border-color .15s;text-transform:none;letter-spacing:0;line-height:1.5}
+.brief-field input:focus,.brief-field textarea:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(91,61,240,0.12)}
+.brief-field textarea{resize:vertical;min-height:64px}
+.brief-submit{justify-self:start;margin-top:6px;border:none;cursor:pointer;font-weight:500}
+.brief-fallback{font-family:var(--mono);font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
+.brief-fallback a{color:var(--violet);border-bottom:1px solid var(--violet);text-transform:lowercase;letter-spacing:0}
+.brief-thanks{padding:32px;background:rgba(200,255,110,0.12);border:1px solid var(--ink);font-family:var(--display)}
+.brief-thanks h3{font-weight:700;font-size:22px;margin-bottom:8px;letter-spacing:-0.01em}
+.brief-thanks p{font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--mut)}
+body.dark .brief-form{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.18)}
+body.dark .brief-field input,body.dark .brief-field textarea{background:rgba(255,255,255,0.04);color:var(--ink);border-color:rgba(255,255,255,0.18)}
+body.dark .brief-thanks{background:rgba(200,255,110,0.06);border-color:rgba(255,255,255,0.18)}
+@media(max-width:860px){
+  .cta-split{grid-template-columns:1fr;gap:32px}
+  .brief-form{padding:22px}
+}
+
 .statusbar{background:var(--violet);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:12px 30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
 .foot-in{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;flex-wrap:wrap;gap:12px}
@@ -295,9 +322,28 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
 </div></section>
 
 <section id="cta"><div class="wrap">
-  <h2 class="sec-h">Ready to govern your cyber revenue?</h2>
-  <p class="sec-sub">Built for cybersecurity companies from Series A through pre-IPO — ARR $3M–$100M. 30-minute briefing — we'll map your current GTM to the governed architecture and show you what changes.</p>
-  <div class="cta-row"><a href="mailto:nick@heretics.io?subject=Cyber%20GTM%20Briefing%20request" class="btn">Book a Briefing →</a><a href="/roadmap/" class="btn btn-v">See the Roadmap</a></div>
+  <div class="cta-split">
+    <div class="cta-copy">
+      <h2 class="sec-h">Ready to govern your cyber revenue?</h2>
+      <p class="sec-sub">Built for cybersecurity companies from Series A through pre-IPO — ARR $3M–$100M. 30-minute briefing — we'll map your current GTM to the governed architecture and show you what changes.</p>
+      <div class="cta-meta">
+        <div class="cta-meta-row"><span class="cta-meta-k">No spam</span><span class="cta-meta-v">One reply. No drip sequence. No pitch deck.</span></div>
+        <div class="cta-meta-row"><span class="cta-meta-k">No fluff</span><span class="cta-meta-v">30 minutes, real numbers, real diagnosis.</span></div>
+        <div class="cta-meta-row"><span class="cta-meta-k">No charge</span><span class="cta-meta-v">If we're not the right fit, we'll say so.</span></div>
+      </div>
+    </div>
+    <form class="brief-form" name="briefing" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/?briefing=ok">
+      <input type="hidden" name="form-name" value="briefing">
+      <p class="brief-hp" hidden><label>Don't fill: <input name="bot-field"></label></p>
+      <label class="brief-field"><span>Name</span><input type="text" name="name" required autocomplete="name"></label>
+      <label class="brief-field"><span>Work email</span><input type="email" name="email" required autocomplete="email" placeholder="you@company.com"></label>
+      <label class="brief-field"><span>Company</span><input type="text" name="company" required autocomplete="organization"></label>
+      <label class="brief-field"><span>Role</span><input type="text" name="role" placeholder="CRO · CMO · VP Mktg · Founder" autocomplete="organization-title"></label>
+      <label class="brief-field"><span>What's the GTM question? <em>(optional)</em></span><textarea name="message" rows="3" placeholder="One sentence is enough."></textarea></label>
+      <button type="submit" class="btn brief-submit">Book the Briefing →</button>
+      <p class="brief-fallback">Or just email <a href="mailto:nick@heretics.io?subject=Cyber%20GTM%20Briefing%20request">nick@heretics.io</a></p>
+    </form>
+  </div>
 </div></section>
 
 <div class="statusbar"><span>&gt; connection secure</span><span>node: netherops_01 · governed</span></div>
@@ -405,6 +451,20 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
 
   // Brief delay so the page lands before typing starts
   setTimeout(tick, 400);
+})();
+
+/* Briefing form — swap to thank-you state on ?briefing=ok return from Netlify Forms */
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('briefing') !== 'ok') return;
+  const form = document.querySelector('.brief-form');
+  if (!form) return;
+  const thanks = document.createElement('div');
+  thanks.className = 'brief-thanks';
+  thanks.innerHTML = '<h3>Got it. Talk soon.</h3><p>Your briefing request landed. Nick replies within 24 hours — no drip sequence, no pitch deck.</p>';
+  form.replaceWith(thanks);
+  // Scroll the CTA into view so user sees the confirmation
+  document.getElementById('cta')?.scrollIntoView({behavior:'smooth',block:'center'});
 })();
 
 /* Light/dark theme toggle per DS spec §10 — NetherOps canonical = grey (light); toggle to dark */
