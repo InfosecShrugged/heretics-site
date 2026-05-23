@@ -54,12 +54,13 @@ h1{font-weight:900;font-size:clamp(42px,6.6vw,92px);line-height:0.92;letter-spac
 .btn-v{background:transparent;color:var(--violet);border:1px solid var(--violet)}
 .btn-v:hover{background:var(--violet);color:#fff}
 
-.char{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:560px}
-.char:before{content:"";position:absolute;right:6%;top:8%;width:62%;height:84%;background:var(--violet);opacity:.14;border-radius:4px}
-.char .tick{position:absolute;font-family:var(--mono);font-size:11px;color:var(--violet);letter-spacing:0.1em}
-.char img{position:relative;max-height:600px;max-width:100%;object-fit:contain;z-index:2;filter:saturate(1.02)}
-body.dark .char{display:none}  /* per user direction — hide samurai on dark */
+.char{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center;min-height:420px}
+.char:before{content:"";position:absolute;right:10%;top:10%;width:54%;height:78%;background:var(--violet);opacity:.12;border-radius:4px}
+.char .tick{position:absolute;font-family:var(--mono);font-size:10px;color:var(--violet);letter-spacing:0.1em;z-index:3}
+.char img{position:relative;max-height:440px;max-width:100%;object-fit:contain;z-index:2;filter:saturate(1.02)}
+body.dark .char{display:none}  /* per user direction — light-only until white edge is feathered against dark */
 body.dark .hero-split{grid-template-columns:1fr}
+.hero-split{min-height:460px}
 
 section{padding:80px 0;border-top:1px solid var(--ink)}
 .sec-label{margin-bottom:14px}
@@ -79,6 +80,18 @@ section{padding:80px 0;border-top:1px solid var(--ink)}
 .away.placeholder{align-items:center;justify-content:center;border:1px dashed rgba(255,255,255,.18);border-radius:6px}
 .away.placeholder:before{display:none}
 .away.placeholder .ph{font-family:var(--mono);font-size:11px;color:#7E7E76;text-align:center;letter-spacing:0.08em;text-transform:uppercase;line-height:1.7;padding:0 30px}
+/* OpptyCon screenshot grid (replaces the placeholder; live image src on each .oc-shot) */
+.opptycon-frame{align-items:stretch;justify-content:stretch;min-height:480px;padding:0}
+.opptycon-frame:before{content:"";position:absolute;left:-4%;top:-4%;width:84%;height:90%;background:#C8FF6E;opacity:.06;border-radius:6px;z-index:0}
+.oc-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:1fr 1fr;gap:10px;width:100%;height:100%;min-height:480px}
+.oc-shot{position:relative;display:block;border:1px solid rgba(255,255,255,0.10);border-radius:4px;background:#0F0F0F center/cover no-repeat;overflow:hidden;transition:transform .25s,border-color .2s,box-shadow .25s}
+.oc-shot:hover{transform:translateY(-2px);border-color:rgba(200,255,110,0.32);box-shadow:0 8px 28px rgba(200,255,110,0.10)}
+.oc-shot-lg{grid-row:span 2}
+.oc-shot[data-shot="dashboard"]{background-image:url('/assets/opptycon/dashboard.png')}
+.oc-shot[data-shot="marketing"]{background-image:url('/assets/opptycon/marketing-plan.png')}
+.oc-shot[data-shot="hiring"]{background-image:url('/assets/opptycon/ae-hiring-plan.png')}
+.oc-shot[data-shot="cro"]{background-image:url('/assets/opptycon/cro.png')}
+.oc-cap{position:absolute;left:10px;bottom:8px;font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#ECECE6;background:rgba(15,15,15,0.72);padding:4px 7px;border-radius:2px;backdrop-filter:blur(4px)}
 .arch .sec-h{color:#ECECE6}.arch .sec-label{color:#8C73FF}
 .layers{list-style:none;margin-top:26px;display:grid;gap:9px}
 .layers li{font-family:var(--mono);font-size:12px;color:#B6B6AC;padding-left:20px;position:relative}
@@ -125,7 +138,7 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
 </head>
 <body>
 <nav><div class="wrap nav-in">
-  <a href="/" class="logo">// NETHER<b>OPS</b></a>
+  <a href="/" class="logo"><img src="/assets/netherops-logo-violet-mark.svg" alt="NetherOps" height="22" style="display:block;height:22px;width:auto"></a>
   <div class="nav-r">
     <a href="#method">Method</a>
     <a href="/opptycon/">OpptyCon</a>
@@ -140,12 +153,21 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
   <span class="plus" style="top:80px;left:30px">+</span>
   <span class="plus" style="top:200px;right:30px">+</span>
   <div class="wrap">
-    <div class="coverbar"><span>Coverage / <b>Full-stack GTM</b></span><span>Stage / <b>Pre-seed → IPO</b></span><span>Method / <b>Governed ↑</b></span></div>
-    <h1>Here's to the Operators.</h1>
-    <p class="lede">AI-first GTM engineering from pre-seed to pre-IPO. <b>Operator-run. Method-governed. Engine-supported.</b></p>
-    <div class="cta-row">
-      <a href="/#cta" class="btn">Book a Briefing →</a>
-      <a href="/doctrine/" class="btn btn-v">Read the Doctrine</a>
+    <div class="hero-split">
+      <div>
+        <div class="coverbar"><span>Coverage / <b>Full-stack GTM</b></span><span>Stage / <b>Pre-seed → IPO</b></span><span>Method / <b>Governed ↑</b></span></div>
+        <h1>Here's to the Operators.</h1>
+        <p class="lede">AI-first GTM engineering from pre-seed to pre-IPO. <b>Operator-run. Method-governed. Engine-supported.</b></p>
+        <div class="cta-row">
+          <a href="/#cta" class="btn">Book a Briefing →</a>
+          <a href="/doctrine/" class="btn btn-v">Read the Doctrine</a>
+        </div>
+      </div>
+      <div class="char">
+        <span class="tick" style="top:24px;left:14%">+ operator</span>
+        <span class="tick" style="bottom:18%;right:8%">+ governed</span>
+        <img src="/assets/hero-char.png" alt="Operator">
+      </div>
     </div>
   </div>
 </header>
@@ -163,24 +185,28 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
 
 <section id="arch" class="arch"><div class="wrap">
   <div class="arch-split">
-    <figure class="away placeholder">
-      <span class="ph">// the architecture<br>samurai-operator · facing away · production asset pending</span>
+    <figure class="away opptycon-frame">
+      <div class="oc-grid">
+        <a href="https://app.netherops.com" class="oc-shot oc-shot-lg" data-shot="dashboard"><span class="oc-cap">Dashboard · CRO view</span></a>
+        <a href="https://app.netherops.com" class="oc-shot" data-shot="marketing"><span class="oc-cap">Marketing Plan</span></a>
+        <a href="https://app.netherops.com" class="oc-shot" data-shot="hiring"><span class="oc-cap">AE Hiring</span></a>
+      </div>
     </figure>
     <div>
-      <div class="mono sec-label">// the doctrine</div>
-      <h2 class="sec-h">Open architecture. Governed execution.</h2>
-      <p class="sec-sub">The complete governed revenue architecture — seven horizontal layers, five agents, closed-loop control. The full doctrine is open; the operating practice is what we run.</p>
+      <div class="mono sec-label">// the engine</div>
+      <h2 class="sec-h">OpptyCon. Revenue physics, modeled not guessed.</h2>
+      <p class="sec-sub">Every engagement runs on a model. P&amp;L, pipeline, funnel, capacity — all derived from constraints, all feeding back upward. OpptyCon is the engine. <a href="https://app.netherops.com" style="color:#C8FF6E;border-bottom:1px solid #C8FF6E">Open the live tool →</a></p>
       <ul class="layers">
-        <li>The Spine — seven layers, economic model to attribution</li>
-        <li>Revenue Thermostat — constraints down, feedback up</li>
-        <li>Agent Specs — P&amp;L, Stage Gate, Coverage, Attribution, Orchestration</li>
-        <li>OpptyCon — revenue physics, modeled not guessed</li>
-        <li>Sovereignty Map — build vs buy, layer by layer</li>
+        <li>Inverse marketing waterfall — target revenue → required inquiries</li>
+        <li>AE hiring plan — today's roster → target capacity, by month</li>
+        <li>Eight persona views — CFO, CRO, CMO, VC, PE, Board, RevOps, Founder</li>
+        <li>Horizon Planner — date-anchored feasibility, lever ladder</li>
+        <li>Dual-axis cost model — behavioral × functional</li>
       </ul>
       <div class="metrics">
-        <div class="met"><div class="v">$4.2M</div><div class="k">Pipeline target</div></div>
-        <div class="met"><div class="v">3.2×</div><div class="k">Coverage</div></div>
-        <div class="met"><div class="v">24</div><div class="k">Months modeled</div></div>
+        <div class="met"><div class="v">8</div><div class="k">Persona views</div></div>
+        <div class="met"><div class="v">24+</div><div class="k">Months modeled</div></div>
+        <div class="met"><div class="v">Live</div><div class="k">app.netherops.com</div></div>
       </div>
     </div>
   </div>

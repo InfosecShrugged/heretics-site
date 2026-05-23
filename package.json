@@ -1,0 +1,12 @@
+{
+  "name": "netherops-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NetherOps marketing site — static HTML/CSS/JS, Netlify-deployed",
+  "scripts": {
+    "capture": "node scripts/capture-opptycon.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}
