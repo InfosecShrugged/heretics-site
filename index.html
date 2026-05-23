@@ -50,7 +50,7 @@ h1{font-weight:900;font-size:clamp(56px,8.4vw,128px);line-height:0.88;letter-spa
 h1 .dot{color:var(--violet)}
 h1 .cursor{display:inline-block;width:0.06em;height:0.78em;background:var(--violet);margin-left:0.05em;vertical-align:-0.06em;animation:caret 0.7s step-end infinite}
 @keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
-.hero-tagline{font-family:var(--display);font-weight:600;font-size:clamp(18px,2.4vw,28px);line-height:1.2;letter-spacing:-0.012em;color:var(--violet);max-width:28ch;margin-top:22px;opacity:0;transform:translateY(6px);transition:opacity 0.7s var(--ease),transform 0.7s var(--ease)}
+.hero-tagline{font-family:var(--display);font-weight:600;font-size:clamp(18px,2.4vw,28px);line-height:1.2;letter-spacing:-0.012em;color:var(--violet);max-width:28ch;margin-top:22px;opacity:0;transform:translateY(10px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
 .hero-tagline.visible{opacity:1;transform:translateY(0)}
 .lede{font-family:var(--mono);font-size:14px;line-height:1.7;color:var(--mut);max-width:48ch;margin-top:24px}
 .lede b{color:var(--ink);font-weight:500}
@@ -352,7 +352,7 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
   }
 
   function finish() {
-    // strip cursor + reveal tagline
+    // strip cursor; pause; then reveal tagline (with its own slow fade transition)
     let final = '';
     for (const s of segments) {
       if (s.t === 'text') final += s.v;
@@ -360,7 +360,8 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
       else if (s.t === 'dot') final += '<span class="dot">.</span>';
     }
     h1.innerHTML = final;
-    tag.classList.add('visible');
+    // Hold the H1 alone for a beat before the tagline arrives — gives the line room to land.
+    setTimeout(() => tag.classList.add('visible'), 750);
   }
 
   if (reduceMotion()) { finish(); return; }
