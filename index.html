@@ -56,6 +56,24 @@ h1{font-weight:900;font-size:clamp(42px,6.6vw,92px);line-height:0.92;letter-spac
 
 .char{position:relative;align-self:end;display:flex;align-items:flex-end;justify-content:flex-end;margin-bottom:-220px;z-index:5;pointer-events:none}
 .char img{position:relative;height:1020px;max-width:100%;width:auto;object-fit:contain;filter:saturate(1.02)}
+/* Hair-wave overlay — second copy of the figure, masked to hair pixels only,
+   pushed by SVG displacement filter for a continuous wind effect.
+   Mask file isolates hair geometry; filter id="hair-wind" lives in <svg> at body end. */
+.char .hero-hair{
+  position:absolute;bottom:0;right:0;
+  height:1020px;width:auto;
+  mix-blend-mode:multiply;
+  filter:url(#hair-wind) brightness(1.05) contrast(1.2);
+  -webkit-mask-image:url('/assets/hero-hair-mask.png');
+          mask-image:url('/assets/hero-hair-mask.png');
+  -webkit-mask-size:100% 100%;
+          mask-size:100% 100%;
+  -webkit-mask-mode:alpha;
+          mask-mode:alpha;
+  -webkit-mask-repeat:no-repeat;
+          mask-repeat:no-repeat;
+  pointer-events:none;
+}
 body.dark .char{display:none}  /* light-only until white edge is feathered against dark */
 body.dark .hero-split{grid-template-columns:1fr}
 /* Below the breakpoint we collapse to a single column and contain the
@@ -169,6 +187,7 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
       </div>
       <div class="char">
         <img src="/assets/hero-char.png" alt="Operator">
+        <img class="hero-hair" src="/assets/hero-char.png" alt="" aria-hidden="true">
       </div>
     </div>
   </div>
@@ -250,6 +269,22 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
   <span>© 2026 NetherOps</span>
   <span>AI-first · operator-run · pre-seed to pre-IPO</span>
 </div></footer>
+
+<!-- SVG displacement filter for hair-wind effect (used by .hero-hair overlay).
+     One-way rightward turbulence, animated 8s baseFrequency cycle. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="hair-wind" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.02" numOctaves="2" seed="3" result="noise">
+        <animate attributeName="baseFrequency"
+          values="0.004 0.02;0.006 0.025;0.003 0.018;0.005 0.022;0.004 0.02"
+          dur="8s" repeatCount="indefinite" calcMode="spline"
+          keySplines="0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="R"/>
+    </filter>
+  </defs>
+</svg>
 
 <script>
 /* Light/dark theme toggle per DS spec §10 — NetherOps canonical = grey (light); toggle to dark */
