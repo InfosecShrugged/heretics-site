@@ -610,9 +610,11 @@ img { max-width: 100%; display: block; }
   gap: 8px;
   padding: 16px 32px;
   background: var(--accent-lime);
-  color: var(--ink);
+  /* Fixed dark text — lime fill is always lime, so text must always be dark,
+     even in dark-mode (where --ink flips to ivory and would read as light-on-lime). */
+  color: #111111;
   font-family: var(--font-mono);
-  font-weight: 400;
+  font-weight: 600;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -622,7 +624,7 @@ img { max-width: 100%; display: block; }
 
 .section-cta .cta-btn:hover {
   background: var(--accent-lime-dark);
-  color: var(--ink);
+  color: #111111;
   transform: translateY(-2px);
 }
 
@@ -631,13 +633,20 @@ img { max-width: 100%; display: block; }
   align-items: center;
   gap: 6px;
   margin-left: 16px;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.7);
   font-size: 14px;
   font-weight: 400;
   transition: color var(--dur) var(--ease);
 }
 
 .section-cta .cta-secondary:hover { color: #fff; }
+
+/* CTA section: stay dark in both modes (it's a brand-defined inverse panel,
+   not a theme-following surface). In dark mode --ink flips to ivory which
+   would invert the panel — explicitly hold it. */
+body.dark .section-cta { background: #0F0F0F; }
+body.dark .section-cta h2 { color: #ECECE6; }
+body.dark .section-cta p { color: rgba(255,255,255,0.65); }
 
 /* ============================================
    OVERVIEW PAGE — Role Picker
@@ -757,11 +766,14 @@ img { max-width: 100%; display: block; }
    FOOTER
    ============================================ */
 .site-footer {
-  background: var(--ink);
-  color: rgba(255,255,255,0.5);
+  /* Fixed dark — footer is a brand inverse panel, not theme-following.
+     Hard-coded #0F0F0F so dark-mode --ink flip doesn't invert this to light. */
+  background: #0F0F0F;
+  color: rgba(255,255,255,0.55);
   padding: 48px 0 32px;
   font-size: 13px;
 }
+body.dark .site-footer { background: #0A0A0D; }
 
 .footer-inner {
   display: flex;

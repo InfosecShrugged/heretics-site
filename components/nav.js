@@ -361,6 +361,10 @@
     /* Hide the samurai character imagery on dark — image isn't optimized for dark bg */
     body.dark .hero-img,
     body.dark .hero-hair { display: none !important; }
+    /* Logo: black SVG inverts to white in dark mode via filter.
+       brightness(0) crushes all color to black, invert(1) flips to white. */
+    body.dark .sn-logo img { filter: brightness(0) invert(1); }
+    body.dark .sn-logo-text { color: #ECECE6; }
 
     /* Hamburger */
     .sn-hamburger {
