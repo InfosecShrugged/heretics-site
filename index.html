@@ -41,8 +41,8 @@ nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 90%,
 .toggle{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--violet);background:transparent;color:var(--ink);padding:6px 10px;cursor:pointer;transition:all .2s}
 .toggle:hover{background:var(--violet);color:#fff}
 
-.hero{position:relative;overflow:hidden;padding:60px 0 40px}
-.hero-split{display:grid;grid-template-columns:1.05fr 0.95fr;gap:24px;align-items:center;min-height:560px}
+.hero{position:relative;overflow:visible;padding:60px 0 0;z-index:2}
+.hero-split{display:grid;grid-template-columns:1fr 1.05fr;gap:24px;align-items:start;min-height:520px;position:relative}
 .coverbar{display:flex;gap:34px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mut);margin-bottom:40px;flex-wrap:wrap}
 .coverbar b{color:var(--ink);font-weight:500}
 h1{font-weight:900;font-size:clamp(42px,6.6vw,92px);line-height:0.92;letter-spacing:-0.035em;text-transform:uppercase;max-width:12ch;color:var(--ink)}
@@ -54,11 +54,17 @@ h1{font-weight:900;font-size:clamp(42px,6.6vw,92px);line-height:0.92;letter-spac
 .btn-v{background:transparent;color:var(--violet);border:1px solid var(--violet)}
 .btn-v:hover{background:var(--violet);color:#fff}
 
-.char{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:flex-end;min-height:640px}
-.char img{position:relative;max-height:680px;max-width:100%;width:auto;object-fit:contain;z-index:2;filter:saturate(1.02)}
+.char{position:relative;align-self:end;display:flex;align-items:flex-end;justify-content:flex-end;margin-bottom:-200px;z-index:5;pointer-events:none}
+.char img{position:relative;height:880px;max-width:100%;width:auto;object-fit:contain;filter:saturate(1.02)}
 body.dark .char{display:none}  /* light-only until white edge is feathered against dark */
 body.dark .hero-split{grid-template-columns:1fr}
-.hero-split{grid-template-columns:1fr 1.05fr;min-height:660px}
+/* Below the breakpoint we collapse to a single column and contain the
+   character to a reasonable height so she doesn't overflow chaotically. */
+@media(max-width:860px){
+  .char{margin-bottom:0;min-height:360px;justify-content:center}
+  .char img{height:360px}
+  .hero{padding-bottom:30px}
+}
 
 section{padding:80px 0;border-top:1px solid var(--ink)}
 .sec-label{margin-bottom:14px}
