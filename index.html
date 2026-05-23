@@ -46,9 +46,13 @@ nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 90%,
 .hero-copy{max-width:760px;position:relative;z-index:3}
 .coverbar{display:flex;gap:34px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mut);margin-bottom:40px;flex-wrap:wrap}
 .coverbar b{color:var(--ink);font-weight:500}
-h1{font-weight:900;font-size:clamp(56px,8.4vw,128px);line-height:0.88;letter-spacing:-0.04em;text-transform:uppercase;max-width:11ch;color:var(--ink)}
+h1{font-weight:900;font-size:clamp(56px,8.4vw,128px);line-height:0.88;letter-spacing:-0.04em;text-transform:uppercase;max-width:11ch;color:var(--ink);min-height:2.6em}
 h1 .dot{color:var(--violet)}
-.lede{font-family:var(--mono);font-size:14px;line-height:1.7;color:var(--mut);max-width:48ch;margin-top:32px}
+h1 .cursor{display:inline-block;width:0.06em;height:0.78em;background:var(--violet);margin-left:0.05em;vertical-align:-0.06em;animation:caret 0.7s step-end infinite}
+@keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
+.hero-tagline{font-family:var(--display);font-weight:600;font-size:clamp(18px,2.4vw,28px);line-height:1.2;letter-spacing:-0.012em;color:var(--violet);max-width:28ch;margin-top:22px;opacity:0;transform:translateY(6px);transition:opacity 0.7s var(--ease),transform 0.7s var(--ease)}
+.hero-tagline.visible{opacity:1;transform:translateY(0)}
+.lede{font-family:var(--mono);font-size:14px;line-height:1.7;color:var(--mut);max-width:48ch;margin-top:24px}
 .lede b{color:var(--ink);font-weight:500}
 .cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px;letter-spacing:0.06em;text-transform:uppercase;padding:14px 22px;transition:transform .15s;border:1px solid var(--ink)}
@@ -210,7 +214,8 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
     <div class="hero-split">
       <div class="hero-copy">
         <div class="coverbar"><span>Coverage / <b>Full-stack GTM</b></span><span>Stage / <b>Pre-seed → IPO</b></span><span>Method / <b>Governed ↑</b></span></div>
-        <h1>Here's<br>to the<br>Operators<span class="dot">.</span></h1>
+        <h1 id="heroH1" aria-label="Here's to the Operators."><span class="cursor"></span></h1>
+        <p class="hero-tagline" id="heroTagline">Because GTM should run on thresholds not opinions.</p>
         <p class="lede">AI-first GTM engineering from pre-seed to pre-IPO. <b>Operator-run. Method-governed. Engine-supported.</b></p>
         <div class="cta-row">
           <a href="/#cta" class="btn">Book a Briefing →</a>
@@ -320,6 +325,72 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
 </svg>
 
 <script>
+/* Hero typewriter — types the H1 character by character, with explicit line breaks
+   and a violet final period. After complete, fades in the violet tagline.
+   Honors prefers-reduced-motion: jumps to final state without animation. */
+(function(){
+  const h1 = document.getElementById('heroH1');
+  const tag = document.getElementById('heroTagline');
+  if (!h1 || !tag) return;
+
+  const segments = [
+    {t:'text', v:"Here's"}, {t:'br'},
+    {t:'text', v:"to the"}, {t:'br'},
+    {t:'text', v:"Operators"},
+    {t:'dot'},
+  ];
+  const CHAR_MS = 55;
+  const BREAK_MS = 110;
+  const POST_MS = 350;
+
+  function reduceMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function render(buf, withCursor) {
+    h1.innerHTML = buf + (withCursor ? '<span class="cursor"></span>' : '');
+  }
+
+  function finish() {
+    // strip cursor + reveal tagline
+    let final = '';
+    for (const s of segments) {
+      if (s.t === 'text') final += s.v;
+      else if (s.t === 'br') final += '<br>';
+      else if (s.t === 'dot') final += '<span class="dot">.</span>';
+    }
+    h1.innerHTML = final;
+    tag.classList.add('visible');
+  }
+
+  if (reduceMotion()) { finish(); return; }
+
+  let buf = '';
+  let segIdx = 0, charIdx = 0;
+
+  function tick() {
+    if (segIdx >= segments.length) { finish(); return; }
+    const seg = segments[segIdx];
+    if (seg.t === 'br') {
+      buf += '<br>'; segIdx++; charIdx = 0;
+      render(buf, true); setTimeout(tick, BREAK_MS);
+    } else if (seg.t === 'text') {
+      if (charIdx < seg.v.length) {
+        buf += seg.v[charIdx]; charIdx++;
+        render(buf, true); setTimeout(tick, CHAR_MS);
+      } else {
+        segIdx++; charIdx = 0; setTimeout(tick, BREAK_MS);
+      }
+    } else if (seg.t === 'dot') {
+      buf += '<span class="dot">.</span>'; segIdx++;
+      render(buf, true); setTimeout(tick, POST_MS);
+    }
+  }
+
+  // Brief delay so the page lands before typing starts
+  setTimeout(tick, 400);
+})();
+
 /* Light/dark theme toggle per DS spec §10 — NetherOps canonical = grey (light); toggle to dark */
 (function () {
   var KEY = 'netherops-theme';
