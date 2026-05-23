@@ -78,9 +78,23 @@
     .callout .label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rose); margin-bottom: 10px; }
     .callout p { margin-bottom: 8px; color: var(--ink); font-size: 14px; }
     .callout p:last-child { margin-bottom: 0; }
+    .callout a { color: var(--rose); border-bottom: 1px solid currentColor; }
+
+    /* Dark-mode overrides: callout BG flips from white to a raised dark surface
+       (--white doesn't auto-flip via the nav.js token cascade, so we explicitly
+       repaint here). Same pattern used on the opptycon CTA fix. */
+    body.dark .callout { background: #1B1B20; border-left-color: #8C73FF; }
+    body.dark .callout .label { color: #8C73FF; }
+    body.dark .callout p { color: #ECECE6; }
+    body.dark .callout a { color: #8C73FF; }
+    body.dark .callout strong { color: #ECECE6; }
+    body.dark .callout code { background: rgba(255,255,255,0.08); color: #ECECE6; }
 
     .small-print { font-size: 13px; color: var(--ink-dim); line-height: 1.7; margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border-soft); }
     .small-print a { color: var(--ink-mid); }
+    body.dark .small-print { color: #9A9A92; }
+    body.dark .small-print a { color: #ECECE6; }
+    body.dark .small-print code { background: rgba(255,255,255,0.08); color: #ECECE6; padding: 2px 6px; }
   </style>
 </head>
 <body>
