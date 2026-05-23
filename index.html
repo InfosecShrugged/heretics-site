@@ -50,7 +50,9 @@ h1{font-weight:900;font-size:clamp(56px,8.4vw,128px);line-height:0.88;letter-spa
 h1 .dot{color:var(--violet)}
 h1 .cursor{display:inline-block;width:0.06em;height:0.78em;background:var(--violet);margin-left:0.05em;vertical-align:-0.06em;animation:caret 0.7s step-end infinite}
 @keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
-.hero-tagline{font-family:var(--display);font-weight:600;font-size:clamp(18px,2.4vw,28px);line-height:1.2;letter-spacing:-0.012em;color:var(--violet);max-width:28ch;margin-top:22px;opacity:0;transform:translateY(10px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
+.hero-wink{font-family:var(--mono);font-size:12px;line-height:1.5;letter-spacing:0.02em;color:var(--violet);max-width:60ch;margin-top:14px;font-style:italic;opacity:0;transform:translateY(4px);transition:opacity 0.9s var(--ease),transform 0.9s var(--ease)}
+.hero-wink.visible{opacity:0.85;transform:translateY(0)}
+.hero-tagline{font-family:var(--display);font-weight:600;font-size:clamp(18px,2.4vw,28px);line-height:1.2;letter-spacing:-0.012em;color:var(--violet);max-width:28ch;margin-top:18px;opacity:0;transform:translateY(10px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease)}
 .hero-tagline.visible{opacity:1;transform:translateY(0)}
 .lede{font-family:var(--mono);font-size:14px;line-height:1.7;color:var(--mut);max-width:48ch;margin-top:24px}
 .lede b{color:var(--ink);font-weight:500}
@@ -215,6 +217,7 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
       <div class="hero-copy">
         <div class="coverbar"><span>Coverage / <b>Cybersecurity GTM</b></span><span>Stage / <b>Series A → C</b></span><span>Method / <b>Governed ↑</b></span></div>
         <h1 id="heroH1" aria-label="Here's to the Operators."><span class="cursor"></span></h1>
+        <p class="hero-wink" id="heroWink">(in the rev trenches and the SOC — rev pays their salary too.)</p>
         <p class="hero-tagline" id="heroTagline">Because cybersecurity GTM should run on thresholds, not opinions.</p>
         <p class="lede">GTM engineering for cybersecurity companies — Series A through pre-IPO. <b>Operator-run. Method-governed. Engine-supported.</b></p>
         <div class="cta-row">
@@ -330,6 +333,7 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
    Honors prefers-reduced-motion: jumps to final state without animation. */
 (function(){
   const h1 = document.getElementById('heroH1');
+  const wink = document.getElementById('heroWink');
   const tag = document.getElementById('heroTagline');
   if (!h1 || !tag) return;
 
@@ -360,11 +364,16 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
       else if (s.t === 'dot') final += '<span class="dot">.</span>';
     }
     h1.innerHTML = final;
-    // Hold the H1 alone for a beat before the tagline arrives — gives the line room to land.
-    setTimeout(() => tag.classList.add('visible'), 750);
+    // Stagger the reveal: wink first (the insider parenthetical), then tagline (the thesis).
+    setTimeout(() => { if (wink) wink.classList.add('visible'); }, 400);
+    setTimeout(() => tag.classList.add('visible'), 1100);
   }
 
-  if (reduceMotion()) { finish(); return; }
+  if (reduceMotion()) {
+    finish();
+    if (wink) wink.classList.add('visible');
+    return;
+  }
 
   let buf = '';
   let segIdx = 0, charIdx = 0;
