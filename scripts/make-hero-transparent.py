@@ -15,7 +15,7 @@ Steps:
 
 Run: python3 scripts/make-hero-transparent.py
 """
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageChops
 from collections import deque
 import os, sys
 
@@ -25,9 +25,11 @@ HAIR   = os.path.join(ASSETS, 'hero-hair-mask.png')
 DST    = SRC  # overwrite in place
 BACKUP = os.path.join(ASSETS, 'hero-char-original.jpg')
 
-# Tunables
-FUZZ           = 18    # color distance tolerance for "is this background white?" (0-255)
-FEATHER_RADIUS = 1.4   # Gaussian blur radius applied to alpha edges (px)
+# Tunables (aggressive defaults — chroma-key with halo cleanup)
+FUZZ           = 32    # color distance tolerance for flood-fill (0-255)
+FEATHER_RADIUS = 1.8   # Gaussian blur radius applied to alpha edges (px)
+HALO_THRESHOLD = 232   # pixels w/ all RGB >= this AND alpha < 255 → reduce alpha
+                       # (catches JPEG compression halo around the figure)
 
 def color_distance(a, b):
     return max(abs(a[i] - b[i]) for i in range(3))
@@ -71,11 +73,33 @@ def main():
     w, h = img.size
     print(f"source: {w}x{h}")
 
-    # Flood-fill from all four corners (covers the background even if it's not
-    # perfectly uniform — multiple seeds catch any small color drift)
-    print(f"flood-filling background (fuzz={FUZZ})...")
-    for seed in [(0, 0), (w-1, 0), (0, h-1), (w-1, h-1)]:
+    # Flood-fill from 8 seeds (4 corners + 4 edge midpoints) — handles any
+    # color drift across the background.
+    print(f"flood-filling background (fuzz={FUZZ}, 8 seeds)...")
+    seeds = [
+        (0, 0), (w-1, 0), (0, h-1), (w-1, h-1),    # corners
+        (w//2, 0), (w//2, h-1), (0, h//2), (w-1, h//2),  # edge midpoints
+    ]
+    for seed in seeds:
         flood_fill_alpha(img, seed, FUZZ)
+
+    # Halo cleanup pass: any pixel that is BOTH near-white AND not pure-opaque
+    # is most likely a JPEG compression halo on the figure's edge — kill it.
+    # This avoids the "she's in a slightly different shaded box" effect.
+    print(f"halo cleanup (luminance >= {HALO_THRESHOLD} near edges)...")
+    r, g, b, a = img.split()
+    pix_a = a.load()
+    pix_r = r.load(); pix_g = g.load(); pix_b = b.load()
+    cleaned = 0
+    for y in range(h):
+        for x in range(w):
+            alpha = pix_a[x, y]
+            if alpha == 255 or alpha == 0: continue  # opaque or already clear
+            if pix_r[x, y] >= HALO_THRESHOLD and pix_g[x, y] >= HALO_THRESHOLD and pix_b[x, y] >= HALO_THRESHOLD:
+                pix_a[x, y] = 0
+                cleaned += 1
+    print(f"  cleaned {cleaned} halo pixels")
+    img = Image.merge('RGBA', (r, g, b, a))
 
     # Feather the alpha channel for soft edges (the "waving hair" effect)
     print(f"feathering alpha (radius={FEATHER_RADIUS})...")
