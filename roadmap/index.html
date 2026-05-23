@@ -154,6 +154,7 @@
         <tr><td>Customer Health surface</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>NRR + churn-prob + expansion-prob as first-class inputs feeding a "Retention & Expansion" view. Maps to /spine-v4's Customer Health Agent claim. CFOs and CROs ask for this directly.</td></tr>
         <tr><td>Velocity as diagnostic</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>Promote the Velocity module from "display median days per stage" to "flag stalls vs benchmarks." Closes the velocity-as-diagnostic claim from /spine-v4.</td></tr>
         <tr><td>Motion taxonomy resolution</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>Doctrine says 7 motions, split-funnel says 7 lanes, product uses 3 motions. Three taxonomies for one concept. Pick one and use it everywhere.</td></tr>
+        <tr><td><strong>Field Audit module (v1)</strong> <span style="color:var(--rose);font-family:var(--mono);font-size:10px">NEW · QUEUED</span></td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>50-field SFDC/HubSpot attribution + pipeline hygiene checklist across Contact / Lead / Deal objects. Yes/Partial/No/Don't-know per field, weighted scoring, A-F grade per object, ranked "top 8 fields to fix" output. Cyber-specific value: cyber companies have notoriously bad field hygiene because long cycles + complex buying committees break standard attribution.</td></tr>
       </tbody>
     </table>
 
@@ -165,6 +166,7 @@
         <tr><td>BDR bifurcation</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>Split SDR count into Cold Prospecting + Signal Interception pools. Feeds Coverage agent + Pipeline math.</td></tr>
         <tr><td>Identity Graph primitive</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>Light version — canonical lead/account IDs in the data ingestion adapter. Foundation for the account-atomic refactor.</td></tr>
         <tr><td>SPI + Revenue Density as first-class metrics</td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>The lexicon names these as anchor metrics; OpptyCon doesn't compute either today.</td></tr>
+        <tr><td><strong>Field Audit module (v1.1)</strong> <span style="color:var(--rose);font-family:var(--mono);font-size:10px">NEW · QUEUED</span></td><td class="status-cell"><span class="status-pill roadmap">Roadmap</span></td><td>"What this costs you" layer on Field Audit — for each missing field, name the downstream consequence ("Without HIRO Date, your pipeline coverage is directional only"). Suggested workflows per field (lock vs update, source-of-truth rules). PDF export. Depends on v1.</td></tr>
       </tbody>
     </table>
 
@@ -194,7 +196,7 @@
 
     <h2>About this page.</h2>
     <p>
-      v1 of the public roadmap, written 2026-05-22 after a doctrine-vs-product audit. <strong>Last updated 2026-05-23</strong> — added AE Hiring Plan, Marketing Plan (Inverse Waterfall), AE Quota Benchmarks, eighth persona view (PE), and engine fixes (year-target back-solve, pipeline-coverage-by-quarter). Full audit document (with the bidirectional gap analysis, the three strategic paths, and decision-level open items) lives in the OpptyCon repo at <code style="font-family:var(--mono);font-size:13px;color:var(--ink);background:var(--surface);padding:2px 6px;">docs/ROADMAP.md</code>.
+      v1 of the public roadmap, written 2026-05-22 after a doctrine-vs-product audit. <strong>Last updated 2026-05-23</strong> — added AE Hiring Plan, Marketing Plan (Inverse Waterfall), AE Quota Benchmarks, eighth persona view (PE), engine fixes (year-target back-solve, pipeline-coverage-by-quarter), and the Field Audit module to the build queue (v1 weeks 2-4, v1.1 months 2-3). Full audit document (with the bidirectional gap analysis, the three strategic paths, and decision-level open items) lives in the OpptyCon repo at <code style="font-family:var(--mono);font-size:13px;color:var(--ink);background:var(--surface);padding:2px 6px;">docs/ROADMAP.md</code>.
     </p>
     <p>Updated when major product ships or direction shifts. Send corrections to <a href="mailto:nick@heretics.io">nick@heretics.io</a>.</p>
 
