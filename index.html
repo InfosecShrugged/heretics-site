@@ -46,7 +46,7 @@ nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 90%,
 .hero-copy{max-width:760px;position:relative;z-index:3}
 .coverbar{display:flex;gap:34px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mut);margin-bottom:40px;flex-wrap:wrap}
 .coverbar b{color:var(--ink);font-weight:500}
-h1{font-weight:900;font-size:clamp(64px,10vw,156px);line-height:0.86;letter-spacing:-0.045em;text-transform:uppercase;max-width:11ch;color:var(--ink)}
+h1{font-weight:900;font-size:clamp(56px,8.4vw,128px);line-height:0.88;letter-spacing:-0.04em;text-transform:uppercase;max-width:11ch;color:var(--ink)}
 .lede{font-family:var(--mono);font-size:14px;line-height:1.7;color:var(--mut);max-width:48ch;margin-top:32px}
 .lede b{color:var(--ink);font-weight:500}
 .cta-row{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
@@ -56,13 +56,14 @@ h1{font-weight:900;font-size:clamp(64px,10vw,156px);line-height:0.86;letter-spac
 .btn-v:hover{background:var(--violet);color:#fff}
 
 /* Character anchored to the VIEWPORT'S right edge (not .wrap edge), with
-   negative right offset so she's half-clipped off-screen — matches mockup.
-   Extends below the hero into the method section; her foot lands over the
+   negative right offset so she's significantly clipped off-screen.
+   Flipped horizontally so the sword reads INTO the layout rather than
+   away from it. Foot extends into the method section over the
    "03 EXECUTION ENGINEERING" cell. */
 .char{
   position:absolute;
   top:90px;
-  right:-220px;            /* push half her width past the viewport edge */
+  right:-380px;            /* deeper cut-off — more of her body past the edge */
   bottom:-260px;           /* foot extends 260px into method section */
   width:auto;
   display:flex;
@@ -78,6 +79,7 @@ h1{font-weight:900;font-size:clamp(64px,10vw,156px);line-height:0.86;letter-spac
   max-width:none;
   object-fit:contain;
   filter:saturate(1.02);
+  transform:scaleX(-1);    /* mirror horizontally — sword side faces inward */
 }
 body.dark .char{display:none}  /* light-only until white edge is feathered against dark */
 /* Below the breakpoint, contain the character and put her below the copy
