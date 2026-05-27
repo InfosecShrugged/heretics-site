@@ -28,10 +28,18 @@
   --violet:#5B3DF0; --lime:#C8FF6E; --dark:#131316;
   --display:'TWK Everett','Archivo','Helvetica Neue',Arial,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
+  /* Tokens consumed by the shared <heretics-house-map>, mapped from local tokens.
+     Brand split holds — the accent is NetherOps' violet, not MIS red. */
+  --house-bg:var(--bg); --house-ink:var(--ink); --house-mut:var(--mut);
+  --house-faint:var(--faint); --house-line:var(--line); --house-accent:var(--violet);
 }
 body.dark{
   --bg:#131316; --surface:#1B1B20; --ink:#ECECE6; --mut:#9A9A90; --faint:#6E6E66;
   --line:rgba(255,255,255,0.14); --line-strong:rgba(255,255,255,0.32); --violet:#8C73FF;
+  /* Re-declare --house-* in the dark scope so the aliases re-resolve against
+     the flipped --bg/--ink/etc. base tokens (per the §0 var-in-custom-prop fix). */
+  --house-bg:var(--bg); --house-ink:var(--ink); --house-mut:var(--mut);
+  --house-faint:var(--faint); --house-line:var(--line); --house-accent:var(--violet);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -354,15 +362,9 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
 
 <div class="statusbar"><span>&gt; connection secure</span><span>node: netherops_01 · governed</span></div>
 
-<div class="house-strip">
-  <div class="wrap">
-    <div class="h-label">— The Heretics House —</div>
-    <a href="https://heretics.io"><strong>heretics</strong><span class="jh">the firm</span><span class="url">heretics.io →</span></a>
-    <div class="you"><strong>NetherOps</strong><span class="jh">operators + methodology</span><span class="you-here">you are here</span></div>
-    <a href="https://app.netherops.com"><strong>OpptyCon</strong><span class="jh">the engine</span><span class="url">app.netherops.com →</span></a>
-    <a href="https://marketsinsecurity.com"><strong>Markets InSecurity</strong><span class="jh">the analyst desk</span><span class="url">marketsinsecurity.com →</span></a>
-  </div>
-</div>
+<!-- Shared cross-property HouseMap — canonical organism shipped from MIS,
+     consumes --house-* tokens above so it renders in NetherOps' violet. -->
+<heretics-house-map current="netherops"></heretics-house-map>
 
 <footer><div class="wrap foot-in">
   <span>© 2026 NetherOps</span>
@@ -483,10 +485,29 @@ footer{background:var(--dark);color:#7E7E76;border:none;padding:26px 0}
   }
   window.netherops_toggleTheme = function () {
     var current = document.body.classList.contains('dark') ? 'dark' : 'light';
-    set(current === 'dark' ? 'light' : 'dark');
+    var next = current === 'dark' ? 'light' : 'dark';
+    set(next);
+    /* Push to the shared ecosystem theme key so sibling properties inherit. */
+    if (typeof window.heretics_pushTheme === 'function') window.heretics_pushTheme(next);
   };
   apply(get());
 })();
+</script>
+
+<!-- Shared cross-property bundle — must load after the bridge globals above. -->
+<script src="https://marketsinsecurity.com/assets/heretics-house.js" defer></script>
+<script>
+/* Heretics House bridge — declared so the shared bundle's ?h= ingest can route
+   through the property's own theme key + apply callback. The bundle is loaded
+   from MIS so the script tag must use an absolute URL. */
+window.HERETICS_LOCAL_THEME_KEY = 'netherops-theme';
+window.HERETICS_APPLY_THEME = function (mode) {
+  try {
+    var b = document.body;
+    if (mode === 'dark') b.classList.add('dark');
+    else b.classList.remove('dark');
+  } catch (e) {}
+};
 </script>
 </body>
 </html>
