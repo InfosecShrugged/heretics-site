@@ -23,11 +23,11 @@
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
 :root {
-  --bg:#D6D6D1;--bg-panel:#CACAC4;--bg-card:#FFFFFF;--bg-hover:#E0E0DB;--bg-formula:#E0E0DB;
-  --bg-inverse:#0F0F0F;
-  --text-1:#111111;--text-2:#555555;--text-3:#909090;
-  --border:rgba(0,0,0,0.07);--border-s:rgba(0,0,0,0.13);--border-strong:rgba(0,0,0,0.28);
-  --accent:#5B3DF0;--accent-lime:#C8FF6E;--scrollbar:rgba(0,0,0,0.13);
+  --bg:#F4F1EA;--bg-panel:#EAE6DC;--bg-card:#FFFFFF;--bg-hover:#FBFAF6;--bg-formula:#EAE6DC;
+  --bg-inverse:#16161A;
+  --text-1:#1A1A1E;--text-2:#57544D;--text-3:#8E8A80;
+  --border:rgba(20,18,14,0.07);--border-s:rgba(20,18,14,0.12);--border-strong:rgba(20,18,14,0.18);
+  --accent:#5B3DF0;--accent-lime:#5B3DF0;--scrollbar:rgba(20,18,14,0.13);
   --c-structure:#2A4A6B;--c-modes:#C0392B;--c-exec:#6D2B8A;--c-signal:#1A7A6A;
   --c-econ:#B83030;--c-abx:#8B6914;--c-legacy:#5D6D7E;
   --ease:cubic-bezier(0.22,1,0.36,1);--dur:200ms;--fast:140ms;--med:300ms;--slow:600ms;
@@ -44,10 +44,10 @@
   --house-accent: var(--accent-violet, var(--accent, var(--or, #5B3DF0)));
 }
 .mode-warroom{
-  --bg:#0F0F0F;--bg-panel:#1C1C1C;--bg-card:#1C1C1C;--bg-hover:#252525;--bg-formula:#1C1C1C;
-  --text-1:#F5F5F3;--text-2:#AAAAAA;--text-3:#555555;
-  --border:rgba(255,255,255,0.06);--border-s:rgba(255,255,255,0.12);
-  --accent:#C8FF6E;--scrollbar:rgba(255,255,255,0.12);
+  --bg:#16161A;--bg-panel:#1A1A1E;--bg-card:#1A1A1E;--bg-hover:#212126;--bg-formula:#1A1A1E;
+  --text-1:#ECEAE3;--text-2:#9A968C;--text-3:#6E6A62;
+  --border:rgba(255,255,255,0.10);--border-s:rgba(255,255,255,0.18);
+  --accent:#8C73FF;--scrollbar:rgba(255,255,255,0.12);
 }
 .mode-monument{
   --bg:#E0E0DB;--bg-panel:#D6D6D1;--bg-card:#FFFFFF;--bg-hover:#FFFFFF;--bg-formula:#E0E0DB;
@@ -190,16 +190,16 @@ html[data-property="opptycon"] .hf-engagement{display:block}
 <!-- NetherOps Site Banner -->
 <div id="no-banner" style="position:sticky;top:0;z-index:999;background:#0F0F0F;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 20px;height:36px;display:flex;align-items:center;justify-content:space-between;font-family:'Chivo Mono','Space Mono',monospace">
 <div style="display:flex;align-items:center;gap:16px">
-<a href="/" style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#C8FF6E;text-decoration:none">NetherOps</a>
+<a href="/" style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#8C73FF;text-decoration:none">NetherOps</a>
 <span style="width:1px;height:14px;background:rgba(255,255,255,0.08)"></span>
 <a href="/doctrine/" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none">Doctrine</a>
 <a href="/spine-v4" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none">Spine</a>
 <a href="/sovereignty-map" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none">Sovereignty</a>
 <a href="/split-funnel-map" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none">Motion</a>
 <a href="/agent-specs" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none">Agents</a>
-<a href="/lexicon" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:#C8FF6E;text-decoration:none">Lexicon</a>
+<a href="/lexicon" style="font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:#8C73FF;text-decoration:none">Lexicon</a>
 </div>
-<a href="https://app.netherops.com" style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#C8FF6E;text-decoration:none;padding:4px 12px;border:1px solid rgba(200,255,110,0.2);border-radius:3px">OpptyCon ▶</a>
+<a href="https://app.netherops.com" style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#8C73FF;text-decoration:none;padding:4px 12px;border:1px solid rgba(140,115,255,0.25);border-radius:3px">OpptyCon ▶</a>
 </div>
 
 <div class="wrgrid" aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(200,220,240,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(200,220,240,.035) 1px,transparent 1px);background-size:36px 36px;opacity:0;transition:opacity .6s cubic-bezier(.4,0,.2,1)"></div>
