@@ -108,6 +108,9 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
+        <button class="hnav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="hnavMobile">
+          <span class="hnav-burger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
       </div>
     </div>
   </div>
@@ -125,6 +128,84 @@
     </div>
   </div>
 </nav>
+
+  <div class="hnav-mobile" id="hnavMobile" hidden>
+    <a class="hnav-mobile-cta" href="/#briefing">Book a Briefing &rarr;</a>
+
+    <details class="hnav-mobile-section" open>
+      <summary>The Firm</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://heretics.io/">Heretics</a>
+        <a href="https://heretics.io/#services">Services</a>
+        <a href="https://heretics.io/#blueprint">Blueprint</a>
+        <a href="https://heretics.io/#work">Work</a>
+        <a href="https://heretics.io/#system">The System</a>
+        <a href="https://work.heretics.io/">Arcology Proof Library</a>
+        <a href="https://briefings.heretics.io/">Briefings</a>
+      </div>
+    </details>
+
+    <details class="hnav-mobile-section">
+      <summary>The Desk</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://marketsinsecurity.com/">Markets InSecurity</a>
+        <a href="https://marketsinsecurity.com/dispatches">Dispatches</a>
+        <a href="https://atlas.marketsinsecurity.com/">The Atlas</a>
+        <a href="https://marketsinsecurity.com/method">Method</a>
+        <a href="https://marketsinsecurity.com/faq">FAQ</a>
+        <a href="https://marketsinsecurity.com/independence">Editorial Independence</a>
+      </div>
+    </details>
+
+    <details class="hnav-mobile-section">
+      <summary>The Arena</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://arena.marketsinsecurity.com/">Arena</a>
+        <a href="https://arena.marketsinsecurity.com/kumite">Kumite</a>
+        <a href="https://arena.marketsinsecurity.com/banzuke">Banzuke</a>
+        <a href="https://arena.marketsinsecurity.com/divisions">Divisions</a>
+        <a href="https://arena.marketsinsecurity.com/codex">The Codex</a>
+        <a href="https://arena.marketsinsecurity.com/consolidation">Consolidation</a>
+        <a href="https://arena.marketsinsecurity.com/challengers">Challenger&apos;s Gate</a>
+      </div>
+    </details>
+
+    <details class="hnav-mobile-section">
+      <summary>The Operators</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://netherops.com/">NetherOps</a>
+        <a href="https://netherops.com/#method">Method</a>
+        <a href="https://netherops.com/#architecture">Architecture</a>
+        <a href="https://netherops.com/#doctrine">Doctrine</a>
+        <a href="https://app.netherops.com/">OpptyCon</a>
+        <a href="https://docs.netherops.com/">Docs</a>
+        <a href="https://netherops.com/#briefing">Briefing</a>
+      </div>
+    </details>
+
+    <details class="hnav-mobile-section">
+      <summary>Work With Us</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://heretics.io/#contact">Start a Conversation</a>
+        <a href="https://heretics.io/#blueprint">Request a Blueprint</a>
+        <a href="https://netherops.com/#briefing">Book a NetherOps Briefing</a>
+        <a href="https://arena.marketsinsecurity.com/challengers">Submit to Kumite</a>
+        <a href="https://marketsinsecurity.com/sponsor">Sponsor the Desk</a>
+      </div>
+    </details>
+
+    <div class="hnav-mobile-local">
+      <div class="hnav-mobile-local-label">Current site &mdash; NetherOps</div>
+      <div class="hnav-mobile-local-links">
+        <a href="/#method">Method</a>
+        <a href="/#architecture">Architecture</a>
+        <a href="https://app.netherops.com">OpptyCon</a>
+        <a href="/#doctrine">Doctrine</a>
+        <a href="/#briefing">Briefing</a>
+        <a href="/roadmap">Roadmap</a>
+      </div>
+    </div>
+  </div>
 <div id="site-nav" data-active="opptycon" data-sub="leadership"></div>
   <script src="/components/nav.js"></script>
 
@@ -343,6 +424,30 @@
   });
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') closeAll(null);
+  });
+})();
+</script>
+<a class="hnav-sticky-cta" href="/#briefing" aria-label="Primary action: Book a Briefing">Book a Briefing &rarr;</a>
+<script>
+/* F4 — Mobile burger toggle */
+(function(){
+  var burger = document.querySelector('.hnav-burger');
+  var overlay = document.getElementById('hnavMobile');
+  if (!burger || !overlay) return;
+  function setOpen(open){
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    overlay.classList.toggle('is-open', open);
+    overlay.toggleAttribute('hidden', !open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  burger.addEventListener('click', function(){
+    setOpen(!overlay.classList.contains('is-open'));
+  });
+  overlay.addEventListener('click', function(e){
+    if (e.target.tagName === 'A') setOpen(false);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) setOpen(false);
   });
 })();
 </script>

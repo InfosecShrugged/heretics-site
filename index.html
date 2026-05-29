@@ -340,6 +340,48 @@ body.dark .hnav-toggle .icon-moon{display:none}
 .hnav-right{display:flex;align-items:center;gap:0}
 .hnav-row .wrap{justify-content:flex-start}
 .hnav-row .wrap .brand-lockup{margin-right:auto}
+/* ============================================================================
+   F4 — Mobile nav + sticky property-aware CTA (IA spec §16-25)
+   Below 980px: collapse global nav into a burger; tap → full overlay with
+   accordion sections per house + local nav + primary CTA. Sticky bottom CTA
+   stays visible always on mobile.
+   ============================================================================ */
+.hnav-burger{display:none;width:36px;height:36px;align-items:center;justify-content:center;border:0.5px solid var(--line-strong);background:transparent;color:var(--mut);border-radius:50%;cursor:pointer;padding:0;margin-left:10px;flex-shrink:0;transition:all .15s}
+.hnav-burger:hover{color:var(--accent-ink);border-color:var(--accent-ink)}
+.hnav-burger-icon{display:flex;flex-direction:column;gap:4px;width:16px;align-items:stretch}
+.hnav-burger-icon span{display:block;height:1.5px;background:currentColor;border-radius:1px;transition:transform .2s,opacity .2s}
+.hnav-burger[aria-expanded="true"] .hnav-burger-icon span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+.hnav-burger[aria-expanded="true"] .hnav-burger-icon span:nth-child(2){opacity:0}
+.hnav-burger[aria-expanded="true"] .hnav-burger-icon span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+.hnav-mobile{display:none;position:fixed;top:62px;left:0;right:0;bottom:0;z-index:55;background:var(--bg);overflow-y:auto;border-top:0.5px solid var(--line);padding:24px 32px 110px;animation:hnav-slide .22s ease}
+@keyframes hnav-slide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.hnav-mobile.is-open{display:block}
+.hnav-mobile-cta{display:block;background:var(--accent-ink);color:#16161A;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-align:center;text-decoration:none;padding:14px 18px;border-radius:2px;margin-bottom:28px}
+.hnav-mobile-cta:hover{background:transparent;color:var(--accent-ink);border:1px solid var(--accent-ink);padding:13px 17px}
+.hnav-mobile-section{border-top:1px solid var(--line);padding:0}
+.hnav-mobile-section:last-of-type{border-bottom:1px solid var(--line)}
+.hnav-mobile-section summary{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);padding:18px 0;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font-weight:600}
+.hnav-mobile-section summary::-webkit-details-marker{display:none}
+.hnav-mobile-section summary::after{content:"+";font-family:var(--mono);font-size:18px;color:var(--mut);font-weight:300;transition:transform .2s}
+.hnav-mobile-section[open] summary::after{content:"\2212";transform:rotate(0)}
+.hnav-mobile-section .hnav-mobile-inner{display:flex;flex-direction:column;gap:14px;padding:6px 0 22px}
+.hnav-mobile-section a{font-family:var(--display);font-size:16px;font-weight:425;letter-spacing:-.005em;color:var(--mut);text-decoration:none;line-height:1.3;transition:color .15s}
+.hnav-mobile-section a:hover{color:var(--accent-ink)}
+.hnav-mobile-local{margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
+.hnav-mobile-local-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:14px;font-weight:600}
+.hnav-mobile-local-links{display:flex;flex-direction:column;gap:14px}
+.hnav-mobile-local-links a{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);text-decoration:none;transition:color .15s}
+.hnav-mobile-local-links a:hover,.hnav-mobile-local-links a.active{color:var(--accent-ink)}
+
+/* Sticky bottom CTA */
+.hnav-sticky-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:54;background:var(--accent-ink);color:#16161A;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-align:center;text-decoration:none;padding:16px 20px;box-shadow:0 -4px 18px rgba(0,0,0,0.12)}
+
+@media(max-width:980px){
+  .hnav-burger{display:inline-flex}
+  .hnav-sticky-cta{display:block}
+  body{padding-bottom:60px}  /* room for sticky CTA */
+}
 </style>
 </head>
 <body>
@@ -432,6 +474,9 @@ body.dark .hnav-toggle .icon-moon{display:none}
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
+        <button class="hnav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="hnavMobile">
+          <span class="hnav-burger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
       </div>
     </div>
   </div>
@@ -449,6 +494,84 @@ body.dark .hnav-toggle .icon-moon{display:none}
     </div>
   </div>
 </nav>
+
+  <div class="hnav-mobile" id="hnavMobile" hidden>
+    <a class="hnav-mobile-cta" href="/#briefing">Book a Briefing &rarr;</a>
+
+    <details class="hnav-mobile-section" open>
+      <summary>The Firm</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://heretics.io/">Heretics</a>
+        <a href="https://heretics.io/#services">Services</a>
+        <a href="https://heretics.io/#blueprint">Blueprint</a>
+        <a href="https://heretics.io/#work">Work</a>
+        <a href="https://heretics.io/#system">The System</a>
+        <a href="https://work.heretics.io/">Arcology Proof Library</a>
+        <a href="https://briefings.heretics.io/">Briefings</a>
+      </div>
+    </details>
+
+    <details class="hnav-mobile-section">
+      <summary>The Desk</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://marketsinsecurity.com/">Markets InSecurity</a>
+        <a href="https://marketsinsecurity.com/dispatches">Dispatches</a>
+        <a href="https://atlas.marketsinsecurity.com/">The Atlas</a>
+        <a href="https://marketsinsecurity.com/method">Method</a>
+        <a href="https://marketsinsecurity.com/faq">FAQ</a>
+        <a href="https://marketsinsecurity.com/independence">Editorial Independence</a>
+      </div>
+    </details>
+
+    <details class="hnav-mobile-section">
+      <summary>The Arena</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://arena.marketsinsecurity.com/">Arena</a>
+        <a href="https://arena.marketsinsecurity.com/kumite">Kumite</a>
+        <a href="https://arena.marketsinsecurity.com/banzuke">Banzuke</a>
+        <a href="https://arena.marketsinsecurity.com/divisions">Divisions</a>
+        <a href="https://arena.marketsinsecurity.com/codex">The Codex</a>
+        <a href="https://arena.marketsinsecurity.com/consolidation">Consolidation</a>
+        <a href="https://arena.marketsinsecurity.com/challengers">Challenger&apos;s Gate</a>
+      </div>
+    </details>
+
+    <details class="hnav-mobile-section">
+      <summary>The Operators</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://netherops.com/">NetherOps</a>
+        <a href="https://netherops.com/#method">Method</a>
+        <a href="https://netherops.com/#architecture">Architecture</a>
+        <a href="https://netherops.com/#doctrine">Doctrine</a>
+        <a href="https://app.netherops.com/">OpptyCon</a>
+        <a href="https://docs.netherops.com/">Docs</a>
+        <a href="https://netherops.com/#briefing">Briefing</a>
+      </div>
+    </details>
+
+    <details class="hnav-mobile-section">
+      <summary>Work With Us</summary>
+      <div class="hnav-mobile-inner">
+        <a href="https://heretics.io/#contact">Start a Conversation</a>
+        <a href="https://heretics.io/#blueprint">Request a Blueprint</a>
+        <a href="https://netherops.com/#briefing">Book a NetherOps Briefing</a>
+        <a href="https://arena.marketsinsecurity.com/challengers">Submit to Kumite</a>
+        <a href="https://marketsinsecurity.com/sponsor">Sponsor the Desk</a>
+      </div>
+    </details>
+
+    <div class="hnav-mobile-local">
+      <div class="hnav-mobile-local-label">Current site &mdash; NetherOps</div>
+      <div class="hnav-mobile-local-links">
+        <a href="/#method">Method</a>
+        <a href="/#architecture">Architecture</a>
+        <a href="https://app.netherops.com">OpptyCon</a>
+        <a href="/#doctrine">Doctrine</a>
+        <a href="/#briefing">Briefing</a>
+        <a href="/roadmap">Roadmap</a>
+      </div>
+    </div>
+  </div>
 
 <header class="hero">
   <span class="plus" style="top:80px;left:30px">+</span>
@@ -838,6 +961,30 @@ window.HERETICS_APPLY_THEME = function (mode) {
   });
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') closeAll(null);
+  });
+})();
+</script>
+<a class="hnav-sticky-cta" href="/#briefing" aria-label="Primary action: Book a Briefing">Book a Briefing &rarr;</a>
+<script>
+/* F4 — Mobile burger toggle */
+(function(){
+  var burger = document.querySelector('.hnav-burger');
+  var overlay = document.getElementById('hnavMobile');
+  if (!burger || !overlay) return;
+  function setOpen(open){
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    overlay.classList.toggle('is-open', open);
+    overlay.toggleAttribute('hidden', !open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  burger.addEventListener('click', function(){
+    setOpen(!overlay.classList.contains('is-open'));
+  });
+  overlay.addEventListener('click', function(e){
+    if (e.target.tagName === 'A') setOpen(false);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) setOpen(false);
   });
 })();
 </script>
