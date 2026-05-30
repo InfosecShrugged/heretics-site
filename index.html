@@ -57,6 +57,7 @@ nav.legacy-topnav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,
 h1{font-family:var(--display);font-weight:425;font-size:clamp(40px,7vw,96px);line-height:1.0;letter-spacing:-0.025em;max-width:14ch;color:var(--ink);min-height:2.6em;font-variation-settings:"opsz" 144,"wght" 425,"SOFT" 0,"WONK" 0;text-transform:uppercase;letter-spacing:-.02em}
 h1 em{font-style:italic;color:var(--accent-ink);font-weight:425}
 h1 .dot{color:var(--accent-ink)}
+h1 .accent{color:var(--accent-ink)}
 h1 .cursor{display:inline-block;width:0.04em;height:0.78em;background:var(--accent-ink);margin-left:0.05em;vertical-align:-0.06em;animation:caret 0.7s step-end infinite}
 @keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
 .hero-tagline{font-family:var(--display);font-style:italic;font-weight:425;font-size:clamp(18px,2.4vw,28px);line-height:1.2;letter-spacing:-0.012em;color:var(--accent-ink);max-width:34ch;margin-top:18px;opacity:0;transform:translateY(10px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease);font-variation-settings:"opsz" 96,"wght" 425,"SOFT" 0,"WONK" 0}
@@ -826,9 +827,9 @@ body.dark .hnav-toggle .icon-moon{display:none}
   if (!h1 || !tag) return;
 
   const segments = [
-    {t:'text', v:"Don't just operate"}, {t:'br'},
-    {t:'text', v:"cyber GTM"}, {t:'dot'}, {t:'br'},
-    {t:'text', v:"Govern it"}, {t:'dot'},
+    {t:'text', v:"Don't just"}, {t:'br'},
+    {t:'text', v:"operate cyber GTM"}, {t:'dot'}, {t:'br'},
+    {t:'text', v:"Govern it", c:'accent'}, {t:'dot', c:'accent'},
   ];
   const CHAR_MS = 55;
   const BREAK_MS = 110;
@@ -845,11 +846,20 @@ body.dark .hnav-toggle .icon-moon{display:none}
   function finish() {
     // strip cursor; pause; then reveal tagline (with its own slow fade transition)
     let final = '';
+    let openAccent = false;
     for (const s of segments) {
-      if (s.t === 'text') final += s.v;
-      else if (s.t === 'br') final += '<br>';
-      else if (s.t === 'dot') final += '<span class="dot">.</span>';
+      if (s.t === 'text') {
+        if (s.c === 'accent' && !openAccent) { final += '<span class="accent">'; openAccent = true; }
+        final += s.v;
+      } else if (s.t === 'br') {
+        if (openAccent) { final += '</span>'; openAccent = false; }
+        final += '<br>';
+      } else if (s.t === 'dot') {
+        var dc = s.c === 'accent' ? 'dot accent-dot' : 'dot';
+        final += '<span class="' + dc + '">.</span>';
+      }
     }
+    if (openAccent) final += '</span>';
     h1.innerHTML = final;
     // Hold the H1 alone for a beat before the tagline arrives — gives the line room to land.
     setTimeout(() => tag.classList.add('visible'), 750);
@@ -859,14 +869,20 @@ body.dark .hnav-toggle .icon-moon{display:none}
 
   let buf = '';
   let segIdx = 0, charIdx = 0;
+  let accentOpen = false;
 
   function tick() {
     if (segIdx >= segments.length) { finish(); return; }
     const seg = segments[segIdx];
     if (seg.t === 'br') {
+      // Close any open accent run before the linebreak
+      if (accentOpen) { buf += '</span>'; accentOpen = false; }
       buf += '<br>'; segIdx++; charIdx = 0;
       render(buf, true); setTimeout(tick, BREAK_MS);
     } else if (seg.t === 'text') {
+      if (charIdx === 0 && seg.c === 'accent' && !accentOpen) {
+        buf += '<span class="accent">'; accentOpen = true;
+      }
       if (charIdx < seg.v.length) {
         buf += seg.v[charIdx]; charIdx++;
         render(buf, true); setTimeout(tick, CHAR_MS);
@@ -874,7 +890,8 @@ body.dark .hnav-toggle .icon-moon{display:none}
         segIdx++; charIdx = 0; setTimeout(tick, BREAK_MS);
       }
     } else if (seg.t === 'dot') {
-      buf += '<span class="dot">.</span>'; segIdx++;
+      var dotClass = seg.c === 'accent' ? 'dot accent-dot' : 'dot';
+      buf += '<span class="' + dotClass + '">.</span>'; segIdx++;
       render(buf, true); setTimeout(tick, POST_MS);
     }
   }
