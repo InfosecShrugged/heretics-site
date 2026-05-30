@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-property="netherops" data-theme="light">
+<html lang="en" data-property="netherops" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1177,6 +1177,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 (function () {
   var KEY = 'netherops-theme';
   function apply(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
     if (theme === 'dark') document.body.classList.add('dark');
     else document.body.classList.remove('dark');
   }
@@ -1188,10 +1189,9 @@ body.dark .hnav-toggle .icon-moon{display:none}
     apply(theme);
   }
   window.netherops_toggleTheme = function () {
-    var current = document.body.classList.contains('dark') ? 'dark' : 'light';
+    var current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     var next = current === 'dark' ? 'light' : 'dark';
     set(next);
-    /* Push to the shared ecosystem theme key so sibling properties inherit. */
     if (typeof window.heretics_pushTheme === 'function') window.heretics_pushTheme(next);
   };
   apply(get());
