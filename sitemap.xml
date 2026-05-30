@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- NetherOps apex -->
+  <url><loc>https://netherops.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://netherops.com/about</loc><priority>0.7</priority></url>
+  <url><loc>https://netherops.com/roadmap</loc><priority>0.7</priority></url>
+
+  <!-- Doctrine + reference -->
+  <url><loc>https://netherops.com/doctrine</loc><priority>0.9</priority></url>
+  <url><loc>https://netherops.com/lexicon</loc><priority>0.6</priority></url>
+  <url><loc>https://netherops.com/spine-v4</loc><priority>0.7</priority></url>
+  <url><loc>https://netherops.com/agent-specs</loc><priority>0.7</priority></url>
+  <url><loc>https://netherops.com/identity-graph</loc><priority>0.6</priority></url>
+  <url><loc>https://netherops.com/provenance</loc><priority>0.6</priority></url>
+  <url><loc>https://netherops.com/sovereignty-map</loc><priority>0.6</priority></url>
+  <url><loc>https://netherops.com/infrastructure</loc><priority>0.6</priority></url>
+  <url><loc>https://netherops.com/split-funnel-map</loc><priority>0.6</priority></url>
+
+  <!-- OpptyCon — persona-tier marketing surfaces -->
+  <url><loc>https://netherops.com/opptycon/</loc><priority>0.9</priority></url>
+  <url><loc>https://netherops.com/opptycon/capital/</loc><priority>0.7</priority></url>
+  <url><loc>https://netherops.com/opptycon/operators/</loc><priority>0.7</priority></url>
+  <url><loc>https://netherops.com/opptycon/board/</loc><priority>0.7</priority></url>
+  <url><loc>https://netherops.com/opptycon/heads-of-gtm/</loc><priority>0.7</priority></url>
+  <url><loc>https://netherops.com/opptycon/cmo/</loc><priority>0.7</priority></url>
+  <url><loc>https://netherops.com/opptycon/finance/</loc><priority>0.7</priority></url>
+  <url><loc>https://netherops.com/opptycon/leadership/</loc><priority>0.7</priority></url>
+</urlset>
