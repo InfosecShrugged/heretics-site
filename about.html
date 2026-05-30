@@ -20,9 +20,9 @@
 <link rel="stylesheet" href="/styles/tokens.css">
 <style>
 /* ═══ DUAL-ACCENT SYSTEM ═══
-   Light surfaces: Rose #5B3DF0
-   Dark surfaces:  Lime #C8FF6E
-   Logo mark:      Black #111 on light, Lime #C8FF6E on dark
+   Light surfaces: Rose var(--accent-ink)
+   Dark surfaces:  Lime var(--accent-ink)
+   Logo mark:      Black #111 on light, Lime var(--accent-ink) on dark
 ═══════════════════════════════ */
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
@@ -38,14 +38,14 @@
   --ink-muted:    #8E8A80;
   --ink-inv:      #ECEAE3;
   --ink-inv-mid:  #9A968C;
-  --ink-code:     #8C73FF;
+  --ink-code:     var(--accent-ink);
   --border-subtle: rgba(20,18,14,0.07);
   --border-mid:    rgba(20,18,14,0.12);
   --border-strong: rgba(20,18,14,0.18);
-  --accent-violet:   #5B3DF0;
-  --accent-lime:   #5B3DF0;
-  --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-mono:    'JetBrains Mono', 'Chivo Mono', 'Space Mono', 'Courier New', monospace;
+  --accent-violet:   var(--accent-ink);
+  --accent-lime:   var(--accent-ink);
+  --font-display: var(--display);
+  --font-mono:    var(--mono);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 200ms;
   /* Tokens consumed by the shared <heretics-house-map>, mapped from local
@@ -141,10 +141,12 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 }
 .n-label::after { content: ''; flex: 1; height: 1px; background: var(--border-subtle); }
 .n-h2 {
-  font-family: var(--font-display); font-size: clamp(24px, 3vw, 36px);
-  font-weight: 400; letter-spacing: -0.025em; line-height: 1.2;
+  font-family: 'Fraunces', Georgia, serif; font-size: clamp(24px, 3vw, 36px);
+  font-weight: 425; letter-spacing: -0.012em; line-height: 1.15;
   margin-bottom: 20px;
+  font-variation-settings: "opsz" 96, "wght" 425, "SOFT" 0, "WONK" 0;
 }
+.n-h2 em { font-style: italic; color: var(--accent-ink); font-weight: 425; }
 .n-p {
   font-family: var(--font-display); font-size: 16px; font-weight: 400;
   line-height: 1.8; color: var(--ink-mid); margin-bottom: 20px;
@@ -222,10 +224,12 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
 }
 .h-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
 .h-h2 {
-  font-family: var(--font-display); font-size: clamp(24px, 3vw, 36px);
-  font-weight: 400; letter-spacing: -0.025em; line-height: 1.2;
+  font-family: 'Fraunces', Georgia, serif; font-size: clamp(24px, 3vw, 36px);
+  font-weight: 425; letter-spacing: -0.012em; line-height: 1.15;
   color: var(--ink-inv); margin-bottom: 20px; max-width: 560px;
+  font-variation-settings: "opsz" 96, "wght" 425, "SOFT" 0, "WONK" 0;
 }
+.h-h2 em { font-style: italic; color: var(--accent-ink); font-weight: 425; }
 .h-p {
   font-family: var(--font-display); font-size: 16px; font-weight: 400;
   line-height: 1.8; color: var(--ink-inv-mid); margin-bottom: 20px;
@@ -245,10 +249,12 @@ body { font-family: var(--font-display); background: var(--bg-base); color: var(
   padding: 96px 48px; text-align: center;
 }
 .cta-h2 {
-  font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 48px);
-  font-weight: 400; letter-spacing: -0.025em; line-height: 1.12;
+  font-family: 'Fraunces', Georgia, serif; font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 425; letter-spacing: -0.012em; line-height: 1.12;
   margin-bottom: 16px;
+  font-variation-settings: "opsz" 144, "wght" 425, "SOFT" 0, "WONK" 0;
 }
+.cta-h2 em { font-style: italic; color: var(--accent-ink); font-weight: 425; }
 .cta-sub {
   font-family: var(--font-mono); font-size: 13px; color: var(--ink-mid);
   line-height: 1.65; max-width: 440px; margin: 0 auto 40px;
@@ -703,7 +709,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
   <!-- THE APPROACH -->
   <div class="n-section">
     <div class="n-label">The Approach</div>
-    <h2 class="n-h2">Revenue as a governed system.</h2>
+    <h2 class="n-h2">Revenue as a <em>governed system.</em></h2>
     <p class="n-p">At its core, NetherOps treats revenue as a governed system, not a collection of disconnected departments. Instead of asking only how much pipeline exists, the platform asks a deeper question:</p>
     <div class="n-pull">How does opportunity actually move through an organization?</div>
     <p class="n-p">Every company has a hidden operational layer where capital, attention, and effort converge to produce opportunity. That layer is rarely visible. It exists between marketing, sales, operations, and finance — often understood intuitively but almost never modeled.</p>
@@ -713,7 +719,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
   <!-- OPPTYCON -->
   <div class="n-section">
     <div class="n-label">The Engine</div>
-    <h2 class="n-h2">Opptycon — the opportunity physics engine.</h2>
+    <h2 class="n-h2">Opptycon &mdash; the <em>opportunity physics engine.</em></h2>
     <p class="n-p">At the center of NetherOps is Opptycon, the opportunity physics engine. Opptycon models how opportunity forms, accelerates, stalls, and converts inside a company. Rather than treating pipeline as a static number on a dashboard, the engine examines the mechanics behind it:</p>
     <ul class="n-list">
       <li>How capital is deployed across channels and motions</li>
@@ -729,7 +735,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
   <!-- THE STRUCTURE -->
   <div class="n-section">
     <div class="n-label">The Structure</div>
-    <h2 class="n-h2">Three layers of a single system.</h2>
+    <h2 class="n-h2">Three layers of a <em>single system.</em></h2>
     <div class="concept-grid">
       <div class="concept-card">
         <div class="concept-mono">Philosophy</div>
@@ -755,7 +761,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
   <!-- WHY THIS EXISTS -->
   <div class="n-section">
     <div class="n-label">Origin</div>
-    <h2 class="n-h2">Why this exists.</h2>
+    <h2 class="n-h2"><em>Why this exists.</em></h2>
     <p class="n-p">NetherOps emerged from years spent operating inside high-growth technology and cybersecurity companies, where one pattern appeared again and again:</p>
     <p class="n-p">Organizations invested heavily in tools, dashboards, and reporting systems, yet the connection between capital deployment and revenue outcomes remained opaque.</p>
     <p class="n-p">Pipeline appeared and disappeared without clear explanation. Marketing, sales, and finance each told slightly different stories about the same numbers.</p>
@@ -768,7 +774,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══ HERETICS (dark section) ═══ -->
 <section class="heretics-section">
   <div class="h-label">Heretics</div>
-  <h2 class="h-h2">Every orthodoxy was once a heresy that won.</h2>
+  <h2 class="h-h2">Every orthodoxy was once a heresy <em>that won.</em></h2>
   <div class="h-p">NetherOps is built by Heretics, an independent research and development group focused on revenue systems, economic modeling, and operational governance.</div>
   <div class="h-p"><strong>The name is intentional.</strong></div>
   <div class="h-p">Every meaningful advance in a discipline begins when someone questions the assumptions everyone else quietly accepts. That GTM is a department, not a system. That pipeline is a number, not a physics problem. That revenue governance means more dashboards.</div>
@@ -778,7 +784,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 
 <!-- ═══ CTA ═══ -->
 <section class="about-cta">
-  <h2 class="cta-h2">Mission control for opportunity.</h2>
+  <h2 class="cta-h2">Mission control <em>for opportunity.</em></h2>
   <p class="cta-sub">If you're building a GTM function and want it governed from the start — or fixing one that isn't — we should talk.</p>
   <div class="cta-actions">
     <a href="/#briefing" class="btn-rose">Book a Briefing</a>
