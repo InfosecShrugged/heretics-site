@@ -179,6 +179,9 @@ body.dark .hnav-toggle .icon-moon{display:none}
   .hnav-sticky-cta{display:block}
   body{padding-bottom:60px}  /* room for sticky CTA */
 }
+
+/* Canonical em accents */
+h1 em, h2 em, h3 em { font-style: italic; color: var(--accent-ink); font-weight: 425; }
 </style>
   <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -198,7 +201,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
       --red: #CC3340;
       --border: rgba(20,18,14,0.12);
       --border-soft: rgba(20,18,14,0.07);
-      --mono: 'JetBrains Mono', 'Chivo Mono', monospace;
+      --mono: 'JetBrains Mono', monospace;
       --display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
     * { box-sizing: border-box; }
@@ -251,10 +254,10 @@ body.dark .hnav-toggle .icon-moon{display:none}
     /* Dark-mode overrides: callout BG flips from white to a raised dark surface
        (--white doesn't auto-flip via the nav.js token cascade, so we explicitly
        repaint here). Same pattern used on the opptycon CTA fix. */
-    body.dark .callout { background: #1B1B20; border-left-color: #8C73FF; }
-    body.dark .callout .label { color: #8C73FF; }
+    body.dark .callout { background: #1B1B20; border-left-color: var(--accent-ink); }
+    body.dark .callout .label { color: var(--accent-ink); }
     body.dark .callout p { color: #ECECE6; }
-    body.dark .callout a { color: #8C73FF; }
+    body.dark .callout a { color: var(--accent-ink); }
     body.dark .callout strong { color: #ECECE6; }
     body.dark .callout code { background: rgba(255,255,255,0.08); color: #ECECE6; }
 

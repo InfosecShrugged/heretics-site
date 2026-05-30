@@ -29,7 +29,7 @@
   --blue: #4A90D9;
   --violet: #8C73FF;
   --font-display: 'TWK Everett', 'Helvetica Neue', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Chivo Mono', monospace;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 body {
@@ -443,6 +443,9 @@ body.dark .hnav-toggle .icon-moon{display:none}
   .hnav-sticky-cta{display:block}
   body{padding-bottom:60px}  /* room for sticky CTA */
 }
+
+/* Canonical em accents */
+h1 em, h2 em, h3 em { font-style: italic; color: var(--accent-ink); font-weight: 425; }
 </style>
 </head>
 <body>
@@ -970,7 +973,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 
         <!-- Effective capacity curve (with ramp + attrition) -->
         <path d="M60 200 Q120 170 180 120 Q240 85 300 70 Q360 62 420 58 Q480 60 540 68 Q600 80 660 95 Q720 115 780 130" 
-              fill="none" stroke="#C8FF6E" stroke-width="2.5" stroke-linecap="round"/>
+              fill="none" stroke="var(--accent-ink)" stroke-width="2.5" stroke-linecap="round"/>
         
         <!-- Fill under curve -->
         <path d="M60 200 Q120 170 180 120 Q240 85 300 70 Q360 62 420 58 Q480 60 540 68 Q600 80 660 95 Q720 115 780 130 L780 240 L60 240 Z" 
@@ -980,7 +983,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
         <path d="M300 70 Q400 90 500 120 Q600 155 700 195 L780 220" 
               fill="none" stroke="#E74C3C" stroke-width="1.5" stroke-dasharray="4 3" stroke-linecap="round"/>
         <text x="785" y="224" fill="#E74C3C" font-family="Chivo Mono" font-size="8" text-anchor="start">With attrition</text>
-        <text x="785" y="134" fill="#C8FF6E" font-family="Chivo Mono" font-size="8" text-anchor="start">With backfill</text>
+        <text x="785" y="134" fill="var(--accent-ink)" font-family="Chivo Mono" font-size="8" text-anchor="start">With backfill</text>
         
         <!-- Ramp zone annotation -->
         <rect x="60" y="12" width="240" height="14" rx="2" fill="rgba(240,160,48,0.12)"/>
@@ -989,8 +992,8 @@ body.dark .hnav-toggle .icon-moon{display:none}
         <!-- Gradient def -->
         <defs>
           <linearGradient id="grad-lime" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#C8FF6E" stop-opacity="0.4"/>
-            <stop offset="100%" stop-color="#C8FF6E" stop-opacity="0"/>
+            <stop offset="0%" stop-color="var(--accent-ink)" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="var(--accent-ink)" stop-opacity="0"/>
           </linearGradient>
         </defs>
       </svg>

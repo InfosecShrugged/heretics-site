@@ -11,10 +11,10 @@
 <link rel="stylesheet" href="/styles/tokens.css">
 <style>
 /* ═══ DUAL-ACCENT SYSTEM ═══
-   Light surfaces: Rose #5B3DF0 for text accents, links, borders
-   Light surfaces: Lime #C8FF6E for fills, badges, dots, highlights, buttons
-   Dark surfaces:  Lime #C8FF6E for everything
-   Logo mark:     Black #111 on light, Lime #C8FF6E on dark
+   Light surfaces: Rose var(--accent-ink) for text accents, links, borders
+   Light surfaces: Lime var(--accent-ink) for fills, badges, dots, highlights, buttons
+   Dark surfaces:  Lime var(--accent-ink) for everything
+   Logo mark:     Black #111 on light, Lime var(--accent-ink) on dark
    Rule: Lime never appears as TEXT on light. Lime as FILL on light is great.
 ═══════════════════════════════ */
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Light.otf') format('opentype'); font-weight: 300; font-display: swap; }
@@ -36,14 +36,14 @@
   --border-subtle: rgba(20,18,14,0.07);
   --border-mid:    rgba(20,18,14,0.12);
   --border-strong: rgba(20,18,14,0.18);
-  --accent:        #5B3DF0;
+  --accent:        var(--accent-ink);
   --accent-text:   #16161A;
-  --accent-lime:   #5B3DF0;
+  --accent-lime:   var(--accent-ink);
   --accent-lime-dark: #4830C0;
-  --accent-violet:   #5B3DF0;
+  --accent-violet:   var(--accent-ink);
   --accent-violet-light: rgba(91,61,240,0.10);
   --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-mono:    'JetBrains Mono', 'Chivo Mono', 'Space Mono', 'Courier New', monospace;
+  --font-mono:    'JetBrains Mono', 'Space Mono', 'Courier New', monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 200ms;
   /* Tokens consumed by the shared <heretics-house-map>, mapped from local
@@ -637,6 +637,9 @@ body.dark .hnav-toggle .icon-moon{display:none}
   .hnav-sticky-cta{display:block}
   body{padding-bottom:60px}  /* room for sticky CTA */
 }
+
+/* Canonical em accents */
+h1 em, h2 em, h3 em { font-style: italic; color: var(--accent-ink); font-weight: 425; }
 </style>
 </head>
 <body>
