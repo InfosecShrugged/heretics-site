@@ -398,6 +398,11 @@ body.dark .hnav-toggle .icon-sun{display:block}
 body.dark .hnav-toggle .icon-moon{display:none}
 .hnav-right{display:flex;align-items:center;gap:0}
 .hnav-row .wrap{justify-content:flex-start}
+/* Brand lockup wordmark mask — was propagated as empty span; CSS missing. Fixed 2026-05-30. */
+.brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.brand-raven{width:36px;height:36px;flex-shrink:0;display:block;color:var(--accent-ink)}
+.brand-raven path{fill:currentColor}
+.brand-wordmark{display:inline-block;height:26px;width:160px;background-color:var(--ink);-webkit-mask:url('/assets/netherops-logo.svg') left center no-repeat;mask:url('/assets/netherops-logo.svg') left center no-repeat;-webkit-mask-size:auto 26px;mask-size:auto 26px;flex-shrink:0}
 .hnav-row .wrap .brand-lockup{margin-right:auto}
 /* ============================================================================
    F4 — Mobile nav + sticky property-aware CTA (IA spec §16-25)
