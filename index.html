@@ -108,9 +108,9 @@ body.dark .char{display:none}  /* light-only until white edge is feathered again
 }
 
 section{padding:80px 0;border-top:0.5px solid var(--line)}
-.sec-label{margin-bottom:14px}
+.sec-label{margin-bottom:14px;color:var(--accent-ink);opacity:.9}
 .sec-h{font-family:var(--display);font-weight:375;font-size:clamp(26px,3.5vw,44px);line-height:1.08;letter-spacing:-0.015em;max-width:24ch;font-variation-settings:"opsz" 96,"wght" 375,"SOFT" 0,"WONK" 0}
-.sec-h em{font-style:italic;color:var(--accent-ink);font-weight:375}
+.sec-h em{font-style:italic;color:var(--accent-ink);font-weight:425}
 .sec-sub{font-family:var(--sans);font-size:15px;color:var(--mut);margin-top:16px;max-width:56ch;line-height:1.6}
 .method{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-strong);border:0.5px solid var(--line);margin-top:40px}
 .m-cell{background:var(--bg);padding:30px 24px;min-height:210px;display:flex;flex-direction:column;transition:background .35s}
@@ -161,14 +161,14 @@ section{padding:80px 0;border-top:0.5px solid var(--line)}
   text-transform:uppercase;color:#9A9A92;
   pointer-events:none;
 }
-.arch .sec-h{color:#ECECE6}.arch .sec-label{color:#8C73FF}
+.arch .sec-h{color:#ECECE6}.arch .sec-label{color:var(--accent-ink)}
 .layers{list-style:none;margin-top:26px;display:grid;gap:9px}
 .layers li{font-family:var(--mono);font-size:12px;color:#B6B6AC;padding-left:20px;position:relative}
-.layers li:before{content:"+";position:absolute;left:0;color:#8C73FF}
+.layers li:before{content:"+";position:absolute;left:0;color:var(--accent-ink)}
 .metrics{display:flex;gap:0;margin-top:30px;border:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
 .met{flex:1;min-width:120px;padding:18px 20px;border-right:1px solid rgba(255,255,255,.12)}
 .met:last-child{border:none}
-.met .v{font-family:var(--display);font-weight:425;font-size:32px;color:#8C73FF;letter-spacing:-0.02em;font-variation-settings:"opsz" 144,"wght" 425,"SOFT" 0,"WONK" 0}
+.met .v{font-family:var(--display);font-weight:425;font-size:32px;color:var(--accent-ink);letter-spacing:-0.02em;font-variation-settings:"opsz" 144,"wght" 425,"SOFT" 0,"WONK" 0}
 .met .k{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#7E7E76;margin-top:6px}
 
 .doctrine-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-strong);border:0.5px solid var(--line);margin-top:40px}
@@ -191,7 +191,7 @@ section{padding:80px 0;border-top:0.5px solid var(--line)}
 .brief-field input,.brief-field textarea{font-family:var(--sans);font-size:14px;font-weight:400;color:var(--ink);background:var(--raised);border:0.5px solid var(--line);padding:11px 13px;border-radius:2px;outline:none;transition:border-color .15s;text-transform:none;letter-spacing:0;line-height:1.5}
 .brief-field input:focus,.brief-field textarea:focus{border-color:var(--accent-ink);box-shadow:0 0 0 3px rgba(91,61,240,0.10)}
 .brief-field textarea{resize:vertical;min-height:64px}
-.brief-submit{justify-self:start;margin-top:6px;border:1px solid var(--accent-ink);cursor:pointer;font-weight:600}
+.brief-submit{justify-self:start;margin-top:6px;cursor:pointer}
 .brief-fallback{font-family:var(--mono);font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
 .brief-fallback a{color:var(--accent-ink);border-bottom:1px solid var(--accent-ink);text-transform:lowercase;letter-spacing:0}
 .brief-thanks{padding:32px;background:var(--surface);border:0.5px solid var(--line);font-family:var(--sans);border-radius:2px}
@@ -597,7 +597,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 
 <section id="method"><div class="wrap">
   <div class="mono sec-label">// the method</div>
-  <h2 class="sec-h">Revenue Governance for cybersecurity, in operating practice</h2>
+  <h2 class="sec-h">Revenue Governance for cybersecurity, in <em>operating practice.</em></h2>
   <p class="sec-sub">Methodology owned by Heretics, run by NetherOps, encoded into the OpptyCon engine. Built on cyber's actual physics — 6–12 month sales cycles, CISO + IT + Legal + Procurement buying committees, FedRAMP/SOC2 drag, SE-heavy deals. Every engagement starts with a model. Every model starts with constraints. Thresholds are the strategy.</p>
   <div class="method">
     <div class="m-cell"><div class="m-num">01</div><div class="m-h">Revenue Architecture</div><div class="m-p">Full-stack GTM design for cyber — ICP governance through pipeline operations. Not a playbook — an operating practice tuned to the way cyber actually buys.</div></div>
@@ -610,7 +610,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
   <div class="arch-split">
     <div>
       <div class="mono sec-label">// the engine</div>
-      <h2 class="sec-h">OpptyCon. Cybersecurity revenue physics, modeled not guessed.</h2>
+      <h2 class="sec-h">OpptyCon. Cybersecurity revenue physics &mdash; <em>modeled, not guessed.</em></h2>
     </div>
     <figure class="away opptycon-frame">
       <a href="https://app.netherops.com" class="oc-tile" aria-label="OpptyCon Command Center">
@@ -619,7 +619,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
     </figure>
     <div class="arch-meta-row">
       <div>
-        <p class="sec-sub" style="margin-top:0">Defaults tuned for cyber — $850K–$1.2M AE quotas, 12-week sales cycles, 24-month CAC payback targets, 1:3 SE coverage. P&amp;L, pipeline, funnel, capacity — all derived from constraints, all feeding back upward. <a href="https://app.netherops.com" style="color:#8C73FF;border-bottom:1px solid #8C73FF">Open the live tool →</a></p>
+        <p class="sec-sub" style="margin-top:0">Defaults tuned for cyber — $850K–$1.2M AE quotas, 12-week sales cycles, 24-month CAC payback targets, 1:3 SE coverage. P&amp;L, pipeline, funnel, capacity — all derived from constraints, all feeding back upward. <a href="https://app.netherops.com" style="color:var(--accent-ink);border-bottom:1px solid var(--accent-ink)">Open the live tool →</a></p>
         <ul class="layers" style="margin-top:18px">
           <li>Inverse marketing waterfall — target revenue → required inquiries (cyber funnel math)</li>
           <li>AE hiring plan — today's roster → target capacity, accounting for cyber's 6-month ramp</li>
@@ -639,7 +639,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 
 <section id="doctrine"><div class="wrap">
   <div class="mono sec-label">// the doctrine</div>
-  <h2 class="sec-h">Open architecture. Governed execution.</h2>
+  <h2 class="sec-h">Open architecture. <em>Governed execution.</em></h2>
   <p class="sec-sub">The complete governed revenue architecture — seven horizontal layers, five agents, closed-loop control. <a href="/doctrine/" style="color:var(--accent-ink);border-bottom:1px solid var(--accent-ink)">Read it all.</a></p>
   <div class="doctrine-grid">
     <a href="/spine-v4/" class="d-cell"><div class="d-num">01</div><div class="d-h">The Spine</div><div class="d-p">Seven horizontal layers from Economic Model through Attribution &amp; Feedback.</div></a>
@@ -654,7 +654,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <section id="cta"><div class="wrap">
   <div class="cta-split">
     <div class="cta-copy">
-      <h2 class="sec-h">Ready to govern your cyber revenue?</h2>
+      <h2 class="sec-h">Ready to <em>govern</em> your cyber revenue?</h2>
       <p class="sec-sub">Built for cybersecurity companies from Series A through pre-IPO — ARR $3M–$100M. 30-minute briefing — we'll map your current GTM to the governed architecture and show you what changes.</p>
       <div class="cta-meta">
         <div class="cta-meta-row"><span class="cta-meta-k">No spam</span><span class="cta-meta-v">One reply. No drip sequence. No pitch deck.</span></div>
@@ -671,7 +671,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
       <label class="brief-field"><span>Role</span><input type="text" name="role" placeholder="CRO · CMO · VP Mktg · Founder" autocomplete="organization-title"></label>
       <label class="brief-field"><span>What's the GTM question? <em>(optional)</em></span><textarea name="message" rows="3" placeholder="One sentence is enough."></textarea></label>
       <button type="submit" class="btn brief-submit">Book the Briefing →</button>
-      <p class="brief-fallback">Or just email <a href="mailto:nick@heretics.io?subject=Cyber%20GTM%20Briefing%20request">nick@heretics.io</a></p>
+      <p class="brief-fallback">Or just email <a href="mailto:contact@heretics.io?subject=Cyber%20GTM%20Briefing%20request">contact@heretics.io</a></p>
     </form>
   </div>
 </div></section>
