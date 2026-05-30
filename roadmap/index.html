@@ -469,23 +469,28 @@ h1 em, h2 em, h3 em { font-style: italic; color: var(--accent-ink); font-weight:
       --border: rgba(20,18,14,0.12);
       --border-soft: rgba(20,18,14,0.07);
       --mono: 'JetBrains Mono', monospace;
-      --display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      /* Restored to brand canon: --display drives Fraunces for headings;
+         body uses --sans (TWK Everett). Earlier rule had --display pointing
+         at TWK Everett which (a) defeated Fraunces on h1/h2 and (b) pulled
+         double duty for body where --sans should live. */
+      --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+      --sans: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
     * { box-sizing: border-box; }
     body {
       background: var(--bg); color: var(--ink);
-      font-family: var(--display); margin: 0;
+      font-family: var(--sans); margin: 0;
       line-height: 1.55; -webkit-font-smoothing: antialiased;
       padding-top: 70px; /* nav clearance */
     }
     .container { max-width: 920px; margin: 0 auto; padding: 0 24px; }
     .eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rose); margin-bottom: 18px; }
-    h1 { font-weight: 300; font-size: clamp(36px, 6.5vw, 72px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 24px; max-width: 22ch; }
-    h1 em { font-style: italic; color: var(--rose); font-weight: 300; }
+    h1 { font-family: var(--display); font-weight: 425; font-size: clamp(36px, 6.5vw, 72px); line-height: 1.02; letter-spacing: -0.018em; margin: 0 0 24px; max-width: 22ch; font-variation-settings: "opsz" 144, "wght" 425, "SOFT" 0, "WONK" 0; }
+    h1 em { font-style: italic; color: var(--rose); font-weight: 500; font-variation-settings: "opsz" 144, "wght" 500, "SOFT" 0, "WONK" 0; }
     .lede { font-size: 17px; line-height: 1.7; color: var(--ink-mid); max-width: 65ch; margin: 0 0 36px; }
-    h2 { font-weight: 400; font-size: clamp(26px, 4vw, 40px); line-height: 1.12; letter-spacing: -0.018em; margin: 64px 0 18px; max-width: 24ch; }
-    h2 em { color: var(--rose); font-style: italic; font-weight: 400; }
-    h3 { font-weight: 600; font-size: 17px; margin: 28px 0 8px; }
+    h2 { font-family: var(--display); font-weight: 425; font-size: clamp(26px, 4vw, 40px); line-height: 1.12; letter-spacing: -0.018em; margin: 64px 0 18px; max-width: 24ch; font-variation-settings: "opsz" 96, "wght" 425, "SOFT" 0, "WONK" 0; }
+    h2 em { color: var(--rose); font-style: italic; font-weight: 500; font-variation-settings: "opsz" 96, "wght" 500, "SOFT" 0, "WONK" 0; }
+    h3 { font-family: var(--display); font-weight: 600; font-size: 17px; margin: 28px 0 8px; font-variation-settings: "opsz" 36, "wght" 600, "SOFT" 0, "WONK" 0; }
     p { font-size: 15px; line-height: 1.7; color: var(--ink-mid); margin: 0 0 14px; max-width: 70ch; }
     p strong, p b { color: var(--ink); font-weight: 600; }
     a { color: var(--rose); text-decoration: underline; text-underline-offset: 2px; }
