@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/styles/tokens.css">
 <style>
 /* ═══ DUAL-ACCENT SYSTEM ═══
-   Light surfaces: Rose #5B3DF0 for text accents, links, borders
+   Light surfaces: Rose var(--accent-ink) for text accents, links, borders
    Light surfaces: Lime #C8FF6E for fills, badges, dots, highlights, buttons
    Dark surfaces:  Lime #C8FF6E for everything
    Logo mark:     Black #111 on light, Lime #C8FF6E on dark
@@ -30,31 +30,25 @@
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
 :root {
-  --bg:           #F4F1EA;
-  --bg-base:      #F4F1EA;
-  --bg-white:     #FFFFFF;
-  --bg-inverse:   #16161A;
-  --bg-code:      #1A1A1E;
-  --bg-raised:    #EAE6DC;
-  --bg-sidebar:   #FBFAF6;
-  --ink:          #1A1A1E;
-  --ink-mid:      #57544D;
-  --ink-muted:    #8E8A80;
-  --ink-inv:      #ECEAE3;
-  --ink-inv-mid:  #9A968C;
-  --ink-code:     #8C73FF;
-  --border-subtle: rgba(20,18,14,0.06);
-  --border-mid:    rgba(20,18,14,0.10);
-  --border-strong: rgba(20,18,14,0.18);
-  --accent:        #5B3DF0;
-  --accent-light:  rgba(91,61,240,0.08);
-  --accent-lime:   #5B3DF0;
-  --font-display: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-mono:    'JetBrains Mono', 'Chivo Mono', 'Space Mono', 'Courier New', monospace;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur: 200ms;
-  --nav-h: 56px;
-  --side-w: 280px;
+  /* tokens.css drives the canonical palette. Backwards-compat aliases for
+     legacy selectors that still reference these names. */
+  --font-display: var(--display);
+  --font-mono: var(--mono);
+  --bg: var(--bg);
+  --bg-surface: var(--surface);
+  --bg-inverse: var(--dark);
+  --ink: var(--ink);
+  --ink-mid: var(--mut);
+  --ink-muted: var(--faint);
+  --ink-inv: #ECEAE3;
+  --ink-inv-mid: #9A968C;
+  --ink-code: var(--accent-ink);
+  --border-subtle: var(--line);
+  --border-mid: var(--line);
+  --border-strong: var(--line-strong);
+  --accent-lime: var(--accent-ink);
+  --accent-violet: var(--accent-ink);
+  --accent-violet-light: rgba(91,61,240,0.10);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -184,21 +178,25 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
   content: ''; flex: 1; height: 1px; background: var(--border-subtle);
 }
 .doc-h1 {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 3.5vw, 42px);
-  font-weight: 400; letter-spacing: -0.03em; line-height: 1.15;
-  margin-bottom: 16px;
+  font-family: var(--display);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 425; letter-spacing: -0.012em; line-height: 1.1;
+  margin-bottom: 18px;
+  font-variation-settings: "opsz" 144, "wght" 425, "SOFT" 0, "WONK" 0;
 }
+.doc-h1 em { font-style: italic; color: var(--accent-ink); font-weight: 425; }
 .doc-lead {
   font-family: var(--font-mono); font-size: 14px; font-weight: 400;
   color: var(--ink-mid); line-height: 1.7; max-width: 580px;
   margin-bottom: 40px;
 }
 .doc-h2 {
-  font-family: var(--font-display); font-size: 24px; font-weight: 400;
-  letter-spacing: -0.02em; margin: 48px 0 16px; line-height: 1.2;
-  padding-top: 24px; border-top: 1px solid var(--border-subtle);
+  font-family: var(--display); font-size: clamp(22px, 2.4vw, 28px); font-weight: 425;
+  letter-spacing: -0.012em; margin: 48px 0 16px; line-height: 1.2;
+  padding-top: 24px; border-top: 1px solid var(--line);
+  font-variation-settings: "opsz" 96, "wght" 425, "SOFT" 0, "WONK" 0;
 }
+.doc-h2 em { font-style: italic; color: var(--accent-ink); font-weight: 425; }
 .doc-h3 {
   font-family: var(--font-display); font-size: 18px; font-weight: 500;
   letter-spacing: -0.01em; margin: 32px 0 12px; line-height: 1.3;
@@ -787,15 +785,15 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
 <div class="doc-page active" id="page-overview">
   <div class="doc-eyebrow">Getting Started</div>
-  <div role="note" aria-label="Page status" style="background:#5B3DF00d;border-left:3px solid #5B3DF0;padding:14px 20px;margin-bottom:28px;border-radius:0;">
-  <div style="font-family:'Chivo Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#5B3DF0;margin-bottom:6px;">
+  <div role="note" aria-label="Page status" style="background:var(--surface);border-left:2px solid var(--accent-ink);padding:14px 20px;margin-bottom:28px;border-radius:3px;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:6px;">
     Partial — some shipped, some on the roadmap
   </div>
   <div style="font-size:13px;line-height:1.6;color:#555;margin:0;">
-    This page describes the framework at a high level. Some sections map directly to OpptyCon today (the 7-layer spine, P&L governance, Stage Gate, Coverage Agent); others are roadmap or research — particularly the Customer Health Agent, Identity Graph, full Provenance schema, and Sovereignty Map adjudicator. See <a href="/roadmap/" style="color:#5B3DF0;text-decoration:underline;text-underline-offset:2px;">the roadmap</a> for shipped / on-roadmap / research status per claim.
+    This page describes the framework at a high level. Some sections map directly to OpptyCon today (the 7-layer spine, P&L governance, Stage Gate, Coverage Agent); others are roadmap or research — particularly the Customer Health Agent, Identity Graph, full Provenance schema, and Sovereignty Map adjudicator. See <a href="/roadmap/" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;">the roadmap</a> for shipped / on-roadmap / research status per claim.
   </div>
 </div>
-<h1 class="doc-h1">Governed Revenue Architecture</h1>
+<h1 class="doc-h1">Governed Revenue <em>Architecture.</em></h1>
   <p class="doc-lead">A complete operating practice for go-to-market. Not a playbook. Not a framework. A governing system — where constraints cascade downward and feedback flows upward.</p>
 
   <div class="callout">
@@ -842,7 +840,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ THE SPINE ═══════════════════════ -->
 <div class="doc-page" id="page-spine">
   <div class="doc-eyebrow">Architecture</div>
-  <h1 class="doc-h1">The Spine</h1>
+  <h1 class="doc-h1">The <em>Spine.</em></h1>
   <p class="doc-lead">Seven horizontal layers. Causality flows downward. Constraints flow upward. This is not a marketing stack — it is a control architecture.</p>
 
   <a href="/spine-v4" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--accent);text-decoration:none;padding:8px 0;transition:opacity 0.2s">View Interactive Spine →</a>
@@ -953,7 +951,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ REVENUE THERMOSTAT ═══════════════════════ -->
 <div class="doc-page" id="page-thermostat">
   <div class="doc-eyebrow">Architecture</div>
-  <h1 class="doc-h1">Revenue Thermostat</h1>
+  <h1 class="doc-h1">Revenue <em>Thermostat.</em></h1>
   <p class="doc-lead">Not a flowchart. A control system. The set point is economics. The sensor is attribution. The actuator is governance. Feedback loops close the system.</p>
 
   <h2 class="doc-h2">The Control System Model</h2>
@@ -996,7 +994,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ AGENT SPECIFICATIONS ═══════════════════════ -->
 <div class="doc-page" id="page-agents">
   <div class="doc-eyebrow">Architecture</div>
-  <h1 class="doc-h1">Agent Specifications</h1>
+  <h1 class="doc-h1">Agent <em>Specifications.</em></h1>
   <p class="doc-lead">Five vertical enforcement agents span the spine layers. They are not process steps. They are governance rails — monitoring thresholds, enforcing constraints, and closing feedback loops.</p>
 
   <a href="/agent-specs" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--accent);text-decoration:none;padding:8px 0;transition:opacity 0.2s">View Agent Specifications Screen →</a>
@@ -1045,7 +1043,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ SOVEREIGNTY MAP ═══════════════════════ -->
 <div class="doc-page" id="page-sovereignty">
   <div class="doc-eyebrow">Maps & Models</div>
-  <h1 class="doc-h1">Sovereignty Map</h1>
+  <h1 class="doc-h1">Sovereignty <em>Map.</em></h1>
   <p class="doc-lead">Build vs buy vs integrate — for every layer of the stack. Not a vendor comparison. A decision framework for where you need sovereignty and where you can rent.</p>
 
   <a href="/sovereignty-map" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--accent);text-decoration:none;padding:8px 0;transition:opacity 0.2s">View Interactive Sovereignty Map →</a>
@@ -1094,7 +1092,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ MOTION MAP ═══════════════════════ -->
 <div class="doc-page" id="page-motion">
   <div class="doc-eyebrow">Maps & Models</div>
-  <h1 class="doc-h1">Motion Map</h1>
+  <h1 class="doc-h1">Motion <em>Map.</em></h1>
   <p class="doc-lead">Seven acquisition modes. Every motion governed by the spine. Every channel traced to economics. No orphan campaigns.</p>
 
   <a href="/split-funnel-map" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--accent);text-decoration:none;padding:8px 0;transition:opacity 0.2s">View Interactive Motion Map →</a>
@@ -1150,7 +1148,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ IDENTITY GRAPH ═══════════════════════ -->
 <div class="doc-page" id="page-identity">
   <div class="doc-eyebrow">Maps & Models</div>
-  <h1 class="doc-h1">Identity Graph</h1>
+  <h1 class="doc-h1">Identity <em>Graph.</em></h1>
   <p class="doc-lead">Contact and account resolution across the entire GTM surface area. Who is this person, which account do they belong to, and how do they connect to every touchpoint.</p>
 
   <a href="/identity-graph" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--accent);text-decoration:none;padding:8px 0;transition:opacity 0.2s">View Identity Graph Screen →</a>
@@ -1173,7 +1171,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ INFRASTRUCTURE ═══════════════════════ -->
 <div class="doc-page" id="page-infrastructure">
   <div class="doc-eyebrow">Maps & Models</div>
-  <h1 class="doc-h1">Infrastructure</h1>
+  <h1 class="doc-h1"><em>Infrastructure.</em></h1>
   <p class="doc-lead">The technical stack that implements the governed architecture. Every tool has a role. Every role traces to a spine layer. No orphan subscriptions.</p>
 
   <a href="/infrastructure" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--accent);text-decoration:none;padding:8px 0;transition:opacity 0.2s">View Infrastructure Screen →</a>
@@ -1195,7 +1193,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ OPPTYCON ═══════════════════════ -->
 <div class="doc-page" id="page-opptycon">
   <div class="doc-eyebrow">Tools</div>
-  <h1 class="doc-h1">OpptyCon — Revenue Physics Engine</h1>
+  <h1 class="doc-h1">OpptyCon &mdash; <em>Revenue Physics Engine.</em></h1>
   <p class="doc-lead">Model your entire GTM as physics, not spreadsheets. Pipeline targets, cost structures, funnel conversion, coverage math, and phase-shifted demand across multi-year horizons.</p>
 
   <h2 class="doc-h2">What It Does</h2>
@@ -1225,7 +1223,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ LEXICON ═══════════════════════ -->
 <div class="doc-page" id="page-lexicon">
   <div class="doc-eyebrow">Reference</div>
-  <h1 class="doc-h1">Lexicon</h1>
+  <h1 class="doc-h1"><em>Lexicon.</em></h1>
   <p class="doc-lead">Terminology used throughout the governed revenue architecture. Precise language prevents ambiguity. Ambiguity prevents governance.</p>
 
   <a href="/lexicon" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--accent);text-decoration:none;padding:8px 0;transition:opacity 0.2s">View Lexicon Screen →</a>
@@ -1274,7 +1272,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <!-- ═══════════════════════ PROVENANCE ═══════════════════════ -->
 <div class="doc-page" id="page-provenance">
   <div class="doc-eyebrow">Reference</div>
-  <h1 class="doc-h1">Provenance</h1>
+  <h1 class="doc-h1"><em>Provenance.</em></h1>
   <p class="doc-lead">Data lineage and decision audit trail. Every number in the system traces back to its source. Every governance decision traces to a constraint. Trust requires traceability.</p>
 
   <a href="/provenance" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--accent);text-decoration:none;padding:8px 0;transition:opacity 0.2s">View Provenance Screen →</a>
