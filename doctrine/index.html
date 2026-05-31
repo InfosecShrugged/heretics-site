@@ -139,6 +139,14 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
   scrollbar-width: thin;
   scrollbar-color: var(--border-mid) transparent;
   z-index: 100;
+  transition: opacity .2s ease, visibility .2s;
+}
+/* T5: fade the sidebar when the footer enters the viewport so the
+   fixed rail doesn't sit on top of the .hf-mast or first footer column. */
+body.footer-in-view .sidebar {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 .sidebar::-webkit-scrollbar { width: 4px; }
 .sidebar::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
@@ -2226,6 +2234,19 @@ document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
   window.HERETICS_LOCAL_THEME_KEY = KEY;
   window.HERETICS_APPLY_THEME = function (mode) { apply(mode); };
   apply(get());
+})();
+</script>
+<script>
+/* T5: hide the fixed sidebar when the footer enters the viewport. */
+(function () {
+  var footer = document.querySelector('.house-footer');
+  if (!footer || typeof IntersectionObserver === 'undefined') return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      document.body.classList.toggle('footer-in-view', e.isIntersecting);
+    });
+  }, { rootMargin: '0px', threshold: 0 });
+  io.observe(footer);
 })();
 </script>
 </body>
