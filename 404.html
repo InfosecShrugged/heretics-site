@@ -871,6 +871,54 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
   border-radius: 2px;
   vertical-align: middle;
 }
+
+/* Footer v2 — specificity patch. The previous append was overridden by
+   .house-footer .wrap > * { display:block } from the v1 CSS. These
+   prefixed selectors win over both. */
+.house-footer .wrap > .hf-grid-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr;
+  gap: 28px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+.house-footer .wrap > .hf-grid-row > .hf-mast {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+.house-footer .wrap > .hf-grid-row > .hf-mast .hf-mast-raven {
+  width: 64px;
+  height: auto;
+}
+.house-footer .wrap > .hf-grid-row > .hf-mast .hf-mast-title {
+  font-size: 22px;
+  line-height: 1.15;
+}
+.house-footer .wrap > .hf-legal-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-top: 0.5px solid rgba(255,255,255,.06);
+  padding-top: 18px;
+}
+@media (max-width: 1100px) {
+  .house-footer .wrap > .hf-grid-row { grid-template-columns: 1fr 1fr 1fr; gap: 32px 24px; }
+  .house-footer .wrap > .hf-grid-row > .hf-mast { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 18px; }
+}
+@media (max-width: 720px) {
+  .house-footer .wrap > .hf-grid-row { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+  .house-footer .wrap > .hf-grid-row > .hf-mast { flex-direction: column; align-items: flex-start; }
+  .house-footer .wrap > .hf-legal-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+@media (max-width: 480px) {
+  .house-footer .wrap > .hf-grid-row { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
