@@ -1,0 +1,9 @@
+# netherops.com
+User-agent: *
+Allow: /
+
+# Block app + tooling routes
+Disallow: /tools/
+Disallow: /design-system/
+
+Sitemap: https://netherops.com/sitemap.xml
