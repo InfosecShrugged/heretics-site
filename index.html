@@ -666,6 +666,212 @@ body.dark .hnav-toggle .icon-moon{display:none}
   .hnav-sticky-cta{display:block}
   body{padding-bottom:60px}  /* room for sticky CTA */
 }
+/* ============ HOUSE FOOTER · v2 — mast-as-column + 4 cols + legal row ============
+   Replaces the v1 5-col + intro + engagement bridge layout.
+   Spec: footer-cleanup-comp.html (2026-05-31) */
+.house-footer {
+  background: transparent;
+  color: #9A968C;
+  padding: 64px 0 28px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  font-family: var(--sans);
+}
+.house-footer .wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: block;
+}
+
+.hf-grid-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr;
+  gap: 28px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+/* Mast (column 1) — raven + tagline + Engage link, stacked vertically */
+.hf-mast {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+.hf-mast-raven {
+  width: 64px;
+  height: auto;
+  color: var(--accent-ink);
+  flex-shrink: 0;
+  --lantern-flame: #F5D610;
+}
+html[data-property="heretics"] .hf-mast-raven,
+html[data-property="arcology"] .hf-mast-raven {
+  --lantern-flame: #E2504A;
+}
+.hf-mast-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+}
+.hf-mast-title {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.15;
+  color: #ECEAE3;
+  letter-spacing: -.012em;
+  font-variation-settings: "opsz" 96, "wght" 450;
+}
+.hf-mast-title em {
+  color: var(--accent-ink);
+  font-style: italic;
+}
+.hf-mast-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #56564E;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.hf-mast-engage {
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  text-decoration: none;
+  border-top: 0.5px solid rgba(255,255,255,.08);
+  padding-top: 12px;
+  width: 100%;
+  display: block;
+  font-weight: 600;
+}
+.hf-mast-engage:hover { color: #ED7A75; }
+.hf-mast-engage .arr { margin-left: 6px; }
+
+/* Columns 2–5 */
+.hf-col { position: relative; }
+.hf-col-eyebrow {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #56564E;
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+.hf-col-name {
+  font-family: var(--display);
+  font-size: 17px;
+  color: #ECEAE3;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 6px;
+  font-variation-settings: "opsz" 48, "wght" 500;
+}
+.hf-col-name:hover { color: var(--accent-ink); }
+.hf-col-tag {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #9A968C;
+  margin: 0 0 12px;
+  max-width: 22ch;
+}
+.hf-col-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.hf-col-links a,
+.hf-col-links span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #9A968C;
+  text-decoration: none;
+  transition: color .15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hf-col-links a:hover { color: #ECEAE3; }
+.hf-col-links .arr { color: #56564E; flex-shrink: 0; font-weight: 400; }
+.hf-col-links a:hover .arr { color: var(--accent-ink); }
+
+/* "You are here" treatment per property (kept from v1) */
+html[data-property="heretics"]  .hf-col[data-house="firm"]      .hf-col-name,
+html[data-property="arcology"]  .hf-col[data-house="firm"]      .hf-col-name,
+html[data-property="mis"]       .hf-col[data-house="desk"]      .hf-col-name,
+html[data-property="atlas"]     .hf-col[data-house="desk"]      .hf-col-name,
+html[data-property="kumite"]    .hf-col[data-house="arena"]     .hf-col-name,
+html[data-property="arena"]     .hf-col[data-house="arena"]     .hf-col-name,
+html[data-property="netherops"] .hf-col[data-house="operators"] .hf-col-name,
+html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
+  color: var(--accent-ink);
+}
+
+/* Legal row */
+.hf-legal-row {
+  border-top: 0.5px solid rgba(255,255,255,.06);
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #56564E;
+}
+.hf-legal-row a {
+  color: #9A968C;
+  text-decoration: none;
+  margin: 0 4px;
+  transition: color .15s;
+}
+.hf-legal-row a:hover { color: #ECEAE3; }
+.hf-legal-sep { color: #56564E; margin: 0 4px; }
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .hf-grid-row { grid-template-columns: 1fr 1fr 1fr; gap: 32px 24px; }
+  .hf-mast { grid-column: 1 / -1; flex-direction: row; align-items: center; }
+  .hf-mast .hf-mast-engage { width: auto; border-top: 0; border-left: 0.5px solid rgba(255,255,255,.08); padding: 0 0 0 18px; margin-left: auto; }
+}
+@media (max-width: 720px) {
+  .hf-grid-row { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+  .hf-mast { flex-direction: column; align-items: flex-start; }
+  .hf-mast .hf-mast-engage { width: 100%; border-left: 0; border-top: 0.5px solid rgba(255,255,255,.08); padding: 12px 0 0; margin-left: 0; }
+  .hf-legal-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+@media (max-width: 480px) {
+  .hf-grid-row { grid-template-columns: 1fr; }
+}
+
+/* .is-coming inline marker for nav/footer items not yet shipped */
+.hf-col-links .is-coming { color: #7E7A74; }
+.coming-pill {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 5px 2px;
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  background: transparent;
+  color: #56564E;
+  border: 0.5px solid rgba(255,255,255,.14);
+  border-radius: 2px;
+  vertical-align: middle;
+}
 </style>
 </head>
 <body>
@@ -715,7 +921,10 @@ body.dark .hnav-toggle .icon-moon{display:none}
           <button class="hnav-trigger" type="button" aria-haspopup="true" aria-expanded="false" data-house="arena">The Arena <span class="caret" aria-hidden="true">&#9662;</span></button>
           <div class="hnav-dropdown" role="menu">
             <div class="hnav-dd-eyebrow">The Arena</div>
-            <a class="hnav-dd-link" role="menuitem" href="https://arena.marketsinsecurity.com/kumite"><span class="hnav-dd-name">Kumite</span><span class="hnav-dd-desc">Cyber vendors ranked like fighters &mdash; the only surface in The Arena right now</span></a>
+            <a class="hnav-dd-link" role="menuitem" href="https://arena.marketsinsecurity.com/kumite"><span class="hnav-dd-name">Kumite</span><span class="hnav-dd-desc">The ranking format · Season 01 in progress</span></a>
+            <a class="hnav-dd-link" role="menuitem" href="https://arena.marketsinsecurity.com/codex"><span class="hnav-dd-name">The Codex</span><span class="hnav-dd-desc">Rulebook and methodology</span></a>
+            <a class="hnav-dd-link" role="menuitem" href="https://arena.marketsinsecurity.com/consolidation"><span class="hnav-dd-name">Consolidation Board</span><span class="hnav-dd-desc">M&amp;A landscape adjacent to the rankings</span></a>
+            <span class="hnav-dd-link is-coming" role="menuitem"><span class="hnav-dd-name">Challenger&apos;s Gate <span class="coming-pill">SOON</span></span><span class="hnav-dd-desc">Vendor submission and scouting</span></span>
           </div>
         </div>
 
@@ -972,117 +1181,85 @@ body.dark .hnav-toggle .icon-moon{display:none}
 <footer class="house-footer">
   <div class="wrap">
 
-    <div class="hf-mast">
-      <svg class="hf-mast-raven" viewBox="0 0 251 298" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Heretics lamplight raven">
-        <path fill="currentColor" d="M87.667 0c8.22 0 15.77 1.35 23.2 4.67a.857.857 0 0 1 .5.87l-2.24 22.54a.36.36 0 0 1-.124.243.399.399 0 0 1-.266.097c-.133-.007-7.157-.007-21.07 0-13.913 0-20.936.003-21.07.01a.399.399 0 0 1-.27-.1.36.36 0 0 1-.12-.25l-2.25-22.54a.863.863 0 0 1 .114-.52.846.846 0 0 1 .396-.35C71.887 1.35 79.437 0 87.667 0Zm106.142 182.66a.11.11 0 0 0-.155.015.113.113 0 0 0-.024.081.109.109 0 0 0 .039.074l55.82 55.82a.295.295 0 0 1 .063.324.296.296 0 0 1-.273.186h-20.48a.346.346 0 0 0-.339.412.35.35 0 0 0 .089.178l20.94 20.94c.359.358.56.844.56 1.35v34.7a.35.35 0 0 1-.21.313.325.325 0 0 1-.36-.073l-55.59-55.59a.108.108 0 0 0-.074-.04.114.114 0 0 0-.081.025.109.109 0 0 0-.039.074.113.113 0 0 0 .024.081c4.487 7.687 4.044 14.97-1.33 21.85a.905.905 0 0 1-1.048.292.912.912 0 0 1-.322-.212l-38.65-38.64a.34.34 0 0 0-.58.24v37.21a.724.724 0 0 1-.21.51l-27.15 27.15a.26.26 0 0 0 .19.44h13.7a.56.56 0 0 1 .56.56v6a.48.48 0 0 1-.48.48h-45.84c-.468 0-.917-.183-1.25-.51l-6.65-6.65a.54.54 0 0 0-.392-.165.568.568 0 0 0-.398.165l-6.73 6.73a.68.68 0 0 1-.96 0l-4.05-4.04a.71.71 0 0 1 0-1l11.68-11.68a.644.644 0 0 1 .448-.182c.167 0 .325.065.442.182l9.72 9.73c.25.243.584.38.93.38h17.92a1.61 1.61 0 0 0 1.14-.47l32.14-32.14a.337.337 0 0 0 .108-.252.357.357 0 0 0-.108-.258l-32.34-32.34a2.26 2.26 0 0 0-1.6-.66h-52.48a1.64 1.64 0 0 1-1.15-.48L42.51 207.3a.235.235 0 0 0-.116-.061.23.23 0 0 0-.273.221v6.01a.666.666 0 0 1-.414.619.664.664 0 0 1-.257.051h-5.74a.707.707 0 0 1-.495-.202.686.686 0 0 1-.205-.488v-13.02a1.5 1.5 0 0 0-.44-1.06l-9.84-9.84a.426.426 0 0 0-.457-.091.398.398 0 0 0-.133.091l-9.65 9.65c-.403.404-.63.947-.63 1.51v6.05c0 .088.036.171.1.233s.15.097.24.097h6.31a.322.322 0 0 0 .296-.191.303.303 0 0 0 .024-.119v-6.33a.608.608 0 0 1 .61-.61h5.93c.18 0 .354.071.481.196.128.126.2.296.2.474v12.7c0 .615.244 1.208.68 1.65l12.28 12.28a3.75 3.75 0 0 1 1.03 1.92l6.87 35.03a.943.943 0 0 1-.026.465.988.988 0 0 1-.245.405l-11.82 11.82a.23.23 0 0 0 .17.39h9a.522.522 0 0 1 .52.52v6.09a.491.491 0 0 1-.49.49H2.62a.259.259 0 0 1-.26-.26v-6.53c0-.085.033-.166.091-.226a.305.305 0 0 1 .22-.094h9.29a.194.194 0 0 0 .167-.118.192.192 0 0 0-.038-.202L.45 265.17a1.54 1.54 0 0 1-.42-1.39l6.78-34.55a4.066 4.066 0 0 1 1.13-2.12l12.42-12.42a.32.32 0 0 0 .073-.359.34.34 0 0 0-.125-.151.342.342 0 0 0-.188-.06H7.28a.542.542 0 0 1-.54-.54v-15.79c0-.57.227-1.117.63-1.52l16.61-16.61a.642.642 0 0 1 .9 0l39.18 39.18a.511.511 0 0 0 .72 0l21.33-21.32a.515.515 0 0 0 .146-.358.495.495 0 0 0-.146-.352l-39-38.99a2.08 2.08 0 0 1-.61-1.47V91.37a.33.33 0 0 0-.33-.33H30.52a.32.32 0 0 1-.25-.52l22.95-27.33a.29.29 0 0 0 .035-.297.267.267 0 0 0-.245-.153h-7.55a.25.25 0 0 1-.253-.29.25.25 0 0 1 .063-.13l21.55-25.68a.35.35 0 0 0 .046-.359.327.327 0 0 0-.296-.191H46.86a.36.36 0 0 1-.36-.36v-6.42a.32.32 0 0 1 .088-.22.295.295 0 0 1 .212-.09h82.31a.5.5 0 0 1 .5.5v6.08a.514.514 0 0 1-.146.36.496.496 0 0 1-.354.15h-19.66a.276.276 0 0 0-.157.046.277.277 0 0 0-.043.434l5.6 5.59c.352.351.806.586 1.3.67l27.84 4.6c.251.044.488.145.691.296.203.151.368.348.479.574l7.88 16.01a.411.411 0 0 1-.114.501.404.404 0 0 1-.166.079l-43.44 9.2a.742.742 0 0 0-.6.73v15.61a.622.622 0 0 0 .62.62h17.8c.877 0 1.718.345 2.34.96l88.46 88.46a.57.57 0 0 1 .099.665.58.58 0 0 1-.149.185c-7.82 6.22-15.846 6.667-24.08 1.34Zm-169.37 79.72c1.04 0 2.074-.003 3.1-.01a.478.478 0 0 1 .453.294.48.48 0 0 1 .037.186v6.56a.599.599 0 0 0 .6.6h4.27a1.57 1.57 0 0 0 1.11-.46l7.07-7.07a1.11 1.11 0 0 0 .3-1.02l-6.22-29.43a.62.62 0 0 0-.56-.48c-1.16-.087-4.546-.133-10.16-.14-5.606 0-8.99.043-10.15.13a.62.62 0 0 0-.56.48l-6.24 29.43a1.097 1.097 0 0 0 .3 1.02l7.07 7.08c.295.294.694.46 1.11.46h4.27a.599.599 0 0 0 .6-.6v-6.56a.478.478 0 0 1 .49-.49l3.11.02Z"/>
-        <path fill="var(--lantern-flame, #F5D610)" d="M24.427 238.189c.08 0 .157.017.23.05a.316.316 0 0 1 .16.16c3.814 8.02 6.027 12.607 6.64 13.76a1.716 1.716 0 0 1-.09 1.78l-2.89 4.21a1.423 1.423 0 0 1-1.05.61c-.213.04-1.21.06-2.99.06-1.78 0-2.776-.02-2.99-.06a1.432 1.432 0 0 1-1.05-.61l-2.89-4.2a1.714 1.714 0 0 1-.297-.874 1.73 1.73 0 0 1 .197-.906c.614-1.153 2.824-5.743 6.63-13.77a.316.316 0 0 1 .16-.16.555.555 0 0 1 .23-.05Z"/>
-      </svg>
-      <div class="hf-mast-text">
-        <div class="hf-mast-title">a conspiracy of <em>heretics</em></div>
-        <div class="hf-mast-sub">The Heretics House</div>
+    <div class="hf-grid-row">
+
+      <!-- MAST (column 1) -->
+      <div class="hf-mast">
+        <svg class="hf-mast-raven" viewBox="0 0 251 298" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Heretics lamplight raven">
+          <path fill="currentColor" d="M87.667 0c8.22 0 15.77 1.35 23.2 4.67a.857.857 0 0 1 .5.87l-2.24 22.54a.36.36 0 0 1-.124.243.399.399 0 0 1-.266.097c-.133-.007-7.157-.007-21.07 0-13.913 0-20.936.003-21.07.01a.399.399 0 0 1-.27-.1.36.36 0 0 1-.12-.25l-2.25-22.54a.863.863 0 0 1 .114-.52.846.846 0 0 1 .396-.35C71.887 1.35 79.437 0 87.667 0Zm106.142 182.66a.11.11 0 0 0-.155.015.113.113 0 0 0-.024.081.109.109 0 0 0 .039.074l55.82 55.82a.295.295 0 0 1 .063.324.296.296 0 0 1-.273.186h-20.48a.346.346 0 0 0-.339.412.35.35 0 0 0 .089.178l20.94 20.94c.359.358.56.844.56 1.35v34.7a.35.35 0 0 1-.21.313.325.325 0 0 1-.36-.073l-55.59-55.59a.108.108 0 0 0-.074-.04.114.114 0 0 0-.081.025.109.109 0 0 0-.039.074.113.113 0 0 0 .024.081c4.487 7.687 4.044 14.97-1.33 21.85a.905.905 0 0 1-1.048.292.912.912 0 0 1-.322-.212l-38.65-38.64a.34.34 0 0 0-.58.24v37.21a.724.724 0 0 1-.21.51l-27.15 27.15a.26.26 0 0 0 .19.44h13.7a.56.56 0 0 1 .56.56v6a.48.48 0 0 1-.48.48h-45.84c-.468 0-.917-.183-1.25-.51l-6.65-6.65a.54.54 0 0 0-.392-.165.568.568 0 0 0-.398.165l-6.73 6.73a.68.68 0 0 1-.96 0l-4.05-4.04a.71.71 0 0 1 0-1l11.68-11.68a.644.644 0 0 1 .448-.182c.167 0 .325.065.442.182l9.72 9.73c.25.243.584.38.93.38h17.92a1.61 1.61 0 0 0 1.14-.47l32.14-32.14a.337.337 0 0 0 .108-.252.357.357 0 0 0-.108-.258l-32.34-32.34a2.26 2.26 0 0 0-1.6-.66h-52.48a1.64 1.64 0 0 1-1.15-.48L42.51 207.3a.235.235 0 0 0-.116-.061.23.23 0 0 0-.273.221v6.01a.666.666 0 0 1-.414.619.664.664 0 0 1-.257.051h-5.74a.707.707 0 0 1-.495-.202.686.686 0 0 1-.205-.488v-13.02a1.5 1.5 0 0 0-.44-1.06l-9.84-9.84a.426.426 0 0 0-.457-.091.398.398 0 0 0-.133.091l-9.65 9.65c-.403.404-.63.947-.63 1.51v6.05c0 .088.036.171.1.233s.15.097.24.097h6.31a.322.322 0 0 0 .296-.191.303.303 0 0 0 .024-.119v-6.33a.608.608 0 0 1 .61-.61h5.93c.18 0 .354.071.481.196.128.126.2.296.2.474v12.7c0 .615.244 1.208.68 1.65l12.28 12.28a3.75 3.75 0 0 1 1.03 1.92l6.87 35.03a.943.943 0 0 1-.026.465.988.988 0 0 1-.245.405l-11.82 11.82a.23.23 0 0 0 .17.39h9a.522.522 0 0 1 .52.52v6.09a.491.491 0 0 1-.49.49H2.62a.259.259 0 0 1-.26-.26v-6.53c0-.085.033-.166.091-.226a.305.305 0 0 1 .22-.094h9.29a.194.194 0 0 0 .167-.118.192.192 0 0 0-.038-.202L.45 265.17a1.54 1.54 0 0 1-.42-1.39l6.78-34.55a4.066 4.066 0 0 1 1.13-2.12l12.42-12.42a.32.32 0 0 0 .073-.359.34.34 0 0 0-.125-.151.342.342 0 0 0-.188-.06H7.28a.542.542 0 0 1-.54-.54v-15.79c0-.57.227-1.117.63-1.52l16.61-16.61a.642.642 0 0 1 .9 0l39.18 39.18a.511.511 0 0 0 .72 0l21.33-21.32a.515.515 0 0 0 .146-.358.495.495 0 0 0-.146-.352l-39-38.99a2.08 2.08 0 0 1-.61-1.47V91.37a.33.33 0 0 0-.33-.33H30.52a.32.32 0 0 1-.25-.52l22.95-27.33a.29.29 0 0 0 .035-.297.267.267 0 0 0-.245-.153h-7.55a.25.25 0 0 1-.253-.29.25.25 0 0 1 .063-.13l21.55-25.68a.35.35 0 0 0 .046-.359.327.327 0 0 0-.296-.191H46.86a.36.36 0 0 1-.36-.36v-6.42a.32.32 0 0 1 .088-.22.295.295 0 0 1 .212-.09h82.31a.5.5 0 0 1 .5.5v6.08a.514.514 0 0 1-.146.36.496.496 0 0 1-.354.15h-19.66a.276.276 0 0 0-.157.046.277.277 0 0 0-.043.434l5.6 5.59c.352.351.806.586 1.3.67l27.84 4.6c.251.044.488.145.691.296.203.151.368.348.479.574l7.88 16.01a.411.411 0 0 1-.114.501.404.404 0 0 1-.166.079l-43.44 9.2a.742.742 0 0 0-.6.73v15.61a.622.622 0 0 0 .62.62h17.8c.877 0 1.718.345 2.34.96l88.46 88.46a.57.57 0 0 1 .099.665.58.58 0 0 1-.149.185c-7.82 6.22-15.846 6.667-24.08 1.34Zm-169.37 79.72c1.04 0 2.074-.003 3.1-.01a.478.478 0 0 1 .453.294.48.48 0 0 1 .037.186v6.56a.599.599 0 0 0 .6.6h4.27a1.57 1.57 0 0 0 1.11-.46l7.07-7.07a1.11 1.11 0 0 0 .3-1.02l-6.22-29.43a.62.62 0 0 0-.56-.48c-1.16-.087-4.546-.133-10.16-.14-5.606 0-8.99.043-10.15.13a.62.62 0 0 0-.56.48l-6.24 29.43a1.097 1.097 0 0 0 .3 1.02l7.07 7.08c.295.294.694.46 1.11.46h4.27a.599.599 0 0 0 .6-.6v-6.56a.478.478 0 0 1 .49-.49l3.11.02Z"></path>
+          <path fill="var(--lantern-flame, #F5D610)" d="M24.427 238.189c.08 0 .157.017.23.05a.316.316 0 0 1 .16.16c3.814 8.02 6.027 12.607 6.64 13.76a1.716 1.716 0 0 1-.09 1.78l-2.89 4.21a1.423 1.423 0 0 1-1.05.61c-.213.04-1.21.06-2.99.06-1.78 0-2.776-.02-2.99-.06a1.432 1.432 0 0 1-1.05-.61l-2.89-4.2a1.714 1.714 0 0 1-.297-.874 1.73 1.73 0 0 1 .197-.906c.614-1.153 2.824-5.743 6.63-13.77a.316.316 0 0 1 .16-.16.555.555 0 0 1 .23-.05Z"></path>
+        </svg>
+        <div class="hf-mast-text">
+          <div class="hf-mast-title">a conspiracy of <em>heretics</em></div>
+          <div class="hf-mast-sub">The Heretics House</div>
+        </div>
+        <a href="https://heretics.io/#contact" class="hf-mast-engage">Engage at heretics.io <span class="arr" aria-hidden="true">&rarr;</span></a>
       </div>
-    </div>
-
-    <p class="hf-intro">The desk diagnoses from the outside. The firm engages from the inside. The operators govern the work.</p>
-
-    <div class="hf-grid">
 
       <!-- THE FIRM -->
       <div class="hf-col" data-house="firm">
         <div class="hf-col-eyebrow">The Firm</div>
-        <a href="https://heretics.io" class="hf-col-name">Heretics</a>
-        <p class="hf-col-tag">Fractional GTM for cybersecurity. Engagement starts here.</p>
+        <a href="https://heretics.io/" class="hf-col-name">Heretics</a>
+        <p class="hf-col-tag">Fractional GTM for cybersecurity.</p>
         <nav class="hf-col-links">
-          <a href="https://heretics.io/#services"><span class="arr" aria-hidden="true">→</span>Services</a>
-          <a href="https://heretics.io/#blueprint"><span class="arr" aria-hidden="true">→</span>Blueprint</a>
-          <a href="https://heretics.io/#work"><span class="arr" aria-hidden="true">→</span>Work</a>
-          <a href="https://heretics.io/#system"><span class="arr" aria-hidden="true">→</span>The System</a>
-          <a href="https://work.heretics.io"><span class="arr" aria-hidden="true">→</span>Arcology Proof Library</a>
-          <a href="https://briefings.heretics.io"><span class="arr" aria-hidden="true">→</span>Briefings</a>
+          <a href="https://heretics.io/#services"><span class="arr" aria-hidden="true">&rarr;</span>Services</a>
+          <a href="https://heretics.io/#blueprint"><span class="arr" aria-hidden="true">&rarr;</span>Blueprint</a>
+          <a href="https://heretics.io/#work"><span class="arr" aria-hidden="true">&rarr;</span>Work</a>
+          <a href="https://heretics.io/#system"><span class="arr" aria-hidden="true">&rarr;</span>The System</a>
+          <a href="https://work.heretics.io/"><span class="arr" aria-hidden="true">&rarr;</span>Arcology Library</a>
+          <a href="https://briefings.heretics.io/"><span class="arr" aria-hidden="true">&rarr;</span>Briefings</a>
         </nav>
       </div>
 
       <!-- THE DESK -->
       <div class="hf-col" data-house="desk">
         <div class="hf-col-eyebrow">The Desk</div>
-        <a href="https://marketsinsecurity.com" class="hf-col-name">Markets InSecurity</a>
-        <p class="hf-col-tag">Independent GTM analysis for cybersecurity. Outside-in only.</p>
+        <a href="https://marketsinsecurity.com/" class="hf-col-name">Markets InSecurity</a>
+        <p class="hf-col-tag">Independent GTM analysis for cybersecurity.</p>
         <nav class="hf-col-links">
-          <a href="https://marketsinsecurity.com/dispatches"><span class="arr" aria-hidden="true">→</span>Dispatches</a>
-          <a href="https://atlas.marketsinsecurity.com"><span class="arr" aria-hidden="true">→</span>The Atlas</a>
-          <a href="https://marketsinsecurity.com/method"><span class="arr" aria-hidden="true">→</span>Method</a>
-          <a href="https://marketsinsecurity.com/faq"><span class="arr" aria-hidden="true">→</span>FAQ</a>
-          <a href="https://marketsinsecurity.com/independence"><span class="arr" aria-hidden="true">→</span>Editorial Independence</a>
+          <a href="https://marketsinsecurity.com/dispatches"><span class="arr" aria-hidden="true">&rarr;</span>Dispatches</a>
+          <a href="https://atlas.marketsinsecurity.com/"><span class="arr" aria-hidden="true">&rarr;</span>The Atlas</a>
+          <a href="https://marketsinsecurity.com/method"><span class="arr" aria-hidden="true">&rarr;</span>Method</a>
+          <a href="https://marketsinsecurity.com/faq"><span class="arr" aria-hidden="true">&rarr;</span>FAQ</a>
+          <a href="https://marketsinsecurity.com/independence"><span class="arr" aria-hidden="true">&rarr;</span>Editorial Independence</a>
+          <span class="is-coming"><span class="arr" aria-hidden="true">&rarr;</span>Sponsor the Desk <span class="coming-pill">SOON</span></span>
         </nav>
       </div>
 
       <!-- THE ARENA -->
       <div class="hf-col" data-house="arena">
         <div class="hf-col-eyebrow">The Arena</div>
-        <a href="https://arena.marketsinsecurity.com" class="hf-col-name">Arena</a>
-        <p class="hf-col-tag">Cyber vendors ranked by market strength, motion durability, competitive exposure.</p>
+        <a href="https://arena.marketsinsecurity.com/" class="hf-col-name">Arena</a>
+        <p class="hf-col-tag">Competitive evaluation under Markets InSecurity.</p>
         <nav class="hf-col-links">
-          <a href="https://arena.marketsinsecurity.com/kumite"><span class="arr" aria-hidden="true">→</span>Kumite</a>
-          <a href="https://arena.marketsinsecurity.com/banzuke"><span class="arr" aria-hidden="true">→</span>Banzuke</a>
-          <a href="https://arena.marketsinsecurity.com/divisions"><span class="arr" aria-hidden="true">→</span>Divisions</a>
-          <a href="https://arena.marketsinsecurity.com/codex"><span class="arr" aria-hidden="true">→</span>The Codex</a>
-          <a href="https://arena.marketsinsecurity.com/consolidation"><span class="arr" aria-hidden="true">→</span>Consolidation Board</a>
-          <span class="is-coming"><span class="arr" aria-hidden="true">→</span>Challenger&apos;s Gate <span class="coming-pill">COMING</span></span>
+          <a href="https://arena.marketsinsecurity.com/kumite"><span class="arr" aria-hidden="true">&rarr;</span>Kumite</a>
+          <a href="https://arena.marketsinsecurity.com/codex"><span class="arr" aria-hidden="true">&rarr;</span>The Codex</a>
+          <a href="https://arena.marketsinsecurity.com/consolidation"><span class="arr" aria-hidden="true">&rarr;</span>Consolidation Board</a>
+          <span class="is-coming"><span class="arr" aria-hidden="true">&rarr;</span>Challenger&apos;s Gate <span class="coming-pill">SOON</span></span>
         </nav>
       </div>
 
       <!-- THE OPERATORS -->
       <div class="hf-col" data-house="operators">
         <div class="hf-col-eyebrow">The Operators</div>
-        <a href="https://netherops.com" class="hf-col-name">NetherOps</a>
-        <p class="hf-col-tag">Governed revenue architecture. The doctrine, run.</p>
+        <a href="https://netherops.com/" class="hf-col-name">NetherOps</a>
+        <p class="hf-col-tag">Governed revenue architecture.</p>
         <nav class="hf-col-links">
-          <a href="https://netherops.com/#method"><span class="arr" aria-hidden="true">→</span>Method</a>
-          <a href="https://netherops.com/doctrine/#architecture"><span class="arr" aria-hidden="true">→</span>Architecture</a>
-          <a href="https://netherops.com/#doctrine"><span class="arr" aria-hidden="true">→</span>Doctrine</a>
-          <a href="https://app.netherops.com"><span class="arr" aria-hidden="true">→</span>OpptyCon</a>
-          <a href="https://netherops.com/#briefing"><span class="arr" aria-hidden="true">→</span>Briefing</a>
+          <a href="https://netherops.com/#method"><span class="arr" aria-hidden="true">&rarr;</span>Method</a>
+          <a href="https://netherops.com/doctrine/#architecture"><span class="arr" aria-hidden="true">&rarr;</span>Architecture</a>
+          <a href="https://netherops.com/#doctrine"><span class="arr" aria-hidden="true">&rarr;</span>Doctrine</a>
+          <a href="https://app.netherops.com/"><span class="arr" aria-hidden="true">&rarr;</span>OpptyCon</a>
+          <a href="https://netherops.com/#briefing"><span class="arr" aria-hidden="true">&rarr;</span>Briefing</a>
         </nav>
       </div>
 
-      <!-- UTILITY -->
-      <div class="hf-col" data-house="utility">
-        <div class="hf-col-eyebrow">Utility</div>
-        <span class="hf-col-name" style="cursor:default">Across the House</span>
-        <p class="hf-col-tag">Contact, contribute, comply.</p>
-        <nav class="hf-col-links">
-          <a href="https://heretics.io/#contact"><span class="arr" aria-hidden="true">→</span>Contact</a>
-          <span class="is-coming"><span class="arr" aria-hidden="true">→</span>Sponsor the Desk <span class="coming-pill">COMING</span></span>
-          <span class="is-coming"><span class="arr" aria-hidden="true">→</span>Submit to Kumite <span class="coming-pill">COMING</span></span>
-          <a href="https://heretics.io/ai"><span class="arr" aria-hidden="true">→</span>AI Statement</a>
-          <a href="https://www.linkedin.com/in/nicksorenson" rel="noopener noreferrer" target="_blank"><span class="arr" aria-hidden="true">→</span>LinkedIn</a>
-          <a href="https://marketsinsecurity.com/terms"><span class="arr" aria-hidden="true">→</span>Terms</a>
-          <a href="https://marketsinsecurity.com/privacy"><span class="arr" aria-hidden="true">→</span>Privacy</a>
-        </nav>
-      </div>
+    </div><!-- /hf-grid-row -->
 
-    </div>
-
-    <!-- Engagement bridge — only visible on non-Heretics properties (CSS-gated) -->
-    <div class="hf-engagement">
-      <a href="https://heretics.io/#contact" class="hf-engagement-link">Engagement starts at heretics.io <span aria-hidden="true">→</span></a>
-      <p class="hf-engagement-text">The desk diagnoses from the outside; the firm engages from the inside. If a teardown surfaces a motion problem you want fixed, that work happens at <strong style="color:#ECEAE3">heretics.io</strong> &mdash; not here.</p>
-    </div>
-
-    <div class="hf-legal">
-      <div class="hf-legal-row">
-        <span>&copy; 2026 The Heretics House. All rights reserved.</span>
-        <span>
-          <a href="https://marketsinsecurity.com/terms">Terms</a>
-          <span class="hf-legal-sep">&middot;</span>
-          <a href="https://marketsinsecurity.com/privacy">Privacy</a>
-        </span>
-      </div>
-      <div class="hf-attribution">
-        <span>Heretics is the commercial advisory firm.</span>
-        <span>Markets InSecurity is the independent analyst desk.</span>
-        <span>NetherOps is the governed revenue architecture layer.</span>
-      </div>
+    <div class="hf-legal-row">
+      <span>&copy; 2026 The Heretics House. All rights reserved.</span>
+      <span>
+        <a href="https://heretics.io/ai">AI Statement</a><span class="hf-legal-sep">&middot;</span><a href="https://www.linkedin.com/in/nicksorenson" rel="noopener noreferrer" target="_blank">LinkedIn</a><span class="hf-legal-sep">&middot;</span><a href="https://marketsinsecurity.com/terms">Terms</a><span class="hf-legal-sep">&middot;</span><a href="https://marketsinsecurity.com/privacy">Privacy</a>
+      </span>
     </div>
 
   </div>
