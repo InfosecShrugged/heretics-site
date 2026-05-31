@@ -180,6 +180,13 @@ section{padding:80px 0;border-top:0.5px solid var(--line)}
 .layers{list-style:none;margin-top:26px;display:grid;gap:9px}
 .layers li{font-family:var(--mono);font-size:12px;color:#B6B6AC;padding-left:20px;position:relative}
 .layers li:before{content:"+";position:absolute;left:0;color:var(--accent-ink)}
+
+/* Qualify list — "is this for me?" section. Sized between sec-sub and
+   sec-h; each row is a sentence, not a feature bullet, so the arrow marker
+   has more breathing room than .layers `+` does. */
+.qualify-list{list-style:none;margin-top:30px;display:grid;gap:14px;max-width:62ch}
+.qualify-list li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;font-family:var(--sans);font-size:16px;line-height:1.55;color:var(--ink)}
+.qualify-list .qualify-marker{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent-ink);transform:translateY(-1px)}
 .metrics{display:flex;gap:0;margin-top:30px;border:1px solid rgba(255,255,255,.12);flex-wrap:wrap}
 .met{flex:1;min-width:120px;padding:18px 20px;border-right:1px solid rgba(255,255,255,.12)}
 .met:last-child{border:none}
@@ -662,6 +669,8 @@ body.dark .hnav-toggle .icon-moon{display:none}
 </style>
 </head>
 <body>
+<style>.skip-link{position:absolute;left:8px;top:8px;transform:translateY(-150%);z-index:1000;padding:10px 16px;background:var(--accent-ink, var(--accent));color:var(--bg);font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em;text-decoration:none;border-radius:4px;transition:transform .15s cubic-bezier(.22,1,.36,1)}.skip-link:focus,.skip-link:focus-visible{transform:translateY(0);outline:2px solid var(--ink);outline-offset:2px}</style>
+<a href="#main-content" class="skip-link">Skip to content</a>
 <nav class="house-nav" id="houseNav">
   <div class="hnav-row">
     <div class="wrap">
@@ -851,7 +860,7 @@ body.dark .hnav-toggle .icon-moon{display:none}
     </div>
   </div>
 
-<header class="hero">
+<header id="main-content" class="hero">
   <span class="plus" style="top:80px;left:30px">+</span>
   <span class="plus" style="top:200px;right:30px">+</span>
   <div class="wrap">
@@ -869,6 +878,17 @@ body.dark .hnav-toggle .icon-moon{display:none}
     </div>
   </div>
 </header>
+
+<section id="qualify"><div class="wrap">
+  <div class="mono sec-label">// is this for me?</div>
+  <h2 class="sec-h">NetherOps is for you if&hellip;</h2>
+  <ul class="qualify-list">
+    <li><span class="qualify-marker" aria-hidden="true">&rarr;</span><span>Your pipeline model does not match your board plan.</span></li>
+    <li><span class="qualify-marker" aria-hidden="true">&rarr;</span><span>Marketing, sales, and finance disagree on revenue truth.</span></li>
+    <li><span class="qualify-marker" aria-hidden="true">&rarr;</span><span>You need a governed GTM operating model before adding spend.</span></li>
+    <li><span class="qualify-marker" aria-hidden="true">&rarr;</span><span>You are cyber, Series A to pre-IPO, with complex buying committees and long cycles.</span></li>
+  </ul>
+</div></section>
 
 <section id="method"><div class="wrap">
   <div class="mono sec-label">// the method</div>
