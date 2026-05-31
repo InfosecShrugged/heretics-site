@@ -615,7 +615,7 @@ html[data-property="opptycon"]  .hf-engagement {
    Click-open dropdowns; outside-click + Esc close. Mobile lives in F4.
    ============================================================================ */
 nav.house-nav{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:0.5px solid var(--line)}
-.hnav-row{display:flex;align-items:center;justify-content:space-between;gap:18px;height:62px}
+.hnav-row{display:flex;align-items:center;justify-content:space-between;gap:18px;height:62px;position:relative;z-index:2}
 .hnav-row .wrap{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%}
 .hnav-global{display:flex;align-items:center;gap:6px}
 .hnav-item{position:relative}
@@ -644,7 +644,7 @@ body.dark .hnav-toggle .icon-sun{display:block}
 body.dark .hnav-toggle .icon-moon{display:none}
 
 /* Property-local nav row */
-.hnav-local{border-top:0.5px solid rgba(0,0,0,0.04);background:transparent}
+.hnav-local{border-top:0.5px solid rgba(0,0,0,0.04);background:transparent;position:relative;z-index:1}
 body.dark .hnav-local{border-top-color:rgba(255,255,255,0.04)}
 .hnav-local .wrap{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;height:42px;gap:18px}
 .hnav-local-links{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
