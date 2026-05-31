@@ -644,6 +644,7 @@ h1 em, h2 em, h3 em { font-style: italic; color: var(--accent-ink); font-weight:
             <a class="hnav-dd-link" role="menuitem" href="https://heretics.io/#system"><span class="hnav-dd-name">The System</span><span class="hnav-dd-desc">Operating doctrine</span></a>
             <a class="hnav-dd-link" role="menuitem" href="https://work.heretics.io/"><span class="hnav-dd-name">Arcology Proof Library</span><span class="hnav-dd-desc">Sample engagement artifacts</span></a>
             <a class="hnav-dd-link" role="menuitem" href="https://briefings.heretics.io/"><span class="hnav-dd-name">Briefings</span><span class="hnav-dd-desc">Strategic account &amp; advisory briefings</span></a>
+            <a class="hnav-dd-link" role="menuitem" href="https://heretics.io/ai"><span class="hnav-dd-name">AI Statement</span><span class="hnav-dd-desc">Use the Machine: AI, accountability, provenance</span></a>
           </div>
         </div>
 
@@ -683,7 +684,7 @@ h1 em, h2 em, h3 em { font-style: italic; color: var(--accent-ink); font-weight:
             <a class="hnav-dd-link" role="menuitem" href="https://netherops.com/doctrine/#architecture"><span class="hnav-dd-name">Architecture</span><span class="hnav-dd-desc">The operating model</span></a>
             <a class="hnav-dd-link" role="menuitem" href="https://netherops.com/#doctrine"><span class="hnav-dd-name">Doctrine</span><span class="hnav-dd-desc">Principles, layers, agents, control logic</span></a>
             <a class="hnav-dd-link" role="menuitem" href="https://app.netherops.com/"><span class="hnav-dd-name">OpptyCon</span><span class="hnav-dd-desc">Revenue physics engine</span></a>
-            <a class="hnav-dd-link" role="menuitem" href="https://docs.heretics.io/"><span class="hnav-dd-name">Docs</span><span class="hnav-dd-desc">Methodology and product docs</span></a>
+            <a class="hnav-dd-link" role="menuitem" href="https://docs.netherops.com/"><span class="hnav-dd-name">Docs</span><span class="hnav-dd-desc">Methodology and product docs</span></a>
             <a class="hnav-dd-link" role="menuitem" href="https://netherops.com/#briefing"><span class="hnav-dd-name">Briefing</span><span class="hnav-dd-desc">Book a working session</span></a>
           </div>
         </div>
@@ -780,7 +781,7 @@ h1 em, h2 em, h3 em { font-style: italic; color: var(--accent-ink); font-weight:
         <a href="https://netherops.com/doctrine/#architecture">Architecture</a>
         <a href="https://netherops.com/#doctrine">Doctrine</a>
         <a href="https://app.netherops.com/">OpptyCon</a>
-        <a href="https://docs.heretics.io/">Docs</a>
+        <a href="https://docs.netherops.com/">Docs</a>
         <a href="https://netherops.com/#briefing">Briefing</a>
       </div>
     </details>
@@ -1164,7 +1165,7 @@ function showToast(msg){
           <a href="https://netherops.com/doctrine/#architecture"><span class="arr" aria-hidden="true">→</span>Architecture</a>
           <a href="https://netherops.com/#doctrine"><span class="arr" aria-hidden="true">→</span>Doctrine</a>
           <a href="https://app.netherops.com"><span class="arr" aria-hidden="true">→</span>OpptyCon</a>
-          <a href="https://docs.heretics.io"><span class="arr" aria-hidden="true">→</span>Docs</a>
+          <a href="https://docs.netherops.com"><span class="arr" aria-hidden="true">→</span>Docs</a>
           <a href="https://netherops.com/#briefing"><span class="arr" aria-hidden="true">→</span>Briefing</a>
         </nav>
       </div>
@@ -1178,6 +1179,7 @@ function showToast(msg){
           <a href="https://heretics.io/#contact"><span class="arr" aria-hidden="true">→</span>Contact</a>
           <a href="https://marketsinsecurity.com/sponsor"><span class="arr" aria-hidden="true">→</span>Sponsor the Desk</a>
           <a href="https://arena.marketsinsecurity.com/challengers"><span class="arr" aria-hidden="true">→</span>Submit to Kumite</a>
+          <a href="https://heretics.io/ai"><span class="arr" aria-hidden="true">→</span>AI Statement</a>
           <a href="https://www.linkedin.com/in/nicksorenson" rel="noopener noreferrer" target="_blank"><span class="arr" aria-hidden="true">→</span>LinkedIn</a>
           <a href="https://marketsinsecurity.com/terms"><span class="arr" aria-hidden="true">→</span>Terms</a>
           <a href="https://marketsinsecurity.com/privacy"><span class="arr" aria-hidden="true">→</span>Privacy</a>
@@ -1257,6 +1259,30 @@ function showToast(msg){
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && overlay.classList.contains('is-open')) setOpen(false);
   });
+})();
+</script>
+<script>
+/* Theme toggle + Heretics House bridge — default dark. Powers the .hnav-toggle
+   button (window.netherops_toggleTheme) AND the cross-property theme propagation
+   (HERETICS_LOCAL_THEME_KEY + HERETICS_APPLY_THEME consumed by heretics-house.js). */
+(function () {
+  var KEY = 'netherops-theme';
+  function apply(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'dark') document.body.classList.add('dark');
+    else document.body.classList.remove('dark');
+  }
+  function get() { try { return localStorage.getItem(KEY) || 'dark'; } catch (e) { return 'dark'; } }
+  function set(theme) { try { localStorage.setItem(KEY, theme); } catch (e) {} apply(theme); }
+  window.netherops_toggleTheme = function () {
+    var current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    var next = current === 'dark' ? 'light' : 'dark';
+    set(next);
+    if (typeof window.heretics_pushTheme === 'function') window.heretics_pushTheme(next);
+  };
+  window.HERETICS_LOCAL_THEME_KEY = KEY;
+  window.HERETICS_APPLY_THEME = function (mode) { apply(mode); };
+  apply(get());
 })();
 </script>
 </body>

@@ -11,7 +11,8 @@
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
 @font-face { font-family: 'TWK Everett'; src: url('/fonts/TWKEverett-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
 
-/* --- Tokens — canonical Heretics House light (warm paper #F4F1EA, violet accent) --- */
+/* --- Tokens — canonical Heretics House light (warm paper #F4F1EA, violet accent)
+       Dark-mode overrides at the bottom of this :root block (data-theme="dark"). --- */
 :root {
   --bg-base:      #F4F1EA;
   --bg-surface:   #FBFAF6;
@@ -28,6 +29,27 @@
   --border-subtle: rgba(20,18,14,0.07);
   --border-mid:    rgba(20,18,14,0.12);
   --border-strong: rgba(20,18,14,0.18);
+}
+
+/* Dark mode — flips the page-local tokens to match tokens.css dark canon. */
+[data-theme="dark"] {
+  --bg-base:      #121214;
+  --bg-surface:   #1A1A1E;
+  --bg-white:     #212126;
+  --bg-inverse:   #ECEAE3;
+  --bg-code:      #0A0A0D;
+  --bg-raised:    #212126;
+  --ink:          #ECEAE3;
+  --ink-mid:      #9A968C;
+  --ink-muted:    #6E6A62;
+  --ink-inv:      #1A1A1E;
+  --ink-inv-mid:  #57544D;
+  --border-subtle: rgba(255,255,255,0.07);
+  --border-mid:    rgba(255,255,255,0.12);
+  --border-strong: rgba(255,255,255,0.18);
+}
+
+:root {
   --accent:        var(--accent-ink);
   --accent-text:   #ECEAE3;
   --accent-lime:   var(--accent-ink);
