@@ -88,7 +88,7 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
 .topnav-logo { height: 22px; width: auto; display: block; }
 /* Canonical brand-lockup */
 .brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
-.brand-raven{width:28px;height:28px;flex-shrink:0;display:block;color:var(--accent)}
+.brand-raven{width:44px;height:44px;flex-shrink:0;display:block;color:var(--accent)}
 .brand-raven path{fill:currentColor}
 .brand-wordmark{display:inline-block;height:20px;width:120px;background-color:var(--ink);-webkit-mask:url('/assets/netherops-logo.svg') left center no-repeat;mask:url('/assets/netherops-logo.svg') left center no-repeat;-webkit-mask-size:auto 20px;mask-size:auto 20px;flex-shrink:0}
 .topnav-sep {
@@ -139,6 +139,14 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
   scrollbar-width: thin;
   scrollbar-color: var(--border-mid) transparent;
   z-index: 100;
+  transition: opacity .2s ease, visibility .2s;
+}
+/* T5: fade the sidebar when the footer enters the viewport so the
+   fixed rail doesn't sit on top of the .hf-mast or first footer column. */
+body.footer-in-view .sidebar {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 .sidebar::-webkit-scrollbar { width: 4px; }
 .sidebar::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
@@ -231,7 +239,7 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
 
 /* Layer cards */
 .layer-card {
-  background: var(--bg-white); border: 1px solid var(--border-mid);
+  background: var(--surface); border: 1px solid var(--border-mid);
   border-radius: 8px; padding: 24px; margin-bottom: 12px;
   transition: border-color var(--dur);
 }
@@ -260,7 +268,7 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
 
 /* Agent cards */
 .agent-card {
-  background: var(--bg-white); border-left: 3px solid var(--accent);
+  background: var(--surface); border-left: 3px solid var(--accent);
   border-radius: 0 8px 8px 0; padding: 24px; margin-bottom: 12px;
   border-top: 1px solid var(--border-subtle);
   border-right: 1px solid var(--border-subtle);
@@ -282,7 +290,7 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
 
 /* Code/callout blocks */
 .callout {
-  background: var(--bg-white); border: 1px solid var(--border-mid);
+  background: var(--surface); border: 1px solid var(--border-mid);
   border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
   padding: 20px 24px; margin: 24px 0;
 }
@@ -314,7 +322,7 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
   display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0;
 }
 .sov-cell {
-  background: var(--bg-white); border: 1px solid var(--border-mid);
+  background: var(--surface); border: 1px solid var(--border-mid);
   border-radius: 8px; padding: 20px;
 }
 .sov-cell-label {
@@ -699,7 +707,7 @@ html[data-property="opptycon"]  .hf-engagement {
    Click-open dropdowns; outside-click + Esc close. Mobile lives in F4.
    ============================================================================ */
 nav.house-nav{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:0.5px solid var(--line)}
-.hnav-row{display:flex;align-items:center;justify-content:space-between;gap:18px;height:62px;position:relative;z-index:2}
+.hnav-row{display:flex;align-items:center;justify-content:space-between;gap:18px;height:72px;position:relative;z-index:2}
 .hnav-row .wrap{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%}
 .hnav-global{display:flex;align-items:center;gap:6px}
 .hnav-item{position:relative}
@@ -1115,7 +1123,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
             <a class="hnav-dd-link" role="menuitem" href="https://netherops.com/#method"><span class="hnav-dd-name">Method</span><span class="hnav-dd-desc">Revenue governance in operating practice</span></a>
             <a class="hnav-dd-link" role="menuitem" href="https://netherops.com/doctrine/#architecture"><span class="hnav-dd-name">Architecture</span><span class="hnav-dd-desc">The operating model</span></a>
             <a class="hnav-dd-link" role="menuitem" href="https://netherops.com/#doctrine"><span class="hnav-dd-name">Doctrine</span><span class="hnav-dd-desc">Principles, layers, agents, control logic</span></a>
-            <a class="hnav-dd-link" role="menuitem" href="https://app.netherops.com/"><span class="hnav-dd-name">OpptyCon</span><span class="hnav-dd-desc">Revenue physics engine</span></a>
+            <a class="hnav-dd-link" role="menuitem" href="https://heretics.io/opptycon"><span class="hnav-dd-name">OpptyCon</span><span class="hnav-dd-desc">Revenue physics engine</span></a>
             <a class="hnav-dd-link" role="menuitem" href="https://netherops.com/#briefing"><span class="hnav-dd-name">Briefing</span><span class="hnav-dd-desc">Book a working session</span></a>
           </div>
         </div>
@@ -1154,7 +1162,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
       <div class="hnav-local-links">
         <a href="/#method">Method</a>
         <a href="/doctrine/#architecture">Architecture</a>
-        <a href="https://app.netherops.com">OpptyCon</a>
+        <a href="https://heretics.io/opptycon">OpptyCon</a>
         <a href="/#doctrine">Doctrine</a>
         <a href="/#briefing">Briefing</a>
         <a href="/roadmap">Roadmap</a>
@@ -1211,7 +1219,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
         <a href="https://netherops.com/#method">Method</a>
         <a href="https://netherops.com/doctrine/#architecture">Architecture</a>
         <a href="https://netherops.com/#doctrine">Doctrine</a>
-        <a href="https://app.netherops.com/">OpptyCon</a>
+        <a href="https://heretics.io/opptycon">OpptyCon</a>
         <a href="https://netherops.com/#briefing">Briefing</a>
       </div>
     </details>
@@ -1232,7 +1240,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
       <div class="hnav-mobile-local-links">
         <a href="/#method">Method</a>
         <a href="/doctrine/#architecture">Architecture</a>
-        <a href="https://app.netherops.com">OpptyCon</a>
+        <a href="https://heretics.io/opptycon">OpptyCon</a>
         <a href="/#doctrine">Doctrine</a>
         <a href="/#briefing">Briefing</a>
         <a href="/roadmap">Roadmap</a>
@@ -2139,7 +2147,7 @@ document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
           <a href="https://netherops.com/#method"><span class="arr" aria-hidden="true">&rarr;</span>Method</a>
           <a href="https://netherops.com/doctrine/#architecture"><span class="arr" aria-hidden="true">&rarr;</span>Architecture</a>
           <a href="https://netherops.com/#doctrine"><span class="arr" aria-hidden="true">&rarr;</span>Doctrine</a>
-          <a href="https://app.netherops.com/"><span class="arr" aria-hidden="true">&rarr;</span>OpptyCon</a>
+          <a href="https://heretics.io/opptycon"><span class="arr" aria-hidden="true">&rarr;</span>OpptyCon</a>
           <a href="https://netherops.com/#briefing"><span class="arr" aria-hidden="true">&rarr;</span>Briefing</a>
         </nav>
       </div>
@@ -2226,6 +2234,19 @@ document.querySelectorAll('[data-opptycon-launch]').forEach(el => {
   window.HERETICS_LOCAL_THEME_KEY = KEY;
   window.HERETICS_APPLY_THEME = function (mode) { apply(mode); };
   apply(get());
+})();
+</script>
+<script>
+/* T5: hide the fixed sidebar when the footer enters the viewport. */
+(function () {
+  var footer = document.querySelector('.house-footer');
+  if (!footer || typeof IntersectionObserver === 'undefined') return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      document.body.classList.toggle('footer-in-view', e.isIntersecting);
+    });
+  }, { rootMargin: '0px', threshold: 0 });
+  io.observe(footer);
 })();
 </script>
 </body>
