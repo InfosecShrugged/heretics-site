@@ -19,8 +19,7 @@ nav.legacy-topnav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,
 .brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
 .brand-raven{width:44px;height:44px;flex-shrink:0;display:block;color:var(--accent-ink)}
 .brand-raven path{fill:currentColor}
-/* SVG mask-image — same approach as heretics-home + arena + atlas brand-wordmarks. */
-.brand-wordmark{display:inline-block;height:36px;width:230px;background-color:var(--ink);-webkit-mask:url('/assets/netherops-logo.svg') left center no-repeat;mask:url('/assets/netherops-logo.svg') left center no-repeat;-webkit-mask-size:auto 36px;mask-size:auto 36px;flex-shrink:0}
+.brand-wordmark{display:inline-block;height:36px;width:auto;color:var(--ink);flex-shrink:0;vertical-align:middle}
 .nav-r{display:flex;align-items:center;gap:22px}
 .nav-r a{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--mut);transition:color .2s}
 .nav-r a:hover{color:var(--ink)}
@@ -580,7 +579,7 @@ body.dark .hnav-local{border-top-color:rgba(255,255,255,0.04)}
   .hnav-global .hnav-cta-wrap{display:none}
   .hnav-row .wrap{padding:0 18px;gap:10px}
   .brand-raven{width:36px;height:36px}
-  .brand-wordmark{height:24px;width:140px;-webkit-mask-size:auto 24px;mask-size:auto 24px}
+  .brand-wordmark{height:24px;width:auto}
   .hnav-toggle{width:36px;height:36px;margin-left:6px}
   .hnav-burger{margin-left:4px}
 }
