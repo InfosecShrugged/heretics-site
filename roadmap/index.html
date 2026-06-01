@@ -723,28 +723,23 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
   <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Theme-bound tokens (--bg, --surface, --ink, --mut, --faint, --line,
+       --accent-ink, --display, --sans, --mono) come from /styles/tokens.css.
+       Only locally-scoped page-specific tokens live here. Aliases below
+       re-bind older roadmap class names to current theme tokens so the
+       light/dark toggle actually applies. */
     :root {
-      --bg: #F4F1EA;
-      --surface: #FBFAF6;
-      --white: #FFFFFF;
-      --ink: #1A1A1E;
-      --ink-mid: #57544D;
-      --ink-dim: #8E8A80;
-      --rose: #5B3DF0;
-      --lime: #5B3DF0;
+      --white: var(--raised);
+      --ink-mid: var(--mut);
+      --ink-dim: var(--faint);
+      --rose: var(--accent-ink);
+      --lime: var(--accent-ink);
       --amber: #C07800;
       --blue: #2563EB;
       --green: #1A8A4A;
-      --red: #CC3340;
-      --border: rgba(20,18,14,0.12);
-      --border-soft: rgba(20,18,14,0.07);
-      --mono: 'JetBrains Mono', monospace;
-      /* Restored to brand canon: --display drives Fraunces for headings;
-         body uses --sans (TWK Everett). Earlier rule had --display pointing
-         at TWK Everett which (a) defeated Fraunces on h1/h2 and (b) pulled
-         double duty for body where --sans should live. */
-      --display: 'Fraunces', Georgia, 'Times New Roman', serif;
-      --sans: 'TWK Everett', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --red: var(--accent-ink);
+      --border: var(--line);
+      --border-soft: var(--line);
     }
     * { box-sizing: border-box; }
     body {
@@ -912,7 +907,6 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
         <a href="/architecture/">Architecture</a>
         <a href="https://heretics.io/opptycon">OpptyCon</a>
         <a href="/#doctrine">Doctrine</a>
-        <a href="/#briefing">Briefing</a>
         <a href="/roadmap">Roadmap</a>
       </div>
     </div>
@@ -968,7 +962,6 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
         <a href="https://netherops.com/architecture/">Architecture</a>
         <a href="https://netherops.com/#doctrine">Doctrine</a>
         <a href="https://heretics.io/opptycon">OpptyCon</a>
-        <a href="https://netherops.com/#briefing">Briefing</a>
       </div>
     </details>
 
@@ -990,7 +983,6 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
         <a href="/architecture/">Architecture</a>
         <a href="https://heretics.io/opptycon">OpptyCon</a>
         <a href="/#doctrine">Doctrine</a>
-        <a href="/#briefing">Briefing</a>
         <a href="/roadmap">Roadmap</a>
       </div>
     </div>
