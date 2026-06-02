@@ -73,13 +73,13 @@ nav.legacy-topnav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,
 .coverbar{display:flex;gap:34px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mut);margin-bottom:40px;flex-wrap:wrap}
 .coverbar b{color:var(--ink);font-weight:500}
 h1{font-family:var(--display);font-weight:425;font-size:clamp(36px, 6vw, 84px);line-height:1.08;letter-spacing:-0.025em;max-width:14ch;color:var(--ink);min-height:2.6em;font-variation-settings: normal;text-transform:uppercase;letter-spacing:-.02em}
-#heroH1{font-variation-settings:"opsz" 144,"wght" 425,"SOFT" 70,"WONK" 1}
+#heroH1{font-variation-settings:"opsz" 144,"wght" 425,"SOFT" 70,"WONK" 1;min-height:auto}
 h1 em{font-style:italic;color:var(--accent-ink);font-weight:425}
 h1 .dot{color:var(--accent-ink)}
 h1 .accent{color:var(--accent-ink);font-style:italic}
 h1 .cursor{display:inline-block;width:0.04em;height:0.78em;background:var(--accent-ink);margin-left:0.05em;vertical-align:-0.06em;animation:caret 0.7s step-end infinite}
 @keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
-.hero-tagline{font-family:var(--display);font-style:italic;font-weight:425;font-size:clamp(18px,2.4vw,28px);line-height:1.2;letter-spacing:-0.012em;color:var(--accent-ink);max-width:34ch;margin-top:18px;opacity:0;transform:translateY(10px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease);font-variation-settings: normal}
+.hero-tagline{font-family:var(--display);font-style:italic;font-weight:425;font-size:clamp(22px,2.9vw,34px);line-height:1.22;letter-spacing:-0.012em;color:var(--accent-ink);max-width:34ch;margin-top:20px;font-variation-settings: normal}
 .hero-tagline.visible{opacity:1;transform:translateY(0)}
 .lede{font-family:var(--sans);font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:var(--mut);max-width:54ch;margin-top:24px}
 .lede b{color:var(--ink);font-weight:500}
@@ -1113,7 +1113,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
     <div class="hero-split">
       <div class="hero-copy">
         <div class="coverbar"><span>Coverage / <b>Cybersecurity GTM</b></span><span>Stage / <b>Series A → pre-IPO</b></span><span>Method / <b>Governed ↑</b></span></div>
-        <h1 id="heroH1" aria-label="You merely adopted RevOps."><span class="cursor"></span></h1>
+        <h1 id="heroH1">You merely<br>adopted RevOps<span class="dot">.</span></h1>
         <p class="hero-tagline" id="heroTagline">NetherOps was born in it. Molded by it.</p>
         <p class="lede">GTM engineering for cybersecurity companies — Series A through pre-IPO. <b>Operator-run. Method-governed. Engine-supported.</b></p>
         <div class="cta-row">
@@ -1325,86 +1325,8 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
 </svg>
 
 <script>
-/* Hero typewriter — types the H1 character by character, with explicit line breaks
-   and a violet final period. After complete, fades in the violet tagline.
-   Honors prefers-reduced-motion: jumps to final state without animation. */
-(function(){
-  const h1 = document.getElementById('heroH1');
-  const tag = document.getElementById('heroTagline');
-  if (!h1 || !tag) return;
-
-  const segments = [
-    {t:'text', v:"You merely"}, {t:'br'},
-    {t:'text', v:"adopted RevOps"}, {t:'dot'},
-  ];
-  const CHAR_MS = 55;
-  const BREAK_MS = 110;
-  const POST_MS = 350;
-
-  function reduceMotion() {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }
-
-  function render(buf, withCursor) {
-    h1.innerHTML = buf + (withCursor ? '<span class="cursor"></span>' : '');
-  }
-
-  function finish() {
-    // strip cursor; pause; then reveal tagline (with its own slow fade transition)
-    let final = '';
-    let openAccent = false;
-    for (const s of segments) {
-      if (s.t === 'text') {
-        if (s.c === 'accent' && !openAccent) { final += '<span class="accent">'; openAccent = true; }
-        final += s.v;
-      } else if (s.t === 'br') {
-        if (openAccent) { final += '</span>'; openAccent = false; }
-        final += '<br>';
-      } else if (s.t === 'dot') {
-        var dc = s.c === 'accent' ? 'dot accent-dot' : 'dot';
-        final += '<span class="' + dc + '">.</span>';
-      }
-    }
-    if (openAccent) final += '</span>';
-    h1.innerHTML = final;
-    // Hold the H1 alone for a beat before the tagline arrives — gives the line room to land.
-    setTimeout(() => tag.classList.add('visible'), 750);
-  }
-
-  if (reduceMotion()) { finish(); return; }
-
-  let buf = '';
-  let segIdx = 0, charIdx = 0;
-  let accentOpen = false;
-
-  function tick() {
-    if (segIdx >= segments.length) { finish(); return; }
-    const seg = segments[segIdx];
-    if (seg.t === 'br') {
-      // Close any open accent run before the linebreak
-      if (accentOpen) { buf += '</span>'; accentOpen = false; }
-      buf += '<br>'; segIdx++; charIdx = 0;
-      render(buf, true); setTimeout(tick, BREAK_MS);
-    } else if (seg.t === 'text') {
-      if (charIdx === 0 && seg.c === 'accent' && !accentOpen) {
-        buf += '<span class="accent">'; accentOpen = true;
-      }
-      if (charIdx < seg.v.length) {
-        buf += seg.v[charIdx]; charIdx++;
-        render(buf, true); setTimeout(tick, CHAR_MS);
-      } else {
-        segIdx++; charIdx = 0; setTimeout(tick, BREAK_MS);
-      }
-    } else if (seg.t === 'dot') {
-      var dotClass = seg.c === 'accent' ? 'dot accent-dot' : 'dot';
-      buf += '<span class="' + dotClass + '">.</span>'; segIdx++;
-      render(buf, true); setTimeout(tick, POST_MS);
-    }
-  }
-
-  // Brief delay so the page lands before typing starts
-  setTimeout(tick, 400);
-})();
+/* Hero is static markup now — typewriter removed. The H1 and the violet
+   tagline render directly in the DOM, no typing, no fade-in. */
 
 /* Briefing form — swap to thank-you state on ?briefing=ok return from Netlify Forms */
 (function(){
