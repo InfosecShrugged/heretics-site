@@ -25,3 +25,7 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Font binaries — never track (licensing; see font-migration-plan)
+*.otf
+*.ttf
