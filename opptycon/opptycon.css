@@ -94,7 +94,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 425;
   line-height: 1.08;
   letter-spacing: -0.015em;
-  font-variation-settings: "opsz" 144, "wght" 425, "SOFT" 70, "WONK" 1;
+  font-variation-settings: "opsz" 144, "wght" 425, "SOFT" 0, "WONK" 0;
 }
 h1 em, h2 em, h3 em { font-style: italic; color: var(--accent-violet); font-weight: 425; }
 
@@ -405,7 +405,7 @@ img { max-width: 100%; display: block; }
   max-width: 18ch;
   letter-spacing: -0.012em;
   line-height: 1.02;
-  font-variation-settings: "opsz" 144, "wght" 425, "SOFT" 70, "WONK" 1;
+  font-variation-settings: "opsz" 144, "wght" 425, "SOFT" 0, "WONK" 0;
 }
 
 .page-hero h1 em {
@@ -480,7 +480,7 @@ img { max-width: 100%; display: block; }
   letter-spacing: -0.015em;
   margin-bottom: 16px;
   max-width: 640px;
-  font-variation-settings: "opsz" 96, "wght" 375, "SOFT" 70, "WONK" 1;
+  font-variation-settings: "opsz" 96, "wght" 375, "SOFT" 0, "WONK" 0;
 }
 .section h2 em { font-style: italic; color: var(--accent-violet); font-weight: 375; }
 
