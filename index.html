@@ -78,7 +78,7 @@ h1 .dot{color:var(--accent-ink)}
 h1 .accent{color:var(--accent-ink);font-style:italic}
 h1 .cursor{display:inline-block;width:0.04em;height:0.78em;background:var(--accent-ink);margin-left:0.05em;vertical-align:-0.06em;animation:caret 0.7s step-end infinite}
 @keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
-.hero-tagline{font-family:var(--display);font-style:italic;font-weight:425;font-size:clamp(18px,2.4vw,28px);line-height:1.2;letter-spacing:-0.012em;color:var(--accent-ink);max-width:34ch;margin-top:18px;opacity:0;transform:translateY(10px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease);font-variation-settings:"opsz" 96,"wght" 425,"SOFT" 0, "WONK" 0}
+.hero-tagline{font-family:var(--display);font-style:italic;font-weight:425;font-size:clamp(18px,2.4vw,28px);line-height:1.2;letter-spacing:-0.012em;color:var(--accent-ink);max-width:34ch;margin-top:18px;opacity:0;transform:translateY(10px);transition:opacity 1.4s var(--ease),transform 1.4s var(--ease);font-variation-settings:"opsz" 96,"wght" 425,"SOFT" 70,"WONK" 1}
 .hero-tagline.visible{opacity:1;transform:translateY(0)}
 .lede{font-family:var(--sans);font-size:clamp(15px,1.4vw,18px);line-height:1.6;color:var(--mut);max-width:54ch;margin-top:24px}
 .lede b{color:var(--ink);font-weight:500}
@@ -1112,8 +1112,8 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
     <div class="hero-split">
       <div class="hero-copy">
         <div class="coverbar"><span>Coverage / <b>Cybersecurity GTM</b></span><span>Stage / <b>Series A → pre-IPO</b></span><span>Method / <b>Governed ↑</b></span></div>
-        <h1 id="heroH1" aria-label="Don't just operate cyber GTM. Govern it."><span class="cursor"></span></h1>
-        <p class="hero-tagline" id="heroTagline">Because cybersecurity GTM should run on thresholds, not opinions.</p>
+        <h1 id="heroH1" aria-label="You merely adopted RevOps."><span class="cursor"></span></h1>
+        <p class="hero-tagline" id="heroTagline">NetherOps was born in it. Molded by it.</p>
         <p class="lede">GTM engineering for cybersecurity companies — Series A through pre-IPO. <b>Operator-run. Method-governed. Engine-supported.</b></p>
         <div class="cta-row">
           <a href="/#cta" class="btn">Book a Briefing →</a>
@@ -1333,9 +1333,8 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
   if (!h1 || !tag) return;
 
   const segments = [
-    {t:'text', v:"Don't just"}, {t:'br'},
-    {t:'text', v:"operate cyber GTM"}, {t:'dot'}, {t:'br'},
-    {t:'text', v:"Govern it", c:'accent'}, {t:'dot', c:'accent'},
+    {t:'text', v:"You merely"}, {t:'br'},
+    {t:'text', v:"adopted RevOps"}, {t:'dot'},
   ];
   const CHAR_MS = 55;
   const BREAK_MS = 110;
