@@ -97,6 +97,9 @@ h1, h2, h3, h4, h5, h6 {
   font-variation-settings: normal;
 }
 h1 em, h2 em, h3 em { font-style: italic; color: var(--accent-violet); font-weight: 425; }
+/* Hero — characterful display Fraunces (matches the house homepage heroes) */
+.page-hero h1 { font-variation-settings: "opsz" 144, "wght" 425, "SOFT" 70, "WONK" 1; }
+.page-hero h1 em { font-variation-settings: "opsz" 144, "wght" 425, "SOFT" 70, "WONK" 1; }
 
 code, .mono {
   font-family: var(--font-mono);
