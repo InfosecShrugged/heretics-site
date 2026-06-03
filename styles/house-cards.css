@@ -1,0 +1,89 @@
+/* ============================================================
+   HOUSE CARDS — canonical card component (locked 2026-06-02)
+   Spec: house-card-standard-2026-06-02.
+   ONE component, consumed by every property. Per-property files set
+   ONLY  --accent / --accent-ink  and  --line-soft  (in tokens.css).
+
+   Variant A — .acard-grid   Index / taxonomy (shared-border grid)
+   Variant B — .acard        Atlas card (offerings / destinations)
+   Modifier  — .acard.gateway Cross-property doorway ("main course")
+   ============================================================ */
+
+:root { --card-radius: 6px; --card-pad: 30px; --card-gap: 20px; }
+
+/* ---------- Variant B row container ---------- */
+.acard-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--card-gap); margin-top: 40px; }
+.acard-row.three { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 720px) { .acard-row, .acard-row.three { grid-template-columns: 1fr; } }
+
+/* ---------- Variant B — the Atlas card ---------- */
+.acard {
+  position: relative;
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--card-radius);
+  padding: var(--card-pad);
+  min-height: 300px;
+  text-decoration: none; color: inherit;
+  transition: transform .25s var(--ease, cubic-bezier(.22,1,.36,1)), background .25s;
+}
+.acard:hover { transform: translateY(-2px); }
+/* accent L-brackets, both top corners */
+.acard::before, .acard::after {
+  content: ""; position: absolute; top: -1px; width: 26px; height: 26px; pointer-events: none;
+}
+.acard::before { left: -1px; border-top: 2px solid var(--accent-ink); border-left: 2px solid var(--accent-ink); border-top-left-radius: var(--card-radius); }
+.acard::after  { right: -1px; border-top: 2px solid var(--accent-ink); border-right: 2px solid var(--accent-ink); border-top-right-radius: var(--card-radius); }
+
+.acard .eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink); margin-bottom: 12px; display: flex; align-items: center; gap: 9px;
+}
+.acard .eyebrow::before { content: ""; width: 18px; height: 1.5px; background: var(--accent-ink); display: inline-block; flex: none; }
+.acard .meta {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--faint); margin-bottom: 18px;
+}
+.acard h3 {
+  font-family: var(--display); font-variation-settings: "opsz" 30, "wght" 560;
+  font-size: 23px; letter-spacing: -.014em; line-height: 1.12; color: var(--ink); margin: 0 0 16px;
+}
+.acard p { font-size: 15px; line-height: 1.55; color: var(--mut); max-width: 36ch; margin: 0 0 auto; }
+.acard .lnk {
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent-ink); text-decoration: none; margin-top: 28px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.acard .lnk .arr { transition: transform .15s; display: inline-block; }
+.acard:hover .lnk .arr, .acard .lnk:hover .arr { transform: translateX(4px); }
+
+/* ---------- .gateway — cross-property doorway (main course) ---------- */
+.acard.gateway { padding: 38px 34px; background: var(--raised); }
+.acard.gateway::before, .acard.gateway::after { width: 34px; height: 34px; border-width: 3px; }
+.acard.gateway h3 { font-variation-settings: "opsz" 40, "wght" 600; font-size: 30px; color: var(--accent-ink); margin-bottom: 18px; }
+.acard.gateway p { font-size: 15.5px; max-width: 34ch; }
+.acard.gateway .lnk { margin-top: 32px; }
+
+/* ---------- Variant A — Index / Grid (taxonomies read as a whole) ---------- */
+.acard-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--line); border-radius: var(--card-radius); overflow: hidden;
+}
+.acard-grid .acard-cell { padding: 26px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.acard-grid .acard-cell:nth-child(3n) { border-right: none; }
+.acard-grid .acard-cell:nth-last-child(-n+3) { border-bottom: none; }
+.acard-grid .num {
+  font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--accent-ink); margin-bottom: 14px;
+}
+.acard-grid h3 {
+  font-family: var(--display); font-variation-settings: "opsz" 30, "wght" 560;
+  font-size: 20px; letter-spacing: -.012em; line-height: 1.15; color: var(--ink); margin: 0 0 12px;
+}
+.acard-grid p { font-size: 14px; line-height: 1.5; color: var(--mut); max-width: 34ch; margin: 0; }
+@media (max-width: 720px) {
+  .acard-grid { grid-template-columns: 1fr; }
+  .acard-grid .acard-cell { border-right: none; }
+  .acard-grid .acard-cell:last-child { border-bottom: none; }
+}
