@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#16161A" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#F4F1EA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101014" media="(prefers-color-scheme: light)">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Y14KHPXRM"></script>
 <script>
@@ -33,35 +33,35 @@
 
 
 :root {
-  --bg:          #F4F1EA;
-  --bg-panel:    #EAE6DC;
-  --bg-card:     #FFFFFF;
-  --bg-hover:    #FBFAF6;
-  --bg-formula:  #EAE6DC;
-  --text-1:      #1A1A1E;
-  --text-2:      #57544D;
-  --text-3:      #8E8A80;
-  --border:      rgba(20,18,14,0.07);
-  --border-s:    rgba(20,18,14,0.12);
-  --accent:      #5B3DF0;
-  --scrollbar:   rgba(20,18,14,0.13);
+  --bg:          #101014;
+  --bg-panel:    #1A1A1E;
+  --bg-card:     #1E1E23;
+  --bg-hover:    #24242B;
+  --bg-formula:  #1A1A1E;
+  --text-1:      #ECEAE3;
+  --text-2:      #9A968C;
+  --text-3:      #7E7A74;
+  --border:      rgba(255,255,255,0.06);
+  --border-s:    rgba(255,255,255,0.14);
+  --accent:      #8C73FF;
+  --scrollbar:   rgba(255,255,255,0.13);
 
   --bg-inverse:  #16161A;
-  --accent-lime: #5B3DF0;
-  --border-strong: rgba(20,18,14,0.18);
+  --accent-lime: #8C73FF;
+  --border-strong: rgba(255,255,255,0.18);
   --dur:         200ms;
 
-  --c-build:     #B83030;
-  --c-vendor:    #1565C0;
-  --c-hybrid:    #D9622B;
-  --c-never:     #B83030;
-  --c-feedback:  #2A4A6B;
-  --c-orchestrate: #6D2B8A;
-  --c-signal:    #1A7A6A;
-  --c-icp:       #D9622B;
-  --c-gravity:   #B83030;
-  --c-ledger:    #4A4A90;
-  --c-portfolio: #6D2B8A;
+  --c-build:     #E26A6A;
+  --c-vendor:    #5B9BE0;
+  --c-hybrid:    #E8965A;
+  --c-never:     #E26A6A;
+  --c-feedback:  #6E96C4;
+  --c-orchestrate: #B36ED1;
+  --c-signal:    #4FC2AE;
+  --c-icp:       #E8965A;
+  --c-gravity:   #E26A6A;
+  --c-ledger:    #8888D6;
+  --c-portfolio: #B36ED1;
 
   --ease: cubic-bezier(0.22,1,0.36,1);
   --fast: 140ms;
@@ -73,12 +73,12 @@
   /* Tokens consumed by the shared <heretics-house-map>, mapped from local
      tokens. Fallback chain covers all 6 token-naming variants used across
      the NetherOps subpages (--bg-base/--bg/--gy, etc.). */
-  --house-bg: var(--bg-base, var(--bg, var(--gy, #D6D6D1)));
-  --house-ink: var(--ink, var(--bk, #111111));
-  --house-mut: var(--ink-mid, var(--muted, var(--g7, #555555)));
-  --house-faint: var(--ink-muted, var(--faint, var(--g5, #909090)));
-  --house-line: var(--border-mid, var(--border, var(--border-strong, var(--g3, rgba(0,0,0,0.16)))));
-  --house-accent: var(--accent-violet, var(--accent, var(--or, #5B3DF0)));
+  --house-bg: var(--bg-base, var(--bg, var(--gy, #101014)));
+  --house-ink: var(--ink, var(--bk, #ECEAE3));
+  --house-mut: var(--ink-mid, var(--muted, var(--g7, #9A968C)));
+  --house-faint: var(--ink-muted, var(--faint, var(--g5, #7E7A74)));
+  --house-line: var(--border-mid, var(--border, var(--border-strong, var(--g3, rgba(255,255,255,0.14)))));
+  --house-accent: var(--accent-violet, var(--accent, var(--or, #8C73FF)));
 }
 
 .mode-warroom{
@@ -1305,7 +1305,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#C07800;margin-bottom:6px;">
     Positioning — current; implementation is roadmap
   </div>
-  <div style="font-size:13px;line-height:1.6;color:#555;margin:0;">
+  <div style="font-size:13px;line-height:1.6;color:#9A968C;margin:0;">
     The framework's build-vs-buy stance per layer is current positioning. The specific implementation details (the adjudicator core, portfolio-engine variation, layer-by-layer software decisions) are on the roadmap. See <a href="/roadmap/" style="color:#C07800;text-decoration:underline;text-underline-offset:2px;">the roadmap</a> for shipped / on-roadmap / research status per claim.
   </div>
 </div>
@@ -1606,7 +1606,7 @@ function showToast(msg) {
 
 
 <!-- Legal links to heretics.io canonical Terms/Privacy -->
-<div style="text-align:center;padding:24px 16px;font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:0.1em;color:rgba(0,0,0,0.45);text-transform:uppercase"><a href="https://heretics.io/terms" style="color:inherit;text-decoration:none;margin:0 12px">Terms</a> · <a href="https://heretics.io/privacy" style="color:inherit;text-decoration:none;margin:0 12px">Privacy</a></div>
+<div style="text-align:center;padding:24px 16px;font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.45);text-transform:uppercase"><a href="https://heretics.io/terms" style="color:inherit;text-decoration:none;margin:0 12px">Terms</a> · <a href="https://heretics.io/privacy" style="color:inherit;text-decoration:none;margin:0 12px">Privacy</a></div>
 <footer class="house-footer">
   <div class="wrap">
 
