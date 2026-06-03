@@ -32,25 +32,25 @@
 
 
 :root {
-  --bg:#F4F1EA;--bg-panel:#EAE6DC;--bg-card:#FFFFFF;--bg-hover:#FBFAF6;--bg-formula:#EAE6DC;
+  --bg:#101014;--bg-panel:#1A1A1E;--bg-card:#1E1E23;--bg-hover:#24242B;--bg-formula:#1A1A1E;
   --bg-inverse:#16161A;
-  --text-1:#1A1A1E;--text-2:#57544D;--text-3:#8E8A80;
-  --border:rgba(20,18,14,0.07);--border-s:rgba(20,18,14,0.12);--border-strong:rgba(20,18,14,0.18);
-  --accent:#5B3DF0;--accent-lime:#5B3DF0;--scrollbar:rgba(20,18,14,0.13);
-  --c-structure:#2A4A6B;--c-modes:#C0392B;--c-exec:#6D2B8A;--c-signal:#1A7A6A;
-  --c-econ:#B83030;--c-abx:#8B6914;--c-legacy:#5D6D7E;
+  --text-1:#ECEAE3;--text-2:#9A968C;--text-3:#7E7A74;
+  --border:rgba(255,255,255,0.06);--border-s:rgba(255,255,255,0.14);--border-strong:rgba(255,255,255,0.14);
+  --accent:#8C73FF;--accent-lime:#8C73FF;--scrollbar:rgba(255,255,255,0.12);
+  --c-structure:#6FA8E0;--c-modes:#E2706A;--c-exec:#B98AD8;--c-signal:#4FC8B4;
+  --c-econ:#E86A6A;--c-abx:#D6B24A;--c-legacy:#9AAAB8;
   --ease:cubic-bezier(0.22,1,0.36,1);--dur:200ms;--fast:140ms;--med:300ms;--slow:600ms;
   --font-sans:'Space Grotesk', 'Archivo', 'Helvetica Neue', sans-serif;
-  --mn:'JetBrains Mono', 'Space Mono', monospace;
+  --mn:'JetBrains Mono', monospace;
   /* Tokens consumed by the shared <heretics-house-map>, mapped from local
      tokens. Fallback chain covers all 6 token-naming variants used across
      the NetherOps subpages (--bg-base/--bg/--gy, etc.). */
-  --house-bg: var(--bg-base, var(--bg, var(--gy, #D6D6D1)));
-  --house-ink: var(--ink, var(--bk, #111111));
-  --house-mut: var(--ink-mid, var(--muted, var(--g7, #555555)));
-  --house-faint: var(--ink-muted, var(--faint, var(--g5, #909090)));
-  --house-line: var(--border-mid, var(--border, var(--border-strong, var(--g3, rgba(0,0,0,0.16)))));
-  --house-accent: var(--accent-violet, var(--accent, var(--or, #5B3DF0)));
+  --house-bg: var(--bg-base, var(--bg, var(--gy, #101014)));
+  --house-ink: var(--ink, var(--bk, #ECEAE3));
+  --house-mut: var(--ink-mid, var(--muted, var(--g7, #9A968C)));
+  --house-faint: var(--ink-muted, var(--faint, var(--g5, #7E7A74)));
+  --house-line: var(--border-mid, var(--border, var(--border-strong, var(--g3, rgba(255,255,255,0.14)))));
+  --house-accent: var(--accent-violet, var(--accent, var(--or, #8C73FF)));
 }
 .mode-warroom{
   --bg:#16161A;--bg-panel:#1A1A1E;--bg-card:#1A1A1E;--bg-hover:#212126;--bg-formula:#1A1A1E;
@@ -1008,7 +1008,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
     </div>
   </div>
 <!-- NetherOps Site Banner -->
-<div id="no-banner" style="position:sticky;top:0;z-index:999;background:#0F0F0F;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 20px;height:36px;display:flex;align-items:center;justify-content:space-between;font-family:'JetBrains Mono','Space Mono',monospace">
+<div id="no-banner" style="position:sticky;top:0;z-index:999;background:#0F0F0F;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 20px;height:36px;display:flex;align-items:center;justify-content:space-between;font-family:'JetBrains Mono',monospace">
 <div style="display:flex;align-items:center;gap:16px">
 <a href="/" style="font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent-ink);text-decoration:none">NetherOps</a>
 <span style="width:1px;height:14px;background:rgba(255,255,255,0.08)"></span>
@@ -1184,11 +1184,11 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
          is going. -->
     <div style="margin-top:32px;padding:20px 22px;background:rgba(91,61,240,0.05);border-left:3px solid var(--accent-ink);border-radius:0">
       <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:10px">Transitional Status — Honesty Note</div>
-      <p style="font-size:14px;line-height:1.7;color:#111;margin:0 0 12px">
+      <p style="font-size:14px;line-height:1.7;color:#ECEAE3;margin:0 0 12px">
         The terms on the left remain in active use across OpptyCon today and across most buyer CRMs.
         The lexicon names where the framework is going, not where the product is.
       </p>
-      <p style="font-size:13px;line-height:1.7;color:#555;margin:0">
+      <p style="font-size:13px;line-height:1.7;color:#9A968C;margin:0">
         OpptyCon currently models the funnel as Inquiry → MQL → SQL → SQO → Won — the
         primitives the buyer's CRM is built on. No buyer's pipeline forecasts from APS
         thresholds yet. As the framework matures, the product evolves with it. For where
@@ -1238,7 +1238,7 @@ function showToast(msg){
 
 
 <!-- Legal links to heretics.io canonical Terms/Privacy -->
-<div style="text-align:center;padding:24px 16px;font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:0.1em;color:rgba(0,0,0,0.45);text-transform:uppercase"><a href="https://heretics.io/terms" style="color:inherit;text-decoration:none;margin:0 12px">Terms</a> · <a href="https://heretics.io/privacy" style="color:inherit;text-decoration:none;margin:0 12px">Privacy</a></div>
+<div style="text-align:center;padding:24px 16px;font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:0.1em;color:rgba(255,255,255,0.45);text-transform:uppercase"><a href="https://heretics.io/terms" style="color:inherit;text-decoration:none;margin:0 12px">Terms</a> · <a href="https://heretics.io/privacy" style="color:inherit;text-decoration:none;margin:0 12px">Privacy</a></div>
 <footer class="house-footer">
   <div class="wrap">
 

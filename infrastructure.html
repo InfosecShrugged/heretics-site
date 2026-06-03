@@ -41,7 +41,7 @@
 
 
 
-:root {--bk:#1A1A1E;--gy:#F4F1EA;--or:var(--accent-ink);--pu:#bcbeff;--wh:#fff;--g50:#FBFAF6;--g3:rgba(20,18,14,0.12);--g4:rgba(20,18,14,0.13);--g5:#8E8A80;--g6:#8E8A80;--g7:#57544D;--g9:#16161A;--ft:'Space Grotesk', 'Archivo', 'Helvetica Neue', sans-serif;--mn:'JetBrains Mono','JetBrains Mono','Space Mono',monospace;--sm:cubic-bezier(0.22,1,0.36,1);--ez:cubic-bezier(0.22,1,0.36,1);--lm:var(--accent-ink)
+:root {--bk:#ECEAE3;--gy:#101014;--or:var(--accent-ink);--pu:#8C73FF;--wh:#1A1A1E;--g50:#1E1E23;--g3:rgba(255,255,255,0.06);--g4:rgba(255,255,255,0.14);--g5:#7E7A74;--g6:#7E7A74;--g7:#9A968C;--g9:#1E1E23;--ft:'Space Grotesk', 'Archivo', 'Helvetica Neue', sans-serif;--mn:'JetBrains Mono','JetBrains Mono','Space Mono',monospace;--sm:cubic-bezier(0.22,1,0.36,1);--ez:cubic-bezier(0.22,1,0.36,1);--lm:var(--accent-ink)
   /* Tokens consumed by the shared <heretics-house-map>, mapped from local
      tokens. Fallback chain covers all 6 token-naming variants used across
      the NetherOps subpages (--bg-base/--bg/--gy, etc.). */
@@ -80,7 +80,7 @@ a{color:inherit;text-decoration:none}
 
 /* SECTIONS */
 .sc{padding:clamp(60px,10vw,100px) 0}
-.sdk{background:var(--bk);color:var(--wh);--or:var(--accent-ink)}
+.sdk{background:#16161A;color:#ECEAE3;--or:var(--accent-ink)}
 .swh{background:var(--wh)}
 .s-ey{font-family:var(--mn);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--g7);margin-bottom:14px}
 .sdk .s-ey{color:var(--g6)}
@@ -88,7 +88,7 @@ a{color:inherit;text-decoration:none}
 .s-h span{color:var(--or)}
 .s-p{font-size:clamp(14px,2.5vw,15px);font-weight:300;color:var(--g7);line-height:1.75;max-width:620px}
 .s-p strong{color:var(--bk);font-weight:500}
-.sdk .s-p{color:var(--g5)}.sdk .s-p strong{color:var(--wh)}
+.sdk .s-p{color:var(--g5)}.sdk .s-p strong{color:#ECEAE3}
 
 /* LAYER CARD — the main component */
 .layer{margin:28px 0;border:1px solid var(--g3);background:var(--wh)}
@@ -1044,12 +1044,12 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
 <!-- HERO -->
 <section class="hero w">
   <div class="h-ey">screen 08 &mdash; infrastructure requirements</div>
-  <div role="note" aria-label="Page status" style="background:#C078000d;border-left:3px solid #C07800;padding:14px 20px;margin-bottom:28px;border-radius:0;">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#C07800;margin-bottom:6px;">
+  <div role="note" aria-label="Page status" style="background:#E0A0301a;border-left:3px solid #E0A030;padding:14px 20px;margin-bottom:28px;border-radius:0;">
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#E0A030;margin-bottom:6px;">
     Research — production-platform stack
   </div>
-  <div style="font-size:13px;line-height:1.6;color:#555;margin:0;">
-    Describes the 8-layer infrastructure stack required for autonomous agent operation (canonical data, event model, control plane, tooling, HITL workflow, evaluation harness, observability, deployment discipline). OpptyCon today runs as a static React app without this infrastructure. Building it is months 4+ work. See <a href="/roadmap/" style="color:#C07800;text-decoration:underline;text-underline-offset:2px;">the roadmap</a> for shipped / on-roadmap / research status per claim.
+  <div style="font-size:13px;line-height:1.6;color:#9A968C;margin:0;">
+    Describes the 8-layer infrastructure stack required for autonomous agent operation (canonical data, event model, control plane, tooling, HITL workflow, evaluation harness, observability, deployment discipline). OpptyCon today runs as a static React app without this infrastructure. Building it is months 4+ work. See <a href="/roadmap/" style="color:#E0A030;text-decoration:underline;text-underline-offset:2px;">the roadmap</a> for shipped / on-roadmap / research status per claim.
   </div>
 </div>
 <h1 class="h-title">Infrastructure <span>Stack</span></h1>
@@ -1147,7 +1147,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
     <div class="layer">
       <div class="layer-head">
         <span class="layer-num">3c</span>
-        <span class="layer-name">Provenance Logging</span>
+        <span class="layer-name">Provenance Logging<span style="display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#A78EFF;border:1px solid rgba(255,255,255,.18);border-radius:3px;padding:1px 7px;vertical-align:middle;margin-left:10px">Roadmap</span></span>
       </div>
       <div class="layer-body">
         <div class="layer-desc">For every agent decision. This is your audit trail and your debugging tool.</div>

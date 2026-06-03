@@ -80,7 +80,7 @@ body { font-family: var(--font-display); background: var(--bg); color: var(--ink
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   height: var(--nav-h); display: flex; align-items: center; justify-content: space-between;
   padding: 0 24px;
-  background: rgba(244,244,242,0.92);
+  background: rgba(26,26,30,0.92);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-mid);
 }
@@ -170,7 +170,7 @@ body.footer-in-view .sidebar {
   letter-spacing: 0.01em;
 }
 .side-link:hover {
-  color: var(--ink); background: rgba(0,0,0,0.02);
+  color: var(--ink); background: rgba(255,255,255,0.04);
 }
 .side-link.active {
   color: var(--accent); font-weight: 600;
@@ -1320,7 +1320,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:6px;">
     Partial — some shipped, some on the roadmap
   </div>
-  <div style="font-size:13px;line-height:1.6;color:#555;margin:0;">
+  <div style="font-size:13px;line-height:1.6;color:var(--mut);margin:0;">
     This page describes the framework at a high level. Some sections map directly to OpptyCon today (the 7-layer spine, P&L governance, Stage Gate, Coverage Agent); others are roadmap or research — particularly the Customer Health Agent, Identity Graph, full Provenance schema, and Sovereignty Map adjudicator. See <a href="/roadmap/" style="color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;">the roadmap</a> for shipped / on-roadmap / research status per claim.
   </div>
 </div>
@@ -1555,7 +1555,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
   </div>
 
   <div class="agent-card">
-    <div class="agent-name">Orchestration Agent</div>
+    <div class="agent-name">Orchestration Agent<span style="display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#A78EFF;border:1px solid rgba(255,255,255,.18);border-radius:3px;padding:1px 7px;vertical-align:middle;margin-left:10px">Roadmap</span></div>
     <div class="agent-span">Spans: All Layers</div>
     <div class="agent-desc">The conductor. Coordinates between agents, resolves conflicting constraints, manages the timing of feedback loops. When the P&L Agent wants to cut and the Coverage Agent needs more pipeline, the Orchestration Agent mediates.</div>
   </div>
@@ -1803,7 +1803,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
 <!-- ═══════════════════════ PROVENANCE ═══════════════════════ -->
 <div class="doc-page" id="page-provenance">
   <div class="doc-eyebrow">Reference</div>
-  <h1 class="doc-h1"><em>Provenance.</em></h1>
+  <h1 class="doc-h1"><em>Provenance.</em><span style="display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#A78EFF;border:1px solid rgba(255,255,255,.18);border-radius:3px;padding:1px 7px;vertical-align:middle;margin-left:10px">Roadmap</span></h1>
   <p class="doc-lead">Data lineage and decision audit trail. Every number in the system traces back to its source. Every governance decision traces to a constraint. Trust requires traceability.</p>
 
   <a href="/provenance" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--accent);text-decoration:none;padding:8px 0;transition:opacity 0.2s">View Provenance Screen →</a>

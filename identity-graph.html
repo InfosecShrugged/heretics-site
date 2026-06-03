@@ -32,16 +32,16 @@
 
 
 :root {
-  --bg:#F4F1EA;--bg-panel:#EAE6DC;--bg-card:#FFFFFF;--bg-hover:#FBFAF6;--bg-formula:#EAE6DC;
-  --text-1:#1A1A1E;--text-2:#57544D;--text-3:#8E8A80;
-  --border:rgba(20,18,14,0.07);--border-s:rgba(20,18,14,0.12);
-  --accent:#5B3DF0;--scrollbar:rgba(20,18,14,0.13);
-  --c-graph:#1A5276;--c-resolve:#2E7D32;--c-role:#6C3483;--c-opp:#C0392B;
-  --c-activity:#8B6914;--c-route:#5A3E8A;--c-danger:#B83030;--c-safe:#117A65;
+  --bg:#101014;--bg-panel:#1A1A1E;--bg-card:#1E1E23;--bg-hover:#24242B;--bg-formula:#1A1A1E;
+  --text-1:#ECEAE3;--text-2:#9A968C;--text-3:#7E7A74;
+  --border:rgba(255,255,255,0.06);--border-s:rgba(255,255,255,0.14);
+  --accent:#8C73FF;--scrollbar:rgba(255,255,255,0.14);
+  --c-graph:#5B9BD5;--c-resolve:#66BB6A;--c-role:#B07CC6;--c-opp:#E57368;
+  --c-activity:#D4A93C;--c-route:#9B7FD4;--c-danger:#E06A6A;--c-safe:#4FC2A8;
   --ease:cubic-bezier(0.22,1,0.36,1);--fast:140ms;--med:300ms;--slow:600ms;
   --font-sans:'Space Grotesk', 'Archivo', 'Helvetica Neue', sans-serif;
   --mn:'JetBrains Mono', 'Space Mono', monospace;
-  --bg-inverse:#0F0F0F;--accent-lime:#8C73FF;--border-strong:rgba(0,0,0,0.28);--dur:200ms;
+  --bg-inverse:#0F0F0F;--accent-lime:#8C73FF;--border-strong:rgba(255,255,255,0.14);--dur:200ms;
   /* Tokens consumed by the shared <heretics-house-map>, mapped from local
      tokens. Fallback chain covers all 6 token-naming variants used across
      the NetherOps subpages (--bg-base/--bg/--gy, etc.). */
@@ -1084,7 +1084,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
     Describes the account-atomic data model with 5 buying-group roles, account state lifecycle (Cold → Conditioning → Warming → Active → Expansion → Dormant), and failure-cascade detection from CRM corruption. OpptyCon today models at the deal-funnel level. The account-atomic refactor is research, not roadmap. See <a href="/roadmap/" style="color:#C07800;text-decoration:underline;text-underline-offset:2px;">the roadmap</a> for shipped / on-roadmap / research status per claim.
   </div>
 </div>
-<h1>Identity & Relationship <em>Graph</em></h1>
+<h1>Identity & Relationship <em>Graph</em><span style="display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#A78EFF;border:1px solid rgba(255,255,255,.18);border-radius:3px;padding:1px 7px;vertical-align:middle;margin-left:10px">Roadmap</span></h1>
     <p>Identity mapping is not hygiene. It is routing logic, probability integrity, and revenue attribution substrate. If object relationships are inconsistent, agents optimize on fiction. Agents never operate on CRM primitives — they operate on the normalized graph.</p>
   </div>
 
@@ -1252,7 +1252,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
     <div class="safeguard"><div class="safeguard-num">1</div><div class="safeguard-name">Duplicate Account Audit</div><div class="safeguard-desc">Merge confirmed duplicates. Flag probabilistic matches for review.</div></div>
     <div class="safeguard"><div class="safeguard-num">2</div><div class="safeguard-name">Domain Normalization</div><div class="safeguard-desc">Canonical domain per account. Subsidiary mapping table. Email pattern registry.</div></div>
     <div class="safeguard"><div class="safeguard-num">3</div><div class="safeguard-name">Contact Role Coverage Audit</div><div class="safeguard-desc">% of active opps with ≥2 contact roles mapped. Target: 80%+.</div></div>
-    <div class="safeguard"><div class="safeguard-num">4</div><div class="safeguard-name">Territory Consistency Check</div><div class="safeguard-desc">Account territory matches opp owner territory. Zero misalignment tolerance.</div></div>
+    <div class="safeguard"><div class="safeguard-num">4</div><div class="safeguard-name">Territory Consistency Check<span style="display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#A78EFF;border:1px solid rgba(255,255,255,.18);border-radius:3px;padding:1px 7px;vertical-align:middle;margin-left:10px">Roadmap</span></div><div class="safeguard-desc">Account territory matches opp owner territory. Zero misalignment tolerance.</div></div>
     <div class="safeguard"><div class="safeguard-num">5</div><div class="safeguard-name">Stage Mutation Lock</div><div class="safeguard-desc">Permission audit on who/what can change opp stage. Lock to agents + approved humans.</div></div>
     <div class="safeguard"><div class="safeguard-num">6</div><div class="safeguard-name">Campaign Tagging Taxonomy</div><div class="safeguard-desc">Every active campaign carries: acquisition_mode, program_id, segment_target, date_range.</div></div>
   </div>
