@@ -77,6 +77,7 @@
   --faint: #6E6A62;
   --line: rgba(255,255,255,.10);
   --line-strong: rgba(255,255,255,.18);
+  --line-soft: rgba(255,255,255,.07);
   --accent-ink: var(--accent);
 }
 
@@ -89,6 +90,7 @@
   --faint: #8E8A80;
   --line: rgba(20,18,14,.12);
   --line-strong: rgba(20,18,14,.18);
+  --line-soft: rgba(20,18,14,.07);
   --accent-ink: var(--accent-light);
 }
 
