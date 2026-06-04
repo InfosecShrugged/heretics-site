@@ -12,3 +12,9 @@ http://www.netherops.com/*      https://netherops.com/:splat       301!
 
 # Legacy tool path
 /tools/revenue-physics-engine/* /tools/opptycon/:splat              301
+
+# spine-v4 retired from public — superseded by spine-v5 as the Spine overview.
+# The file is KEPT in the repo (denser/comprehensive ~2.3x reference) for a future
+# /docs move. Forced (301!) so the redirect fires even though spine-v4.html still exists.
+/spine-v4       /spine-v5      301!
+/spine-v4.html  /spine-v5      301!
