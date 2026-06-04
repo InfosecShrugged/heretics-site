@@ -201,6 +201,7 @@ section{padding:80px 0;border-top:0.5px solid var(--line)}
 .doctrine-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-strong);border:0.5px solid var(--line);margin-top:40px}
 .d-cell{background:var(--bg);padding:28px 24px;min-height:170px;display:flex;flex-direction:column;border-left:2px solid transparent;transition:background .35s,border-color .2s}
 .d-cell:hover{border-left-color:var(--accent-ink)}
+.d-fill{background:var(--bg);pointer-events:none}
 .d-num{font-family:var(--mono);font-size:13px;color:var(--accent-ink);font-weight:700}
 .d-h{font-family:var(--display);font-weight:600;font-size:19px;margin:auto 0 10px;letter-spacing:-0.01em}
 .d-p{font-family:var(--sans);font-size:14px;line-height:1.6;color:var(--mut)}
@@ -1204,6 +1205,7 @@ html[data-property="opptycon"]  .hf-col[data-house="operators"] .hf-col-name {
     <a href="/opptycon/" class="d-cell"><div class="d-num">06</div><div class="d-h">OpptyCon Engine</div><div class="d-p">Revenue physics modeling — pipeline targets, funnel math, cost structures.</div></a>
     <a href="/lexicon/" class="d-cell"><div class="d-num">07</div><div class="d-h">Lexicon</div><div class="d-p">The doctrine vocabulary — every term defined once, used the same everywhere.</div></a>
     <a href="/roadmap/" class="d-cell"><div class="d-num">08</div><div class="d-h">Roadmap</div><div class="d-p">What's shipped, what's partial, and what's still ahead — graded honestly.</div></a>
+    <div class="d-cell d-fill" aria-hidden="true"></div>
   </div>
 </div></section>
 
